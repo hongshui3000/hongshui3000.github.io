@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Networking with QEMU User &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Networking with multiple Zephyr instances" href="networking_with_multiple_instances.html" />
+    <link rel="prev" title="USB Device Networking" href="usbnet_setup.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="net-stack-architecture.html">Network Stack Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="networking-api-usage.html">Network Connectivity API</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="networking_with_host.html">Networking with the host system</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="native_posix_setup.html">Networking with native_posix board</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qemu_eth_setup.html">Networking with QEMU Ethernet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qemu_setup.html">Networking with QEMU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usbnet_setup.html">USB Device Networking</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Networking with QEMU User</a></li>
+<li class="toctree-l4"><a class="reference internal" href="networking_with_multiple_instances.html">Networking with multiple Zephyr instances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qemu_802154_setup.html">Networking with QEMU and IEEE 802.15.4</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="network_monitoring.html">Monitor Network Traffic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="networking_with_host.html">Networking with the host system</a> &raquo;</li>
+        
+      <li>Networking with QEMU User</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/networking/qemu_user_setup.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="networking-with-qemu-user">
+<span id="networking-with-user-qemu"></span><h1>Networking with QEMU User<a class="headerlink" href="#networking-with-qemu-user" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#using-slirp-with-zephyr" id="id2">Using SLIRP with Zephyr</a></p></li>
+<li><p><a class="reference internal" href="#limitations" id="id3">Limitations</a></p></li>
+</ul>
+</div>
+<p>This page is intended to serve as a starting point for anyone interested in
+using QEMU SLIRP with Zephyr.</p>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id1">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>SLIRP is a network backend which provides the complete TCP/IP stack within
+QEMU and uses that stack to implement a virtual NAT’d network. As there are
+no dependencies on the host, SLIRP is simple to setup.</p>
+<p>By default, QEMU uses the <code class="docutils literal notranslate"><span class="pre">10.0.2.X/24</span></code> network and runs a gateway at
+<code class="docutils literal notranslate"><span class="pre">10.0.2.2</span></code>. All traffic intended for the host network has to travel through
+this gateway, which will filter out packets based on the QEMU command line
+parameters. This gateway also functions as a DHCP server for all GOS,
+allowing them to be automatically assigned with an IP address starting from
+<code class="docutils literal notranslate"><span class="pre">10.0.2.15</span></code>.</p>
+<p>More details about User Networking can be obtained from here:
+<a class="reference external" href="https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29">https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29</a></p>
+</div>
+<div class="section" id="using-slirp-with-zephyr">
+<h2><a class="toc-backref" href="#id2">Using SLIRP with Zephyr</a><a class="headerlink" href="#using-slirp-with-zephyr" title="Permalink to this headline">¶</a></h2>
+<p>In order to use SLIRP with Zephyr, the user has to set the Kconfig option to
+enable User Networking.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">CONFIG_NET_QEMU_USER=y</span>
+</pre></div>
+</div>
+<p>Once this configuration option is enabled, all QEMU launches will use SLIRP.
+In the default configuration, Zephyr only enables User Networking, and does
+not pass any arguments to it. This means that the Guest will only be able to
+communicate to the QEMU gateway, and any data intended for the host machine
+will be dropped by QEMU.</p>
+<p>In general, QEMU User Networking can take in a lot of arguments including,</p>
+<ul class="simple">
+<li><p>Information about host/guest port forwarding. This must be provided to
+create a communication channel between the guest and host.</p></li>
+<li><p>Information about network to use. This may be valuable if the user does
+not want to use the default <code class="docutils literal notranslate"><span class="pre">10.0.2.X</span></code> network.</p></li>
+<li><p>Tell QEMU to start DHCP server at user-defined IP address.</p></li>
+<li><p>ID and other information.</p></li>
+</ul>
+<p>As this information varies with every use case, it is difficult to come up
+with good defaults that work for all. Therefore, Zephyr Implementation
+offloads this to the user, and expects that they will provide arguments
+based on requirements. For this, there is a Kconfig string which can be
+populated by the user.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">CONFIG_NET_QEMU_USER_EXTRA_ARGS=&quot;net=192.168.0.0/24,hostfwd=tcp::8080-:8080&quot;</span>
+</pre></div>
+</div>
+<p>This option is appended as-is to the QEMU command line. Therefore, any problems with
+this command line will be reported by QEMU only. Here’s what this particular
+example will do,</p>
+<ul class="simple">
+<li><p>Make QEMU use the <code class="docutils literal notranslate"><span class="pre">192.168.0.0/24</span></code> network instead of the default.</p></li>
+<li><p>Enable forwarding of any TCP data received from port 8080 of host to port
+8080 of guest, and vice versa.</p></li>
+</ul>
+</div>
+<div class="section" id="limitations">
+<h2><a class="toc-backref" href="#id3">Limitations</a><a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
+<p>If the user does not have any specific networking requirements other than the
+ability to access a web page from the guest, user networking (slirp) is a
+good choice. However, it has several limitations</p>
+<ul class="simple">
+<li><p>There is a lot of overhead so the performance is poor.</p></li>
+<li><p>The guest is not directly accessible from the host or the external network.</p></li>
+<li><p>In general, ICMP traffic does not work (so you cannot use ping within a guest).</p></li>
+<li><p>As port mappings need to be defined before launching qemu, clients which use
+dynamically generated ports cannot communicate with external network.</p></li>
+<li><p>There is a bug in the SLIRP implementation which filters out all IPv6 packets
+from the guest. See <a class="reference external" href="https://bugs.launchpad.net/qemu/+bug/1724590">https://bugs.launchpad.net/qemu/+bug/1724590</a> for details.
+Therefore, IPv6 will not work with User Networking.</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="networking_with_multiple_instances.html" class="btn btn-neutral float-right" title="Networking with multiple Zephyr instances" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="usbnet_setup.html" class="btn btn-neutral" title="USB Device Networking" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

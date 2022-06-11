@@ -1,0 +1,424 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>USB device stack CDC ACM support &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="User Mode" href="../usermode/index.html" />
+    <link rel="prev" title="USB Human Interface Devices (HID) support" href="hid.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">USB device support</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="udc.html">USB device controller driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uds.html">USB device stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uds_testing.html">Testing USB device support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hid.html">USB Human Interface Devices (HID) support</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">USB device stack CDC ACM support</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#console-over-cdc-acm-uart">Console over CDC ACM UART</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdc-acm-uart-as-backend">CDC ACM UART as backend</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">USB device support</a> &raquo;</li>
+        
+      <li>USB device stack CDC ACM support</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/usb/uds_cdc_acm.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="usb-device-stack-cdc-acm-support">
+<span id="usb-device-cdc-acm"></span><h1>USB device stack CDC ACM support<a class="headerlink" href="#usb-device-stack-cdc-acm-support" title="Permalink to this headline">¶</a></h1>
+<p>The CDC ACM class is used as backend for different subsystems in Zephyr.
+However, its configuration may not be easy for the inexperienced user.
+Below is a description of the different use cases and some pitfalls.</p>
+<p>The interface for CDC ACM user is <a class="reference internal" href="../peripherals/uart.html#uart-api"><span class="std std-ref">UART</span></a> driver API.
+But there are two important differences in behavior to a real UART controller:</p>
+<ul class="simple">
+<li><p>Data transfer is only possible after the USB device stack has been initialized and started,
+until then any data is discarded</p></li>
+<li><p>If device is connected to the host, it still needs an application
+on the host side which requests the data</p></li>
+</ul>
+<p>The devicetree compatible property for CDC ACM UART is
+<a class="reference internal" href="../devicetree/bindings/serial/zephyr%2Ccdc-acm-uart.html#std-dtcompatible-zephyr-cdc-acm-uart"><code class="xref std std-dtcompatible docutils literal notranslate"><span class="pre">zephyr,cdc-acm-uart</span></code></a>.
+CDC ACM support is automatically selected when USB device support is enabled
+and a compatible node in the devicetree sources is present. If necessary,
+CDC ACM support can be explicitly disabled by <a class="reference internal" href="../../kconfig.html#CONFIG_USB_CDC_ACM" title="CONFIG_USB_CDC_ACM"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USB_CDC_ACM</span></code></a>.
+About four CDC ACM UART instances can be defined and used,
+limited by the maximum number of supported endpoints on the controller.</p>
+<p>CDC ACM UART node is supposed to be child of a USB device controller node.
+Since the designation of the controller nodes varies from vendor to vendor,
+and our samples and application should be as generic as possible,
+the default USB device controller is usually assigned an <code class="docutils literal notranslate"><span class="pre">zephyr_udc0</span></code>
+node label. Often, CDC ACM UART is described in a devicetree overlay file
+and looks like this:</p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="na">zephyr_udc0</span> <span class="p">{</span>
+     <span class="nl">cdc_acm_uart0</span><span class="p">:</span> <span class="nf">cdc_acm_uart0</span><span class="cm"> </span><span class="p">{</span>
+             <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;zephyr,cdc-acm-uart&quot;</span><span class="p">;</span>
+             <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;CDC_ACM_0&quot;</span><span class="p">;</span>
+     <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Samples <a class="reference internal" href="../../samples/subsys/usb/cdc_acm/README.html#usb-cdc-acm"><span class="std std-ref">USB CDC ACM Sample Application</span></a> and <a class="reference internal" href="../../samples/subsys/usb/hid-cdc/README.html#usb-hid-cdc"><span class="std std-ref">USB HID CDC ACM Application</span></a> have similar overlay files.
+And since no special properties are present, it may seem overkill to use
+devicetree to describe CDC ACM UART.  The motivation behind using devicetree
+is the easy interchangeability of a real UART controller and CDC ACM UART
+in applications.</p>
+<div class="section" id="console-over-cdc-acm-uart">
+<h2>Console over CDC ACM UART<a class="headerlink" href="#console-over-cdc-acm-uart" title="Permalink to this headline">¶</a></h2>
+<p>With the CDC ACM UART node from above and <code class="docutils literal notranslate"><span class="pre">zephyr,console</span></code> property of the
+chosen node, we can describe that CDC ACM UART is to be used with the console.
+A similar overlay file is used by <a class="reference internal" href="../../samples/subsys/usb/console/README.html#cdc-acm-console"><span class="std std-ref">Console over CDC ACM UART Sample</span></a>.</p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
+     <span class="nf">chosen</span><span class="cm"> </span><span class="p">{</span>
+             <span class="n">zephyr</span><span class="p">,</span><span class="n">console</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">cdc_acm_uart0</span><span class="p">;</span>
+     <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="o">&amp;</span><span class="nf">zephyr_udc0</span><span class="cm"> </span><span class="p">{</span>
+     <span class="nl">cdc_acm_uart0</span><span class="p">:</span> <span class="nf">cdc_acm_uart0</span><span class="cm"> </span><span class="p">{</span>
+             <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;zephyr,cdc-acm-uart&quot;</span><span class="p">;</span>
+             <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;CDC_ACM_0&quot;</span><span class="p">;</span>
+     <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Before the application uses the console, it is recommended to wait for
+the DTR signal:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span> <span class="o">=</span> <span class="n">DEVICE_DT_GET</span><span class="p">(</span><span class="n">DT_CHOSEN</span><span class="p">(</span><span class="n">zephyr_console</span><span class="p">));</span>
+<span class="kt">uint32_t</span> <span class="n">dtr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">usb_enable</span><span class="p">(</span><span class="nb">NULL</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">dtr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">uart_line_ctrl_get</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">UART_LINE_CTRL_DTR</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dtr</span><span class="p">);</span>
+    <span class="n">k_sleep</span><span class="p">(</span><span class="n">K_MSEC</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="n">printk</span><span class="p">(</span><span class="s">&quot;nuqneH</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cdc-acm-uart-as-backend">
+<h2>CDC ACM UART as backend<a class="headerlink" href="#cdc-acm-uart-as-backend" title="Permalink to this headline">¶</a></h2>
+<p>As for the console sample, it is possible to configure CDC ACM UART as
+backend for other subsystems by setting <a class="reference internal" href="../devicetree/api.html#devicetree-chosen-nodes"><span class="std std-ref">Chosen nodes</span></a>
+properties.</p>
+<p>List of few Zephyr specific chosen properties which can be used to select
+CDC ACM UART as backend for a subsystem or application:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zephyr,bt-c2h-uart</span></code> used in Bluetooth,
+for example see <a class="reference internal" href="../../samples/bluetooth/hci_uart/README.html#bluetooth-hci-uart-sample"><span class="std std-ref">Bluetooth: HCI UART</span></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zephyr,ot-uart</span></code> used in OpenThread,
+for example see <a class="reference internal" href="../../samples/net/openthread/coprocessor/README.html#coprocessor-sample"><span class="std std-ref">OpenThread Co-Processor</span></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zephyr,shell-uart</span></code> used by shell for serial backend,
+for example see <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/samples/subsys/shell/shell_module">samples/subsys/shell/shell_module</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zephyr,uart-mcumgr</span></code> used by <a class="reference internal" href="../../samples/subsys/mgmt/mcumgr/smp_svr/README.html#smp-svr-sample"><span class="std std-ref">SMP Server Sample</span></a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../usermode/index.html" class="btn btn-neutral float-right" title="User Mode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="hid.html" class="btn btn-neutral" title="USB Human Interface Devices (HID) support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

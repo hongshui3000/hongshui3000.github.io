@@ -1,0 +1,1835 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__bsd__sockets" kind="group">
+    <compoundname>bsd_sockets</compoundname>
+    <title>BSD Sockets compatible API</title>
+    <innerclass refid="structzsock__pollfd" prot="public">zsock_pollfd</innerclass>
+    <innerclass refid="structzsock__addrinfo" prot="public">zsock_addrinfo</innerclass>
+    <innerclass refid="structifreq" prot="public">ifreq</innerclass>
+    <innerclass refid="structzsock__fd__set" prot="public">zsock_fd_set</innerclass>
+    <innergroup refid="group__secure__sockets__options">Socket options for TLS</innergroup>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="group__bsd__sockets_1ga1fcb157f9f7dece784f5d2c0cb2efb77" prot="public" static="no">
+        <type>struct <ref refid="structzsock__fd__set" kindref="compound">zsock_fd_set</ref></type>
+        <definition>typedef struct zsock_fd_set zsock_fd_set</definition>
+        <argsstring></argsstring>
+        <name>zsock_fd_set</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket_select.h" line="26" column="14"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__bsd__sockets_1ga5f569be406929ee89b6e42de7cef2882" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void* zsock_get_context_object</definition>
+        <argsstring>(int sock)</argsstring>
+        <name>zsock_get_context_object</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <briefdescription>
+<para>Obtain a file descriptor&apos;s associated net context. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>With CONFIG_USERSPACE enabled, the kernel&apos;s object permission system must apply to socket file descriptors. When a socket is opened, by default only the caller has permission, access by other threads will fail unless they have been specifically granted permission.</para>
+<para>This is achieved by tagging data structure definitions that implement the underlying object associated with a network socket file descriptor with &apos;__net_socket`. All pointers to instances of these will be known to the kernel as kernel objects with type K_OBJ_NET_SOCKET.</para>
+<para>This API is intended for threads that need to grant access to the object associated with a particular file descriptor to another thread. The returned pointer represents the underlying K_OBJ_NET_SOCKET and may be passed to APIs like <ref refid="group__usermode__apis_1ga94087bedf96fe2a2bea437d3d585ca22" kindref="member">k_object_access_grant()</ref>.</para>
+<para>In a system like Linux which has the notion of threads running in processes in a shared virtual address space, this sort of management is unnecessary as the scope of file descriptors is implemented at the process level.</para>
+<para>However in Zephyr the file descriptor scope is global, and MPU-based systems are not able to implement a process-like model due to the lack of memory virtualization hardware. They use discrete object permissions and memory domains instead to define thread access scope.</para>
+<para>User threads will have no direct access to the returned object and will fault if they try to access its memory; the pointer can only be used to make permission assignment calls, which follow exactly the rules for other kernel objects like device drivers and IPC.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sock</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>file descriptor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>pointer to associated network socket object, or NULL if the file descriptor wasn&apos;t valid or the caller had no access permission </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="213" column="7" declfile="include/net/socket.h" declline="213" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga5693d19a0bdff45a5cb09227683d8631" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_socket</definition>
+        <argsstring>(int family, int type, int proto)</argsstring>
+        <name>zsock_socket</name>
+        <param>
+          <type>int</type>
+          <declname>family</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>proto</declname>
+        </param>
+        <briefdescription>
+<para>Create a network socket. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/socket.html&gt;`__
+* for normative description.
+* This function is also exposed as ``socket()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim></para>
+<para>If CONFIG_USERSPACE is enabled, the caller will be granted access to the context object associated with the returned file descriptor. <simplesect kind="see"><para><ref refid="group__bsd__sockets_1ga5f569be406929ee89b6e42de7cef2882" kindref="member">zsock_get_context_object()</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="232" column="6" declfile="include/net/socket.h" declline="232" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga1f5e089c9fb39d3a8884502a11e389b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_socketpair</definition>
+        <argsstring>(int family, int type, int proto, int *sv)</argsstring>
+        <name>zsock_socketpair</name>
+        <param>
+          <type>int</type>
+          <declname>family</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>proto</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>sv</declname>
+        </param>
+        <briefdescription>
+<para>Create an unnamed pair of connected sockets. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;https://pubs.opengroup.org/onlinepubs/009695399/functions/socketpair.html&gt;`__
+* for normative description.
+* This function is also exposed as ``socketpair()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="246" column="6" declfile="include/net/socket.h" declline="246" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gae60d7ca486955dd79a2821d1f646c349" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_close</definition>
+        <argsstring>(int sock)</argsstring>
+        <name>zsock_close</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <briefdescription>
+<para>Close a network socket. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* Close a network socket.
+* This function is also exposed as ``close()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined (in which case it
+* may conflict with generic POSIX ``close()`` function).
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="259" column="6" declfile="include/net/socket.h" declline="259" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gac56432bf901efaf8ef782430ac143f03" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_shutdown</definition>
+        <argsstring>(int sock, int how)</argsstring>
+        <name>zsock_shutdown</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>how</declname>
+        </param>
+        <briefdescription>
+<para>Shutdown socket send/receive operations. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/shutdown.html&gt;`__
+* for normative description, but currently this function has no effect in
+* Zephyr and provided solely for compatibility with existing code.
+* This function is also exposed as ``shutdown()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="274" column="6" declfile="include/net/socket.h" declline="274" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga3d3258fc59ab566eab03e0f51da1556a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_bind</definition>
+        <argsstring>(int sock, const struct sockaddr *addr, socklen_t addrlen)</argsstring>
+        <name>zsock_bind</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>const struct <ref refid="structsockaddr" kindref="compound">sockaddr</ref> *</type>
+          <declname>addr</declname>
+        </param>
+        <param>
+          <type><ref refid="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a" kindref="member">socklen_t</ref></type>
+          <declname>addrlen</declname>
+        </param>
+        <briefdescription>
+<para>Bind a socket to a local network address. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/bind.html&gt;`__
+* for normative description.
+* This function is also exposed as ``bind()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="288" column="6" declfile="include/net/socket.h" declline="288" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga1a70b1d3616341a86977835cc853d81d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_connect</definition>
+        <argsstring>(int sock, const struct sockaddr *addr, socklen_t addrlen)</argsstring>
+        <name>zsock_connect</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>const struct <ref refid="structsockaddr" kindref="compound">sockaddr</ref> *</type>
+          <declname>addr</declname>
+        </param>
+        <param>
+          <type><ref refid="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a" kindref="member">socklen_t</ref></type>
+          <declname>addrlen</declname>
+        </param>
+        <briefdescription>
+<para>Connect a socket to a peer network address. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/connect.html&gt;`__
+* for normative description.
+* This function is also exposed as ``connect()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="303" column="6" declfile="include/net/socket.h" declline="303" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gae8ea59ea82063aa28a9b72da2f08c9fd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_listen</definition>
+        <argsstring>(int sock, int backlog)</argsstring>
+        <name>zsock_listen</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>backlog</declname>
+        </param>
+        <briefdescription>
+<para>Set up a STREAM socket to accept peer connections. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/listen.html&gt;`__
+* for normative description.
+* This function is also exposed as ``listen()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="318" column="6" declfile="include/net/socket.h" declline="318" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga25c993772f26b872e7ed16c4ae2349fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_accept</definition>
+        <argsstring>(int sock, struct sockaddr *addr, socklen_t *addrlen)</argsstring>
+        <name>zsock_accept</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>struct <ref refid="structsockaddr" kindref="compound">sockaddr</ref> *</type>
+          <declname>addr</declname>
+        </param>
+        <param>
+          <type><ref refid="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a" kindref="member">socklen_t</ref> *</type>
+          <declname>addrlen</declname>
+        </param>
+        <briefdescription>
+<para>Accept a connection on listening socket. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/accept.html&gt;`__
+* for normative description.
+* This function is also exposed as ``accept()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="332" column="6" declfile="include/net/socket.h" declline="332" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga17a68983c5fc16cef968b3e7cecff089" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="lib_2libc_2minimal_2include_2sys_2types_8h_1a5c5d83d87790efd59ea916c2b99f9118" kindref="member">ssize_t</ref></type>
+        <definition>ssize_t zsock_sendto</definition>
+        <argsstring>(int sock, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t addrlen)</argsstring>
+        <name>zsock_sendto</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>const void *</type>
+          <declname>buf</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>len</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>flags</declname>
+        </param>
+        <param>
+          <type>const struct <ref refid="structsockaddr" kindref="compound">sockaddr</ref> *</type>
+          <declname>dest_addr</declname>
+        </param>
+        <param>
+          <type><ref refid="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a" kindref="member">socklen_t</ref></type>
+          <declname>addrlen</declname>
+        </param>
+        <briefdescription>
+<para>Send data to an arbitrary network address. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/sendto.html&gt;`__
+* for normative description.
+* This function is also exposed as ``sendto()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="346" column="10" declfile="include/net/socket.h" declline="346" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga2d8c2173986f67dde6dc5721bf690855" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="lib_2libc_2minimal_2include_2sys_2types_8h_1a5c5d83d87790efd59ea916c2b99f9118" kindref="member">ssize_t</ref></type>
+        <definition>static ssize_t zsock_send</definition>
+        <argsstring>(int sock, const void *buf, size_t len, int flags)</argsstring>
+        <name>zsock_send</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>const void *</type>
+          <declname>buf</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>len</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>flags</declname>
+        </param>
+        <briefdescription>
+<para>Send data to a connected peer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/send.html&gt;`__
+* for normative description.
+* This function is also exposed as ``send()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="362" column="23" bodyfile="include/net/socket.h" bodystart="362" bodyend="366"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gadb708a068afed401e1354aac885c787e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="lib_2libc_2minimal_2include_2sys_2types_8h_1a5c5d83d87790efd59ea916c2b99f9118" kindref="member">ssize_t</ref></type>
+        <definition>ssize_t zsock_sendmsg</definition>
+        <argsstring>(int sock, const struct msghdr *msg, int flags)</argsstring>
+        <name>zsock_sendmsg</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>const struct <ref refid="structmsghdr" kindref="compound">msghdr</ref> *</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>flags</declname>
+        </param>
+        <briefdescription>
+<para>Send data to an arbitrary network address. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/sendmsg.html&gt;`__
+* for normative description.
+* This function is also exposed as ``sendmsg()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="380" column="10" declfile="include/net/socket.h" declline="380" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gaca71732c883880c6fdcc7eb8e1c28932" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="lib_2libc_2minimal_2include_2sys_2types_8h_1a5c5d83d87790efd59ea916c2b99f9118" kindref="member">ssize_t</ref></type>
+        <definition>ssize_t zsock_recvfrom</definition>
+        <argsstring>(int sock, void *buf, size_t max_len, int flags, struct sockaddr *src_addr, socklen_t *addrlen)</argsstring>
+        <name>zsock_recvfrom</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>buf</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>max_len</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>flags</declname>
+        </param>
+        <param>
+          <type>struct <ref refid="structsockaddr" kindref="compound">sockaddr</ref> *</type>
+          <declname>src_addr</declname>
+        </param>
+        <param>
+          <type><ref refid="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a" kindref="member">socklen_t</ref> *</type>
+          <declname>addrlen</declname>
+        </param>
+        <briefdescription>
+<para>Receive data from an arbitrary network address. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/recvfrom.html&gt;`__
+* for normative description.
+* This function is also exposed as ``recvfrom()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="395" column="10" declfile="include/net/socket.h" declline="395" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga8a7d82cfb02a45de59ccd05614eb78d6" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="lib_2libc_2minimal_2include_2sys_2types_8h_1a5c5d83d87790efd59ea916c2b99f9118" kindref="member">ssize_t</ref></type>
+        <definition>static ssize_t zsock_recv</definition>
+        <argsstring>(int sock, void *buf, size_t max_len, int flags)</argsstring>
+        <name>zsock_recv</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>buf</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>max_len</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>flags</declname>
+        </param>
+        <briefdescription>
+<para>Receive data from a connected peer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/recv.html&gt;`__
+* for normative description.
+* This function is also exposed as ``recv()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="411" column="23" bodyfile="include/net/socket.h" bodystart="411" bodyend="415"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga13471854ca4279a157fe43ec030ea34d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_fcntl</definition>
+        <argsstring>(int sock, int cmd, int flags)</argsstring>
+        <name>zsock_fcntl</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cmd</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>flags</declname>
+        </param>
+        <briefdescription>
+<para>Control blocking/non-blocking mode of a socket. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* This functions allow to (only) configure a socket for blocking or
+* non-blocking operation (O_NONBLOCK).
+* This function is also exposed as ``fcntl()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined (in which case
+* it may conflict with generic POSIX ``fcntl()`` function).
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="429" column="6" declfile="include/net/socket.h" declline="429" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gaa946975d9892a0ad730b6bf7090267cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_poll</definition>
+        <argsstring>(struct zsock_pollfd *fds, int nfds, int timeout)</argsstring>
+        <name>zsock_poll</name>
+        <param>
+          <type>struct <ref refid="structzsock__pollfd" kindref="compound">zsock_pollfd</ref> *</type>
+          <declname>fds</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nfds</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>timeout</declname>
+        </param>
+        <briefdescription>
+<para>Efficiently poll multiple sockets for events. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/poll.html&gt;`__
+* for normative description. (In Zephyr this function works only with
+* sockets, not arbitrary file descriptors.)
+* This function is also exposed as ``poll()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined (in which case
+* it may conflict with generic POSIX ``poll()`` function).
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="445" column="6" declfile="include/net/socket.h" declline="445" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga56cb8d34d4b9599c3d2965c97da80a30" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_getsockopt</definition>
+        <argsstring>(int sock, int level, int optname, void *optval, socklen_t *optlen)</argsstring>
+        <name>zsock_getsockopt</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>optname</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>optval</declname>
+        </param>
+        <param>
+          <type><ref refid="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a" kindref="member">socklen_t</ref> *</type>
+          <declname>optlen</declname>
+        </param>
+        <briefdescription>
+<para>Get various socket options. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockopt.html&gt;`__
+* for normative description. In Zephyr this function supports a subset of
+* socket options described by POSIX, but also some additional options
+* available in Linux (some options are dummy and provided to ease porting
+* of existing code).
+* This function is also exposed as ``getsockopt()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="462" column="6" declfile="include/net/socket.h" declline="462" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gad123f59d8c86bf187054c80ff743b4eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_setsockopt</definition>
+        <argsstring>(int sock, int level, int optname, const void *optval, socklen_t optlen)</argsstring>
+        <name>zsock_setsockopt</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>optname</declname>
+        </param>
+        <param>
+          <type>const void *</type>
+          <declname>optval</declname>
+        </param>
+        <param>
+          <type><ref refid="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a" kindref="member">socklen_t</ref></type>
+          <declname>optlen</declname>
+        </param>
+        <briefdescription>
+<para>Set various socket options. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/setsockopt.html&gt;`__
+* for normative description. In Zephyr this function supports a subset of
+* socket options described by POSIX, but also some additional options
+* available in Linux (some options are dummy and provided to ease porting
+* of existing code).
+* This function is also exposed as ``setsockopt()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="480" column="6" declfile="include/net/socket.h" declline="480" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gaa0270d771e51dbf2a91bea5b24bf26c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_getsockname</definition>
+        <argsstring>(int sock, struct sockaddr *addr, socklen_t *addrlen)</argsstring>
+        <name>zsock_getsockname</name>
+        <param>
+          <type>int</type>
+          <declname>sock</declname>
+        </param>
+        <param>
+          <type>struct <ref refid="structsockaddr" kindref="compound">sockaddr</ref> *</type>
+          <declname>addr</declname>
+        </param>
+        <param>
+          <type><ref refid="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a" kindref="member">socklen_t</ref> *</type>
+          <declname>addrlen</declname>
+        </param>
+        <briefdescription>
+<para>Get socket name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockname.html&gt;`__
+* for normative description.
+* This function is also exposed as ``getsockname()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="495" column="6" declfile="include/net/socket.h" declline="495" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga8b348d886f1bc4f4cdf6e2260844f6e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_gethostname</definition>
+        <argsstring>(char *buf, size_t len)</argsstring>
+        <name>zsock_gethostname</name>
+        <param>
+          <type>char *</type>
+          <declname>buf</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>len</declname>
+        </param>
+        <briefdescription>
+<para>Get local host name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/gethostname.html&gt;`__
+* for normative description.
+* This function is also exposed as ``gethostname()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="510" column="6" declfile="include/net/socket.h" declline="510" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gad013048eb79ebde2a826e2409be1c535" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>char *</type>
+        <definition>static char* zsock_inet_ntop</definition>
+        <argsstring>(sa_family_t family, const void *src, char *dst, size_t size)</argsstring>
+        <name>zsock_inet_ntop</name>
+        <param>
+          <type><ref refid="group__ip__4__6_1ga2d9e094abb99ebd0874373edf1c45eda" kindref="member">sa_family_t</ref></type>
+          <declname>family</declname>
+        </param>
+        <param>
+          <type>const void *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+<para>Convert network address from internal to numeric ASCII form. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/inet_ntop.html&gt;`__
+* for normative description.
+* This function is also exposed as ``inet_ntop()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="524" column="20" bodyfile="include/net/socket.h" bodystart="524" bodyend="528"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gae4cf68b3752057b4b0818394487a2dbb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_inet_pton</definition>
+        <argsstring>(sa_family_t family, const char *src, void *dst)</argsstring>
+        <name>zsock_inet_pton</name>
+        <param>
+          <type><ref refid="group__ip__4__6_1ga2d9e094abb99ebd0874373edf1c45eda" kindref="member">sa_family_t</ref></type>
+          <declname>family</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+<para>Convert network address from numeric ASCII form to internal representation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/inet_pton.html&gt;`__
+* for normative description.
+* This function is also exposed as ``inet_pton()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="542" column="6" declfile="include/net/socket.h" declline="542" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gaf59c97c9bd07f188e3f06b2372ac1856" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_getaddrinfo</definition>
+        <argsstring>(const char *host, const char *service, const struct zsock_addrinfo *hints, struct zsock_addrinfo **res)</argsstring>
+        <name>zsock_getaddrinfo</name>
+        <param>
+          <type>const char *</type>
+          <declname>host</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>service</declname>
+        </param>
+        <param>
+          <type>const struct <ref refid="structzsock__addrinfo" kindref="compound">zsock_addrinfo</ref> *</type>
+          <declname>hints</declname>
+        </param>
+        <param>
+          <type>struct <ref refid="structzsock__addrinfo" kindref="compound">zsock_addrinfo</ref> **</type>
+          <declname>res</declname>
+        </param>
+        <briefdescription>
+<para>Resolve a domain name to one or more network addresses. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/getaddrinfo.html&gt;`__
+* for normative description.
+* This function is also exposed as ``getaddrinfo()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="580" column="5" declfile="include/net/socket.h" declline="580" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga7953da2e52bcfad51b877de6d7fd6cc9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void zsock_freeaddrinfo</definition>
+        <argsstring>(struct zsock_addrinfo *ai)</argsstring>
+        <name>zsock_freeaddrinfo</name>
+        <param>
+          <type>struct <ref refid="structzsock__addrinfo" kindref="compound">zsock_addrinfo</ref> *</type>
+          <declname>ai</declname>
+        </param>
+        <briefdescription>
+<para>Free results returned by <ref refid="group__bsd__sockets_1gaf59c97c9bd07f188e3f06b2372ac1856" kindref="member">zsock_getaddrinfo()</ref> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/freeaddrinfo.html&gt;`__
+* for normative description.
+* This function is also exposed as ``freeaddrinfo()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="596" column="6" declfile="include/net/socket.h" declline="596" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gaa30584e6eb91297f34dda65ca48a319f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char* zsock_gai_strerror</definition>
+        <argsstring>(int errcode)</argsstring>
+        <name>zsock_gai_strerror</name>
+        <param>
+          <type>int</type>
+          <declname>errcode</declname>
+        </param>
+        <briefdescription>
+<para>Convert <ref refid="group__bsd__sockets_1gaf59c97c9bd07f188e3f06b2372ac1856" kindref="member">zsock_getaddrinfo()</ref> error code to textual message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/gai_strerror.html&gt;`__
+* for normative description.
+* This function is also exposed as ``gai_strerror()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="610" column="12" declfile="include/net/socket.h" declline="610" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_getnameinfo</definition>
+        <argsstring>(const struct sockaddr *addr, socklen_t addrlen, char *host, socklen_t hostlen, char *serv, socklen_t servlen, int flags)</argsstring>
+        <name>zsock_getnameinfo</name>
+        <param>
+          <type>const struct <ref refid="structsockaddr" kindref="compound">sockaddr</ref> *</type>
+          <declname>addr</declname>
+        </param>
+        <param>
+          <type><ref refid="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a" kindref="member">socklen_t</ref></type>
+          <declname>addrlen</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>host</declname>
+        </param>
+        <param>
+          <type><ref refid="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a" kindref="member">socklen_t</ref></type>
+          <declname>hostlen</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>serv</declname>
+        </param>
+        <param>
+          <type><ref refid="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a" kindref="member">socklen_t</ref></type>
+          <declname>servlen</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>flags</declname>
+        </param>
+        <briefdescription>
+<para>Resolve a network address to a domain name or ASCII address. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/getnameinfo.html&gt;`__
+* for normative description.
+* This function is also exposed as ``getnameinfo()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="642" column="5" declfile="include/net/socket.h" declline="642" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga265b8fc197a7a79102bdce4875bbb045" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int zsock_select</definition>
+        <argsstring>(int nfds, zsock_fd_set *readfds, zsock_fd_set *writefds, zsock_fd_set *exceptfds, struct zsock_timeval *timeout)</argsstring>
+        <name>zsock_select</name>
+        <param>
+          <type>int</type>
+          <declname>nfds</declname>
+        </param>
+        <param>
+          <type><ref refid="structzsock__fd__set" kindref="compound">zsock_fd_set</ref> *</type>
+          <declname>readfds</declname>
+        </param>
+        <param>
+          <type><ref refid="structzsock__fd__set" kindref="compound">zsock_fd_set</ref> *</type>
+          <declname>writefds</declname>
+        </param>
+        <param>
+          <type><ref refid="structzsock__fd__set" kindref="compound">zsock_fd_set</ref> *</type>
+          <declname>exceptfds</declname>
+        </param>
+        <param>
+          <type>struct <ref refid="group__bsd__sockets_1ga0fa9dd4796261813b164fed42303e4ee" kindref="member">zsock_timeval</ref> *</type>
+          <declname>timeout</declname>
+        </param>
+        <briefdescription>
+<para>Legacy function to poll multiple sockets for events. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/select.html&gt;`__
+* for normative description. This function is provided to ease porting of
+* existing code and not recommended for usage due to its inefficiency,
+* use :c:func:`zsock_poll()` instead. In Zephyr this function works only with
+* sockets, not arbitrary file descriptors.
+* This function is also exposed as ``select()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined (in which case
+* it may conflict with generic POSIX ``select()`` function).
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket_select.h" line="45" column="6" declfile="include/net/socket_select.h" declline="45" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gae9c3555c2fc74b8a88ea5909a2d02afb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ZSOCK_FD_ZERO</definition>
+        <argsstring>(zsock_fd_set *set)</argsstring>
+        <name>ZSOCK_FD_ZERO</name>
+        <param>
+          <type><ref refid="structzsock__fd__set" kindref="compound">zsock_fd_set</ref> *</type>
+          <declname>set</declname>
+        </param>
+        <briefdescription>
+<para>Initialize (clear) fd_set. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/select.html&gt;`__
+* for normative description.
+* This function is also exposed as ``FD_ZERO()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket_select.h" line="65" column="6" declfile="include/net/socket_select.h" declline="65" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga24808b7adec4970eb0981b24e9313aab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ZSOCK_FD_ISSET</definition>
+        <argsstring>(int fd, zsock_fd_set *set)</argsstring>
+        <name>ZSOCK_FD_ISSET</name>
+        <param>
+          <type>int</type>
+          <declname>fd</declname>
+        </param>
+        <param>
+          <type><ref refid="structzsock__fd__set" kindref="compound">zsock_fd_set</ref> *</type>
+          <declname>set</declname>
+        </param>
+        <briefdescription>
+<para>Check whether socket is a member of fd_set. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/select.html&gt;`__
+* for normative description.
+* This function is also exposed as ``FD_ISSET()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket_select.h" line="79" column="5" declfile="include/net/socket_select.h" declline="79" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1gadcc17ac3947722e684a543e055b8c1e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ZSOCK_FD_CLR</definition>
+        <argsstring>(int fd, zsock_fd_set *set)</argsstring>
+        <name>ZSOCK_FD_CLR</name>
+        <param>
+          <type>int</type>
+          <declname>fd</declname>
+        </param>
+        <param>
+          <type><ref refid="structzsock__fd__set" kindref="compound">zsock_fd_set</ref> *</type>
+          <declname>set</declname>
+        </param>
+        <briefdescription>
+<para>Remove socket from fd_set. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/select.html&gt;`__
+* for normative description.
+* This function is also exposed as ``FD_CLR()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket_select.h" line="93" column="6" declfile="include/net/socket_select.h" declline="93" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__bsd__sockets_1ga9a6044b408c0ef80336e957cd47d5f25" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ZSOCK_FD_SET</definition>
+        <argsstring>(int fd, zsock_fd_set *set)</argsstring>
+        <name>ZSOCK_FD_SET</name>
+        <param>
+          <type>int</type>
+          <declname>fd</declname>
+        </param>
+        <param>
+          <type><ref refid="structzsock__fd__set" kindref="compound">zsock_fd_set</ref> *</type>
+          <declname>set</declname>
+        </param>
+        <briefdescription>
+<para>Add socket to fd_set. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><verbatim>embed:rst:leading-asterisk
+* See `POSIX.1-2017 article
+* &lt;http://pubs.opengroup.org/onlinepubs/9699919799/functions/select.html&gt;`__
+* for normative description.
+* This function is also exposed as ``FD_SET()``
+* if :kconfig:option:`CONFIG_NET_SOCKETS_POSIX_NAMES` is defined.
+* </verbatim> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket_select.h" line="107" column="6" declfile="include/net/socket_select.h" declline="107" declcolumn="6"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="group__bsd__sockets_1ga6ade0deb4952e1ea23b368d9eceee9ed" prot="public" static="no">
+        <name>ZSOCK_POLLIN</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_poll: Poll for readability </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="44" column="9" bodyfile="include/net/socket.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga1c96c16d5000db0fa4b69055ebb97839" prot="public" static="no">
+        <name>ZSOCK_POLLPRI</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_poll: Compatibility value, ignored </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="46" column="9" bodyfile="include/net/socket.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga9ca302c64dfb676798ce03100894ca3e" prot="public" static="no">
+        <name>ZSOCK_POLLOUT</name>
+        <initializer>4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_poll: Poll for writability </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="48" column="9" bodyfile="include/net/socket.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gad44368a112fbf91436a2439e7b767641" prot="public" static="no">
+        <name>ZSOCK_POLLERR</name>
+        <initializer>8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_poll: Poll results in error condition (output value only) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="50" column="9" bodyfile="include/net/socket.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gadd341cd5c1f6d7deeaedc5c58dc56fe7" prot="public" static="no">
+        <name>ZSOCK_POLLHUP</name>
+        <initializer>0x10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_poll: Poll detected closed connection (output value only) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="52" column="9" bodyfile="include/net/socket.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga45c5b0efca6e09e4f7db78d1d007bf67" prot="public" static="no">
+        <name>ZSOCK_POLLNVAL</name>
+        <initializer>0x20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_poll: Invalid socket (output value only) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="54" column="9" bodyfile="include/net/socket.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gae7da123a40584192b65af77e918080b9" prot="public" static="no">
+        <name>ZSOCK_MSG_PEEK</name>
+        <initializer>0x02</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_recv: Read data without removing it from socket input queue </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="57" column="9" bodyfile="include/net/socket.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gae594c5e74cd473df8e3328a4cd935ce1" prot="public" static="no">
+        <name>ZSOCK_MSG_TRUNC</name>
+        <initializer>0x20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_recv: return the real length of the datagram, even when it was longer than the passed buffer </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="61" column="9" bodyfile="include/net/socket.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga92cf4460e23f376bf130d885ea64ed6b" prot="public" static="no">
+        <name>ZSOCK_MSG_DONTWAIT</name>
+        <initializer>0x40</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_recv/zsock_send: Override operation to non-blocking </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="63" column="9" bodyfile="include/net/socket.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga00b950f50302d97c27111da49f5289fb" prot="public" static="no">
+        <name>ZSOCK_MSG_WAITALL</name>
+        <initializer>0x100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_recv: block until the full amount of data can be returned </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="65" column="9" bodyfile="include/net/socket.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga2a58cbc62db1e559898ea979454d74d4" prot="public" static="no">
+        <name>ZSOCK_SHUT_RD</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_shutdown: Shut down for reading </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="72" column="9" bodyfile="include/net/socket.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga87630f1abe81c4e33a24cb1f1ebb3571" prot="public" static="no">
+        <name>ZSOCK_SHUT_WR</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_shutdown: Shut down for writing </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="74" column="9" bodyfile="include/net/socket.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga788dcff81663a9fb01e32b53bca13e2d" prot="public" static="no">
+        <name>ZSOCK_SHUT_RDWR</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>zsock_shutdown: Shut down for both reading and writing </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="76" column="9" bodyfile="include/net/socket.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga127b71b334ca280b88f4f62c73afce0a" prot="public" static="no">
+        <name>SOL_TLS</name>
+        <initializer>282</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Protocol level for TLS. Here, the same socket protocol level for TLS as in Linux was used. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="81" column="9" bodyfile="include/net/socket.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga09cb746907891d86a8d69ca49717c068" prot="public" static="no">
+        <name>TLS_PEER_VERIFY_NONE</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Peer verification disabled. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="151" column="9" bodyfile="include/net/socket.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gae5a7102c2964ad0c30f5f2ed74a43488" prot="public" static="no">
+        <name>TLS_PEER_VERIFY_OPTIONAL</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Peer verification optional. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="152" column="9" bodyfile="include/net/socket.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga65fa7a032e6526c5a645c2f946c2ead6" prot="public" static="no">
+        <name>TLS_PEER_VERIFY_REQUIRED</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Peer verification required. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="153" column="9" bodyfile="include/net/socket.h" bodystart="153" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga7e878bd4a8d53fc63aa6a2f5046179c4" prot="public" static="no">
+        <name>TLS_DTLS_ROLE_CLIENT</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Client role in a DTLS session. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="156" column="9" bodyfile="include/net/socket.h" bodystart="156" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga9ec523afe0dbb4ee3dc6fd120ff72601" prot="public" static="no">
+        <name>TLS_DTLS_ROLE_SERVER</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Server role in a DTLS session. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="157" column="9" bodyfile="include/net/socket.h" bodystart="157" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga623654b94057e04a34480b9b4a44d8eb" prot="public" static="no">
+        <name>TLS_CERT_NOCOPY_NONE</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cert duplicated in heap </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="160" column="9" bodyfile="include/net/socket.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga658887b060924d9797040569250b419a" prot="public" static="no">
+        <name>TLS_CERT_NOCOPY_OPTIONAL</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cert not copied in heap if DER </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="161" column="9" bodyfile="include/net/socket.h" bodystart="161" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gaec9e92ed53442d64cbc9b68d92ad970b" prot="public" static="no">
+        <name>AI_PASSIVE</name>
+        <initializer>0x1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Address for <ref refid="posix_2sys_2socket_8h_1a0de5e0b54a93dc6462078539b0a4a0b9" kindref="member">bind()</ref> (vs for <ref refid="posix_2sys_2socket_8h_1adfa930dd3c38f6c287d64e1680dbf386" kindref="member">connect()</ref>) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="554" column="9" bodyfile="include/net/socket.h" bodystart="554" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gab2912e6cffeb2353df550f10bbe64cf4" prot="public" static="no">
+        <name>AI_CANONNAME</name>
+        <initializer>0x2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Fill in ai_canonname </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="556" column="9" bodyfile="include/net/socket.h" bodystart="556" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga2a7070b38894743c536630b2ab25dcef" prot="public" static="no">
+        <name>AI_NUMERICHOST</name>
+        <initializer>0x4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Assume host address is in numeric notation, don&apos;t DNS lookup </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="558" column="9" bodyfile="include/net/socket.h" bodystart="558" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gabbc1e064042dab1058c40d9cd1fc63f0" prot="public" static="no">
+        <name>AI_V4MAPPED</name>
+        <initializer>0x8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>May return IPv4 mapped address for IPv6 <linebreak/>
+ </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="560" column="9" bodyfile="include/net/socket.h" bodystart="560" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga1813fe6d7b10af5ea92ec03bd65ca39d" prot="public" static="no">
+        <name>AI_ALL</name>
+        <initializer>0x10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>May return both native IPv6 and mapped IPv4 address for IPv6 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="562" column="9" bodyfile="include/net/socket.h" bodystart="562" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gabe581892df09df05b21fee09e1584659" prot="public" static="no">
+        <name>AI_ADDRCONFIG</name>
+        <initializer>0x20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>IPv4/IPv6 support depends on local system config </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="564" column="9" bodyfile="include/net/socket.h" bodystart="564" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga8739abe7bcb9470bcdb021e869b2a76f" prot="public" static="no">
+        <name>AI_NUMERICSERV</name>
+        <initializer>0x400</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Assume service (port) is numeric </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="566" column="9" bodyfile="include/net/socket.h" bodystart="566" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga62f12304e7a43038f40cd579ad57829f" prot="public" static="no">
+        <name>NI_NUMERICHOST</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505" kindref="member">zsock_getnameinfo()</ref>: Resolve to numeric address. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="613" column="9" bodyfile="include/net/socket.h" bodystart="613" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gaf6d346aae7109d19b9ccab7c510a3cad" prot="public" static="no">
+        <name>NI_NUMERICSERV</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505" kindref="member">zsock_getnameinfo()</ref>: Resolve to numeric port number. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="615" column="9" bodyfile="include/net/socket.h" bodystart="615" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gae58777c663bd21ceafae51b23ba493ca" prot="public" static="no">
+        <name>NI_NOFQDN</name>
+        <initializer>4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505" kindref="member">zsock_getnameinfo()</ref>: Return only hostname instead of FQDN </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="617" column="9" bodyfile="include/net/socket.h" bodystart="617" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga21bd81bf080250b73395a02e70a4212e" prot="public" static="no">
+        <name>NI_NAMEREQD</name>
+        <initializer>8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505" kindref="member">zsock_getnameinfo()</ref>: Dummy option for compatibility </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="619" column="9" bodyfile="include/net/socket.h" bodystart="619" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gac8270b4222f6d9ebf05cba519b48be49" prot="public" static="no">
+        <name>NI_DGRAM</name>
+        <initializer>16</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505" kindref="member">zsock_getnameinfo()</ref>: Dummy option for compatibility </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="621" column="9" bodyfile="include/net/socket.h" bodystart="621" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gaebc53e498b2434654a1d44070d9ccd40" prot="public" static="no">
+        <name>NI_MAXHOST</name>
+        <initializer>64</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505" kindref="member">zsock_getnameinfo()</ref>: Max supported hostname length </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="627" column="9" bodyfile="include/net/socket.h" bodystart="627" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gacd06da230a96d3b7e6f193c5b3142002" prot="public" static="no">
+        <name>IFNAMSIZ</name>
+        <initializer>Z_DEVICE_MAX_NAME_LEN</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="830" column="9" bodyfile="include/net/socket.h" bodystart="830" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga92d045f6ee2f343d6b28830a9fec082e" prot="public" static="no">
+        <name>SOL_SOCKET</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Socket-level option </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="838" column="9" bodyfile="include/net/socket.h" bodystart="838" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga9dbc641eb342d3ad19f1162305d268d6" prot="public" static="no">
+        <name>SO_DEBUG</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Recording debugging information (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="843" column="9" bodyfile="include/net/socket.h" bodystart="843" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga5589f74fada0d0cd47bd6ea8741a58ee" prot="public" static="no">
+        <name>SO_REUSEADDR</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: address reuse (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="845" column="9" bodyfile="include/net/socket.h" bodystart="845" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga8ab1e00e94a92737d3a4b407f7fa90f1" prot="public" static="no">
+        <name>SO_TYPE</name>
+        <initializer>3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Type of the socket </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="847" column="9" bodyfile="include/net/socket.h" bodystart="847" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga040d4fd00495232970a03425bc00e77a" prot="public" static="no">
+        <name>SO_ERROR</name>
+        <initializer>4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Async error (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="849" column="9" bodyfile="include/net/socket.h" bodystart="849" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga4a6d9f7ea4bf046c50102c17ba1faf37" prot="public" static="no">
+        <name>SO_DONTROUTE</name>
+        <initializer>5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Bypass normal routing and send directly to host (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="851" column="9" bodyfile="include/net/socket.h" bodystart="851" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gad05e5d66b4608d73747c4a10b802a737" prot="public" static="no">
+        <name>SO_BROADCAST</name>
+        <initializer>6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Transmission of broadcast messages is supported (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="853" column="9" bodyfile="include/net/socket.h" bodystart="853" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gaf618cbb85161ff3196d3bcdf7565ba64" prot="public" static="no">
+        <name>SO_SNDBUF</name>
+        <initializer>7</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Size of socket socket send buffer (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="856" column="9" bodyfile="include/net/socket.h" bodystart="856" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga0691781c519eed3f9a634f8eb55cd258" prot="public" static="no">
+        <name>SO_KEEPALIVE</name>
+        <initializer>9</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Enable sending keep-alive messages on connections (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="859" column="9" bodyfile="include/net/socket.h" bodystart="859" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga1ab39f351679dd0e32436f0e6c9890d4" prot="public" static="no">
+        <name>SO_OOBINLINE</name>
+        <initializer>10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Place out-of-band data into receive stream (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="861" column="9" bodyfile="include/net/socket.h" bodystart="861" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga36151618368affd148255e77785e365e" prot="public" static="no">
+        <name>SO_REUSEPORT</name>
+        <initializer>15</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Allow multiple sockets to reuse a single port (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="863" column="9" bodyfile="include/net/socket.h" bodystart="863" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gaf2d1ed6a34336a6f3df80fb518325846" prot="public" static="no">
+        <name>SO_RCVTIMEO</name>
+        <initializer>20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Receive timeout Applies to receive functions like <ref refid="posix_2sys_2socket_8h_1ae11da452beee536eac85d5f26e5cdd40" kindref="member">recv()</ref>, but not to <ref refid="posix_2sys_2socket_8h_1adfa930dd3c38f6c287d64e1680dbf386" kindref="member">connect()</ref> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="869" column="9" bodyfile="include/net/socket.h" bodystart="869" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gab9d2f7ca5c94bd51cdab3e1913b66e2d" prot="public" static="no">
+        <name>SO_SNDTIMEO</name>
+        <initializer>21</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Send timeout </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="871" column="9" bodyfile="include/net/socket.h" bodystart="871" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gae0339480fb8088046e6038ee1baf3a61" prot="public" static="no">
+        <name>SO_BINDTODEVICE</name>
+        <initializer>25</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Bind a socket to an interface </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="874" column="9" bodyfile="include/net/socket.h" bodystart="874" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga4a86a7abccf8140410bf8a64c571bd6d" prot="public" static="no">
+        <name>SO_ACCEPTCONN</name>
+        <initializer>30</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Socket accepts incoming connections (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="877" column="9" bodyfile="include/net/socket.h" bodystart="877" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga049469e17deb5a458698ef5b85568649" prot="public" static="no">
+        <name>SO_TIMESTAMPING</name>
+        <initializer>37</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Timestamp TX packets </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="880" column="9" bodyfile="include/net/socket.h" bodystart="880" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga8968d9591bf83026610314ce1c8736dc" prot="public" static="no">
+        <name>SO_PROTOCOL</name>
+        <initializer>38</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Protocol used with the socket </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="882" column="9" bodyfile="include/net/socket.h" bodystart="882" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gaf320236b2f835cdbee921bb51638ff04" prot="public" static="no">
+        <name>SO_DOMAIN</name>
+        <initializer>39</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Domain used with SOCKET (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="885" column="9" bodyfile="include/net/socket.h" bodystart="885" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga8f02455d581f55196a37a12377ecfc0e" prot="public" static="no">
+        <name>TCP_NODELAY</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>End Socket options for SOL_SOCKET level sockopt: Disable TCP buffering (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="891" column="9" bodyfile="include/net/socket.h" bodystart="891" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga48fb8bf5da186346125c2750265b0c65" prot="public" static="no">
+        <name>IPV6_V6ONLY</name>
+        <initializer>26</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Don&apos;t support IPv4 access (ignored, for compatibility) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="895" column="9" bodyfile="include/net/socket.h" bodystart="895" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gafa6d8ec55f4abb9f6141325ff8229a16" prot="public" static="no">
+        <name>SO_PRIORITY</name>
+        <initializer>12</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Socket priority </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="898" column="9" bodyfile="include/net/socket.h" bodystart="898" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1gaa0075588796abf8427bce7d2ca2562f2" prot="public" static="no">
+        <name>SO_TXTIME</name>
+        <initializer>61</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Socket TX time (when the data should be sent) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="901" column="9" bodyfile="include/net/socket.h" bodystart="901" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga0cf286971517642dd26b6683bdd91727" prot="public" static="no">
+        <name>SCM_TXTIME</name>
+        <initializer><ref refid="group__bsd__sockets_1gaa0075588796abf8427bce7d2ca2562f2" kindref="member">SO_TXTIME</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="902" column="9" bodyfile="include/net/socket.h" bodystart="902" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga2725cefd9638789146faf5288a751855" prot="public" static="no">
+        <name>SO_SOCKS5</name>
+        <initializer>60</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>sockopt: Enable SOCKS5 for Socket </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket.h" line="906" column="9" bodyfile="include/net/socket.h" bodystart="906" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga5c88da69b8d9401d3ae02495056f7e23" prot="public" static="no">
+        <name>ZSOCK_FD_SETSIZE</name>
+        <initializer>(sizeof(((<ref refid="structzsock__fd__set" kindref="compound">zsock_fd_set</ref> *)0)-&gt;bitset) * 8)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Number of file descriptors which can be added to <ref refid="structzsock__fd__set" kindref="compound">zsock_fd_set</ref> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket_select.h" line="51" column="9" bodyfile="include/net/socket_select.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__bsd__sockets_1ga0fa9dd4796261813b164fed42303e4ee" prot="public" static="no">
+        <name>zsock_timeval</name>
+        <initializer><ref refid="structtimeval" kindref="compound">timeval</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/net/socket_types.h" line="49" column="9" bodyfile="include/net/socket_types.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>BSD Sockets compatible API. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

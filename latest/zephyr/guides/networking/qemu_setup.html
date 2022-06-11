@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Networking with QEMU &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="USB Device Networking" href="usbnet_setup.html" />
+    <link rel="prev" title="Networking with QEMU Ethernet" href="qemu_eth_setup.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="net-stack-architecture.html">Network Stack Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="networking-api-usage.html">Network Connectivity API</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="networking_with_host.html">Networking with the host system</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="native_posix_setup.html">Networking with native_posix board</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qemu_eth_setup.html">Networking with QEMU Ethernet</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Networking with QEMU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usbnet_setup.html">USB Device Networking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qemu_user_setup.html">Networking with QEMU User</a></li>
+<li class="toctree-l4"><a class="reference internal" href="networking_with_multiple_instances.html">Networking with multiple Zephyr instances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qemu_802154_setup.html">Networking with QEMU and IEEE 802.15.4</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="network_monitoring.html">Monitor Network Traffic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="networking_with_host.html">Networking with the host system</a> &raquo;</li>
+        
+      <li>Networking with QEMU</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/networking/qemu_setup.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="networking-with-qemu">
+<span id="id1"></span><h1>Networking with QEMU<a class="headerlink" href="#networking-with-qemu" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#prerequisites" id="id4">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#basic-setup" id="id5">Basic Setup</a></p>
+<ul>
+<li><p><a class="reference internal" href="#step-1-create-helper-socket" id="id6">Step 1 - Create helper socket</a></p></li>
+<li><p><a class="reference internal" href="#step-2-start-tap-device-routing-daemon" id="id7">Step 2 - Start TAP device routing daemon</a></p></li>
+<li><p><a class="reference internal" href="#step-3-start-app-in-qemu" id="id8">Step 3 - Start app in QEMU</a></p></li>
+<li><p><a class="reference internal" href="#step-4-run-apps-on-host" id="id9">Step 4 - Run apps on host</a></p></li>
+<li><p><a class="reference internal" href="#step-5-stop-supporting-daemons" id="id10">Step 5 - Stop supporting daemons</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#setting-up-zephyr-and-nat-masquerading-on-host-to-access-internet" id="id11">Setting up Zephyr and NAT/masquerading on host to access Internet</a></p></li>
+<li><p><a class="reference internal" href="#network-connection-between-two-qemu-vms" id="id12">Network connection between two QEMU VMs</a></p>
+<ul>
+<li><p><a class="reference internal" href="#terminal-1" id="id13">Terminal #1:</a></p></li>
+<li><p><a class="reference internal" href="#terminal-2" id="id14">Terminal #2:</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#running-multiple-qemu-vms-of-the-same-sample" id="id15">Running multiple QEMU VMs of the same sample</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id2" id="id16">Terminal #1:</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id17">Terminal #2:</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This page describes how to set up a virtual network between a (Linux) host
+and a Zephyr application running in a QEMU virtual machine (built for Zephyr
+targets such as qemu_x86 and qemu_cortex_m3).</p>
+<p>In this example, the <a class="reference internal" href="../../samples/net/sockets/echo_server/README.html#sockets-echo-server-sample"><span class="std std-ref">Socket Echo Server</span></a> sample application from
+the Zephyr source distribution is run in QEMU. The QEMU instance is
+connected to a Linux host using a serial port, and SLIP is used to
+transfer data between the Zephyr application and Linux (over a chain of
+virtual connections).</p>
+<div class="section" id="prerequisites">
+<h2><a class="toc-backref" href="#id4">Prerequisites</a><a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>On the Linux Host, fetch the Zephyr <code class="docutils literal notranslate"><span class="pre">net-tools</span></code> project, which is located
+in a separate Git repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/zephyrproject-rtos/net-tools</span>
+<span class="go">cd net-tools</span>
+<span class="go">make</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you get an error about AX_CHECK_COMPILE_FLAG, install package
+<code class="docutils literal notranslate"><span class="pre">autoconf-archive</span></code> package on Debian/Ubuntu.</p>
+</div>
+</div>
+<div class="section" id="basic-setup">
+<h2><a class="toc-backref" href="#id5">Basic Setup</a><a class="headerlink" href="#basic-setup" title="Permalink to this headline">¶</a></h2>
+<p>For the steps below, you will need at least 4 terminal windows:</p>
+<ul class="simple">
+<li><p>Terminal #1 is your usual Zephyr development terminal, with the Zephyr environment
+initialized.</p></li>
+<li><p>Terminals #2, #3, and #4 are terminal windows with net-tools being the current
+directory (<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">net-tools</span></code>)</p></li>
+</ul>
+<div class="section" id="step-1-create-helper-socket">
+<h3><a class="toc-backref" href="#id6">Step 1 - Create helper socket</a><a class="headerlink" href="#step-1-create-helper-socket" title="Permalink to this headline">¶</a></h3>
+<p>Before starting QEMU with network emulation, a Unix socket for the emulation
+should be created.</p>
+<p>In terminal #2, type:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./loop-socat.sh</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-start-tap-device-routing-daemon">
+<h3><a class="toc-backref" href="#id7">Step 2 - Start TAP device routing daemon</a><a class="headerlink" href="#step-2-start-tap-device-routing-daemon" title="Permalink to this headline">¶</a></h3>
+<p>In terminal #3, type:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo ./loop-slip-tap.sh</span>
+</pre></div>
+</div>
+<p>For applications requiring DNS, you may need to restart the host’s DNS server
+at this point, as described in <a class="reference internal" href="#networking-internet"><span class="std std-ref">Setting up Zephyr and NAT/masquerading on host to access Internet</span></a>.</p>
+</div>
+<div class="section" id="step-3-start-app-in-qemu">
+<h3><a class="toc-backref" href="#id8">Step 3 - Start app in QEMU</a><a class="headerlink" href="#step-3-start-app-in-qemu" title="Permalink to this headline">¶</a></h3>
+<p>Build and start the <code class="docutils literal notranslate"><span class="pre">echo_server</span></code> sample application.</p>
+<p>In terminal #1, type:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b qemu_x86 samples/net/sockets/echo_server</span>
+<span class="go">west build -t run</span>
+</pre></div>
+</div>
+<p>If you see an error from QEMU about unix:/tmp/slip.sock, it means you missed Step 1
+above.</p>
+</div>
+<div class="section" id="step-4-run-apps-on-host">
+<h3><a class="toc-backref" href="#id9">Step 4 - Run apps on host</a><a class="headerlink" href="#step-4-run-apps-on-host" title="Permalink to this headline">¶</a></h3>
+<p>Now in terminal #4, you can run various tools to communicate with the
+application running in QEMU.</p>
+<p>You can start with pings:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ping 192.0.2.1</span>
+<span class="go">ping6 2001:db8::1</span>
+</pre></div>
+</div>
+<p>You can use the netcat (“nc”) utility, connecting using UDP:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo foobar | nc -6 -u 2001:db8::1 4242</span>
+<span class="go">foobar</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo foobar | nc -u 192.0.2.1 4242</span>
+<span class="go">foobar</span>
+</pre></div>
+</div>
+<p>If echo_server is compiled with TCP support (now enabled by default for
+the echo_server sample, CONFIG_NET_TCP=y):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo foobar | nc -6 -q2 2001:db8::1 4242</span>
+<span class="go">foobar</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use Ctrl+C to exit.</p>
+</div>
+<p>You can also use the telnet command to achieve the above.</p>
+</div>
+<div class="section" id="step-5-stop-supporting-daemons">
+<h3><a class="toc-backref" href="#id10">Step 5 - Stop supporting daemons</a><a class="headerlink" href="#step-5-stop-supporting-daemons" title="Permalink to this headline">¶</a></h3>
+<p>When you are finished with network testing using QEMU, you should stop
+any daemons or helpers started in the initial steps, to avoid possible
+networking or routing problems such as address conflicts in local
+network interfaces. For example, stop them if you switch from testing
+networking with QEMU to using real hardware, or to return your host
+laptop to normal Wi-Fi use.</p>
+<p>To stop the daemons, press Ctrl+C in the corresponding terminal windows
+(you need to stop both <code class="docutils literal notranslate"><span class="pre">loop-slip-tap.sh</span></code> and <code class="docutils literal notranslate"><span class="pre">loop-socat.sh</span></code>).</p>
+<p>Exit QEMU by pressing <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">CTRL</kbd>+<kbd class="kbd docutils literal notranslate">A</kbd></kbd> <kbd class="kbd docutils literal notranslate">x</kbd>.</p>
+</div>
+</div>
+<div class="section" id="setting-up-zephyr-and-nat-masquerading-on-host-to-access-internet">
+<span id="networking-internet"></span><h2><a class="toc-backref" href="#id11">Setting up Zephyr and NAT/masquerading on host to access Internet</a><a class="headerlink" href="#setting-up-zephyr-and-nat-masquerading-on-host-to-access-internet" title="Permalink to this headline">¶</a></h2>
+<p>To access the internet from a Zephyr application, some additional
+setup on the host may be required. This setup is common for both
+application running in QEMU and on real hardware, assuming that
+a development board is connected to the development host. If a
+board is connected to a dedicated router, it should not be needed.</p>
+<p>To access the internet from a Zephyr application using IPv4,
+a gateway should be set via DHCP or configured manually.
+For applications using the “Settings” facility (with the config option
+<a class="reference internal" href="../../kconfig.html#CONFIG_NET_CONFIG_SETTINGS" title="CONFIG_NET_CONFIG_SETTINGS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_CONFIG_SETTINGS</span></code></a> enabled),
+set the <a class="reference internal" href="../../kconfig.html#CONFIG_NET_CONFIG_MY_IPV4_GW" title="CONFIG_NET_CONFIG_MY_IPV4_GW"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_CONFIG_MY_IPV4_GW</span></code></a> option to the IP address
+of the gateway. For apps not using the “Settings” facility, set up the
+gateway by calling the <a class="reference internal" href="../../reference/networking/net_if.html#c.net_if_ipv4_set_gw" title="net_if_ipv4_set_gw"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_if_ipv4_set_gw()</span></code></a> at runtime.</p>
+<p>To access the internet from a custom application running in QEMU, NAT
+(masquerading) should be set up for QEMU’s source address. Assuming 192.0.2.1 is
+used, the following command should be run as root:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">iptables -t nat -A POSTROUTING -j MASQUERADE -s 192.0.2.1</span>
+</pre></div>
+</div>
+<p>Additionally, IPv4 forwarding should be enabled on the host, and you may need to
+check that other firewall (iptables) rules don’t interfere with masquerading.
+To enable IPv4 forwarding the following command should be run as root:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sysctl -w net.ipv4.ip_forward=1</span>
+</pre></div>
+</div>
+<p>Some applications may also require a DNS server. A number of Zephyr-provided
+samples assume by default that the DNS server is available on the host
+(IP 192.0.2.2), which, in modern Linux distributions, usually runs at least
+a DNS proxy. When running with QEMU, it may be required to restart the host’s
+DNS, so it can serve requests on the newly created TAP interface. For example,
+on Debian-based systems:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">service dnsmasq restart</span>
+</pre></div>
+</div>
+<p>An alternative to relying on the host’s DNS server is to use one in the
+network. For example, 8.8.8.8 is a publicly available DNS server. You can
+configure it using <a class="reference internal" href="../../kconfig.html#CONFIG_DNS_SERVER1" title="CONFIG_DNS_SERVER1"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_DNS_SERVER1</span></code></a> option.</p>
+</div>
+<div class="section" id="network-connection-between-two-qemu-vms">
+<h2><a class="toc-backref" href="#id12">Network connection between two QEMU VMs</a><a class="headerlink" href="#network-connection-between-two-qemu-vms" title="Permalink to this headline">¶</a></h2>
+<p>Unlike the VM-to-Host setup described above, VM-to-VM setup is
+automatic. For sample
+applications that support this mode (such as the echo_server and echo_client
+samples), you will need two terminal windows, set up for Zephyr development.</p>
+<div class="section" id="terminal-1">
+<h3><a class="toc-backref" href="#id13">Terminal #1:</a><a class="headerlink" href="#terminal-1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b qemu_x86 samples/net/sockets/echo_server</span>
+</pre></div>
+</div>
+<p>This will start QEMU, waiting for a connection from a client QEMU.</p>
+</div>
+<div class="section" id="terminal-2">
+<h3><a class="toc-backref" href="#id14">Terminal #2:</a><a class="headerlink" href="#terminal-2" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b qemu_x86 samples/net/sockets/echo_client</span>
+</pre></div>
+</div>
+<p>This will start a second QEMU instance, where you should see logging of data sent and
+received in both.</p>
+</div>
+</div>
+<div class="section" id="running-multiple-qemu-vms-of-the-same-sample">
+<h2><a class="toc-backref" href="#id15">Running multiple QEMU VMs of the same sample</a><a class="headerlink" href="#running-multiple-qemu-vms-of-the-same-sample" title="Permalink to this headline">¶</a></h2>
+<p>If you find yourself wanting to run multiple instances of the same Zephyr
+sample application, which do not need to talk to each other, use the
+<code class="docutils literal notranslate"><span class="pre">QEMU_INSTANCE</span></code> argument.</p>
+<p>Start <code class="docutils literal notranslate"><span class="pre">socat</span></code> and <code class="docutils literal notranslate"><span class="pre">tunslip6</span></code> manually (instead of using the
+<code class="docutils literal notranslate"><span class="pre">loop-xxx.sh</span></code> scripts) for as many instances as you want. Use the
+following as a guide, replacing MAIN or OTHER.</p>
+<div class="section" id="id2">
+<h3><a class="toc-backref" href="#id16">Terminal #1:</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">socat PTY,link=/tmp/slip.devMAIN UNIX-LISTEN:/tmp/slip.sockMAIN</span>
+<span class="gp">$</span>ZEPHYR_BASE/../net-tools/tunslip6 -t tapMAIN -T -s /tmp/slip.devMAIN <span class="se">\</span>
+<span class="go">     2001:db8::1/64</span>
+<span class="gp"># </span>Now run Zephyr
+<span class="go">make -Cbuild run QEMU_INSTANCE=MAIN</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3><a class="toc-backref" href="#id17">Terminal #2:</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">socat PTY,link=/tmp/slip.devOTHER UNIX-LISTEN:/tmp/slip.sockOTHER</span>
+<span class="gp">$</span>ZEPHYR_BASE/../net-tools/tunslip6 -t tapOTHER -T -s /tmp/slip.devOTHER <span class="se">\</span>
+<span class="go">     2001:db8::1/64</span>
+<span class="go">make -Cbuild run QEMU_INSTANCE=OTHER</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="usbnet_setup.html" class="btn btn-neutral float-right" title="USB Device Networking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="qemu_eth_setup.html" class="btn btn-neutral" title="Networking with QEMU Ethernet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+var group__counter__interface =
+[
+    [ "Alarm configuration flags", "group__COUNTER__ALARM__FLAGS.html", "group__COUNTER__ALARM__FLAGS" ],
+    [ "Counter device capabilities", "group__COUNTER__FLAGS.html", "group__COUNTER__FLAGS" ],
+    [ "Counter guard period flags", "group__COUNTER__GUARD__PERIOD__FLAGS.html", "group__COUNTER__GUARD__PERIOD__FLAGS" ],
+    [ "Flags used by @ref counter_top_cfg.", "group__COUNTER__TOP__FLAGS.html", "group__COUNTER__TOP__FLAGS" ],
+    [ "counter_alarm_cfg", "structcounter__alarm__cfg.html", [
+      [ "callback", "structcounter__alarm__cfg.html#aeef670ee73dd4d7d65e02a66313b092d", null ],
+      [ "flags", "structcounter__alarm__cfg.html#ab043cd1ea9be54449bb75c4a5affe620", null ],
+      [ "ticks", "structcounter__alarm__cfg.html#a85b6b86d7a82f2e238000dd31ff1f779", null ],
+      [ "user_data", "structcounter__alarm__cfg.html#aeaf2bd9042a28b626e0972aff4ad09e5", null ]
+    ] ],
+    [ "counter_top_cfg", "structcounter__top__cfg.html", [
+      [ "callback", "structcounter__top__cfg.html#adf1cf3a9c67278f5f5f1cba72f6dd934", null ],
+      [ "flags", "structcounter__top__cfg.html#ad5caa9f1c80badf14c2c313e60e3e8e6", null ],
+      [ "ticks", "structcounter__top__cfg.html#abb60a9d468fa6d6802ba56a02a515751", null ],
+      [ "user_data", "structcounter__top__cfg.html#af033941769c710e82cf9dd9f12ff011c", null ]
+    ] ],
+    [ "counter_config_info", "structcounter__config__info.html", [
+      [ "channels", "structcounter__config__info.html#afe2281d1909fa85978077558d6f4b71f", null ],
+      [ "flags", "structcounter__config__info.html#ab38d95647388c700de372882db372d6c", null ],
+      [ "freq", "structcounter__config__info.html#a4cae02b246a92e5d207d5b654d059322", null ],
+      [ "max_top_value", "structcounter__config__info.html#a0465be87680d1a50e1ae7a68c61caaac", null ]
+    ] ],
+    [ "counter_driver_api", "structcounter__driver__api.html", [
+      [ "cancel_alarm", "structcounter__driver__api.html#af002080c967fa3a2e2eaadd0b4ee35ae", null ],
+      [ "get_freq", "structcounter__driver__api.html#af9bfa4cdf0073c1699d6b613e3e9a8df", null ],
+      [ "get_guard_period", "structcounter__driver__api.html#aee77697602a0464dee87287fa08845a4", null ],
+      [ "get_pending_int", "structcounter__driver__api.html#a8daec24721653215df3b36afc7c21168", null ],
+      [ "get_top_value", "structcounter__driver__api.html#a3571f7310b7aed43df6e620f93aa1521", null ],
+      [ "get_value", "structcounter__driver__api.html#a7d7b07f9d6e63ef931d81ad52076b2e1", null ],
+      [ "set_alarm", "structcounter__driver__api.html#a67a3939d4c25b49abdf6f34929ed00a0", null ],
+      [ "set_guard_period", "structcounter__driver__api.html#aa116448b2309da016184c9222ad6c1f3", null ],
+      [ "set_top_value", "structcounter__driver__api.html#a5479ccee1057fecacddfbbf49edc0537", null ],
+      [ "start", "structcounter__driver__api.html#aa8fd91ec6e2357ece10c9e8ea37f9336", null ],
+      [ "stop", "structcounter__driver__api.html#a9d1b590187c0eccd11f8c7c80da967ce", null ]
+    ] ],
+    [ "counter_alarm_callback_t", "group__counter__interface.html#ga36c570c3e57e635753d163400e437b77", null ],
+    [ "counter_api_cancel_alarm", "group__counter__interface.html#gac368afac6de0fe1f782fdb90e6f7c266", null ],
+    [ "counter_api_get_freq", "group__counter__interface.html#ga939a7b305379577b3e10b315b89a4024", null ],
+    [ "counter_api_get_guard_period", "group__counter__interface.html#ga90b573190980a935d3984029831739a9", null ],
+    [ "counter_api_get_pending_int", "group__counter__interface.html#ga9224eba6be975e0747b4e13479b103ba", null ],
+    [ "counter_api_get_top_value", "group__counter__interface.html#ga08ca9b32fbc96da83b75844f7b6218b2", null ],
+    [ "counter_api_get_value", "group__counter__interface.html#gac7a80581c4bda7dc76baeb6f6949ae5f", null ],
+    [ "counter_api_set_alarm", "group__counter__interface.html#gae3821860fa8a5c1197d6e304d2a4f387", null ],
+    [ "counter_api_set_guard_period", "group__counter__interface.html#ga89822ff9da840421bbd59ab13664245d", null ],
+    [ "counter_api_set_top_value", "group__counter__interface.html#gaa41eff3e6546583cc526830f9419aea8", null ],
+    [ "counter_api_start", "group__counter__interface.html#gab06ed037f6b0fb78ce04b7e7da989e81", null ],
+    [ "counter_api_stop", "group__counter__interface.html#ga25ac7589f6501dada1e10b1980fca7de", null ],
+    [ "counter_top_callback_t", "group__counter__interface.html#ga3686fe1f86a53469659f79897e4e1baf", null ],
+    [ "counter_cancel_channel_alarm", "group__counter__interface.html#gade0bb97c0dfa03676d11ee47601d4cee", null ],
+    [ "counter_get_frequency", "group__counter__interface.html#ga8d3d6f856eef27a80cc2697931341af2", null ],
+    [ "counter_get_guard_period", "group__counter__interface.html#ga55a101d237c8472ad5cacf65363c536f", null ],
+    [ "counter_get_max_top_value", "group__counter__interface.html#gafab2a55048349e33c821a7f826615ea3", null ],
+    [ "counter_get_num_of_channels", "group__counter__interface.html#ga0c9801b13275de0e1b93650bb1ca6a9d", null ],
+    [ "counter_get_pending_int", "group__counter__interface.html#ga3b74a79a09cbe3849658a746e7417a06", null ],
+    [ "counter_get_top_value", "group__counter__interface.html#ga13d14903a03ab10062002a81b8302424", null ],
+    [ "counter_get_value", "group__counter__interface.html#ga8f6b1b4ee7dc20e6230a22bfcb0e6f9d", null ],
+    [ "counter_is_counting_up", "group__counter__interface.html#gab95ae0e8d89e35e477cbf7d67e18016d", null ],
+    [ "counter_set_channel_alarm", "group__counter__interface.html#ga00a2857d993a84a56e8e222727f3d85e", null ],
+    [ "counter_set_guard_period", "group__counter__interface.html#gab6851411dabf191d3391715d632111b0", null ],
+    [ "counter_set_top_value", "group__counter__interface.html#ga2d92f5564cdd1ecc56029c3a45e666f0", null ],
+    [ "counter_start", "group__counter__interface.html#ga103e0673e31475adcd173601058c72cd", null ],
+    [ "counter_stop", "group__counter__interface.html#gafaa8198ccff5ffc0491a1424d090c82d", null ],
+    [ "counter_ticks_to_us", "group__counter__interface.html#ga9fbcb710091084e638c45f62c25d954c", null ],
+    [ "counter_us_to_ticks", "group__counter__interface.html#gab73238b8d52ed763ff7abf91013b601b", null ]
+];

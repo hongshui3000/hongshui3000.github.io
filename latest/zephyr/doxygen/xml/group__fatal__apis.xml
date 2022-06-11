@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__fatal__apis" kind="group">
+    <compoundname>fatal_apis</compoundname>
+    <title>Fatal error APIs</title>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="group__fatal__apis_1ga5b7e799fa19549ef9416a2d6cba29b52" prot="public" static="no" strong="no">
+        <type></type>
+        <name>k_fatal_error_reason</name>
+        <enumvalue id="group__fatal__apis_1gga5b7e799fa19549ef9416a2d6cba29b52af9ac087d07f036fae2e689a2afc8d88b" prot="public">
+          <name>K_ERR_CPU_EXCEPTION</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Generic CPU exception, not covered by other codes </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="group__fatal__apis_1gga5b7e799fa19549ef9416a2d6cba29b52a473dca11c5f93f5059a119a8e66e2db3" prot="public">
+          <name>K_ERR_SPURIOUS_IRQ</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Unhandled hardware interrupt </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="group__fatal__apis_1gga5b7e799fa19549ef9416a2d6cba29b52a4156a6495ca0fe0867a17a91efc42e91" prot="public">
+          <name>K_ERR_STACK_CHK_FAIL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Faulting context overflowed its stack buffer </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="group__fatal__apis_1gga5b7e799fa19549ef9416a2d6cba29b52ad6bc280fafebf22e2c97481cc4a5b7c3" prot="public">
+          <name>K_ERR_KERNEL_OOPS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Moderate severity software error </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="group__fatal__apis_1gga5b7e799fa19549ef9416a2d6cba29b52a6ea29e224a1bc958a961420471711617" prot="public">
+          <name>K_ERR_KERNEL_PANIC</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>High severity software error </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/fatal.h" line="27" column="1" bodyfile="include/fatal.h" bodystart="27" bodyend="46"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__fatal__apis_1gaa8c0b43a2360e5319d7910e8e0ceb951" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>FUNC_NORETURN void</type>
+        <definition>FUNC_NORETURN void k_fatal_halt</definition>
+        <argsstring>(unsigned int reason)</argsstring>
+        <name>k_fatal_halt</name>
+        <param>
+          <type><ref refid="lib_2libc_2minimal_2include_2sys_2types_8h_1a4089fb16419d359081465355db05f846" kindref="member">unsigned</ref> int</type>
+          <declname>reason</declname>
+        </param>
+        <briefdescription>
+<para>Halt the system on a fatal error. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Invokes architecture-specific code to power off or halt the system in a low power state. Lacking that, lock interrupts and sit in an idle loop.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>reason</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Fatal exception reason code </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/fatal.h" line="56" column="20" declfile="include/fatal.h" declline="56" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="group__fatal__apis_1gab6dfd75572a84729df534fde49ef7d85" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_sys_fatal_error_handler</definition>
+        <argsstring>(unsigned int reason, const z_arch_esf_t *esf)</argsstring>
+        <name>k_sys_fatal_error_handler</name>
+        <param>
+          <type><ref refid="lib_2libc_2minimal_2include_2sys_2types_8h_1a4089fb16419d359081465355db05f846" kindref="member">unsigned</ref> int</type>
+          <declname>reason</declname>
+        </param>
+        <param>
+          <type>const z_arch_esf_t *</type>
+          <declname>esf</declname>
+        </param>
+        <briefdescription>
+<para>Fatal error policy handler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function is not invoked by application code, but is declared as a weak symbol so that applications may introduce their own policy.</para>
+<para>The default implementation of this function halts the system unconditionally. Depending on architecture support, this may be a simple infinite loop, power off the hardware, or exit an emulator.</para>
+<para>If this function returns, then the currently executing thread will be aborted.</para>
+<para>A few notes for custom implementations:</para>
+<para><itemizedlist>
+<listitem><para>If the error is determined to be unrecoverable, <ref refid="group__log__ctrl_1ga9ee5a99e0487e3f1e6d289b12c19ad5a" kindref="member">LOG_PANIC()</ref> should be invoked to flush any pending logging buffers.</para>
+</listitem><listitem><para>K_ERR_KERNEL_PANIC indicates a severe unrecoverable error in the kernel itself, and should not be considered recoverable. There is an assertion in z_fatal_error() to enforce this.</para>
+</listitem><listitem><para>Even outside of a kernel panic, unless the fault occurred in user mode, the kernel itself may be in an inconsistent state, with API calls to kernel objects possibly exhibiting undefined behavior or triggering another exception.</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>reason</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The reason for the fatal error </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>esf</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Exception context, with details and partial or full register state when the error occurred. May in some cases be NULL. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/fatal.h" line="87" column="6" bodyfile="tests/kernel/fatal/exception/src/main.c" bodystart="49" bodyend="70" declfile="include/fatal.h" declline="87" declcolumn="6"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,447 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>API Design Guidelines &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="API Terminology" href="terminology.html" />
+    <link rel="prev" title="API Lifecycle" href="api_lifecycle.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">API Status and Guidelines</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">API Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_lifecycle.html">API Lifecycle</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">API Design Guidelines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#using-callbacks">Using Callbacks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conditional-data-and-apis">Conditional Data and APIs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#return-codes">Return Codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="terminology.html">API Terminology</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">API Status and Guidelines</a> &raquo;</li>
+        
+      <li>API Design Guidelines</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/api/design_guidelines.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-design-guidelines">
+<span id="design-guidelines"></span><h1>API Design Guidelines<a class="headerlink" href="#api-design-guidelines" title="Permalink to this headline">¶</a></h1>
+<p>Zephyr development and evolution is a group effort, and to simplify
+maintenance and enhancements there are some general policies that should
+be followed when developing a new capability or interface.</p>
+<div class="section" id="using-callbacks">
+<h2>Using Callbacks<a class="headerlink" href="#using-callbacks" title="Permalink to this headline">¶</a></h2>
+<p>Many APIs involve passing a callback as a parameter or as a member of a
+configuration structure.  The following policies should be followed when
+specifying the signature of a callback:</p>
+<ul class="simple">
+<li><p>The first parameter should be a pointer to the object most closely
+associated with the callback.  In the case of device drivers this
+would be <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span> <span class="pre">*dev</span></code>.  For library functions it may be a
+pointer to another object that was referenced when the callback was
+provided.</p></li>
+<li><p>The next parameter(s) should be additional information specific to the
+callback invocation, such as a channel identifier, new status value,
+and/or a message pointer followed by the message length.</p></li>
+<li><p>The final parameter should be a <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*user_data</span></code> pointer carrying
+context that allows a shared callback function to locate additional
+material necessary to process the callback.</p></li>
+</ul>
+<p>An exception to providing <code class="docutils literal notranslate"><span class="pre">user_data</span></code> as the last parameter may be
+allowed when the callback itself was provided through a structure that
+will be embedded in another structure.  An example of such a case is
+<a class="reference internal" href="../peripherals/gpio.html#c.gpio_callback" title="gpio_callback"><code class="xref c c-type docutils literal notranslate"><span class="pre">gpio_callback</span></code></a>, normally defined within a data structure
+specific to the code that also defines the callback function.  In those
+cases further context can accessed by the callback indirectly by
+<a class="reference internal" href="../util/index.html#c.CONTAINER_OF" title="CONTAINER_OF"><code class="xref c c-macro docutils literal notranslate"><span class="pre">CONTAINER_OF</span></code></a>.</p>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>The requirements of <a class="reference internal" href="../kernel/timing/timers.html#c.k_timer_expiry_t" title="k_timer_expiry_t"><code class="xref c c-type docutils literal notranslate"><span class="pre">k_timer_expiry_t</span></code></a> invoked when a system
+timer alarm fires are satisfied by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">handle_timeout</span><span class="p">(</span><span class="n">struct</span> <span class="n">k_timer</span> <span class="o">*</span><span class="n">timer</span><span class="p">)</span>
+<span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>The assumption here, as with <a class="reference internal" href="../peripherals/gpio.html#c.gpio_callback" title="gpio_callback"><code class="xref c c-type docutils literal notranslate"><span class="pre">gpio_callback</span></code></a>, is that the
+timer is embedded in a structure reachable from
+<a class="reference internal" href="../util/index.html#c.CONTAINER_OF" title="CONTAINER_OF"><code class="xref c c-macro docutils literal notranslate"><span class="pre">CONTAINER_OF</span></code></a> that can provide additional context to the
+callback.</p>
+</li>
+<li><p>The requirements of <a class="reference internal" href="../peripherals/counter.html#c.counter_alarm_callback_t" title="counter_alarm_callback_t"><code class="xref c c-type docutils literal notranslate"><span class="pre">counter_alarm_callback_t</span></code></a> invoked when a
+counter device alarm fires are satisfied by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">handle_alarm</span><span class="p">(</span><span class="n">const</span> <span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span>
+                  <span class="n">uint8_t</span> <span class="n">chan_id</span><span class="p">,</span>
+                  <span class="n">uint32_t</span> <span class="n">ticks</span><span class="p">,</span>
+                  <span class="n">void</span> <span class="o">*</span><span class="n">user_data</span><span class="p">)</span>
+<span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>This provides more complete useful information, including which
+counter channel timed-out and the counter value at which the timeout
+occurred, as well as user context which may or may not be the
+<a class="reference internal" href="../peripherals/counter.html#c.counter_alarm_cfg" title="counter_alarm_cfg"><code class="xref c c-type docutils literal notranslate"><span class="pre">counter_alarm_cfg</span></code></a> used to register the callback, depending
+on user needs.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="conditional-data-and-apis">
+<h2>Conditional Data and APIs<a class="headerlink" href="#conditional-data-and-apis" title="Permalink to this headline">¶</a></h2>
+<p>APIs and libraries may provide features that are expensive in RAM or
+code size but are optional in the sense that some applications can be
+implemented without them.  Examples of such feature include
+<a class="reference internal" href="../../kconfig.html#CONFIG_CAN_RX_TIMESTAMP" title="CONFIG_CAN_RX_TIMESTAMP"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">capturing</span> <span class="pre">a</span> <span class="pre">timestamp</span></code></a> or
+<a class="reference internal" href="../../kconfig.html#CONFIG_SPI_ASYNC" title="CONFIG_SPI_ASYNC"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">providing</span> <span class="pre">an</span> <span class="pre">alternative</span> <span class="pre">interface</span></code></a>.  The
+developer in coordination with the community must determine whether
+enabling the features is to be controllable through a Kconfig option.</p>
+<p>In the case where a feature is determined to be optional the following
+practices should be followed.</p>
+<ul>
+<li><p>Any data that is accessed only when the feature is enabled should be
+conditionally included via <code class="docutils literal notranslate"><span class="pre">#ifdef</span> <span class="pre">CONFIG_MYFEATURE</span></code> in the
+structure or union declaration.  This reduces memory use for
+applications that don’t need the capability.</p></li>
+<li><p>Function declarations that are available only when the option is
+enabled should be provided unconditionally.  Add a note in the
+description that the function is available only when the specified
+feature is enabled, referencing the required Kconfig symbol by name.
+In the cases where the function is used but not enabled the definition
+of the function shall be excluded from compilation, so references to
+the unsupported API will result in a link-time error.</p></li>
+<li><p>Where code specific to the feature is isolated in a source file that
+has no other content that file should be conditionally included in
+<code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">zephyr_sources_ifdef</span><span class="p">(</span><span class="n">CONFIG_MYFEATURE</span> <span class="n">foo_funcs</span><span class="o">.</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Where code specific to the feature is part of a source file that has
+other content the feature-specific code should be conditionally
+processed using <code class="docutils literal notranslate"><span class="pre">#ifdef</span> <span class="pre">CONFIG_MYFEATURE</span></code>.</p></li>
+</ul>
+<p>The Kconfig flag used to enable the feature should be added to the
+<code class="docutils literal notranslate"><span class="pre">PREDEFINED</span></code> variable in <code class="file docutils literal notranslate"><span class="pre">doc/zephyr.doxyfile.in</span></code> to ensure the
+conditional API and functions appear in generated documentation.</p>
+</div>
+<div class="section" id="return-codes">
+<h2>Return Codes<a class="headerlink" href="#return-codes" title="Permalink to this headline">¶</a></h2>
+<p>Implementations of an API, for example an API for accessing a peripheral might
+implement only a subset of the functions that is required for minimal operation.
+A distinction is needed between APIs that are not supported and those that are
+not implemented or optional:</p>
+<ul class="simple">
+<li><p>APIs that are supported but not implemented shall return <code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>.</p></li>
+<li><p>Optional APIs that are not supported by the hardware should be implemented and
+the return code in this case shall be <code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>.</p></li>
+<li><p>When an API is implemented, but the particular combination of options
+requested in the call cannot be satisfied by the implementation the call shall
+return -ENOTSUP. (For example, a request for a level-triggered GPIO interrupt on
+hardware that supports only edge-triggered interrupts)</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="terminology.html" class="btn btn-neutral float-right" title="API Terminology" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="api_lifecycle.html" class="btn btn-neutral" title="API Lifecycle" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

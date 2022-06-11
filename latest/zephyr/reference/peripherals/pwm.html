@@ -1,0 +1,778 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>PWM &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="PS/2" href="ps2.html" />
+    <link rel="prev" title="Pinmux" href="pinmux.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Peripherals</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="adc.html">ADC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="counter.html">Counter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clock_control.html">Clock Control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dac.html">DAC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dma.html">DMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ec_host_cmd_periph.html">EC Host Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eeprom.html">EEPROM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entropy.html">Entropy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flash.html">Flash</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gna.html">GNA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpio.html">GPIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hwinfo.html">Hardware Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c_eeprom_slave.html">I2C EEPROM Slave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c.html">I2C</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ipm.html">IPM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kscan.html">KSCAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="led.html">LED</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbox.html">MBOX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pinmux.html">Pinmux</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PWM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ps2.html">PS/2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="peci.html">PECI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="regulators.html">Regulators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rtc.html">RTC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sensor.html">Sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spi.html">SPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcpc.html">TCPC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uart.html">UART</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdio.html">MDIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchdog.html">Watchdog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video.html">Video</a></li>
+<li class="toctree-l3"><a class="reference internal" href="espi.html">eSPI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Peripherals</a> &raquo;</li>
+        
+      <li>PWM</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/peripherals/pwm.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pwm">
+<span id="pwm-api"></span><h1>PWM<a class="headerlink" href="#pwm" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__pwm__interface"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">pwm_interface</span></span></dt>
+<dd><p>PWM Interface. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-pwm-capture-configuration-flags">PWM capture configuration flags</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PWM_CAPTURE_TYPE_PERIOD">
+<span class="target" id="group__pwm__interface_1ga5b4b41ccdf8810a77f71c2155a521f44"></span><span class="sig-name descname"><span class="n"><span class="pre">PWM_CAPTURE_TYPE_PERIOD</span></span></span><a class="headerlink" href="#c.PWM_CAPTURE_TYPE_PERIOD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>PWM pin capture captures period. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PWM_CAPTURE_TYPE_PULSE">
+<span class="target" id="group__pwm__interface_1gab883b83cc5418555a437ce128f32ab01"></span><span class="sig-name descname"><span class="n"><span class="pre">PWM_CAPTURE_TYPE_PULSE</span></span></span><a class="headerlink" href="#c.PWM_CAPTURE_TYPE_PULSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>PWM pin capture captures pulse width. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PWM_CAPTURE_TYPE_BOTH">
+<span class="target" id="group__pwm__interface_1ga76175b0c2d5187ded5bbd314dc798bd5"></span><span class="sig-name descname"><span class="n"><span class="pre">PWM_CAPTURE_TYPE_BOTH</span></span></span><a class="headerlink" href="#c.PWM_CAPTURE_TYPE_BOTH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>PWM pin capture captures both period and pulse width. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PWM_CAPTURE_MODE_SINGLE">
+<span class="target" id="group__pwm__interface_1gad59fe75340facda843cad06993cf1814"></span><span class="sig-name descname"><span class="n"><span class="pre">PWM_CAPTURE_MODE_SINGLE</span></span></span><a class="headerlink" href="#c.PWM_CAPTURE_MODE_SINGLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>PWM pin capture captures a single period/pulse width. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PWM_CAPTURE_MODE_CONTINUOUS">
+<span class="target" id="group__pwm__interface_1gabe9bbff9832b4fa40faa057fad8fdaa9"></span><span class="sig-name descname"><span class="n"><span class="pre">PWM_CAPTURE_MODE_CONTINUOUS</span></span></span><a class="headerlink" href="#c.PWM_CAPTURE_MODE_CONTINUOUS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>PWM pin capture captures period/pulse width continuously. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.pwm_flags_t">
+<span class="target" id="group__pwm__interface_1ga0ec21c2ce60e82a13af9c73d2b41bbc4"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_flags_t</span></span></span><a class="headerlink" href="#c.pwm_flags_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Provides a type to hold PWM configuration flags. </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.pwm_pin_set_t">
+<span class="target" id="group__pwm__interface_1gad9b8285dfbc3f2929bb72dae1e0eef49"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_set_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">period_cycles</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pulse_cycles</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#c.pwm_flags_t" title="pwm_flags_t"><span class="n"><span class="pre">pwm_flags_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.pwm_pin_set_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback API upon setting the pin See <em><a class="reference internal" href="#group__pwm__interface_1ga995e6730452722f20e73a144624b4b3a"><span class="std std-ref">pwm_pin_set_cycles()</span></a></em> for argument description. </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.pwm_capture_callback_handler_t">
+<span class="target" id="group__pwm__interface_1gac261cfe5f92997aa4640744c511b5f91"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pwm_capture_callback_handler_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">period_cycles</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pulse_cycles</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.pwm_capture_callback_handler_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>PWM capture callback handler function signature. </p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>The callback handler will be called in interrupt context.</p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../kconfig.html#CONFIG_PWM_CAPTURE" title="CONFIG_PWM_CAPTURE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PWM_CAPTURE</span></code></a> </span> must be selected to enable PWM capture support.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">period_cycles</span></code>: Captured PWM period width (in clock cycles). HW specific. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pulse_cycles</span></code>: Captured PWM pulse width (in clock cycles). HW specific. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span></code>: Status for the PWM capture (0 if no error, negative errno otherwise. See <em><a class="reference internal" href="#group__pwm__interface_1ga1c87879e7cc0cdce1158ffb6f08f73a8"><span class="std std-ref">pwm_pin_capture_cycles()</span></a></em> return value descriptions for details). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User data passed to <em><a class="reference internal" href="#group__pwm__interface_1ga720cffa0a0e985d0dd78c3df6ff1d32a"><span class="std std-ref">pwm_pin_configure_capture()</span></a></em> </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.pwm_pin_configure_capture_t">
+<span class="target" id="group__pwm__interface_1gae5234da7a7c049d28aa931996c72e5e0"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_configure_capture_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#c.pwm_flags_t" title="pwm_flags_t"><span class="n"><span class="pre">pwm_flags_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#c.pwm_capture_callback_handler_t" title="pwm_capture_callback_handler_t"><span class="n"><span class="pre">pwm_capture_callback_handler_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.pwm_pin_configure_capture_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback API upon configuring PWM pin capture See <em><a class="reference internal" href="#group__pwm__interface_1ga720cffa0a0e985d0dd78c3df6ff1d32a"><span class="std std-ref">pwm_pin_configure_capture()</span></a></em> for argument description. </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.pwm_pin_enable_capture_t">
+<span class="target" id="group__pwm__interface_1ga96ff6068c154e45cac3ce3b70b8a73d7"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_enable_capture_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.pwm_pin_enable_capture_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback API upon enabling PWM pin capture See <em><a class="reference internal" href="#group__pwm__interface_1gab4e0e3555692d1c8d9b3389685b398da"><span class="std std-ref">pwm_pin_enable_capture()</span></a></em> for argument description. </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.pwm_pin_disable_capture_t">
+<span class="target" id="group__pwm__interface_1gaf911306c8a94c2945c84a4d70ea187b3"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_disable_capture_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.pwm_pin_disable_capture_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback API upon disabling PWM pin capture See <em><a class="reference internal" href="#group__pwm__interface_1gad9f1705c343a6c915ceffa79aef7c809"><span class="std std-ref">pwm_pin_disable_capture()</span></a></em> for argument description. </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.pwm_get_cycles_per_sec_t">
+<span class="target" id="group__pwm__interface_1ga6788c2f8d28d22b985209f400c6c80d7"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pwm_get_cycles_per_sec_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cycles</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.pwm_get_cycles_per_sec_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback API upon getting cycles per second See <em><a class="reference internal" href="#group__pwm__interface_1ga05a7cc76a04acb4c1a147fa97296aace"><span class="std std-ref">pwm_get_cycles_per_sec()</span></a></em> for argument description. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_pin_set_cycles">
+<span class="target" id="group__pwm__interface_1ga995e6730452722f20e73a144624b4b3a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_set_cycles</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">period</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pulse</span></span>, <a class="reference internal" href="#c.pwm_flags_t" title="pwm_flags_t"><span class="n"><span class="pre">pwm_flags_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">flags</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_pin_set_cycles" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the period and pulse width for a single PWM output. </p>
+<p>The PWM period and pulse width will synchronously be set to the new values without glitches in the PWM signal, but the call will not block for the change to take effect.</p>
+<p><p>Passing 0 as </p>
+<code class="docutils literal notranslate"><span class="pre">pulse</span></code> will cause the pin to be driven to a constant inactive level. Passing a non-zero <code class="docutils literal notranslate"><span class="pre">pulse</span></code> equal to <code class="docutils literal notranslate"><span class="pre">period</span></code> will cause the pin to be driven to a constant active level.<dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Not all PWM controllers support synchronous, glitch-free updates of the PWM period and pulse width. Depending on the hardware, changing the PWM period and/or pulse width may cause a glitch in the generated PWM signal.</p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>Some multi-channel PWM controllers share the PWM period across all channels. Depending on the hardware, changing the PWM period for one channel may affect the PWM period for the other channels of the same PWM controller.</p>
+</dd>
+</dl>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">period</span></code>: Period (in clock cycle) set to the PWM. HW specific. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pulse</span></code>: Pulse width (in clock cycle) set to the PWM. HW specific. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code>: Flags for pin configuration (polarity).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Negative</span></code>: errno code if failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_pin_configure_capture">
+<span class="target" id="group__pwm__interface_1ga720cffa0a0e985d0dd78c3df6ff1d32a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_configure_capture</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span>, <a class="reference internal" href="#c.pwm_flags_t" title="pwm_flags_t"><span class="n"><span class="pre">pwm_flags_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">flags</span></span>, <a class="reference internal" href="#c.pwm_capture_callback_handler_t" title="pwm_capture_callback_handler_t"><span class="n"><span class="pre">pwm_capture_callback_handler_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_pin_configure_capture" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Configure PWM period/pulse width capture for a single PWM input. </p>
+<p>After configuring PWM capture using this function, the capture can be enabled/disabled using <em><a class="reference internal" href="#group__pwm__interface_1gab4e0e3555692d1c8d9b3389685b398da"><span class="std std-ref">pwm_pin_enable_capture()</span></a></em> and <em><a class="reference internal" href="#group__pwm__interface_1gad9f1705c343a6c915ceffa79aef7c809"><span class="std std-ref">pwm_pin_disable_capture()</span></a></em>.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This API function cannot be invoked from user space due to the use of a function callback. In user space, one of the simpler API functions (<em><a class="reference internal" href="#group__pwm__interface_1ga1c87879e7cc0cdce1158ffb6f08f73a8"><span class="std std-ref">pwm_pin_capture_cycles()</span></a></em>, <em><a class="reference internal" href="#group__pwm__interface_1gabe808fdbb4e315194eb08f9bf35f121b"><span class="std std-ref">pwm_pin_capture_usec()</span></a></em>, or <em><a class="reference internal" href="#group__pwm__interface_1ga2a3699e1841d977621519d502aba73ae"><span class="std std-ref">pwm_pin_capture_nsec()</span></a></em>) can be used instead.</p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../kconfig.html#CONFIG_PWM_CAPTURE" title="CONFIG_PWM_CAPTURE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PWM_CAPTURE</span></code></a> </span> must be selected for this function to be available.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code>: PWM capture flags </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cb</span></code>: Application callback handler function to be called upon capture </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User data to pass to the application callback handler function</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: if invalid function parameters were given </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: if PWM capture is not supported or the given flags are not supported </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: if IO error occurred while configuring </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: if PWM capture is already in progress </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_pin_enable_capture">
+<span class="target" id="group__pwm__interface_1gab4e0e3555692d1c8d9b3389685b398da"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_enable_capture</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_pin_enable_capture" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Enable PWM period/pulse width capture for a single PWM input. </p>
+<p>The PWM pin must be configured using <em><a class="reference internal" href="#group__pwm__interface_1ga720cffa0a0e985d0dd78c3df6ff1d32a"><span class="std std-ref">pwm_pin_configure_capture()</span></a></em> prior to calling this function.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../kconfig.html#CONFIG_PWM_CAPTURE" title="CONFIG_PWM_CAPTURE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PWM_CAPTURE</span></code></a> </span> must be selected for this function to be available.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: if invalid function parameters were given </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: if PWM capture is not supported </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: if IO error occurred while enabling PWM capture </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: if PWM capture is already in progress </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_pin_disable_capture">
+<span class="target" id="group__pwm__interface_1gad9f1705c343a6c915ceffa79aef7c809"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_disable_capture</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_pin_disable_capture" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Disable PWM period/pulse width capture for a single PWM input. </p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../kconfig.html#CONFIG_PWM_CAPTURE" title="CONFIG_PWM_CAPTURE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PWM_CAPTURE</span></code></a> </span> must be selected for this function to be available.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: if invalid function parameters were given </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: if PWM capture is not supported </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: if IO error occurred while disabling PWM capture </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_pin_capture_cycles">
+<span class="target" id="group__pwm__interface_1ga1c87879e7cc0cdce1158ffb6f08f73a8"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_capture_cycles</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span>, <a class="reference internal" href="#c.pwm_flags_t" title="pwm_flags_t"><span class="n"><span class="pre">pwm_flags_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">flags</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">period</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pulse</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_pin_capture_cycles" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Capture a single PWM period/pulse width in clock cycles for a single PWM input. </p>
+<p>This API function wraps calls to <em><a class="reference internal" href="#group__pwm__interface_1ga720cffa0a0e985d0dd78c3df6ff1d32a"><span class="std std-ref">pwm_pin_configure_capture()</span></a></em>, <em><a class="reference internal" href="#group__pwm__interface_1gab4e0e3555692d1c8d9b3389685b398da"><span class="std std-ref">pwm_pin_enable_capture()</span></a></em>, and <em><a class="reference internal" href="#group__pwm__interface_1gad9f1705c343a6c915ceffa79aef7c809"><span class="std std-ref">pwm_pin_disable_capture()</span></a></em> and passes the capture result to the caller. The function is blocking until either the PWM capture is completed or a timeout occurs.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../kconfig.html#CONFIG_PWM_CAPTURE" title="CONFIG_PWM_CAPTURE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PWM_CAPTURE</span></code></a> </span> must be selected for this function to be available.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code>: PWM capture flags. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">period</span></code>: Pointer to the memory to store the captured PWM period width (in clock cycles). HW specific. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pulse</span></code>: Pointer to the memory to store the captured PWM pulse width (in clock cycles). HW specific. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Waiting period for the capture to complete.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: PWM capture already in progress. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Waiting period timed out. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: IO error while capturing. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ERANGE</span></code>: If result is too large. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_get_cycles_per_sec">
+<span class="target" id="group__pwm__interface_1ga05a7cc76a04acb4c1a147fa97296aace"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_get_cycles_per_sec</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cycles</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_get_cycles_per_sec" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the clock rate (cycles per second) for a single PWM output. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cycles</span></code>: Pointer to the memory to store clock rate (cycles per sec). HW specific.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Negative</span></code>: errno code if failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_pin_set_usec">
+<span class="target" id="group__pwm__interface_1ga9093ab1d479d484cf50004f41a22252e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_set_usec</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">period</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pulse</span></span>, <a class="reference internal" href="#c.pwm_flags_t" title="pwm_flags_t"><span class="n"><span class="pre">pwm_flags_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">flags</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_pin_set_usec" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the period and pulse width for a single PWM output. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">period</span></code>: Period (in microseconds) set to the PWM. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pulse</span></code>: Pulse width (in microseconds) set to the PWM. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code>: Flags for pin configuration (polarity).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Negative</span></code>: errno code if failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_pin_set_nsec">
+<span class="target" id="group__pwm__interface_1gaf850959028f1fa79047188e137d11ad9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_set_nsec</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">period</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pulse</span></span>, <a class="reference internal" href="#c.pwm_flags_t" title="pwm_flags_t"><span class="n"><span class="pre">pwm_flags_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">flags</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_pin_set_nsec" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the period and pulse width for a single PWM output. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">period</span></code>: Period (in nanoseconds) set to the PWM. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pulse</span></code>: Pulse width (in nanoseconds) set to the PWM. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code>: Flags for pin configuration (polarity).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Negative</span></code>: errno code if failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_pin_cycles_to_usec">
+<span class="target" id="group__pwm__interface_1gace629ef3f488b247c1223c00f024f606"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_cycles_to_usec</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">cycles</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">usec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_pin_cycles_to_usec" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert from PWM cycles to microseconds. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cycles</span></code>: Cycles to be converted. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">usec</span></code>: Pointer to the memory to store calculated usec.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: If cycles per second cannot be determined. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ERANGE</span></code>: If result is too large. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_pin_cycles_to_nsec">
+<span class="target" id="group__pwm__interface_1ga309dc05dcda01648052eabcb3b550a0b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_cycles_to_nsec</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">cycles</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">nsec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_pin_cycles_to_nsec" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert from PWM cycles to nanoseconds. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cycles</span></code>: Cycles to be converted. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nsec</span></code>: Pointer to the memory to store the calculated nsec.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: If cycles per second cannot be determined. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ERANGE</span></code>: If result is too large. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_pin_capture_usec">
+<span class="target" id="group__pwm__interface_1gabe808fdbb4e315194eb08f9bf35f121b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_capture_usec</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span>, <a class="reference internal" href="#c.pwm_flags_t" title="pwm_flags_t"><span class="n"><span class="pre">pwm_flags_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">flags</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">period</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pulse</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_pin_capture_usec" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Capture a single PWM period/pulse width in microseconds for a single PWM input. </p>
+<p>This API function wraps calls to <em><a class="reference internal" href="#group__pwm__interface_1ga1c87879e7cc0cdce1158ffb6f08f73a8"><span class="std std-ref">pwm_pin_capture_cycles()</span></a></em> and <em><a class="reference internal" href="#group__pwm__interface_1gace629ef3f488b247c1223c00f024f606"><span class="std std-ref">pwm_pin_cycles_to_usec()</span></a></em> and passes the capture result to the caller. The function is blocking until either the PWM capture is completed or a timeout occurs.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../kconfig.html#CONFIG_PWM_CAPTURE" title="CONFIG_PWM_CAPTURE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PWM_CAPTURE</span></code></a> </span> must be selected for this function to be available.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code>: PWM capture flags. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">period</span></code>: Pointer to the memory to store the captured PWM period width (in usec). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pulse</span></code>: Pointer to the memory to store the captured PWM pulse width (in usec). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Waiting period for the capture to complete.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: PWM capture already in progress. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Waiting period timed out. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: IO error while capturing. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ERANGE</span></code>: If result is too large. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pwm_pin_capture_nsec">
+<span class="target" id="group__pwm__interface_1ga2a3699e1841d977621519d502aba73ae"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_pin_capture_nsec</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">pwm</span></span>, <a class="reference internal" href="#c.pwm_flags_t" title="pwm_flags_t"><span class="n"><span class="pre">pwm_flags_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">flags</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">period</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pulse</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pwm_pin_capture_nsec" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Capture a single PWM period/pulse width in nanoseconds for a single PWM input. </p>
+<p>This API function wraps calls to <em><a class="reference internal" href="#group__pwm__interface_1ga1c87879e7cc0cdce1158ffb6f08f73a8"><span class="std std-ref">pwm_pin_capture_cycles()</span></a></em> and <em><a class="reference internal" href="#group__pwm__interface_1ga309dc05dcda01648052eabcb3b550a0b"><span class="std std-ref">pwm_pin_cycles_to_nsec()</span></a></em> and passes the capture result to the caller. The function is blocking until either the PWM capture is completed or a timeout occurs.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../kconfig.html#CONFIG_PWM_CAPTURE" title="CONFIG_PWM_CAPTURE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PWM_CAPTURE</span></code></a> </span> must be selected for this function to be available.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pwm</span></code>: PWM pin. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code>: PWM capture flags. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">period</span></code>: Pointer to the memory to store the captured PWM period width (in nsec). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pulse</span></code>: Pointer to the memory to store the captured PWM pulse width (in nsec). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Waiting period for the capture to complete.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: PWM capture already in progress. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Waiting period timed out. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: IO error while capturing. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ERANGE</span></code>: If result is too large. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.pwm_driver_api">
+<span class="target" id="structpwm__driver__api"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pwm_driver_api</span></span></span><a class="headerlink" href="#c.pwm_driver_api" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;pwm.h&gt;</em><p>PWM driver API definition. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ps2.html" class="btn btn-neutral float-right" title="PS/2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pinmux.html" class="btn btn-neutral" title="Pinmux" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

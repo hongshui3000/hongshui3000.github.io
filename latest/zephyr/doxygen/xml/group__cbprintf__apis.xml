@@ -1,0 +1,1149 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__cbprintf__apis" kind="group">
+    <compoundname>cbprintf_apis</compoundname>
+    <title>Formatted Output APIs</title>
+    <innergroup refid="group__CBPRINTF__PACKAGE__FLAGS">Package flags.</innergroup>
+    <innergroup refid="group__CBPRINTF__MUST__RUNTIME__PACKAGE__FLAGS">Package flags.</innergroup>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="group__cbprintf__apis_1gaca8362dda031a176d96855a604395a83" prot="public" static="no">
+        <type>int(*</type>
+        <definition>typedef int(* cbprintf_cb) ()</definition>
+        <argsstring>)()</argsstring>
+        <name>cbprintf_cb</name>
+        <briefdescription>
+<para>Signature for a cbprintf callback function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function expects two parameters:</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>c</computeroutput> a character to output. The output behavior should be as if this was cast to an unsigned char.</para>
+</listitem><listitem><para><computeroutput>ctx</computeroutput> a pointer to an object that provides context for the output operation.</para>
+</listitem></itemizedlist>
+</para>
+<para>The declaration does not specify the parameter types. This allows a function like <computeroutput>fputc</computeroutput> to be used without requiring all context pointers to be to a <computeroutput>FILE</computeroutput> object.</para>
+<para><simplesect kind="return"><para>the value of <computeroutput>c</computeroutput> cast to an unsigned char then back to int, or a negative error code that will be returned from <ref refid="group__cbprintf__apis_1ga0cebdbf4f142ee28c5bd80a1615647da" kindref="member">cbprintf()</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="112" column="9" bodyfile="include/sys/cbprintf.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="group__cbprintf__apis_1gacf080321312296d57ff59d94e26a0dcc" prot="public" static="no">
+        <type>int(*</type>
+        <definition>typedef int(* cbvprintf_exteral_formatter_func) (cbprintf_cb out, void *ctx, const char *fmt, va_list ap)</definition>
+        <argsstring>)(cbprintf_cb out, void *ctx, const char *fmt, va_list ap)</argsstring>
+        <name>cbvprintf_exteral_formatter_func</name>
+        <briefdescription>
+<para>Signature for a external formatter function identical to cbvprintf. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function expects the following parameters:</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the function used to emit each generated character.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ctx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pointer to an object that provides context for the external formatter.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fmt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a standard ISO C format string with characters and conversion specifications.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>captured stack arguments corresponding to the conversion specifications found within <computeroutput>fmt</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>vprintf like return values: the number of characters printed, or a negative error value returned from external formatter. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="132" column="9" bodyfile="include/sys/cbprintf.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__cbprintf__apis_1gad9c56f0a84f60cc53fa9e687069a8f1b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int cbprintf_package</definition>
+        <argsstring>(void *packaged, size_t len, uint32_t flags, const char *format,...)</argsstring>
+        <name>cbprintf_package</name>
+        <param>
+          <type>void *</type>
+          <declname>packaged</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>len</declname>
+        </param>
+        <param>
+          <type><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref></type>
+          <declname>flags</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>Capture state required to output formatted data later. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Like <ref refid="group__cbprintf__apis_1ga0cebdbf4f142ee28c5bd80a1615647da" kindref="member">cbprintf()</ref> but instead of processing the arguments and emitting the formatted results immediately all arguments are captured so this can be done in a different context, e.g. when the output function can block.</para>
+<para>In addition to the values extracted from arguments this will ensure that copies are made of the necessary portions of any string parameters that are not confirmed to be stored in read-only memory (hence assumed to be safe to refer to directly later).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>packaged</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to where the packaged data can be stored. Pass a null pointer to store nothing but still calculate the total space required. The data stored here is relocatable, that is it can be moved to another contiguous block of memory. However, under condition that alignment is maintained. It must be aligned to at least the size of a pointer.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>len</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>this must be set to the number of bytes available at <computeroutput>packaged</computeroutput> if it is not null. If <computeroutput>packaged</computeroutput> is null then it indicates hypothetical buffer alignment offset in bytes compared to CBPRINTF_PACKAGE_ALIGNMENT alignment. Buffer alignment offset impacts returned size of the package. Xtensa requires that buffer is always aligned to CBPRINTF_PACKAGE_ALIGNMENT so it must be multiply of CBPRINTF_PACKAGE_ALIGNMENT or 0 when <computeroutput>packaged</computeroutput> is null.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>option flags. See <ref refid="group__CBPRINTF__PACKAGE__FLAGS" kindref="compound">Package flags.</ref>.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a standard ISO C format string with characters and conversion specifications.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arguments corresponding to the conversion specifications found within <computeroutput>format</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>nonegative</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the number of bytes successfully stored at <computeroutput>packaged</computeroutput>. This will not exceed <computeroutput>len</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EINVAL</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>format</computeroutput> is not acceptable </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EFAULT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>packaged</computeroutput> alignment is not acceptable </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-ENOSPC</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>packaged</computeroutput> was not null and the space required to store exceed <computeroutput>len</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="234" column="5" declfile="include/sys/cbprintf.h" declline="234" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1gaa83f17925daa9747d329b6f1078ab15a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int cbvprintf_package</definition>
+        <argsstring>(void *packaged, size_t len, uint32_t flags, const char *format, va_list ap)</argsstring>
+        <name>cbvprintf_package</name>
+        <param>
+          <type>void *</type>
+          <declname>packaged</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>len</declname>
+        </param>
+        <param>
+          <type><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref></type>
+          <declname>flags</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>va_list</type>
+          <declname>ap</declname>
+        </param>
+        <briefdescription>
+<para>Capture state required to output formatted data later. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Like <ref refid="group__cbprintf__apis_1ga0cebdbf4f142ee28c5bd80a1615647da" kindref="member">cbprintf()</ref> but instead of processing the arguments and emitting the formatted results immediately all arguments are captured so this can be done in a different context, e.g. when the output function can block.</para>
+<para>In addition to the values extracted from arguments this will ensure that copies are made of the necessary portions of any string parameters that are not confirmed to be stored in read-only memory (hence assumed to be safe to refer to directly later).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>packaged</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to where the packaged data can be stored. Pass a null pointer to store nothing but still calculate the total space required. The data stored here is relocatable, that is it can be moved to another contiguous block of memory. The pointer must be aligned to a multiple of the largest element in the argument list.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>len</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>this must be set to the number of bytes available at <computeroutput>packaged</computeroutput>. Ignored if <computeroutput>packaged</computeroutput> is NULL.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>option flags. See <ref refid="group__CBPRINTF__PACKAGE__FLAGS" kindref="compound">Package flags.</ref>.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a standard ISO C format string with characters and conversion specifications.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>captured stack arguments corresponding to the conversion specifications found within <computeroutput>format</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>nonegative</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the number of bytes successfully stored at <computeroutput>packaged</computeroutput>. This will not exceed <computeroutput>len</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EINVAL</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>format</computeroutput> is not acceptable </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-ENOSPC</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>packaged</computeroutput> was not null and the space required to store exceed <computeroutput>len</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="274" column="5" declfile="include/sys/cbprintf.h" declline="274" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1ga4f71af38815a9873217fa3a8edc48b0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int cbprintf_fsc_package</definition>
+        <argsstring>(void *in_packaged, size_t in_len, void *packaged, size_t len)</argsstring>
+        <name>cbprintf_fsc_package</name>
+        <param>
+          <type>void *</type>
+          <declname>in_packaged</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>in_len</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>packaged</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>len</declname>
+        </param>
+        <briefdescription>
+<para>Convert package to fully self-contained (fsc) package. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>By default, package does not contain read only strings. However, if needed it may be converted to a fully self-contained package which contains all strings. In order to allow such conversion, original package must be created with <ref refid="group__CBPRINTF__PACKAGE__FLAGS_1ga95b0b7f91303781b8bad610f7cac3fa3" kindref="member">CBPRINTF_PACKAGE_ADD_STRING_IDXS</ref> flag. Such package will contain necessary data to find read only strings in the package and copy them into package body.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in_packaged</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to original package created with <ref refid="group__CBPRINTF__PACKAGE__FLAGS_1ga95b0b7f91303781b8bad610f7cac3fa3" kindref="member">CBPRINTF_PACKAGE_ADD_STRING_IDXS</ref>.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>in_len</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><computeroutput>in_packaged</computeroutput> length.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>packaged</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to location where fully self-contained version of the input package will be written. Pass a null pointer to calculate space required.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>len</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>must be set to the number of bytes available at <computeroutput>packaged</computeroutput>. Not used if <computeroutput>packaged</computeroutput> is null.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>nonegative</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the number of bytes successfully stored at <computeroutput>packaged</computeroutput>. This will not exceed <computeroutput>len</computeroutput>. If <computeroutput>packaged</computeroutput> is null, calculated length. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-ENOSPC</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>packaged</computeroutput> was not null and the space required to store exceed <computeroutput>len</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EINVAL</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>in_packaged</computeroutput> is null. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="306" column="5" declfile="include/sys/cbprintf.h" declline="306" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1ga0a419dfaa1873bca5a9f4e0fb3609e7e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int cbpprintf_external</definition>
+        <argsstring>(cbprintf_cb out, cbvprintf_exteral_formatter_func formatter, void *ctx, void *packaged)</argsstring>
+        <name>cbpprintf_external</name>
+        <param>
+          <type><ref refid="group__cbprintf__apis_1gaca8362dda031a176d96855a604395a83" kindref="member">cbprintf_cb</ref></type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type><ref refid="group__cbprintf__apis_1gacf080321312296d57ff59d94e26a0dcc" kindref="member">cbvprintf_exteral_formatter_func</ref></type>
+          <declname>formatter</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>ctx</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>packaged</declname>
+        </param>
+        <briefdescription>
+<para>Generate the output for a previously captured format operation using an external formatter. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the function used to emit each generated character.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>formatter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>external formatter function.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ctx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pointer to an object that provides context for the external formatter.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>packaged</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the data required to generate the formatted output, as captured by <ref refid="group__cbprintf__apis_1gad9c56f0a84f60cc53fa9e687069a8f1b" kindref="member">cbprintf_package()</ref> or <ref refid="group__cbprintf__apis_1gaa83f17925daa9747d329b6f1078ab15a" kindref="member">cbvprintf_package()</ref>. The alignment requirement on this data is the same as when it was initially created.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Memory indicated by <computeroutput>packaged</computeroutput> will be modified in a non-destructive way, meaning that it could still be reused with this function again.</para>
+</simplesect>
+<simplesect kind="return"><para>printf like return values: the number of characters printed, or a negative error value returned from external formatter. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="331" column="5" declfile="include/sys/cbprintf.h" declline="331" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1ga0cebdbf4f142ee28c5bd80a1615647da" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int cbprintf</definition>
+        <argsstring>(cbprintf_cb out, void *ctx, const char *format,...)</argsstring>
+        <name>cbprintf</name>
+        <param>
+          <type><ref refid="group__cbprintf__apis_1gaca8362dda031a176d96855a604395a83" kindref="member">cbprintf_cb</ref></type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>ctx</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>*printf-like output through a callback. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This is essentially <ref refid="stdio_8h_1a6c67912b5a18e7d7ac03ca4e77425715" kindref="member">printf()</ref> except the output is generated character-by-character using the provided <computeroutput>out</computeroutput> function. This allows formatting text of unbounded length without incurring the cost of a temporary buffer.</para>
+<para>All formatting specifiers of C99 are recognized, and most are supported if the functionality is enabled.</para>
+<para><simplesect kind="note"><para>The functionality of this function is significantly reduced when<verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_NANO` </verbatim> is selected.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the function used to emit each generated character.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ctx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>context provided when invoking out</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a standard ISO C format string with characters and conversion specifications.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arguments corresponding to the conversion specifications found within <computeroutput>format</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the number of characters printed, or a negative error value returned from invoking <computeroutput>out</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="363" column="5" declfile="include/sys/cbprintf.h" declline="363" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1ga3d4847cb6900851ec11e39a35f833b26" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int cbvprintf</definition>
+        <argsstring>(cbprintf_cb out, void *ctx, const char *format, va_list ap)</argsstring>
+        <name>cbvprintf</name>
+        <param>
+          <type><ref refid="group__cbprintf__apis_1gaca8362dda031a176d96855a604395a83" kindref="member">cbprintf_cb</ref></type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>ctx</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>va_list</type>
+          <declname>ap</declname>
+        </param>
+        <briefdescription>
+<para>varargs-aware *printf-like output through a callback. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This is essentially <ref refid="stdio_8h_1a0cf1b75a23729bcc1669ce788d01aa63" kindref="member">vsprintf()</ref> except the output is generated character-by-character using the provided <computeroutput>out</computeroutput> function. This allows formatting text of unbounded length without incurring the cost of a temporary buffer.</para>
+<para><simplesect kind="note"><para>This function is available only when <verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_LIBC_SUBSTS` </verbatim> is selected.</para>
+</simplesect>
+<simplesect kind="note"><para>The functionality of this function is significantly reduced when <verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_NANO` </verbatim> is selected.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the function used to emit each generated character.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ctx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>context provided when invoking out</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a standard ISO C format string with characters and conversion specifications.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a reference to the values to be converted.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the number of characters generated, or a negative error value returned from invoking <computeroutput>out</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="390" column="5" declfile="include/sys/cbprintf.h" declline="390" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1ga150fa7bb8dfb96db886006c9115e1dd7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int cbpprintf</definition>
+        <argsstring>(cbprintf_cb out, void *ctx, void *packaged)</argsstring>
+        <name>cbpprintf</name>
+        <param>
+          <type><ref refid="group__cbprintf__apis_1gaca8362dda031a176d96855a604395a83" kindref="member">cbprintf_cb</ref></type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>ctx</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>packaged</declname>
+        </param>
+        <briefdescription>
+<para>Generate the output for a previously captured format operation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the function used to emit each generated character.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ctx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>context provided when invoking out</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>packaged</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the data required to generate the formatted output, as captured by <ref refid="group__cbprintf__apis_1gad9c56f0a84f60cc53fa9e687069a8f1b" kindref="member">cbprintf_package()</ref> or <ref refid="group__cbprintf__apis_1gaa83f17925daa9747d329b6f1078ab15a" kindref="member">cbvprintf_package()</ref>. The alignment requirement on this data is the same as when it was initially created.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Memory indicated by <computeroutput>packaged</computeroutput> will be modified in a non-destructive way, meaning that it could still be reused with this function again.</para>
+</simplesect>
+<simplesect kind="return"><para>the number of characters printed, or a negative error value returned from invoking <computeroutput>out</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="410" column="5" bodyfile="include/sys/cbprintf.h" bodystart="410" bodyend="413"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1ga2636e91fd5d78835cfaffe5b5012638b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int fprintfcb</definition>
+        <argsstring>(FILE *stream, const char *format,...)</argsstring>
+        <name>fprintfcb</name>
+        <param>
+          <type><ref refid="stdio_8h_1ac15bbd02a147d1595cdfb8b2979693d7" kindref="member">FILE</ref> *</type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>fprintf using Zephyrs cbprintf infrastructure. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>This function is available only when <verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_LIBC_SUBSTS` </verbatim> is selected.</para>
+</simplesect>
+<simplesect kind="note"><para>The functionality of this function is significantly reduced when<verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_NANO` </verbatim> is selected.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the stream to which the output should be written.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a standard ISO C format string with characters and conversion specifications.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arguments corresponding to the conversion specifications found within <computeroutput>format</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+return The number of characters printed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="436" column="5" declfile="include/sys/cbprintf.h" declline="436" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1ga24d7226976f3acbe579b6d6b5d530ade" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int vfprintfcb</definition>
+        <argsstring>(FILE *stream, const char *format, va_list ap)</argsstring>
+        <name>vfprintfcb</name>
+        <param>
+          <type><ref refid="stdio_8h_1ac15bbd02a147d1595cdfb8b2979693d7" kindref="member">FILE</ref> *</type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>va_list</type>
+          <declname>ap</declname>
+        </param>
+        <briefdescription>
+<para>vfprintf using Zephyrs cbprintf infrastructure. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>This function is available only when <verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_LIBC_SUBSTS` </verbatim> is selected.</para>
+</simplesect>
+<simplesect kind="note"><para>The functionality of this function is significantly reduced when <verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_NANO` </verbatim> is selected.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the stream to which the output should be written.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a standard ISO C format string with characters and conversion specifications.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a reference to the values to be converted.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The number of characters printed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="455" column="5" declfile="include/sys/cbprintf.h" declline="455" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1ga17aa694ea800f8188a3de3babd524c3f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int printfcb</definition>
+        <argsstring>(const char *format,...)</argsstring>
+        <name>printfcb</name>
+        <param>
+          <type>const char *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>printf using Zephyrs cbprintf infrastructure. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>This function is available only when <verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_LIBC_SUBSTS` </verbatim> is selected.</para>
+</simplesect>
+<simplesect kind="note"><para>The functionality of this function is significantly reduced when<verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_NANO` </verbatim> is selected.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a standard ISO C format string with characters and conversion specifications.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arguments corresponding to the conversion specifications found within <computeroutput>format</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The number of characters printed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="474" column="5" declfile="include/sys/cbprintf.h" declline="474" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1gaa70a1b73fb04b88b40c1fa5fd65efd15" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int vprintfcb</definition>
+        <argsstring>(const char *format, va_list ap)</argsstring>
+        <name>vprintfcb</name>
+        <param>
+          <type>const char *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>va_list</type>
+          <declname>ap</declname>
+        </param>
+        <briefdescription>
+<para>vprintf using Zephyrs cbprintf infrastructure. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>This function is available only when <verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_LIBC_SUBSTS` </verbatim> is selected.</para>
+</simplesect>
+<simplesect kind="note"><para>The functionality of this function is significantly reduced when <verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_NANO` </verbatim> is selected.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a standard ISO C format string with characters and conversion specifications.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a reference to the values to be converted.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The number of characters printed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="491" column="5" declfile="include/sys/cbprintf.h" declline="491" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1ga909f859afbc2a596cd0174f711a60047" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int snprintfcb</definition>
+        <argsstring>(char *str, size_t size, const char *format,...)</argsstring>
+        <name>snprintfcb</name>
+        <param>
+          <type>char *</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>snprintf using Zephyrs cbprintf infrastructure. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>This function is available only when <verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_LIBC_SUBSTS` </verbatim> is selected.</para>
+</simplesect>
+<simplesect kind="note"><para>The functionality of this function is significantly reduced when<verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_NANO` </verbatim> is selected.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>where the formatted content should be written</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>maximum number of chaacters for the formatted output, including the terminating null byte.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a standard ISO C format string with characters and conversion specifications.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arguments corresponding to the conversion specifications found within <computeroutput>format</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The number of characters that would have been written to <computeroutput>str</computeroutput>, excluding the terminating null byte. This is greater than the number actually written if <computeroutput>size</computeroutput> is too small. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="517" column="5" declfile="include/sys/cbprintf.h" declline="517" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__cbprintf__apis_1ga37b0f96a7b9c025659a902e8fd614b33" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int vsnprintfcb</definition>
+        <argsstring>(char *str, size_t size, const char *format, va_list ap)</argsstring>
+        <name>vsnprintfcb</name>
+        <param>
+          <type>char *</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>va_list</type>
+          <declname>ap</declname>
+        </param>
+        <briefdescription>
+<para>vsnprintf using Zephyrs cbprintf infrastructure. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>This function is available only when <verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_LIBC_SUBSTS` </verbatim> is selected.</para>
+</simplesect>
+<simplesect kind="note"><para>The functionality of this function is significantly reduced when <verbatim>embed:rst:inline :kconfig:option:`CONFIG_CBPRINTF_NANO` </verbatim> is selected.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>where the formatted content should be written</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>maximum number of chaacters for the formatted output, including the terminating null byte.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a standard ISO C format string with characters and conversion specifications.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a reference to the values to be converted.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The number of characters that would have been written to <computeroutput>str</computeroutput>, excluding the terminating null byte. This is greater than the number actually written if <computeroutput>size</computeroutput> is too small. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="541" column="5" declfile="include/sys/cbprintf.h" declline="541" declcolumn="5"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="group__cbprintf__apis_1ga3b917fb81bb246a0910066e2708dbd78" prot="public" static="no">
+        <name>CBPRINTF_PACKAGE_ALIGNMENT</name>
+        <initializer>	(<ref refid="group__sys-util_1ga111fe4e9d63758262fc6810a782cb32a" kindref="member">IS_ENABLED</ref>(CONFIG_CBPRINTF_PACKAGE_LONGDOUBLE) ? \
+		sizeof(long double) : <ref refid="group__sys-util_1gafa99ec4acc4ecb2dc3c2d05da15d0e3f" kindref="member">MAX</ref>(sizeof(double), sizeof(long long)))</initializer>
+        <briefdescription>
+<para>Required alignment of the buffer used for packaging. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="63" column="10" bodyfile="include/sys/cbprintf.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__cbprintf__apis_1ga464cc00d557fa9e8582b809165e2e4c8" prot="public" static="no">
+        <name>CBPRINTF_MUST_RUNTIME_PACKAGE</name>
+        <param><defname>skip</defname></param>
+        <param><defname>flags</defname></param>
+        <param><defname>...</defname></param>
+        <initializer>	Z_CBPRINTF_MUST_RUNTIME_PACKAGE(skip, <ref refid="http__parser_8h_1ab6b306ef981f5e21bb41ea2c2dbe8cd9" kindref="member">flags</ref>, __VA_ARGS__)</initializer>
+        <briefdescription>
+<para>Determine if string must be packaged in run time. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Static packaging can be applied if size of the package can be determined at compile time. In general, package size can be determined at compile time if there are no string arguments which might be copied into package body if they are considered transient.</para>
+<para><simplesect kind="note"><para>By default any char pointers are considered to be pointing at transient strings. This can be narrowed down to non const pointers by using <ref refid="group__CBPRINTF__MUST__RUNTIME__PACKAGE__FLAGS_1ga6f959e54db274fa111af63b7014c60f9" kindref="member">CBPRINTF_MUST_RUNTIME_PACKAGE_CONST_CHAR</ref>.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>skip</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of read only string arguments in the parameter list. It shall be non-zero if there are known read only string arguments present in the string (e.g. function name prefix in the log message).</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>String with arguments. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>option flags. See <ref refid="group__CBPRINTF__MUST__RUNTIME__PACKAGE__FLAGS" kindref="compound">Package flags.</ref>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if string must be packaged in run time. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string can be statically packaged. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="156" column="9" bodyfile="include/sys/cbprintf.h" bodystart="156" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__cbprintf__apis_1ga1ac0f7d0956fc96a9d850d2fef928285" prot="public" static="no">
+        <name>CBPRINTF_STATIC_PACKAGE</name>
+        <param><defname>packaged</defname></param>
+        <param><defname>inlen</defname></param>
+        <param><defname>outlen</defname></param>
+        <param><defname>align_offset</defname></param>
+        <param><defname>flags</defname></param>
+        <param><defname>...</defname></param>
+        <initializer>	Z_CBPRINTF_STATIC_PACKAGE(packaged, inlen, outlen, \
+				  align_offset, <ref refid="http__parser_8h_1ab6b306ef981f5e21bb41ea2c2dbe8cd9" kindref="member">flags</ref>, __VA_ARGS__)</initializer>
+        <briefdescription>
+<para>Statically package string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Build string package from formatted string. It assumes that formatted string is in the read only memory.</para>
+<para>If _Generic is not supported then runtime packaging is performed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>packaged</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to where the packaged data can be stored. Pass a null pointer to skip packaging but still calculate the total space required. The data stored here is relocatable, that is it can be moved to another contiguous block of memory. It must be aligned to the size of the longest argument. It is recommended to use CBPRINTF_PACKAGE_ALIGNMENT for alignment.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>inlen</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>set to the number of bytes available at <computeroutput>packaged</computeroutput>. If <computeroutput>packaged</computeroutput> is NULL the value is ignored.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>outlen</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>variable updated to the number of bytes required to completely store the packed information. If input buffer was too small it is set to -ENOSPC.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>align_offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>input buffer alignment offset in bytes. Where offset 0 means that buffer is aligned to CBPRINTF_PACKAGE_ALIGNMENT. Xtensa requires that <computeroutput>packaged</computeroutput> is aligned to CBPRINTF_PACKAGE_ALIGNMENT so it must be multiply of CBPRINTF_PACKAGE_ALIGNMENT or 0.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>option flags. See <ref refid="group__CBPRINTF__PACKAGE__FLAGS" kindref="compound">Package flags.</ref>.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>formatted string with arguments. Format string must be constant. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys/cbprintf.h" line="189" column="9" bodyfile="include/sys/cbprintf.h" bodystart="188" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

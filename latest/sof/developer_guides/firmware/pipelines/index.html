@@ -1,0 +1,514 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Pipelines &mdash; SOF Project 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/sof.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Porting Guides" href="../porting.html" />
+    <link rel="prev" title="Managing the Components" href="../components/component-mgmt-api.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SOF Project
+          
+
+          
+            
+            <img src="../../../_static/logo_sof_white_200w.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://sofproject.org">SOF project website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction to the SOF Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../architectures/index.html">Supported Architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../platforms/index.html">Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../algos/index.html">Algorithms</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Firmware</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../component-tutorial/tut-intro.html">Hello World Tutorial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mem-mgmt.html">Memory Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pm-runtime/index.html">Power Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../schedulers.html">Schedulers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../drivers/index.html">Drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Pipelines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-a-pipeline">Creating a Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#executing-an-operation">Executing an Operation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resetting-pipeline">Resetting Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-audio-parameters-preparing-for-use">Configuring Audio Parameters &amp; Preparing for Use</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#processing">Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../porting.html">Porting Guides</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kd_integration/index.html">Keyword detection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cmake.html">CMake Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../unit_tests.html">Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xtrun/index.html">Xtensa Simulator (xt-run)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topology/topology.html">SOF Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../uuid/index.html">UUID Usage in SOF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugability/index.html">Debugability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tuning/sof-ctl.html">Runtime Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../rimage/index.html">Rimage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_driver/index.html">SOF Linux Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/virtualization.html">SOF VirtIO design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/running.html">Run SOF VirtIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fuzzing/index.html">Fuzzing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testbench/index.html">Testbench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#technical-notes">Technical Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release.html">Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contributing to the Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tsc/index.html">Technical Steering Committee (TSC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../maintainers/index.html">SOF admin, maintainers and code owners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../presentations/index.html">Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">SOF Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Developer Guides</a> &raquo;</li>
+        
+          <li><a href="../index.html">Firmware</a> &raquo;</li>
+        
+      <li>Pipelines</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/developer_guides/firmware/pipelines/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pipelines">
+<span id="apps-pipelines"></span><h1>Pipelines<a class="headerlink" href="#pipelines" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-default" id="id1">
+<p class="plantuml">
+<object data="../../../_images/plantuml-0e1e8559ebd0d589c525433bbe105b9c4e6eb8de.svg" type="image/svg+xml" style="width:461px;height:328px;">
+<img src="../../../_images/plantuml-0e1e8559ebd0d589c525433bbe105b9c4e6eb8de.png" alt="class &quot;pipeline&quot; {
+   ipc_pipe
+   comp_list : list of components
+   buffer_list : list of buffers
+   pipe_task
+   sched_comp : comp_dev *
+   status : uint32_t
+}
+hide pipeline methods
+
+class sof_ipc_pipe_new {
+   comp_id
+   pipeline_id
+   sched_id
+   ...
+}
+hide sof_ipc_pipe_new methods
+note right: attributes provided\nthrough ipc
+
+class task
+hide task members
+hide task attributes
+note right: task registered\nin scheduler
+
+pipeline -- sof_ipc_pipe_new : ipc_pipe
+pipeline - task : &quot;pipe_task&quot;
+"/>
+
+</object></p>
+<p class="caption"><span class="caption-number">Figure 60 </span><span class="caption-text">Pipeline structure</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="creating-a-pipeline">
+<h2>Creating a Pipeline<a class="headerlink" href="#creating-a-pipeline" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-default" id="id2">
+<p class="plantuml">
+<object data="../../../_images/plantuml-6834e6cb5759add3547e7524213a5a7351c65de2.svg" type="image/svg+xml" style="width:678px;height:195px;">
+<img src="../../../_images/plantuml-6834e6cb5759add3547e7524213a5a7351c65de2.png" alt="participant &quot;pipeline&quot; as ppl
+
+-&gt; ppl : pipeline_new(pipe_desc, cd)
+   ppl -&gt; heap : rzalloc(RZONE_RUNTIME, ...)
+   ppl -&gt; ppl : sched_comp = cd
+   note right: sched_comp is used as root comp for pipeline scheduling
+&lt;-- ppl
+"/>
+
+</object></p>
+<p class="caption"><span class="caption-number">Figure 61 </span><span class="caption-text">Creating a pipeline</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>The scheduling component (<code class="docutils literal notranslate"><span class="pre">sched_comp</span></code>) is configured by the driver inside
+the IPC request. It is usually set to the dai component id for pipelines that
+are attached to a dai instance and are driven by that dai’s IO events.</p>
+</div>
+<div class="section" id="executing-an-operation">
+<h2>Executing an Operation<a class="headerlink" href="#executing-an-operation" title="Permalink to this headline">¶</a></h2>
+<p>Most of the pipeline functions sets the operation id and executes a common
+routine, either <code class="docutils literal notranslate"><span class="pre">component_op_downstream()</span></code> in case of a playback path or
+<code class="docutils literal notranslate"><span class="pre">component_op_upstream()</span></code> otherwise.</p>
+<div class="figure align-default" id="id3">
+<p class="plantuml">
+<object data="../../../_images/plantuml-2c22ab46019da9aff73515fc4a6896bdbef2cfcb.svg" type="image/svg+xml" style="width:497px;height:244px;">
+<img src="../../../_images/plantuml-2c22ab46019da9aff73515fc4a6896bdbef2cfcb.png" alt="participant &quot;pipeline&quot; as ppl
+
+-&gt; ppl : &lt;pipeline operation&gt; (op = COMP_OPS_...)
+   alt SOF_IPC_STREAM_PLAYBACK
+      ppl -&gt; ppl : comp_op_downstream(op)
+   else
+      ppl -&gt; ppl : comp_op_upstream(op)
+   end
+&lt;-- ppl
+"/>
+
+</object></p>
+<p class="caption"><span class="caption-number">Figure 62 </span><span class="caption-text">Pipeline Operation</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="propagating-the-operation-downstream">
+<h3>Propagating the Operation Downstream<a class="headerlink" href="#propagating-the-operation-downstream" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-default" id="id4">
+<p class="plantuml">
+<object data="../../../_images/plantuml-24103a7d825b50d5ad7b855d9e3cc370ca1cc51f.svg" type="image/svg+xml" style="width:859px;height:530px;">
+<img src="../../../_images/plantuml-24103a7d825b50d5ad7b855d9e3cc370ca1cc51f.png" alt="participant &quot;pipeline&quot; as ppl
+participant &quot;component&quot; as comp
+-&gt; ppl : comp_op_downstream(op_data,\nstart, current, previous)
+   note right: start, current, and previous are struct *comp_dev
+   alt op_data-&gt;op == COMP_OPS_PARAMS
+      ppl -&gt; comp : comp_install_params(current)
+      ppl -&gt; comp : comp_params(current)
+   else COMP_OPS_CMD
+      ppl -&gt; comp : comp_cmd(current)
+      ppl -&gt; ppl : pipeline_cmd_update(current)
+   else COMP_OPS_PREPARE
+      ppl -&gt; comp : comp_prepare(current)
+   else COMP_OPS_RESET
+      ppl -&gt; comp : comp_reset(current)
+   else COMP_OPS_BUFFER
+      note right: error, handled by other API calls
+   end
+   loop for each current's sink
+      ppl -&gt; ppl : component_op_downstream(..., current = consumer &#64; sink/source)
+      note right: recursive call
+   end
+&lt;-- ppl
+"/>
+
+</object></p>
+<p class="caption"><span class="caption-number">Figure 63 </span><span class="caption-text">Going downstream</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="propagating-the-operation-upstream">
+<h3>Propagating the Operation Upstream<a class="headerlink" href="#propagating-the-operation-upstream" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">comp_op_upstream()</span></code> algorithm is identical except for the loop at the end that runs over the sources and calls itself recursively for producers.</p>
+</div>
+</div>
+<div class="section" id="resetting-pipeline">
+<h2>Resetting Pipeline<a class="headerlink" href="#resetting-pipeline" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-default" id="id5">
+<p class="plantuml">
+<object data="../../../_images/plantuml-d8d56334513049e49659fb1b6458294b131a0e25.svg" type="image/svg+xml" style="width:387px;height:163px;">
+<img src="../../../_images/plantuml-d8d56334513049e49659fb1b6458294b131a0e25.png" alt="participant &quot;pipeline&quot; as ppl
+
+-&gt; ppl : pipeline_reset()
+   ppl -&gt; ppl : &lt;pipeline operation&gt; (COMP_OPS_RESET)
+&lt;-- ppl
+"/>
+
+</object></p>
+<p class="caption"><span class="caption-number">Figure 64 </span><span class="caption-text">Resetting a pipeline</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="configuring-audio-parameters-preparing-for-use">
+<h2>Configuring Audio Parameters &amp; Preparing for Use<a class="headerlink" href="#configuring-audio-parameters-preparing-for-use" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-default" id="id6">
+<p class="plantuml">
+<object data="../../../_images/plantuml-1ee0b9eae96959f6e5edec79744b9ae89b19b8a9.svg" type="image/svg+xml" style="width:775px;height:392px;">
+<img src="../../../_images/plantuml-1ee0b9eae96959f6e5edec79744b9ae89b19b8a9.png" alt="actor driver as drv
+participant ipc
+participant &quot;pipeline&quot; as ppl
+
+drv -&gt; ipc : ipc_stream_pcm_params()
+   activate ipc
+   ipc -&gt; ppl : pipeline_params()
+      activate ppl
+      ppl -&gt; ppl : &lt;pipeline operation&gt; (COMP_OPS_PARAMS, first = pcm_dev, params)
+   ipc &lt;-- ppl
+   deactivate ppl
+
+   ipc -&gt; ppl : pipeline_prepare()
+      activate ppl
+      ppl -&gt; ppl : &lt;pipeline operation&gt; (COMP_OPS_PREPARE)
+      ppl -&gt; ppl : component_prepare_buffers_downstream/upstream()
+   ipc &lt;-- ppl
+   deactivate ppl
+drv &lt;-- ipc
+deactivate ipc
+"/>
+
+</object></p>
+<p class="caption"><span class="caption-number">Figure 65 </span><span class="caption-text">Configuring audio parameters</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="scheduling">
+<h2>Scheduling<a class="headerlink" href="#scheduling" title="Permalink to this headline">¶</a></h2>
+<p>A pipeline’s task (see _Processing_) may be scheduled at a certain point in time using <code class="docutils literal notranslate"><span class="pre">pipeline_schedule_copy(start)</span></code>. In order to schedule the next stream copy operation in idle (see pre-loader), <code class="docutils literal notranslate"><span class="pre">pipeline_schedule_copy_idle()</span></code> should be used.</p>
+</div>
+<div class="section" id="processing">
+<h2>Processing<a class="headerlink" href="#processing" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-default" id="id7">
+<p class="plantuml">
+<object data="../../../_images/plantuml-362689dbac76cb798361343b6542edd1a9d005d5.svg" type="image/svg+xml" style="width:327px;height:313px;">
+<img src="../../../_images/plantuml-362689dbac76cb798361343b6542edd1a9d005d5.png" alt="participant &quot;pipeline&quot; as ppl
+
+-&gt; ppl : pipeline_task()
+   activate ppl
+   ppl -&gt; ppl : pipeline_copy()
+      activate ppl
+      ppl -&gt; ppl : pipeline_copy_from_upstream()
+         activate ppl
+         deactivate ppl
+      ppl -&gt; ppl : pipeline_copy_to_downstream()
+         activate ppl
+         deactivate ppl
+   deactivate ppl
+&lt;-- ppl
+deactivate ppl
+"/>
+
+</object></p>
+<p class="caption"><span class="caption-number">Figure 66 </span><span class="caption-text">Pipeline task routine called by the scheduler</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../porting.html" class="btn btn-neutral float-right" title="Porting Guides" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../components/component-mgmt-api.html" class="btn btn-neutral" title="Managing the Components" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; Copyright 2021, SOF Project..
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> SOF Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version zephyr">
+        <a href="../../../../zephyr/index.html">Zephyr Project</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

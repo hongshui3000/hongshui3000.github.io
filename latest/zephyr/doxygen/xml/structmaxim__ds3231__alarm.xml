@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structmaxim__ds3231__alarm" kind="struct" language="C++" prot="public">
+    <compoundname>maxim_ds3231_alarm</compoundname>
+    <includes refid="maxim__ds3231_8h" local="no">maxim_ds3231.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structmaxim__ds3231__alarm_1a363a2dc65517c3d00de7658ce421937f" prot="public" static="no" mutable="no">
+        <type><ref refid="__timespec_8h_1aa17c461cd5eca7fc12a66daa803c7fd7" kindref="member">time_t</ref></type>
+        <definition>time_t maxim_ds3231_alarm::time</definition>
+        <argsstring></argsstring>
+        <name>time</name>
+        <briefdescription>
+<para>Time specification for an RTC alarm. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Though specified as a UNIX time, the alarm parameters are determined by converting to civil time and interpreting the component hours, minutes, seconds, day-of-week, and day-of-month fields, mediated by the corresponding <ref refid="structmaxim__ds3231__alarm_1a98ebc645761cc0d035e269fa8d3f9c68" kindref="member">flags</ref>.</para>
+<para>The year and month are ignored, but be aware that <ref refid="lib_2libc_2minimal_2include_2time_8h_1ab8c68cab16dbf9f2c5eadfaa49e34ac8" kindref="member">gmtime()</ref> determines day-of-week based on calendar date. Decoded alarm times will fall within 1978-01 since 1978-01-01 (first of month) was a Sunday (first of week). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/rtc/maxim_ds3231.h" line="275" column="8" bodyfile="include/drivers/rtc/maxim_ds3231.h" bodystart="275" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmaxim__ds3231__alarm_1a9628b99ed059a64f25143291c0df1c8c" prot="public" static="no" mutable="no">
+        <type><ref refid="group__rtc__interface_1ga684b29dc1c11d8df698437f27e6d0403" kindref="member">maxim_ds3231_alarm_callback_handler_t</ref></type>
+        <definition>maxim_ds3231_alarm_callback_handler_t maxim_ds3231_alarm::handler</definition>
+        <argsstring></argsstring>
+        <name>handler</name>
+        <briefdescription>
+<para>Handler to be invoked when alarms are signalled. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If this is null the alarm will not be triggered by the INTn/SQW GPIO. This is a &quot;persisted&quot; alarm from its role in using the DS3231 to trigger a wake from deep sleep. The application should use <ref refid="group__rtc__interface_1gab2091298eb9b94da29ad79616b707bad" kindref="member">maxim_ds3231_check_alarms()</ref> to determine whether such an alarm has been triggered.</para>
+<para>If this is not null the driver will monitor the ISW GPIO for alarm signals and will invoke the handler with a parameter carrying the value returned by <ref refid="group__rtc__interface_1gab2091298eb9b94da29ad79616b707bad" kindref="member">maxim_ds3231_check_alarms()</ref>. The corresponding status flags will be cleared in the device before the handler is invoked.</para>
+<para>The handler will be invoked from the system work queue. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/rtc/maxim_ds3231.h" line="294" column="39" bodyfile="include/drivers/rtc/maxim_ds3231.h" bodystart="294" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmaxim__ds3231__alarm_1a192fb8c10246bfe466e74aafbb45d720" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* maxim_ds3231_alarm::user_data</definition>
+        <argsstring></argsstring>
+        <name>user_data</name>
+        <briefdescription>
+<para>User-provided pointer passed to alarm callback. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/rtc/maxim_ds3231.h" line="297" column="6" bodyfile="include/drivers/rtc/maxim_ds3231.h" bodystart="297" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmaxim__ds3231__alarm_1a98ebc645761cc0d035e269fa8d3f9c68" prot="public" static="no" mutable="no">
+        <type><ref refid="stdint_8h_1a3cb4a16b0e8d6af0af86d4fd6ba5fd9d" kindref="member">uint8_t</ref></type>
+        <definition>uint8_t maxim_ds3231_alarm::flags</definition>
+        <argsstring></argsstring>
+        <name>flags</name>
+        <briefdescription>
+<para>Flags controlling configuration of the alarm alarm. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>See MAXIM_DS3231_ALARM_FLAGS_IGNSE and related constants.</para>
+<para>Note that as described the alarm mask fields require that if a unit is not ignored, higher-precision units must also not be ignored. For example, if match on hours is enabled, match on minutes and seconds must also be enabled. Failure to comply with this requirement will cause <ref refid="group__rtc__interface_1ga8f876ad2e16e88d80a2f914be3df49b1" kindref="member">maxim_ds3231_set_alarm()</ref> to return an error, leaving the alarm configuration unchanged. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/rtc/maxim_ds3231.h" line="311" column="9" bodyfile="include/drivers/rtc/maxim_ds3231.h" bodystart="311" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Information defining the alarm configuration. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>DS3231 alarms can be set to fire at specific times or at the rollover of minute, hour, day, or day of week.</para>
+<para>When an alarm is configured with a handler an interrupt will be generated and the handler called from the system work queue.</para>
+<para>When an alarm is configured without a handler, or a persisted alarm is present, alarms can be read using <ref refid="group__rtc__interface_1gab2091298eb9b94da29ad79616b707bad" kindref="member">maxim_ds3231_check_alarms()</ref>. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>maxim_ds3231_alarm</label>
+        <link refid="structmaxim__ds3231__alarm"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>handler</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>device</label>
+        <link refid="structdevice"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>state</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>device_state</label>
+        <link refid="structdevice__state"/>
+      </node>
+    </collaborationgraph>
+    <location file="include/drivers/rtc/maxim_ds3231.h" line="262" column="1" bodyfile="include/drivers/rtc/maxim_ds3231.h" bodystart="262" bodyend="312"/>
+    <listofallmembers>
+      <member refid="structmaxim__ds3231__alarm_1a98ebc645761cc0d035e269fa8d3f9c68" prot="public" virt="non-virtual"><scope>maxim_ds3231_alarm</scope><name>flags</name></member>
+      <member refid="structmaxim__ds3231__alarm_1a9628b99ed059a64f25143291c0df1c8c" prot="public" virt="non-virtual"><scope>maxim_ds3231_alarm</scope><name>handler</name></member>
+      <member refid="structmaxim__ds3231__alarm_1a363a2dc65517c3d00de7658ce421937f" prot="public" virt="non-virtual"><scope>maxim_ds3231_alarm</scope><name>time</name></member>
+      <member refid="structmaxim__ds3231__alarm_1a192fb8c10246bfe466e74aafbb45d720" prot="public" virt="non-virtual"><scope>maxim_ds3231_alarm</scope><name>user_data</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

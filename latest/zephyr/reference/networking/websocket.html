@@ -1,0 +1,652 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Websocket Client API &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Network Packet Capture" href="capture.html" />
+    <link rel="prev" title="Trickle Timer Library" href="trickle.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="apis.html">Network APIs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sockets.html">BSD Sockets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ip_4_6.html">IPv4/IPv6 Primitives and Helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dns_resolve.html">DNS Resolve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_mgmt.html">Network Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_stats.html">Network Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_timeout.html">Network Timeout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_context.html">Networking Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="promiscuous.html">Promiscuous Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sntp.html">Simple Network Time Protocol Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="socks5.html">SOCKS5 Proxy Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="trickle.html">Trickle Timer Library</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Websocket Client API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="capture.html">Network Packet Capture</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="buf_mgmt.html">Network Buffer Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="net_tech.html">Networking Technologies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="protocols.html">Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system_mgmt.html">Network System Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsn.html">Time Sensitive Networking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsm_modem.html">Generic GSM Modem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="apis.html">Network APIs</a> &raquo;</li>
+        
+      <li>Websocket Client API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/networking/websocket.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="websocket-client-api">
+<span id="websocket-interface"></span><h1>Websocket Client API<a class="headerlink" href="#websocket-client-api" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#websocket-transport" id="id2">Websocket Transport</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id3">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id1">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The Websocket client library allows Zephyr to connect to a Websocket server.
+The Websocket client API can be used directly by application to establish
+a Websocket connection to server, or it can be used as a transport for other
+network protocols like MQTT.</p>
+<p>See this
+<a class="reference external" href="https://en.wikipedia.org/wiki/WebSocket">Websocket Wikipedia article</a>
+for a detailed overview of how Websocket works.</p>
+<p>For more information about the protocol itself, see
+<a class="reference external" href="https://tools.ietf.org/html/rfc6455">IETF RFC6455 The WebSocket Protocol</a>.</p>
+</div>
+<div class="section" id="websocket-transport">
+<h2><a class="toc-backref" href="#id2">Websocket Transport</a><a class="headerlink" href="#websocket-transport" title="Permalink to this headline">¶</a></h2>
+<p>The Websocket API allows it to be used as a transport for other high level
+protocols like MQTT. The Zephyr MQTT client library can be configured to use
+Websocket transport by enabling <a class="reference internal" href="../../kconfig.html#CONFIG_MQTT_LIB_WEBSOCKET" title="CONFIG_MQTT_LIB_WEBSOCKET"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MQTT_LIB_WEBSOCKET</span></code></a> and
+<a class="reference internal" href="../../kconfig.html#CONFIG_WEBSOCKET_CLIENT" title="CONFIG_WEBSOCKET_CLIENT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_WEBSOCKET_CLIENT</span></code></a> Kconfig options.</p>
+<p>First a socket needs to be created and connected to the Websocket server:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">family</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="n">IPPROTO_TCP</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">addr_len</span><span class="p">);</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>The Websocket transport socket is then created like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ws_sock</span> <span class="o">=</span> <span class="n">websocket_connect</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">config</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">user_data</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The Websocket socket can then be used to send or receive data, and the
+Websocket client API will encapsulate the sent or received data to/from
+Websocket packet payload. Both the <code class="xref c c-func docutils literal notranslate"><span class="pre">websocket_xxx()</span></code> API or normal
+BSD socket API functions can be used to send and receive application data.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">websocket_send_msg</span><span class="p">(</span><span class="n">ws_sock</span><span class="p">,</span> <span class="n">buf_to_send</span><span class="p">,</span> <span class="n">buf_len</span><span class="p">,</span>
+                         <span class="n">WEBSOCKET_OPCODE_DATA_BINARY</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span>
+                         <span class="n">K_FOREVER</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">send</span><span class="p">(</span><span class="n">ws_sock</span><span class="p">,</span> <span class="n">buf_to_send</span><span class="p">,</span> <span class="n">buf_len</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If normal BSD socket functions are used, then currently only TEXT data
+is supported. In order to send BINARY data, the <a class="reference internal" href="#c.websocket_send_msg" title="websocket_send_msg"><code class="xref c c-func docutils literal notranslate"><span class="pre">websocket_send_msg()</span></code></a>
+must be used.</p>
+<p>When done, the Websocket transport socket must be closed.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">close</span><span class="p">(</span><span class="n">ws_sock</span><span class="p">);</span>
+<span class="n">or</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">websocket_disconnect</span><span class="p">(</span><span class="n">ws_sock</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id3">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__websocket"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">websocket</span></span></dt>
+<dd><p>Websocket API. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.WEBSOCKET_FLAG_FINAL">
+<span class="target" id="group__websocket_1ga002ade0e3787b6d9da82ab84af1cd354"></span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_FLAG_FINAL</span></span></span><a class="headerlink" href="#c.WEBSOCKET_FLAG_FINAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Message type values. Returned in <a class="reference internal" href="#group__websocket_1ga0fb118f84b7631d12c1b742b75593ba6"><span class="std std-ref">websocket_recv_msg()</span></a> Final frame </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.WEBSOCKET_FLAG_TEXT">
+<span class="target" id="group__websocket_1ga9405e69474b48472dfe0b10017dfcd75"></span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_FLAG_TEXT</span></span></span><a class="headerlink" href="#c.WEBSOCKET_FLAG_TEXT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Textual data </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.WEBSOCKET_FLAG_BINARY">
+<span class="target" id="group__websocket_1ga8616f88cb194d82da9367f2f48832842"></span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_FLAG_BINARY</span></span></span><a class="headerlink" href="#c.WEBSOCKET_FLAG_BINARY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Binary data </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.WEBSOCKET_FLAG_CLOSE">
+<span class="target" id="group__websocket_1gaab5fa480351106751f6482f5056b4238"></span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_FLAG_CLOSE</span></span></span><a class="headerlink" href="#c.WEBSOCKET_FLAG_CLOSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Closing connection </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.WEBSOCKET_FLAG_PING">
+<span class="target" id="group__websocket_1ga2f2ea01b18c13f38fe834f855ae0da93"></span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_FLAG_PING</span></span></span><a class="headerlink" href="#c.WEBSOCKET_FLAG_PING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Ping message </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.WEBSOCKET_FLAG_PONG">
+<span class="target" id="group__websocket_1ga68cdf577c5401440095dacf224541047"></span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_FLAG_PONG</span></span></span><a class="headerlink" href="#c.WEBSOCKET_FLAG_PONG" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pong message </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.websocket_connect_cb_t">
+<span class="target" id="group__websocket_1ga4cfa3b60fe810341a1dbc80ecfe49a8e"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">websocket_connect_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">ws_sock</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">http_request</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">req</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.websocket_connect_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback called after Websocket connection is established. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 if ok, &lt;0 if there is an error and connection should be aborted </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ws_sock</span></code>: Websocket id </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">req</span></code>: HTTP handshake request </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: A valid pointer on some user data or NULL</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.websocket_opcode">
+<span class="target" id="group__websocket_1ga207402575311103c75906143724e8c35"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">websocket_opcode</span></span></span><a class="headerlink" href="#c.websocket_opcode" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.websocket_opcode.WEBSOCKET_OPCODE_CONTINUE">
+<span class="target" id="group__websocket_1gga207402575311103c75906143724e8c35a8912ad4ae9a3bbbe7ecb02cd2c1a8b35"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_OPCODE_CONTINUE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x00</span></span><a class="headerlink" href="#c.websocket_opcode.WEBSOCKET_OPCODE_CONTINUE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.websocket_opcode.WEBSOCKET_OPCODE_DATA_TEXT">
+<span class="target" id="group__websocket_1gga207402575311103c75906143724e8c35a2058fe14c900c3298affa6eed05d182c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_OPCODE_DATA_TEXT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x01</span></span><a class="headerlink" href="#c.websocket_opcode.WEBSOCKET_OPCODE_DATA_TEXT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.websocket_opcode.WEBSOCKET_OPCODE_DATA_BINARY">
+<span class="target" id="group__websocket_1gga207402575311103c75906143724e8c35aa8d476ba0f4f3f892503d29fa76f1a69"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_OPCODE_DATA_BINARY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x02</span></span><a class="headerlink" href="#c.websocket_opcode.WEBSOCKET_OPCODE_DATA_BINARY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.websocket_opcode.WEBSOCKET_OPCODE_CLOSE">
+<span class="target" id="group__websocket_1gga207402575311103c75906143724e8c35a291cb41ba1d8b535a1625d394c066191"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_OPCODE_CLOSE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x08</span></span><a class="headerlink" href="#c.websocket_opcode.WEBSOCKET_OPCODE_CLOSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.websocket_opcode.WEBSOCKET_OPCODE_PING">
+<span class="target" id="group__websocket_1gga207402575311103c75906143724e8c35af7a26bf82e06544e8393f17d6c074709"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_OPCODE_PING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x09</span></span><a class="headerlink" href="#c.websocket_opcode.WEBSOCKET_OPCODE_PING" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.websocket_opcode.WEBSOCKET_OPCODE_PONG">
+<span class="target" id="group__websocket_1gga207402575311103c75906143724e8c35a141c7a8d3c0864115c8bfe3248e59d90"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_OPCODE_PONG</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x0A</span></span><a class="headerlink" href="#c.websocket_opcode.WEBSOCKET_OPCODE_PONG" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.websocket_connect">
+<span class="target" id="group__websocket_1ga71a43ec629929d2eb1baba4e3f13a615"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">websocket_connect</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">http_sock</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websocket_request" title="websocket_request"><span class="n"><span class="pre">websocket_request</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">req</span></span>, <span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">timeout</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.websocket_connect" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Connect to a server that provides Websocket service. The callback is called after connection is established. The returned value is a new socket descriptor that can be used to send / receive data using the BSD socket API. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Websocket id to be used when sending/receiving Websocket data. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">http_sock</span></code>: Socket id to the server. Note that this socket is used to do HTTP handshakes etc. The actual Websocket connectivity is done via the returned websocket id. Note that the http_sock must not be closed after this function returns as it is used to deliver the Websocket packets to the Websocket server. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">req</span></code>: Websocket request. User should allocate and fill the request data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Max timeout to wait for the connection. The timeout value is in milliseconds. Value SYS_FOREVER_MS means to wait forever. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User specified data that is passed to the callback.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.websocket_send_msg">
+<span class="target" id="group__websocket_1gac23c351e5020d0fc9e936933d399b187"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">websocket_send_msg</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">ws_sock</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">payload</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">payload_len</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.websocket_opcode" title="websocket_opcode"><span class="n"><span class="pre">websocket_opcode</span></span></a><span class="w"> </span><span class="n"><span class="pre">opcode</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">mask</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">final</span></span>, <span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.websocket_send_msg" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send websocket msg to peer. </p>
+<p>The function will automatically add websocket header to the message.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>&lt;0 if error, &gt;=0 amount of bytes sent </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ws_sock</span></code>: Websocket id returned by <a class="reference internal" href="#group__websocket_1ga71a43ec629929d2eb1baba4e3f13a615"><span class="std std-ref">websocket_connect()</span></a>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">payload</span></code>: Websocket data to send. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">payload_len</span></code>: Length of the data to be sent. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opcode</span></code>: Operation code (text, binary, ping, pong, close) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mask</span></code>: Mask the data, see RFC 6455 for details </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">final</span></code>: Is this final message for this message send. If final == false, then the first message must have valid opcode and subsequent messages must have opcode WEBSOCKET_OPCODE_CONTINUE. If final == true and this is the only message, then opcode should have proper opcode (text or binary) set. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: How long to try to send the message. The value is in milliseconds. Value SYS_FOREVER_MS means to wait forever.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.websocket_recv_msg">
+<span class="target" id="group__websocket_1ga0fb118f84b7631d12c1b742b75593ba6"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">websocket_recv_msg</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">ws_sock</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">buf_len</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">message_type</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">remaining</span></span>, <span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.websocket_recv_msg" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Receive websocket msg from peer. </p>
+<p>The function will automatically remove websocket header from the message.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>&lt;0 if error, &gt;=0 amount of bytes received </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ws_sock</span></code>: Websocket id returned by <a class="reference internal" href="#group__websocket_1ga71a43ec629929d2eb1baba4e3f13a615"><span class="std std-ref">websocket_connect()</span></a>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Buffer where websocket data is read. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf_len</span></code>: Length of the data buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message_type</span></code>: Type of the message. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">remaining</span></code>: How much there is data left in the message after this read. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: How long to try to receive the message. The value is in milliseconds. Value SYS_FOREVER_MS means to wait forever.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.websocket_disconnect">
+<span class="target" id="group__websocket_1gacc2f06e2c361317ff48f171abc3d1209"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">websocket_disconnect</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">ws_sock</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.websocket_disconnect" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Close websocket. </p>
+<p>One must call <a class="reference internal" href="#group__websocket_1ga71a43ec629929d2eb1baba4e3f13a615"><span class="std std-ref">websocket_connect()</span></a> after this call to re-establish the connection.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ws_sock</span></code>: Websocket id returned by <a class="reference internal" href="#group__websocket_1ga71a43ec629929d2eb1baba4e3f13a615"><span class="std std-ref">websocket_connect()</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.websocket_init">
+<span class="target" id="group__websocket_1gab258dd52880c6cbbc7e2aceee329a4a3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">websocket_init</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.websocket_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.websocket_request">
+<span class="target" id="structwebsocket__request"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">websocket_request</span></span></span><a class="headerlink" href="#c.websocket_request" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;websocket.h&gt;</em><p>Websocket client connection request. This contains all the data that is needed when doing a Websocket connection request. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.websocket_request.host">
+<span class="target" id="structwebsocket__request_1a8769d50f1a6168dc6518f2dd0c74b62a"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">host</span></span></span><a class="headerlink" href="#c.websocket_request.host" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Host of the Websocket server when doing HTTP handshakes. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.websocket_request.url">
+<span class="target" id="structwebsocket__request_1a49ef6c2f4201beeb3af8992ded2bd4a3"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">url</span></span></span><a class="headerlink" href="#c.websocket_request.url" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>URL of the Websocket. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.websocket_request.optional_headers_cb">
+<span class="target" id="structwebsocket__request_1ab7a281fff2a27a52f7ec346643f55b71"></span><span class="n"><span class="pre">http_header_cb_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">optional_headers_cb</span></span></span><a class="headerlink" href="#c.websocket_request.optional_headers_cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>User supplied callback function to call when optional headers need to be sent. This can be NULL, in which case the optional_headers field in http_request is used. The idea of this optional_headers callback is to allow user to send more HTTP header data that is practical to store in allocated memory. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.websocket_request.optional_headers">
+<span class="target" id="structwebsocket__request_1a4cea74d6094325b218b6bbed4005b912"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">optional_headers</span></span></span><a class="headerlink" href="#c.websocket_request.optional_headers" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A NULL terminated list of any optional headers that should be added to the HTTP request. May be NULL. If the optional_headers_cb is specified, then this field is ignored. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.websocket_request.cb">
+<span class="target" id="structwebsocket__request_1a96936b68fec07f077d9e9569ef1411d1"></span><a class="reference internal" href="#c.websocket_connect_cb_t" title="websocket_connect_cb_t"><span class="n"><span class="pre">websocket_connect_cb_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cb</span></span></span><a class="headerlink" href="#c.websocket_request.cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>User supplied callback function to call when a connection is established. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.websocket_request.http_cb">
+<span class="target" id="structwebsocket__request_1a38315d0c37bdc8cfe22cdbc6d2c8af4a"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">http_parser_settings</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">http_cb</span></span></span><a class="headerlink" href="#c.websocket_request.http_cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>User supplied list of callback functions if the calling application wants to know the parsing status or the HTTP fields during the handshake. This is optional parameter and normally not needed but is useful if the caller wants to know something about the fields that the server is sending. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.websocket_request.tmp_buf">
+<span class="target" id="structwebsocket__request_1a939ed8e980af4bc98f30d1bad835a2d2"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">tmp_buf</span></span></span><a class="headerlink" href="#c.websocket_request.tmp_buf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>User supplied buffer where HTTP connection data is stored </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.websocket_request.tmp_buf_len">
+<span class="target" id="structwebsocket__request_1a09bb3c708b51d8f86de244b3fc4a9f57"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tmp_buf_len</span></span></span><a class="headerlink" href="#c.websocket_request.tmp_buf_len" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Length of the user supplied temp buffer </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="capture.html" class="btn btn-neutral float-right" title="Network Packet Capture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="trickle.html" class="btn btn-neutral" title="Trickle Timer Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

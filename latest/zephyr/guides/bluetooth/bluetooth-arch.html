@@ -1,0 +1,800 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Bluetooth Stack Architecture &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Bluetooth Qualification" href="bluetooth-qual.html" />
+    <link rel="prev" title="Overview" href="overview.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Bluetooth</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Bluetooth Stack Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#source-tree-layout">Source tree layout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#host">Host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bluetooth-low-energy-controller">Bluetooth Low Energy Controller</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bluetooth-qual.html">Bluetooth Qualification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluetooth-tools.html">Bluetooth tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluetooth-dev.html">Developing Bluetooth Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autopts/autopts-win10.html">AutoPTS on Windows 10 with nRF52 board</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autopts/autopts-linux.html">AutoPTS on Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Bluetooth</a> &raquo;</li>
+        
+      <li>Bluetooth Stack Architecture</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/bluetooth/bluetooth-arch.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bluetooth-stack-architecture">
+<span id="bluetooth-arch"></span><h1>Bluetooth Stack Architecture<a class="headerlink" href="#bluetooth-stack-architecture" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This page describes the software architecture of Zephyr’s Bluetooth protocol
+stack.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Zephyr supports mainly Bluetooth Low Energy (BLE), the low-power
+version of the Bluetooth specification. Zephyr also has limited support
+for portions of the BR/EDR Host. Throughout this architecture document we
+use BLE interchangeably for Bluetooth except when noted.</p>
+</div>
+<div class="section" id="ble-layers">
+<span id="bluetooth-layers"></span><h3>BLE Layers<a class="headerlink" href="#ble-layers" title="Permalink to this headline">¶</a></h3>
+<p>There are 3 main layers that together constitute a full Bluetooth Low Energy
+protocol stack:</p>
+<ul class="simple">
+<li><p><strong>Host</strong>: This layer sits right below the application, and is comprised of
+multiple (non real-time) network and transport protocols enabling
+applications to communicate with peer devices in a standard and interoperable
+way.</p></li>
+<li><p><strong>Controller</strong>: The Controller implements the Link Layer (LE LL), the
+low-level, real-time protocol which provides, in conjunction with the Radio
+Hardware, standard-interoperable over-the-air communication. The LL schedules
+packet reception and transmission, guarantees the delivery of data, and
+handles all the LL control procedures.</p></li>
+<li><p><strong>Radio Hardware</strong>: Hardware implements the required analog and digital
+baseband functional blocks that permit the Link Layer firmware to send and
+receive in the 2.4GHz band of the spectrum.</p></li>
+</ul>
+</div>
+<div class="section" id="host-controller-interface">
+<span id="bluetooth-hci"></span><h3>Host Controller Interface<a class="headerlink" href="#host-controller-interface" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://www.bluetooth.com/specifications/bluetooth-core-specification">Bluetooth Specification</a> describes the format in which a Host must
+communicate with a Controller. This is called the Host Controller Interface
+(HCI) protocol. HCI can be implemented over a range of different physical
+transports like UART, SPI, or USB. This protocol defines the commands that a Host
+can send to a Controller and the events that it can expect in return, and also
+the format for user and protocol data that needs to go over the air. The HCI
+ensures that different Host and Controller implementations can communicate
+in a standard way making it possible to combine Hosts and Controllers from
+different vendors.</p>
+</div>
+<div class="section" id="configurations">
+<span id="bluetooth-configs"></span><h3>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h3>
+<p>The three separate layers of the protocol and the standardized interface make
+it possible to implement the Host and Controller on different platforms. The two
+following configurations are commonly used:</p>
+<ul class="simple">
+<li><p><strong>Single-chip configuration</strong>: In this configuration, a single microcontroller
+implements all three layers and the application itself. This can also be called a
+system-on-chip (SoC) implementation. In this case the BLE Host and the BLE
+Controller communicate directly through function calls and queues in RAM. The
+Bluetooth specification does not specify how HCI is implemented in this
+single-chip configuration and so how HCI commands, events, and data flows between
+the two can be implementation-specific. This configuration is well suited for
+those applications and designs that require a small footprint and the lowest
+possible power consumption, since everything runs on a single IC.</p></li>
+<li><p><strong>Dual-chip configuration</strong>: This configuration uses two separate ICs,
+one running the Application and the Host, and a second one with the Controller
+and the Radio Hardware. This is sometimes also called a connectivity-chip
+configuration. This configuration allows for a wider variety of combinations of
+Hosts when using the Zephyr OS as a Controller. Since HCI ensures
+interoperability among Host and Controller implementations, including of course
+Zephyr’s very own BLE Host and Controller, users of the Zephyr Controller can
+choose to use whatever Host running on any platform they prefer. For example,
+the host can be the Linux BLE Host stack (BlueZ) running on any processor
+capable of supporting Linux. The Host processor may of course also run Zephyr
+and the Zephyr OS BLE Host. Conversely, combining an IC running the Zephyr
+Host with an external Controller that does not run Zephyr is also supported.</p></li>
+</ul>
+</div>
+<div class="section" id="build-types">
+<span id="bluetooth-build-types"></span><h3>Build Types<a class="headerlink" href="#build-types" title="Permalink to this headline">¶</a></h3>
+<p>The Zephyr software stack as an RTOS is highly configurable, and in particular,
+the BLE subsystem can be configured in multiple ways during the build process to
+include only the features and layers that are required to reduce RAM and ROM
+footprint as well as power consumption. Here’s a short list of the different
+BLE-enabled builds that can be produced from the Zephyr project codebase:</p>
+<ul>
+<li><p><strong>Controller-only build</strong>: When built as a BLE Controller, Zephyr includes
+the Link Layer and a special application. This application is different
+depending on the physical transport chosen for HCI:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../samples/bluetooth/hci_uart/README.html#bluetooth-hci-uart-sample"><span class="std std-ref">hci_uart</span></a></p></li>
+<li><p><a class="reference internal" href="../../samples/bluetooth/hci_usb/README.html#bluetooth-hci-usb-sample"><span class="std std-ref">hci_usb</span></a></p></li>
+<li><p><a class="reference internal" href="../../samples/bluetooth/hci_spi/README.html#bluetooth-hci-spi-sample"><span class="std std-ref">hci_spi</span></a></p></li>
+</ul>
+<p>This application acts as a bridge between the UART, SPI or USB peripherals and
+the Controller subsystem, listening for HCI commands, sending application data
+and responding with events and received data.  A build of this type sets the
+following Kconfig option values:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT" title="CONFIG_BT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT</span></code></a> <code class="docutils literal notranslate"><span class="pre">=y</span></code></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT_HCI" title="CONFIG_BT_HCI"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_HCI</span></code></a> <code class="docutils literal notranslate"><span class="pre">=y</span></code></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT_HCI_RAW" title="CONFIG_BT_HCI_RAW"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_HCI_RAW</span></code></a> <code class="docutils literal notranslate"><span class="pre">=y</span></code></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT_CTLR" title="CONFIG_BT_CTLR"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_CTLR</span></code></a> <code class="docutils literal notranslate"><span class="pre">=y</span></code></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT_LL_SW_SPLIT" title="CONFIG_BT_LL_SW_SPLIT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_LL_SW_SPLIT</span></code></a> <code class="docutils literal notranslate"><span class="pre">=y</span></code> (if using the open source Link Layer)</p></li>
+</ul>
+</li>
+<li><p><strong>Host-only build</strong>: A Zephyr OS Host build will contain the Application and
+the BLE Host, along with an HCI driver (UART or SPI) to interface with an
+external Controller chip.
+A build of this type sets the following Kconfig option values:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT" title="CONFIG_BT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT</span></code></a> <code class="docutils literal notranslate"><span class="pre">=y</span></code></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT_HCI" title="CONFIG_BT_HCI"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_HCI</span></code></a> <code class="docutils literal notranslate"><span class="pre">=y</span></code></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT_CTLR" title="CONFIG_BT_CTLR"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_CTLR</span></code></a> <code class="docutils literal notranslate"><span class="pre">=n</span></code></p></li>
+</ul>
+<p>All of the samples located in <code class="docutils literal notranslate"><span class="pre">samples/bluetooth</span></code> except for the ones
+used for Controller-only builds can be built as Host-only</p>
+</li>
+<li><p><strong>Combined build</strong>: This includes the Application, the Host and the
+Controller, and it is used exclusively for single-chip (SoC) configurations.
+A build of this type sets the following Kconfig option values:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT" title="CONFIG_BT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT</span></code></a> <code class="docutils literal notranslate"><span class="pre">=y</span></code></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT_HCI" title="CONFIG_BT_HCI"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_HCI</span></code></a> <code class="docutils literal notranslate"><span class="pre">=y</span></code></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT_CTLR" title="CONFIG_BT_CTLR"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_CTLR</span></code></a> <code class="docutils literal notranslate"><span class="pre">=y</span></code></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_BT_LL_SW_SPLIT" title="CONFIG_BT_LL_SW_SPLIT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_LL_SW_SPLIT</span></code></a> <code class="docutils literal notranslate"><span class="pre">=y</span></code> (if using the open source Link Layer)</p></li>
+</ul>
+<p>All of the samples located in <code class="docutils literal notranslate"><span class="pre">samples/bluetooth</span></code> except for the ones
+used for Controller-only builds can be built as Combined</p>
+</li>
+</ul>
+<p>The picture below shows the SoC or single-chip configuration when using a Zephyr
+combined build (a build that includes both a BLE Host and a Controller in the
+same firmware image that is programmed onto the chip):</p>
+<div class="figure align-center" id="id1">
+<img alt="BLE Combined build on a single chip" src="../../_images/ble_cfg_single.png" />
+<p class="caption"><span class="caption-number">Fig. 19 </span><span class="caption-text">A Combined build on a Single-Chip configuration</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>When using connectivity or dual-chip configurations, several Host and Controller
+combinations are possible, some of which are depicted below:</p>
+<div class="figure align-center" id="id2">
+<img alt="BLE dual-chip configuration builds" src="../../_images/ble_cfg_dual.png" />
+<p class="caption"><span class="caption-number">Fig. 20 </span><span class="caption-text">Host-only and Controller-only builds on dual-chip configurations</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>When using a Zephyr Host (left side of image), two instances of Zephyr OS
+must be built with different configurations, yielding two separate images that
+must be programmed into each of the chips respectively. The Host build image
+contains the application, the BLE Host and the selected HCI driver (UART or
+SPI), while the Controller build runs either the
+<a class="reference internal" href="../../samples/bluetooth/hci_uart/README.html#bluetooth-hci-uart-sample"><span class="std std-ref">hci_uart</span></a>, or the
+<a class="reference internal" href="../../samples/bluetooth/hci_spi/README.html#bluetooth-hci-spi-sample"><span class="std std-ref">hci_spi</span></a> app to provide an interface to
+the BLE Controller.</p>
+<p>This configuration is not limited to using a Zephyr OS Host, as the right side
+of the image shows. One can indeed take one of the many existing GNU/Linux
+distributions, most of which include Linux’s own BLE Host (BlueZ), to connect it
+via UART or USB to one or more instances of the Zephyr OS Controller build.
+BlueZ as a Host supports multiple Controllers simultaneously for applications
+that require more than one BLE radio operating at the same time but sharing the
+same Host stack.</p>
+</div>
+</div>
+<div class="section" id="source-tree-layout">
+<h2>Source tree layout<a class="headerlink" href="#source-tree-layout" title="Permalink to this headline">¶</a></h2>
+<p>The stack is split up as follows in the source tree:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">subsys/bluetooth/host</span></code></dt><dd><p>The host stack. This is where the HCI command and event handling
+as well as connection tracking happens. The implementation of the
+core protocols such as L2CAP, ATT, and SMP is also here.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">subsys/bluetooth/controller</span></code></dt><dd><p>Bluetooth Controller implementation. Implements the controller-side of
+HCI, the Link Layer as well as access to the radio transceiver.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">include/bluetooth/</span></code></dt><dd><p>Public API header files. These are the header files applications need
+to include in order to use Bluetooth functionality.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">drivers/bluetooth/</span></code></dt><dd><p>HCI transport drivers. Every HCI transport needs its own driver. For example,
+the two common types of UART transport protocols (3-Wire and 5-Wire)
+have their own drivers.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">samples/bluetooth/</span></code></dt><dd><p>Sample Bluetooth code. This is a good reference to get started with
+Bluetooth application development.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tests/bluetooth/</span></code></dt><dd><p>Test applications. These applications are used to verify the
+functionality of the Bluetooth stack, but are not necessary the best
+source for sample code (see <code class="docutils literal notranslate"><span class="pre">samples/bluetooth</span></code> instead).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">doc/guides/bluetooth/</span></code></dt><dd><p>Extra documentation, such as PICS documents.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="host">
+<h2>Host<a class="headerlink" href="#host" title="Permalink to this headline">¶</a></h2>
+<p>The Bluetooth Host implements all the higher-level protocols and
+profiles, and most importantly, provides a high-level API for
+applications. The following diagram depicts the main protocol &amp; profile
+layers of the host.</p>
+<div class="figure align-center" id="id3">
+<img alt="Bluetooth Host protocol &amp; profile layers" src="../../_images/ble_host_layers.png" />
+<p class="caption"><span class="caption-number">Fig. 21 </span><span class="caption-text">Bluetooth Host protocol &amp; profile layers.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>Lowest down in the host stack sits a so-called HCI driver, which is
+responsible for abstracting away the details of the HCI transport. It
+provides a basic API for delivering data from the controller to the
+host, and vice-versa.</p>
+<p>Perhaps the most important block above the HCI handling is the Generic
+Access Profile (GAP). GAP simplifies Bluetooth LE access by defining
+four distinct roles of BLE usage:</p>
+<ul class="simple">
+<li><p>Connection-oriented roles</p>
+<ul>
+<li><p>Peripheral (e.g. a smart sensor, often with a limited user interface)</p></li>
+<li><p>Central (typically a mobile phone or a PC)</p></li>
+</ul>
+</li>
+<li><p>Connection-less roles</p>
+<ul>
+<li><p>Broadcaster (sending out BLE advertisements, e.g. a smart beacon)</p></li>
+<li><p>Observer (scanning for BLE advertisements)</p></li>
+</ul>
+</li>
+</ul>
+<p>Each role comes with its own build-time configuration option:
+<a class="reference internal" href="../../kconfig.html#CONFIG_BT_PERIPHERAL" title="CONFIG_BT_PERIPHERAL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_PERIPHERAL</span></code></a>, <a class="reference internal" href="../../kconfig.html#CONFIG_BT_CENTRAL" title="CONFIG_BT_CENTRAL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_CENTRAL</span></code></a>,
+<a class="reference internal" href="../../kconfig.html#CONFIG_BT_BROADCASTER" title="CONFIG_BT_BROADCASTER"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_BROADCASTER</span></code></a> &amp; <a class="reference internal" href="../../kconfig.html#CONFIG_BT_OBSERVER" title="CONFIG_BT_OBSERVER"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_OBSERVER</span></code></a>. Of the
+connection-oriented roles central implicitly enables observer role, and
+peripheral implicitly enables broadcaster role. Usually the first step
+when creating an application is to decide which roles are needed and go
+from there. Bluetooth mesh is a slightly special case, requiring at
+least the observer and broadcaster roles, and possibly also the
+Peripheral role. This will be described in more detail in a later
+section.</p>
+<div class="section" id="peripheral-role">
+<h3>Peripheral role<a class="headerlink" href="#peripheral-role" title="Permalink to this headline">¶</a></h3>
+<p>Most Zephyr-based BLE devices will most likely be peripheral-role
+devices. This means that they perform connectable advertising and expose
+one or more GATT services. After registering services using the
+<a class="reference internal" href="../../reference/bluetooth/gatt.html#c.bt_gatt_service_register" title="bt_gatt_service_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_gatt_service_register()</span></code></a> API the application will typically
+start connectable advertising using the <a class="reference internal" href="../../reference/bluetooth/gap.html#c.bt_le_adv_start" title="bt_le_adv_start"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_le_adv_start()</span></code></a> API.</p>
+<p>There are several peripheral sample applications available in the tree,
+such as <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/samples/bluetooth/peripheral_hr">samples/bluetooth/peripheral_hr</a>.</p>
+</div>
+<div class="section" id="central-role">
+<h3>Central role<a class="headerlink" href="#central-role" title="Permalink to this headline">¶</a></h3>
+<p>Central role may not be as common for Zephyr-based devices as peripheral
+role, but it is still a plausible one and equally well supported in
+Zephyr. Rather than accepting connections from other devices a central
+role device will scan for available peripheral device and choose one to
+connect to. Once connected, a central will typically act as a GATT
+client, first performing discovery of available services and then
+accessing one or more supported services.</p>
+<p>To initially discover a device to connect to the application will likely
+use the <a class="reference internal" href="../../reference/bluetooth/gap.html#c.bt_le_scan_start" title="bt_le_scan_start"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_le_scan_start()</span></code></a> API, wait for an appropriate device
+to be found (using the scan callback), stop scanning using
+<a class="reference internal" href="../../reference/bluetooth/gap.html#c.bt_le_scan_stop" title="bt_le_scan_stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_le_scan_stop()</span></code></a> and then connect to the device using
+<code class="xref c c-func docutils literal notranslate"><span class="pre">bt_conn_create_le()</span></code>. If the central wants to keep
+automatically reconnecting to the peripheral it should use the
+<a class="reference internal" href="../../reference/bluetooth/connection_mgmt.html#c.bt_le_set_auto_conn" title="bt_le_set_auto_conn"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_le_set_auto_conn()</span></code></a> API.</p>
+<p>There are some sample applications for the central role available in the
+tree, such as <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/samples/bluetooth/central_hr">samples/bluetooth/central_hr</a>.</p>
+</div>
+<div class="section" id="observer-role">
+<h3>Observer role<a class="headerlink" href="#observer-role" title="Permalink to this headline">¶</a></h3>
+<p>An observer role device will use the <a class="reference internal" href="../../reference/bluetooth/gap.html#c.bt_le_scan_start" title="bt_le_scan_start"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_le_scan_start()</span></code></a> API to
+scan for device, but it will not connect to any of them. Instead it will
+simply utilize the advertising data of found devices, combining it
+optionally with the received signal strength (RSSI).</p>
+</div>
+<div class="section" id="broadcaster-role">
+<h3>Broadcaster role<a class="headerlink" href="#broadcaster-role" title="Permalink to this headline">¶</a></h3>
+<p>A broadcaster role device will use the <a class="reference internal" href="../../reference/bluetooth/gap.html#c.bt_le_adv_start" title="bt_le_adv_start"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_le_adv_start()</span></code></a> API to
+advertise specific advertising data, but the type of advertising will be
+non-connectable, i.e. other device will not be able to connect to it.</p>
+</div>
+<div class="section" id="connections">
+<h3>Connections<a class="headerlink" href="#connections" title="Permalink to this headline">¶</a></h3>
+<p>Connection handling and the related APIs can be found in the
+<a class="reference internal" href="../../reference/bluetooth/connection_mgmt.html#bluetooth-connection-mgmt"><span class="std std-ref">Connection Management</span></a> section.</p>
+</div>
+<div class="section" id="security">
+<h3>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h3>
+<p>To achieve a secure relationship between two Bluetooth devices a process
+called pairing is used. This process can either be triggered implicitly
+through the security properties of GATT services, or explicitly using
+the <code class="xref c c-func docutils literal notranslate"><span class="pre">bt_conn_security()</span></code> API on a connection object.</p>
+<p>To achieve a higher security level, and protect against
+Man-In-The-Middle (MITM) attacks, it is recommended to use some
+out-of-band channel during the pairing. If the devices have a sufficient
+user interface this “channel” is the user itself. The capabilities of
+the device are registered using the <a class="reference internal" href="../../reference/bluetooth/connection_mgmt.html#c.bt_conn_auth_cb_register" title="bt_conn_auth_cb_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_conn_auth_cb_register()</span></code></a>
+API.  The <a class="reference internal" href="../../reference/bluetooth/connection_mgmt.html#c.bt_conn_auth_cb" title="bt_conn_auth_cb"><code class="xref c c-struct docutils literal notranslate"><span class="pre">bt_conn_auth_cb</span></code></a> struct that’s passed to this API has
+a set of optional callbacks that can be used during the pairing - if the
+device lacks some feature the corresponding callback may be set to NULL.
+For example, if the device does not have an input method but does have a
+display, the <code class="docutils literal notranslate"><span class="pre">passkey_entry</span></code> and <code class="docutils literal notranslate"><span class="pre">passkey_confirm</span></code> callbacks would
+be set to NULL, but the <code class="docutils literal notranslate"><span class="pre">passkey_display</span></code> would be set to a callback
+capable of displaying a passkey to the user.</p>
+<p>Depending on the local and remote security requirements &amp; capabilities,
+there are four possible security levels that can be reached:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><a class="reference internal" href="../../reference/bluetooth/connection_mgmt.html#c.bt_security_t.BT_SECURITY_L1" title="BT_SECURITY_L1"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">BT_SECURITY_L1</span></code></a></dt><dd><p>No encryption and no authentication.</p>
+</dd>
+<dt><a class="reference internal" href="../../reference/bluetooth/connection_mgmt.html#c.bt_security_t.BT_SECURITY_L2" title="BT_SECURITY_L2"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">BT_SECURITY_L2</span></code></a></dt><dd><p>Encryption but no authentication (no MITM protection).</p>
+</dd>
+<dt><a class="reference internal" href="../../reference/bluetooth/connection_mgmt.html#c.bt_security_t.BT_SECURITY_L3" title="BT_SECURITY_L3"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">BT_SECURITY_L3</span></code></a></dt><dd><p>Encryption and authentication using the legacy pairing method
+from Bluetooth 4.0 and 4.1.</p>
+</dd>
+<dt><a class="reference internal" href="../../reference/bluetooth/connection_mgmt.html#c.bt_security_t.BT_SECURITY_L4" title="BT_SECURITY_L4"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">BT_SECURITY_L4</span></code></a></dt><dd><p>Encryption and authentication using the LE Secure Connections
+feature available since Bluetooth 4.2.</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Mesh has its own security solution through a process called
+provisioning. It follows a similar procedure as pairing, but is done
+using separate mesh-specific APIs.</p>
+</div>
+</div>
+<div class="section" id="l2cap">
+<h3>L2CAP<a class="headerlink" href="#l2cap" title="Permalink to this headline">¶</a></h3>
+<p>L2CAP stands for the Logical Link Control and Adaptation Protocol. It is
+a common layer for all communication over Bluetooth connections, however
+an application comes in direct contact with it only when using it in the
+so-called Connection-oriented Channels (CoC) mode. More information on
+this can be found in the <a class="reference internal" href="../../reference/bluetooth/l2cap.html#bt-l2cap"><span class="std std-ref">L2CAP API section</span></a>.</p>
+</div>
+<div class="section" id="gatt">
+<h3>GATT<a class="headerlink" href="#gatt" title="Permalink to this headline">¶</a></h3>
+<p>The Generic Attribute Profile is the most common means of communication
+over LE connections. A more detailed description of this layer and the
+API reference can be found in the
+<a class="reference internal" href="../../reference/bluetooth/gatt.html#bt-gatt"><span class="std std-ref">GATT API reference section</span></a>.</p>
+</div>
+<div class="section" id="mesh">
+<h3>Mesh<a class="headerlink" href="#mesh" title="Permalink to this headline">¶</a></h3>
+<p>Mesh is a little bit special when it comes to the needed GAP roles. By
+default, mesh requires both observer and broadcaster role to be enabled.
+If the optional GATT Proxy feature is desired, then peripheral role
+should also be enabled.</p>
+<p>The API reference for mesh can be found in the
+<a class="reference internal" href="../../reference/bluetooth/mesh.html#bluetooth-mesh"><span class="std std-ref">Mesh API reference section</span></a>.</p>
+</div>
+<div class="section" id="persistent-storage">
+<span id="bluetooth-persistent-storage"></span><h3>Persistent storage<a class="headerlink" href="#persistent-storage" title="Permalink to this headline">¶</a></h3>
+<p>The Bluetooth host stack uses the settings subsystem to implement
+persistent storage to flash. This requires the presence of a flash
+driver and a designated “storage” partition on flash. A typical set of
+configuration options needed will look something like the following:</p>
+<blockquote>
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>CONFIG_BT_SETTINGS=y
+CONFIG_FLASH=y
+CONFIG_FLASH_PAGE_LAYOUT=y
+CONFIG_FLASH_MAP=y
+CONFIG_NVS=y
+CONFIG_SETTINGS=y
+</pre></div>
+</div>
+</div></blockquote>
+<p>Once enabled, it is the responsibility of the application to call
+settings_load() after having initialized Bluetooth (using the
+bt_enable() API).</p>
+</div>
+</div>
+<div class="section" id="bluetooth-low-energy-controller">
+<h2>Bluetooth Low Energy Controller<a class="headerlink" href="#bluetooth-low-energy-controller" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="hardware-requirements">
+<h3>Hardware Requirements<a class="headerlink" href="#hardware-requirements" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nordic-semiconductor">
+<h4>Nordic Semiconductor<a class="headerlink" href="#nordic-semiconductor" title="Permalink to this headline">¶</a></h4>
+<p>The Nordic Semiconductor Bluetooth Low Energy Controller implementation
+requires the following hardware peripherals.</p>
+<ol class="arabic simple">
+<li><p>Clock</p>
+<ul class="simple">
+<li><p>A Low Frequency Clock (LFCLOCK) or sleep clock, for low power consumption
+between Bluetooth radio events</p></li>
+<li><p>A High Frequency Clock (HFCLOCK) or active clock, for high precision
+packet timing and software based transceiver state switching with
+inter-frame space (tIFS) timing inside Bluetooth radio events</p></li>
+</ul>
+</li>
+<li><p>Real Time Counter (RTC)</p>
+<ul class="simple">
+<li><p>1 instance</p></li>
+<li><p>2 capture/compare registers</p></li>
+</ul>
+</li>
+<li><p>Timer</p>
+<ul class="simple">
+<li><p>2 instances, one each for packet timing and tIFS software switching,
+respectively</p></li>
+<li><p>7 capture/compare registers (3 mandatory, 1 optional for ISR profiling, 4
+for single timer tIFS switching) on first instance</p></li>
+<li><p>4 capture/compare registers for second instance, if single tIFS timer is
+not used.</p></li>
+</ul>
+</li>
+<li><p>Programmable Peripheral Interconnect (PPI)</p>
+<ul class="simple">
+<li><p>21 channels (20 channels when not using pre-defined channels)</p></li>
+<li><p>2 channel groups for software-based tIFS switching</p></li>
+</ul>
+</li>
+<li><p>Distributed Programmable Peripheral Interconnect (DPPI)</p>
+<ul class="simple">
+<li><p>20 channels</p></li>
+<li><p>2 channel groups for s/w tIFS switching</p></li>
+</ul>
+</li>
+<li><p>Software Interrupt (SWI)</p>
+<ul class="simple">
+<li><p>3 instances, for Lower Link Layer, Upper Link Layer High priority, and
+Upper Link Layer Low priority execution</p></li>
+</ul>
+</li>
+<li><p>Radio</p>
+<ul class="simple">
+<li><p>2.4 GHz radio transceiver with multiple radio standards such as 1 Mbps, 2
+Mbps and Long Range Bluetooth Low Energy technology</p></li>
+</ul>
+</li>
+<li><p>Random Number Generator (RNG)</p>
+<ul class="simple">
+<li><p>1 instance</p></li>
+</ul>
+</li>
+<li><p>AES electronic codebook mode encryption (ECB)</p>
+<ul class="simple">
+<li><p>1 instance</p></li>
+</ul>
+</li>
+<li><p>Cipher Block Chaining - Message Authentication Code with Counter Mode
+encryption (CCM)</p>
+<ul class="simple">
+<li><p>1 instance</p></li>
+</ul>
+</li>
+<li><p>Accelerated address resolver (AAR)</p>
+<ul class="simple">
+<li><p>1 instance</p></li>
+</ul>
+</li>
+<li><p>GPIO</p>
+<ul class="simple">
+<li><p>2 GPIO pins for PA and LNA, 1 each.</p></li>
+<li><p>10 Debug GPIO pins (optional)</p></li>
+</ul>
+</li>
+<li><p>GPIO tasks and events (GPIOTE)</p>
+<ul class="simple">
+<li><p>1 instance</p></li>
+<li><p>1 channel for PA/LNA</p></li>
+</ul>
+</li>
+<li><p>Temperature sensor (TEMP)</p>
+<ul class="simple">
+<li><p>For RC calibration</p></li>
+</ul>
+</li>
+<li><p>Interprocess Communication peripheral (IPC)</p>
+<ul class="simple">
+<li><p>For HCI interface</p></li>
+</ul>
+</li>
+<li><p>UART</p>
+<ul class="simple">
+<li><p>For HCI interface</p></li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="standard">
+<h3>Standard<a class="headerlink" href="#standard" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="split">
+<h3>Split<a class="headerlink" href="#split" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="bluetooth-qual.html" class="btn btn-neutral float-right" title="Bluetooth Qualification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="overview.html" class="btn btn-neutral" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

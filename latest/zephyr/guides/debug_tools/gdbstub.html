@@ -1,0 +1,601 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>GDB stub &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Tracing" href="tracing/index.html" />
+    <link rel="prev" title="Core Dump" href="coredump.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Debugging and Tracing</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="thread-analyzer.html">Thread analyzer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coredump.html">Core Dump</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">GDB stub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enabling-gdb-stub">Enabling GDB Stub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debugging">Debugging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tracing/index.html">Tracing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Debugging and Tracing</a> &raquo;</li>
+        
+      <li>GDB stub</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/debug_tools/gdbstub.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gdb-stub">
+<span id="gdbstub"></span><h1>GDB stub<a class="headerlink" href="#gdb-stub" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
+<li><p><a class="reference internal" href="#features" id="id3">Features</a></p></li>
+<li><p><a class="reference internal" href="#enabling-gdb-stub" id="id4">Enabling GDB Stub</a></p>
+<ul>
+<li><p><a class="reference internal" href="#using-serial-backend" id="id5">Using Serial Backend</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#debugging" id="id6">Debugging</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id7">Using Serial Backend</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#example" id="id8">Example</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The gdbstub feature provides an implementation of the GDB Remote
+Serial Protocol (RSP) that allows you to remotely debug Zephyr
+using GDB.</p>
+<p>The protocol supports different connection types: serial, UDP/IP and
+TCP/IP. Zephyr currently supports only serial device communication.</p>
+<p>The GDB program acts as the client while Zephyr acts as the
+server. When this feature is enabled, Zephyr stops its execution after
+<code class="xref c c-func docutils literal notranslate"><span class="pre">gdb_init()</span></code> starts gdbstub service and waits for a GDB
+connection. Once a connection is established it is possible to
+synchronously interact with Zephyr. Note that currently it is not
+possible to asynchronously send commands to the target.</p>
+</div>
+<div class="section" id="features">
+<h2><a class="toc-backref" href="#id3">Features</a><a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<p>The following features are supported:</p>
+<ul class="simple">
+<li><p>Add and remove breakpoints</p></li>
+<li><p>Continue and step the target</p></li>
+<li><p>Print backtrace</p></li>
+<li><p>Read or write general registers</p></li>
+<li><p>Read or write the memory</p></li>
+</ul>
+</div>
+<div class="section" id="enabling-gdb-stub">
+<h2><a class="toc-backref" href="#id4">Enabling GDB Stub</a><a class="headerlink" href="#enabling-gdb-stub" title="Permalink to this headline">¶</a></h2>
+<p>GDB stub can be enabled with the <a class="reference internal" href="../../kconfig.html#CONFIG_GDBSTUB" title="CONFIG_GDBSTUB"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_GDBSTUB</span></code></a> option.</p>
+<div class="section" id="using-serial-backend">
+<h3><a class="toc-backref" href="#id5">Using Serial Backend</a><a class="headerlink" href="#using-serial-backend" title="Permalink to this headline">¶</a></h3>
+<p>The serial backend for GDB stub can be enabled with
+the <a class="reference internal" href="../../kconfig.html#CONFIG_GDBSTUB_SERIAL_BACKEND" title="CONFIG_GDBSTUB_SERIAL_BACKEND"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_GDBSTUB_SERIAL_BACKEND</span></code></a> option.</p>
+<p>Since serial backend utilizes UART devices to send and receive GDB commands,</p>
+<ul class="simple">
+<li><p>If there are spare UART devices on the board, set
+<a class="reference internal" href="../../kconfig.html#CONFIG_GDBSTUB_SERIAL_BACKEND_NAME" title="CONFIG_GDBSTUB_SERIAL_BACKEND_NAME"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_GDBSTUB_SERIAL_BACKEND_NAME</span></code></a> to the spare UART device
+so that <code class="xref c c-func docutils literal notranslate"><span class="pre">printk()</span></code> and log messages are not being printed to
+the same UART device used for GDB.</p></li>
+<li><p>For boards with only one UART device, <code class="xref c c-func docutils literal notranslate"><span class="pre">printk()</span></code> and logging
+must be disabled if they are also using the same UART device for output.
+GDB related messages may interleave with log messages which may have
+unintended consequences. Usually this can be done by disabling
+<a class="reference internal" href="../../kconfig.html#CONFIG_PRINTK" title="CONFIG_PRINTK"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PRINTK</span></code></a> and <a class="reference internal" href="../../kconfig.html#CONFIG_LOG" title="CONFIG_LOG"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_LOG</span></code></a>.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="debugging">
+<h2><a class="toc-backref" href="#id6">Debugging</a><a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3><a class="toc-backref" href="#id7">Using Serial Backend</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>Build with GDB stub and serial backend enabled.</p></li>
+<li><p>Flash built image onto board and reset the board.</p>
+<ul class="simple">
+<li><p>Execution should now be paused at <code class="xref c c-func docutils literal notranslate"><span class="pre">gdb_init()</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Execute GDB on development machine and connect to the GDB stub.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>target remote &lt;serial device&gt;
+</pre></div>
+</div>
+<p>For example,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>target remote /dev/ttyUSB1
+</pre></div>
+</div>
+</li>
+<li><p>GDB commands can be used to start debugging.</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="example">
+<h2><a class="toc-backref" href="#id8">Example</a><a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>This is an example using <code class="docutils literal notranslate"><span class="pre">samples/subsys/debug/gdbstub</span></code> to demonstrate
+how GDB stub works.</p>
+<ol class="arabic">
+<li><p>Open two terminal windows.</p></li>
+<li><p>On the first terminal, build and run the sample:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>From the root of the zephyr repository
+<span class="go">west build -b qemu_x86 samples/subsys/debug/gdbstub</span>
+<span class="go">west build -t run</span>
+</pre></div>
+</div>
+</li>
+<li><p>On the second terminal, start GDB:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;SDK install directory&gt;/x86_64-zephyr-elf/bin/x86_64-zephyr-elf-gdb
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p>Tell GDB where to look for the built ELF file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) file &lt;build directory&gt;/zephyr/zephyr.elf
+</pre></div>
+</div>
+<p>Response from GDB:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Reading symbols from &lt;build directory&gt;/zephyr/zephyr.elf...
+</pre></div>
+</div>
+</li>
+<li><p>Tell GDB to connect to the server:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) target remote localhost:5678
+</pre></div>
+</div>
+<p>Note that QEMU is setup to redirect the serial used for GDB stub in
+the Zephyr image to a networking port. Hence the connection to
+localhost, port 5678.</p>
+<p>Response from GDB:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Remote debugging using :5678
+arch_gdb_init () at &lt;ZEPHYR_BASE&gt;/arch/x86/core/ia32/gdbstub.c:232
+232     }
+</pre></div>
+</div>
+<p>GDB also shows where the code execution is stopped. In this case,
+it is at <code class="file docutils literal notranslate"><span class="pre">arch/x86/core/ia32/gdbstub.c</span></code>, line 232.</p>
+</li>
+<li><p>Use command <code class="docutils literal notranslate"><span class="pre">bt</span></code> or <code class="docutils literal notranslate"><span class="pre">backtrace</span></code> to show the backtrace of stack frames.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) bt
+#0  arch_gdb_init () at &lt;ZEPHYR_BASE&gt;/arch/x86/core/ia32/gdbstub.c:232
+#1  0x00105068 in gdb_init (arg=0x0) at &lt;ZEPHYR_BASE&gt;/subsys/debug/gdbstub.c:833
+#2  0x00109d6f in z_sys_init_run_level (level=0x1) at &lt;ZEPHYR_BASE&gt;/kernel/device.c:72
+#3  0x0010a40b in z_cstart () at &lt;ZEPHYR_BASE&gt;/kernel/init.c:423
+#4  0x00105383 in z_x86_prep_c (arg=0x9500) at &lt;ZEPHYR_BASE&gt;/arch/x86/core/prep_c.c:58
+#5  0x001000a9 in __csSet () at &lt;ZEPHYR_BASE&gt;/arch/x86/core/ia32/crt0.S:273
+</pre></div>
+</div>
+</li>
+<li><p>Use command <code class="docutils literal notranslate"><span class="pre">list</span></code> to show the source code and surroundings where
+code execution is stopped.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) list
+227     }
+228
+229     void arch_gdb_init(void)
+230     {
+231             __asm__ volatile (&quot;int3&quot;);
+232     }
+233
+234     /* Hook current IDT. */
+235     _EXCEPTION_CONNECT_NOCODE(z_gdb_debug_isr, IV_DEBUG, 3);
+236     _EXCEPTION_CONNECT_NOCODE(z_gdb_break_isr, IV_BREAKPOINT, 3);
+</pre></div>
+</div>
+</li>
+<li><p>Use command <code class="docutils literal notranslate"><span class="pre">s</span></code> or <code class="docutils literal notranslate"><span class="pre">step</span></code> to step through program until it reaches
+a different source line. Now that it finished executing <a class="reference internal" href="../porting/arch.html#c.arch_gdb_init" title="arch_gdb_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">arch_gdb_init()</span></code></a>
+and is continuing in <code class="xref c c-func docutils literal notranslate"><span class="pre">gdb_init()</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) s
+gdb_init (arg=0x0) at /home/dleung5/zephyr/rtos/zephyr/subsys/debug/gdbstub.c:834
+834     return 0;
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) list
+829                     LOG_ERR(&quot;Could not initialize gdbstub backend.&quot;);
+830                     return -1;
+831             }
+832
+833             arch_gdb_init();
+834             return 0;
+835     }
+836
+837     #ifdef CONFIG_XTENSA
+838     /*
+</pre></div>
+</div>
+</li>
+<li><p>Use command <code class="docutils literal notranslate"><span class="pre">br</span></code> or <code class="docutils literal notranslate"><span class="pre">break</span></code> to setup a breakpoint. This example
+sets up a breakpoint at <code class="xref c c-func docutils literal notranslate"><span class="pre">main()</span></code>, and let code execution continue
+without any intervention using command <code class="docutils literal notranslate"><span class="pre">c</span></code> (or <code class="docutils literal notranslate"><span class="pre">continue</span></code>).</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) break main
+Breakpoint 1 at 0x1005a9: file &lt;ZEPHYR_BASE&gt;/samples/subsys/debug/gdbstub/src/main.c, line 32.
+(gdb) continue
+Continuing.
+</pre></div>
+</div>
+<p>Once code execution reaches <code class="xref c c-func docutils literal notranslate"><span class="pre">main()</span></code>, execution will be stopped
+and GDB prompt returns.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Breakpoint 1, main () at &lt;ZEPHYR_BASE&gt;/samples/subsys/debug/gdbstub/src/main.c:32
+32           ret = test();
+</pre></div>
+</div>
+<p>Now GDB is waiting at the beginning of <code class="xref c c-func docutils literal notranslate"><span class="pre">main()</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) list
+27
+28     void main(void)
+29     {
+30             int ret;
+31
+32             ret = test();
+33             printk(&quot;%d\n&quot;, ret);
+34     }
+35
+36     K_THREAD_DEFINE(thread, STACKSIZE, thread_entry, NULL, NULL, NULL,
+</pre></div>
+</div>
+</li>
+<li><p>To examine the value of <code class="docutils literal notranslate"><span class="pre">ret</span></code>, the command <code class="docutils literal notranslate"><span class="pre">p</span></code> or <code class="docutils literal notranslate"><span class="pre">print</span></code>
+can be used.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) p ret
+$1 = 0x11318c
+</pre></div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">ret</span></code> has not been assigned a value yet, what it contains is
+simply a random value.</p>
+</li>
+<li><p>If step (<code class="docutils literal notranslate"><span class="pre">s</span></code> or <code class="docutils literal notranslate"><span class="pre">step</span></code>) is used here, it will continue execution
+until <code class="xref c c-func docutils literal notranslate"><span class="pre">printk()</span></code> is reached, thus skipping the interior of
+<code class="xref c c-func docutils literal notranslate"><span class="pre">test()</span></code>. To examine code execution inside <code class="xref c c-func docutils literal notranslate"><span class="pre">test()</span></code>,
+a breakpoint can be set for <code class="xref c c-func docutils literal notranslate"><span class="pre">test()</span></code>, or simply using
+<code class="docutils literal notranslate"><span class="pre">si</span></code> (or <code class="docutils literal notranslate"><span class="pre">stepi</span></code>) to execute one machine instruction, where it has
+the side effect of going into the function.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) si
+test () at &lt;ZEPHYR_BASE&gt;/samples/subsys/debug/gdbstub/src/main.c:13
+13     {
+(gdb) list
+8      #include &lt;sys/printk.h&gt;
+9
+10     #define STACKSIZE 512
+11
+12     static int test(void)
+13     {
+14             int a;
+15             int b;
+16
+17             a = 10;
+</pre></div>
+</div>
+</li>
+<li><p>Here, <code class="docutils literal notranslate"><span class="pre">step</span></code> can be used to go through all code inside <code class="xref c c-func docutils literal notranslate"><span class="pre">test()</span></code>
+until it returns. Or the command <code class="docutils literal notranslate"><span class="pre">finish</span></code> can be used to continue
+execution without intervention until the function returns.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) finish
+Run till exit from #0  test () at &lt;ZEPHYR_BASE&gt;/samples/subsys/debug/gdbstub/src/main.c:13
+0x001005ae in main () at &lt;ZEPHYR_BASE&gt;/samples/subsys/debug/gdbstub/src/main.c:32
+32             ret = test();
+Value returned is $2 = 0x1e
+</pre></div>
+</div>
+<p>And now, execution is back to <code class="xref c c-func docutils literal notranslate"><span class="pre">main()</span></code>.</p>
+</li>
+<li><p>Examine <code class="docutils literal notranslate"><span class="pre">ret</span></code> again which should have the return value from
+<code class="xref c c-func docutils literal notranslate"><span class="pre">test()</span></code>. Sometimes, the assignment is not done until another
+<code class="docutils literal notranslate"><span class="pre">step</span></code> is issued, as in this case. This is due to the assginment
+code is done after retruning from function. The assignment code is
+generated by the toolchain as machine instructions which are not
+visible when viewing the corresponding C source file.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(gdb) p ret
+$3 = 0x11318c
+(gdb) s
+33              printk(&quot;%d\n&quot;, ret);
+(gdb) p ret
+$4 = 0x1e
+</pre></div>
+</div>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">continue</span></code> is issued here, code execution will continue indefinitely
+as there are no breakpoints to further stop exection. Breaking execution
+in GDB via Ctrl-C does not currently work as the GDB stub does not
+support this functionality (yet).</p></li>
+</ol>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tracing/index.html" class="btn btn-neutral float-right" title="Tracing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="coredump.html" class="btn btn-neutral" title="Core Dump" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

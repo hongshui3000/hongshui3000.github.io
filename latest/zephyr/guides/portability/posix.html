@@ -1,0 +1,1609 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>POSIX Support &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="CMSIS RTOS v1" href="cmsis_rtos_v1.html" />
+    <link rel="prev" title="OS Abstraction" href="index.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">OS Abstraction</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">POSIX Support</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#system-overview">System Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Units of Functionality</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cmsis_rtos_v1.html">CMSIS RTOS v1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cmsis_rtos_v2.html">CMSIS RTOS v2</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">OS Abstraction</a> &raquo;</li>
+        
+      <li>POSIX Support</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/portability/posix.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="posix-support">
+<h1>POSIX Support<a class="headerlink" href="#posix-support" title="Permalink to this headline">¶</a></h1>
+<p>The Portable Operating System Interface (POSIX) is a family of standards
+specified by the IEEE Computer Society for maintaining compatibility between
+operating systems. Zephyr implements a subset of the embedded profiles PSE51
+and PSE52, and BSD Sockets API.</p>
+<p>With the POSIX support available in Zephyr, an existing POSIX compliant
+application can be ported to run on the Zephyr kernel, and therefore leverage
+Zephyr features and functionality. Additionally, a library designed for use with
+POSIX threading compatible operating systems can be ported to Zephyr kernel
+based applications with minimal or no changes.</p>
+<div class="figure align-center" id="id2">
+<img alt="POSIX Support in Zephyr" src="../../_images/posix.svg" /><p class="caption"><span class="caption-number">Fig. 35 </span><span class="caption-text">POSIX support in Zephyr</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>The POSIX API subset is an increasingly popular OSAL (operating system
+abstraction layer) for IoT and embedded applications, as can be seen in
+Zephyr, AWS:FreeRTOS, TI-RTOS, and NuttX.</p>
+<p>Benefits of POSIX support in Zephyr include:</p>
+<ul class="simple">
+<li><p>Offering a familiar API to non-embedded programmers, especially from Linux</p></li>
+<li><p>Enabling reuse (portability) of existing libraries based on POSIX APIs</p></li>
+<li><p>Providing an efficient API subset appropriate for small (MCU) embedded systems</p></li>
+</ul>
+<div class="section" id="system-overview">
+<h2>System Overview<a class="headerlink" href="#system-overview" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="units-of-functionality">
+<h3>Units of Functionality<a class="headerlink" href="#units-of-functionality" title="Permalink to this headline">¶</a></h3>
+<p>The system profile is defined in terms of component profiles that specify Units
+of Functionality that can be combined to realize the application platform. A Unit
+of Functionality is a defined set of services which can be implemented. If
+implemented, the standard prescribes that all services in the Unit must
+be implemented.</p>
+<p>A Minimal Realtime System Profile implementation must support the
+following Units of Functionality as defined in IEEE Std. 1003.1 (also referred to
+as POSIX.1-2017).</p>
+<table class="colwidths-given docutils align-default" id="id3">
+<caption><span class="caption-number">Table 31 </span><span class="caption-text">Units of Functionality</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 8%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Requirements</p></th>
+<th class="head"><p>Supported</p></th>
+<th class="head"><p>Remarks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>POSIX_C_LANG_JUMP</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>POSIX_C_LANG_SUPPORT</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>POSIX_DEVICE_IO</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>POSIX_FILE_LOCKING</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>POSIX_SIGNALS</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>POSIX_SINGLE_PROCESS</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>POSIX_THREADS_BASE</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>XSI_THREAD_MUTEX_EXT</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>XSI_THREADS_EXT</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="option-requirements">
+<h3>Option Requirements<a class="headerlink" href="#option-requirements" title="Permalink to this headline">¶</a></h3>
+<p>An implementation supporting the Minimal Realtime System
+Profile must support the POSIX.1 Option Requirements which are defined in the
+standard. Options Requirements are used for further sub-profiling within the
+units of functionality: they further define the functional behavior of the
+system service (normally adding extra functionality). Depending on the profile
+to which the POSIX implementation complies,parameters and/or the precise
+functionality of certain services may differ.</p>
+<p>The following list shows the option requirements that are implemented in
+Zephyr.</p>
+<table class="colwidths-given docutils align-default" id="id4">
+<caption><span class="caption-number">Table 32 </span><span class="caption-text">Option Requirements</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 83%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Requirements</p></th>
+<th class="head"><p>Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>_POSIX_CLOCK_SELECTION</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>_POSIX_FSYNC</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>_POSIX_MEMLOCK</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>_POSIX_MEMLOCK_RANGE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>_POSIX_MONOTONIC_CLOCK</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>_POSIX_NO_TRUNC</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>_POSIX_REALTIME_SIGNALS</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>_POSIX_SEMAPHORES</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>_POSIX_SHARED_MEMORY_OBJECTS</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>_POSIX_SYNCHRONIZED_IO</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>_POSIX_THREAD_ATTR_STACKADDR</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>_POSIX_THREAD_ATTR_STACKSIZE</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>_POSIX_THREAD_CPUTIME</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>_POSIX_THREAD_PRIO_INHERIT</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>_POSIX_THREAD_PRIO_PROTECT</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>_POSIX_THREAD_PRIORITY_SCHEDULING</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>_POSIX_THREAD_SPORADIC_SERVER</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>_POSIX_TIMEOUTS</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>_POSIX_TIMERS</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>_POSIX2_C_DEV</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>_POSIX2_SW_DEV</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Units of Functionality<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>This section describes the Units of Functionality (fixed sets of interfaces)
+which are implemented (partially or completely) in Zephyr. Please refer to the
+standard for a full description of each listed interface.</p>
+<div class="section" id="posix-threads-base">
+<h3>POSIX_THREADS_BASE<a class="headerlink" href="#posix-threads-base" title="Permalink to this headline">¶</a></h3>
+<p>The basic assumption in this profile is that the system
+consists of a single (implicit) process with multiple threads. Therefore, the
+standard requires all basic thread services, except those related to
+multiple processes.</p>
+<table class="colwidths-given docutils align-default" id="id5">
+<caption><span class="caption-number">Table 33 </span><span class="caption-text">POSIX_THREADS_BASE</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 83%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>API</p></th>
+<th class="head"><p>Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pthread_atfork()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pthread_attr_destroy()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_attr_getdetachstate()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_attr_getschedparam()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_attr_init()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_attr_setdetachstate()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_attr_setschedparam()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_cancel()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_cleanup_pop()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pthread_cleanup_push()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pthread_cond_broadcast()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_cond_destroy()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pthread_cond_init()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_cond_signal()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_cond_timedwait()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_cond_wait()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_condattr_destroy()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pthread_condattr_init()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pthread_create()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_detach()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_equal()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pthread_exit()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_getspecific()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_join()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_key_create()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_key_delete()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_kill()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pthread_mutex_destroy()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_mutex_init()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_mutex_lock()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_mutex_trylock()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_mutex_unlock()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_mutexattr_destroy()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pthread_mutexattr_init()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pthread_once()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_self()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_setcalcelstate()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pthread_setcanceltype()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pthread_setspecific()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_sigmask()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pthread_testcancel()</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="xsi-thread-ext">
+<h3>XSI_THREAD_EXT<a class="headerlink" href="#xsi-thread-ext" title="Permalink to this headline">¶</a></h3>
+<p>The XSI_THREADS_EXT Unit of Functionality is required because it provides
+functions to control a thread’s stack. This is considered useful for any
+real-time application.</p>
+<p>This table lists service support status in Zephyr:</p>
+<table class="colwidths-given docutils align-default" id="id6">
+<caption><span class="caption-number">Table 34 </span><span class="caption-text">XSI_THREAD_EXT</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 83%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>API</p></th>
+<th class="head"><p>Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pthread_attr_getguardsize()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pthread_attr_getstack()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_attr_setguardsize()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pthread_attr_setstack()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>pthread_getconcurrency()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pthread_setconcurrency()</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="xsi-thread-mutex-ext">
+<h3>XSI_THREAD_MUTEX_EXT<a class="headerlink" href="#xsi-thread-mutex-ext" title="Permalink to this headline">¶</a></h3>
+<p>The XSI_THREAD_MUTEX_EXT Unit of Functionality is required because it has
+options for controlling the behavior of mutexes under erroneous application use.</p>
+<p>This table lists service support status in Zephyr:</p>
+<table class="colwidths-given docutils align-default" id="id7">
+<caption><span class="caption-number">Table 35 </span><span class="caption-text">XSI_THREAD_MUTEX_EXT</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 83%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>API</p></th>
+<th class="head"><p>Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pthread_mutexattr_gettype()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>pthread_mutexattr_settype()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="posix-c-lang-support">
+<h3>POSIX_C_LANG_SUPPORT<a class="headerlink" href="#posix-c-lang-support" title="Permalink to this headline">¶</a></h3>
+<p>The POSIX_C_LANG_SUPPORT Unit of Functionality contains the general ISO C
+Library.</p>
+<p>This is implemented as part of the minimal C library available in Zephyr.</p>
+<table class="colwidths-given docutils align-default" id="id8">
+<caption><span class="caption-number">Table 36 </span><span class="caption-text">POSIX_C_LANG_SUPPORT</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 83%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>API</p></th>
+<th class="head"><p>Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>abs()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>asctime()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>asctime_r()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>atof()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>atoi()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>atol()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>atoll()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>bsearch()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>calloc()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>ctime()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>ctime_r()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>difftime()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>div()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>feclearexcept()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>fegetenv()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>fegetexceptflag()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>fegetround()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>feholdexcept()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>feraiseexcept()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>fesetenv()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>fesetexceptflag()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>fesetround()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>fetestexcept()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>feupdateenv()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>free()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>gmtime()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>gmtime_r()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>imaxabs()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>imaxdiv()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>isalnum()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>isalpha()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>isblank()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>iscntrl()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>isdigit()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>isgraph()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>islower()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>isprint()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>ispunct()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>isspace()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>isupper()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>isxdigit()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>labs()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>ldiv()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>llabs()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>lldiv()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>localeconv()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>localtime()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>localtime_r()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>malloc()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>memchr()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>memcmp()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>memcpy()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>memmove()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>memset()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>mktime()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>qsort()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>rand()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>rand_r()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>realloc()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>setlocale()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>snprintf()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>sprintf()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>srand()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>sscanf()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>strcat()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>strchr()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>strcmp()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>strcoll()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>strcpy()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>strcspn()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>strerror()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>strerror_r()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>strftime()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>strlen()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>strncat()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>strncmp()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>strncpy()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>strpbrk()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>strrchr()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>strspn()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>strstr()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>strtod()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>strtof()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>strtoimax()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>strtok()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>strtok_r()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>strtol()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>strtold()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>strtoll()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>strtoul()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>strtoull()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>strtoumax()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>strxfrm()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>time()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>tolower()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>toupper()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>tzname()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>tzset()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>va_arg()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>va_copy()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>va_end()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>va_start()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>vsnprintf()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>vsprintf()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>vsscanf()</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="posix-single-process">
+<h3>POSIX_SINGLE_PROCESS<a class="headerlink" href="#posix-single-process" title="Permalink to this headline">¶</a></h3>
+<p>The POSIX_SINGLE_PROCESS Unit of Functionality contains services for single
+process applications.</p>
+<table class="colwidths-given docutils align-default" id="id9">
+<caption><span class="caption-number">Table 37 </span><span class="caption-text">POSIX_SINGLE_PROCESS</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 83%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>API</p></th>
+<th class="head"><p>Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>confstr()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>environ</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>errno</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>getenv()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>setenv()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>sysconf()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>uname()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>unsetenv()</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="posix-signals">
+<h3>POSIX_SIGNALS<a class="headerlink" href="#posix-signals" title="Permalink to this headline">¶</a></h3>
+<p>Signal services are a basic mechanism within POSIX-based systems and are
+required for error and event handling.</p>
+<table class="colwidths-given docutils align-default" id="id10">
+<caption><span class="caption-number">Table 38 </span><span class="caption-text">POSIX_SIGNALS</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 83%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>API</p></th>
+<th class="head"><p>Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>abort()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>alarm()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>kill()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pause()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>raise()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>sigaction()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>igaddset()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>sigdelset()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>sigemptyset()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>sigfillset()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>igismember()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>signal()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>sigpending()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>sigprocmask()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>igsuspend()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>sigwait()</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="posix-device-io">
+<h3>POSIX_DEVICE_IO<a class="headerlink" href="#posix-device-io" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" id="id11">
+<caption><span class="caption-number">Table 39 </span><span class="caption-text">POSIX_DEVICE_IO</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 83%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>API</p></th>
+<th class="head"><p>Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>flockfile()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>ftrylockfile()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>funlockfile()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>getc_unlocked()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>getchar_unlocked()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>putc_unlocked()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>putchar_unlocked()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>clearerr()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>close()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>fclose()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>fdopen()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>feof()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>ferror()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>fflush()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>fgetc()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>fgets()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>fileno()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>fopen()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>fprintf()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>fputc()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>fputs()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>fread()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>freopen()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>fscanf()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>fwrite()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>getc()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>getchar()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>gets()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>open()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>perror()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>printf()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>putc()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>putchar()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>puts()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>read()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>scanf()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>setbuf()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>etvbuf()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>stderr</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>stdin</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>stdout</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>ungetc()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>vfprintf()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>vfscanf()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>vprintf()</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>vscanf()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>write()</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cmsis_rtos_v1.html" class="btn btn-neutral float-right" title="CMSIS RTOS v1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="OS Abstraction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

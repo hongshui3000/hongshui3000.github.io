@@ -1,0 +1,5 @@
+var group__COUNTER__TOP__FLAGS =
+[
+    [ "COUNTER_TOP_CFG_DONT_RESET", "group__COUNTER__TOP__FLAGS.html#ga9a30c647361912c2ce8e0566cf53dea7", null ],
+    [ "COUNTER_TOP_CFG_RESET_WHEN_LATE", "group__COUNTER__TOP__FLAGS.html#ga45562a4ddd743f74213a03d83a774b11", null ]
+];

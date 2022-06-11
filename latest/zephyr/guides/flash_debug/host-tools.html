@@ -1,0 +1,541 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Flash &amp; Debug Host Tools &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/tabs.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Debug Probes" href="probes.html" />
+    <link rel="prev" title="Flashing and Hardware Debugging" href="index.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Flashing and Hardware Debugging</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Flash &amp; Debug Host Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sam-boot-assistant-sam-ba">SAM Boot Assistant (SAM-BA)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#j-link-debug-host-tools">J-Link Debug Host Tools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#openocd-debug-host-tools">OpenOCD Debug Host Tools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyocd-debug-host-tools">pyOCD Debug Host Tools</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="probes.html">Debug Probes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Flashing and Hardware Debugging</a> &raquo;</li>
+        
+      <li>Flash &amp; Debug Host Tools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/flash_debug/host-tools.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="flash-debug-host-tools">
+<span id="id1"></span><h1>Flash &amp; Debug Host Tools<a class="headerlink" href="#flash-debug-host-tools" title="Permalink to this headline">¶</a></h1>
+<p>This guide describes the software tools you can run on your host workstation to
+flash and debug Zephyr applications.</p>
+<p>Zephyr’s west tool has built-in support for all of these in its <code class="docutils literal notranslate"><span class="pre">flash</span></code>,
+<code class="docutils literal notranslate"><span class="pre">debug</span></code>, <code class="docutils literal notranslate"><span class="pre">debugserver</span></code>, and <code class="docutils literal notranslate"><span class="pre">attach</span></code> commands, provided your board
+hardware supports them and your Zephyr board directory’s <code class="file docutils literal notranslate"><span class="pre">board.cmake</span></code>
+file declares that support properly. See <a class="reference internal" href="../west/build-flash-debug.html#west-build-flash-debug"><span class="std std-ref">Building, Flashing and Debugging</span></a> for
+more information on these commands.</p>
+<div class="section" id="sam-boot-assistant-sam-ba">
+<span id="atmel-sam-ba-bootloader"></span><h2>SAM Boot Assistant (SAM-BA)<a class="headerlink" href="#sam-boot-assistant-sam-ba" title="Permalink to this headline">¶</a></h2>
+<p>Atmel SAM Boot Assistant (Atmel SAM-BA) allows In-System Programming (ISP)
+from USB or UART host without any external programming interface.  Zephyr
+allows users to develop and program boards with SAM-BA support using
+<a class="reference internal" href="../west/build-flash-debug.html#west-flashing"><span class="std std-ref">west</span></a>.  Zephyr supports devices with/without ROM
+bootloader and both extensions from Arduino and Adafruit. Full support was
+introduced in Zephyr SDK 0.12.0.</p>
+<p>The typical command to flash the board is:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west flash [ -r bossac ] [ -p /dev/ttyX ]</span>
+</pre></div>
+</div>
+<p>Flash configuration for devices:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">With ROM bootloader</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Without ROM bootloader</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">With compatible SAM-BA bootloader</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>These devices don’t need any special configuration.  After building your
+application, just run <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span></code> to flash the board.</p>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>For these devices, the user should:</p>
+<ol class="arabic simple">
+<li><p>Define flash partitions required to accommodate the bootloader and
+application image; see <a class="reference internal" href="../../reference/storage/flash_map/flash_map.html#flash-map-api"><span class="std std-ref">Flash map</span></a> for details.</p></li>
+<li><p>Have board <code class="file docutils literal notranslate"><span class="pre">.defconfig</span></code> file with the
+<a class="reference internal" href="../../kconfig.html#CONFIG_USE_DT_CODE_PARTITION" title="CONFIG_USE_DT_CODE_PARTITION"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USE_DT_CODE_PARTITION</span></code></a> Kconfig option set to <code class="docutils literal notranslate"><span class="pre">y</span></code> to
+instruct the build system to use these partitions for code relocation.
+This option can also be set in <code class="docutils literal notranslate"><span class="pre">prj.conf</span></code> or any other Kconfig fragment.</p></li>
+<li><p>Build and flash the SAM-BA bootloader on the device.</p></li>
+</ol>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p>For these devices, the user should:</p>
+<ol class="arabic simple">
+<li><p>Define flash partitions required to accommodate the bootloader and
+application image; see <a class="reference internal" href="../../reference/storage/flash_map/flash_map.html#flash-map-api"><span class="std std-ref">Flash map</span></a> for details.</p></li>
+<li><p>Have board <code class="file docutils literal notranslate"><span class="pre">.defconfig</span></code> file with the
+<a class="reference internal" href="../../kconfig.html#CONFIG_BOOTLOADER_BOSSA" title="CONFIG_BOOTLOADER_BOSSA"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BOOTLOADER_BOSSA</span></code></a> Kconfig option set to <code class="docutils literal notranslate"><span class="pre">y</span></code>.  This will
+automatically select the <a class="reference internal" href="../../kconfig.html#CONFIG_USE_DT_CODE_PARTITION" title="CONFIG_USE_DT_CODE_PARTITION"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USE_DT_CODE_PARTITION</span></code></a> Kconfig
+option which instruct the build system to use these partitions for code
+relocation.  The board <code class="file docutils literal notranslate"><span class="pre">.defconfig</span></code> file should have
+<a class="reference internal" href="../../kconfig.html#CONFIG_BOOTLOADER_BOSSA_ARDUINO" title="CONFIG_BOOTLOADER_BOSSA_ARDUINO"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BOOTLOADER_BOSSA_ARDUINO</span></code></a> ,
+<a class="reference internal" href="../../kconfig.html#CONFIG_BOOTLOADER_BOSSA_ADAFRUIT_UF2" title="CONFIG_BOOTLOADER_BOSSA_ADAFRUIT_UF2"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BOOTLOADER_BOSSA_ADAFRUIT_UF2</span></code></a> or the
+<a class="reference internal" href="../../kconfig.html#CONFIG_BOOTLOADER_BOSSA_LEGACY" title="CONFIG_BOOTLOADER_BOSSA_LEGACY"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BOOTLOADER_BOSSA_LEGACY</span></code></a> Kconfig option set to <code class="docutils literal notranslate"><span class="pre">y</span></code>
+to select the right compatible SAM-BA bootloader mode.
+These options can also be set in <code class="docutils literal notranslate"><span class="pre">prj.conf</span></code> or any other Kconfig fragment.</p></li>
+<li><p>Build and flash the SAM-BA bootloader on the device.</p></li>
+</ol>
+</div></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <a class="reference internal" href="../../kconfig.html#CONFIG_BOOTLOADER_BOSSA_LEGACY" title="CONFIG_BOOTLOADER_BOSSA_LEGACY"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BOOTLOADER_BOSSA_LEGACY</span></code></a> Kconfig option should be used
+as last resource.  Try configure first with Devices without ROM bootloader.</p>
+</div>
+<div class="section" id="typical-flash-layout-and-configuration">
+<h3>Typical flash layout and configuration<a class="headerlink" href="#typical-flash-layout-and-configuration" title="Permalink to this headline">¶</a></h3>
+<p>For bootloaders that reside on flash, the devicetree partition layout is
+mandatory.  For devices that have a ROM bootloader, they are mandatory when
+the application uses a storage or other non-application partition.  In this
+special case, the boot partition should be omitted and code_partition should
+start from offset 0.  It is necessary to define the partitions with sizes that
+avoid overlaps, always.</p>
+<p>A typical flash layout for devices without a ROM bootloader is:</p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
+        <span class="nf">chosen</span><span class="cm"> </span><span class="p">{</span>
+                <span class="n">zephyr</span><span class="p">,</span><span class="n">code-partition</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">code_partition</span><span class="p">;</span>
+        <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="o">&amp;</span><span class="nf">flash0</span><span class="cm"> </span><span class="p">{</span>
+        <span class="nf">partitions</span><span class="cm"> </span><span class="p">{</span>
+                <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;fixed-partitions&quot;</span><span class="p">;</span>
+                <span class="kr">#address-cells</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+                <span class="kr">#size-cells</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+
+                <span class="nl">boot_partition</span><span class="p">:</span> <span class="nf">partition</span><span class="o">@</span><span class="mi">0</span><span class="cm"> </span><span class="p">{</span>
+                        <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;sam-ba&quot;</span><span class="p">;</span>
+                        <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x00000000</span> <span class="mh">0x2000</span><span class="o">&gt;</span><span class="p">;</span>
+                        <span class="n">read-only</span><span class="p">;</span>
+                <span class="p">};</span>
+
+                <span class="nl">code_partition</span><span class="p">:</span> <span class="nf">partition</span><span class="o">@</span><span class="mi">2000</span><span class="cm"> </span><span class="p">{</span>
+                        <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;code&quot;</span><span class="p">;</span>
+                        <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x2000</span> <span class="mh">0x3a000</span><span class="o">&gt;</span><span class="p">;</span>
+                        <span class="n">read-only</span><span class="p">;</span>
+                <span class="p">};</span>
+
+                <span class="cm">/*</span>
+<span class="cm">                * The final 16 KiB is reserved for the application.</span>
+<span class="cm">                * Storage partition will be used by FCB/LittleFS/NVS</span>
+<span class="cm">                * if enabled.</span>
+<span class="cm">                */</span>
+                <span class="nl">storage_partition</span><span class="p">:</span> <span class="nf">partition</span><span class="o">@</span><span class="mi">3c000</span><span class="cm"> </span><span class="p">{</span>
+                        <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;storage&quot;</span><span class="p">;</span>
+                        <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x0003c000</span> <span class="mh">0x00004000</span><span class="o">&gt;</span><span class="p">;</span>
+                <span class="p">};</span>
+        <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>A typical flash layout for devices with a ROM bootloader and storage
+partition is:</p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
+        <span class="nf">chosen</span><span class="cm"> </span><span class="p">{</span>
+                <span class="n">zephyr</span><span class="p">,</span><span class="n">code-partition</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">code_partition</span><span class="p">;</span>
+        <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="o">&amp;</span><span class="nf">flash0</span><span class="cm"> </span><span class="p">{</span>
+        <span class="nf">partitions</span><span class="cm"> </span><span class="p">{</span>
+                <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;fixed-partitions&quot;</span><span class="p">;</span>
+                <span class="kr">#address-cells</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+                <span class="kr">#size-cells</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+
+                <span class="nl">code_partition</span><span class="p">:</span> <span class="nf">partition</span><span class="o">@</span><span class="mi">0</span><span class="cm"> </span><span class="p">{</span>
+                        <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;code&quot;</span><span class="p">;</span>
+                        <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x0</span> <span class="mh">0xF0000</span><span class="o">&gt;</span><span class="p">;</span>
+                        <span class="n">read-only</span><span class="p">;</span>
+                <span class="p">};</span>
+
+                <span class="cm">/*</span>
+<span class="cm">                * The final 64 KiB is reserved for the application.</span>
+<span class="cm">                * Storage partition will be used by FCB/LittleFS/NVS</span>
+<span class="cm">                * if enabled.</span>
+<span class="cm">                */</span>
+                <span class="nl">storage_partition</span><span class="p">:</span> <span class="nf">partition</span><span class="o">@</span><span class="mi">F0000</span><span class="cm"> </span><span class="p">{</span>
+                        <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;storage&quot;</span><span class="p">;</span>
+                        <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x000F0000</span> <span class="mh">0x00100000</span><span class="o">&gt;</span><span class="p">;</span>
+                <span class="p">};</span>
+        <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enabling-sam-ba-runner">
+<h3>Enabling SAM-BA runner<a class="headerlink" href="#enabling-sam-ba-runner" title="Permalink to this headline">¶</a></h3>
+<p>In order to instruct Zephyr west tool to use the SAM-BA bootloader the
+<code class="file docutils literal notranslate"><span class="pre">board.cmake</span></code> file must have
+<code class="docutils literal notranslate"><span class="pre">include(${ZEPHYR_BASE}/boards/common/bossac.board.cmake)</span></code> entry.  Note that
+Zephyr tool accept more entries to define multiple runners.  By default, the
+first one will be selected when using <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span></code> command.  The remaining
+options are available passing the runner option, for instance
+<code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span> <span class="pre">-r</span> <span class="pre">bossac</span></code>.</p>
+<p>More implementation details can be found in the <a class="reference internal" href="../../boards/index.html#boards"><span class="std std-ref">Supported Boards</span></a> documentation.
+As a quick reference, see these three board documentation pages:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="../../boards/arm/sam4e_xpro/doc/index.html#sam4e-xpro"><span class="std std-ref">SAM4E Xplained Pro</span></a> (ROM bootloader)</p></li>
+<li><p><a class="reference internal" href="../../boards/arm/adafruit_feather_m0_basic_proto/doc/index.html#adafruit-feather-m0-basic-proto"><span class="std std-ref">Adafruit Feather M0 Basic Proto</span></a> (Adafruit UF2 bootloader)</p></li>
+<li><p><a class="reference internal" href="../../boards/arm/arduino_nano_33_iot/doc/index.html#arduino-nano-33-iot"><span class="std std-ref">Arduino Nano 33 IOT</span></a> (Arduino bootloader)</p></li>
+<li><p><a class="reference internal" href="../../boards/arm/arduino_nano_33_ble/doc/index.html#arduino-nano-33-ble"><span class="std std-ref">Arduino Nano 33 BLE (Sense)</span></a> (Arduino legacy bootloader)</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="j-link-debug-host-tools">
+<span id="jlink-debug-host-tools"></span><h2>J-Link Debug Host Tools<a class="headerlink" href="#j-link-debug-host-tools" title="Permalink to this headline">¶</a></h2>
+<p>Segger provides a suite of debug host tools for Linux, macOS, and Windows
+operating systems:</p>
+<ul class="simple">
+<li><p>J-Link GDB Server: GDB remote debugging</p></li>
+<li><p>J-Link Commander: Command-line control and flash programming</p></li>
+<li><p>RTT Viewer: RTT terminal input and output</p></li>
+<li><p>SystemView: Real-time event visualization and recording</p></li>
+</ul>
+<p>These debug host tools are compatible with the following debug probes:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="probes.html#lpclink2-jlink-onboard-debug-probe"><span class="std std-ref">LPC-Link2 J-Link Onboard Debug Probe</span></a></p></li>
+<li><p><a class="reference internal" href="probes.html#opensda-jlink-onboard-debug-probe"><span class="std std-ref">OpenSDA J-Link Onboard Debug Probe</span></a></p></li>
+<li><p><a class="reference internal" href="probes.html#jlink-external-debug-probe"><span class="std std-ref">J-Link External Debug Probe</span></a></p></li>
+<li><p><a class="reference internal" href="probes.html#stlink-v21-onboard-debug-probe"><span class="std std-ref">ST-LINK/V2-1 Onboard Debug Probe</span></a></p></li>
+</ul>
+<p>Check if your SoC is listed in <a class="reference external" href="https://www.segger.com/downloads/supported-devices.php">J-Link Supported Devices</a>.</p>
+<p>Download and install the <a class="reference external" href="https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack">J-Link Software and Documentation Pack</a> to get the
+J-Link GDB Server and Commander, and to install the associated USB device
+drivers. RTT Viewer and SystemView can be downloaded separately, but are not
+required.</p>
+<p>Note that the J-Link GDB server does not yet support Zephyr RTOS-awareness.</p>
+</div>
+<div class="section" id="openocd-debug-host-tools">
+<span id="id2"></span><h2>OpenOCD Debug Host Tools<a class="headerlink" href="#openocd-debug-host-tools" title="Permalink to this headline">¶</a></h2>
+<p>OpenOCD is a community open source project that provides GDB remote debugging
+and flash programming support for a wide range of SoCs. A fork that adds Zephyr
+RTOS-awareness is included in the Zephyr SDK; otherwise see <a class="reference external" href="http://openocd.org/getting-openocd/">Getting OpenOCD</a>
+for options to download OpenOCD from official repositories.</p>
+<p>These debug host tools are compatible with the following debug probes:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="probes.html#opensda-daplink-onboard-debug-probe"><span class="std std-ref">OpenSDA DAPLink Onboard Debug Probe</span></a></p></li>
+<li><p><a class="reference internal" href="probes.html#jlink-external-debug-probe"><span class="std std-ref">J-Link External Debug Probe</span></a></p></li>
+<li><p><a class="reference internal" href="probes.html#stlink-v21-onboard-debug-probe"><span class="std std-ref">ST-LINK/V2-1 Onboard Debug Probe</span></a></p></li>
+</ul>
+<p>Check if your SoC is listed in <a class="reference external" href="https://github.com/zephyrproject-rtos/openocd/tree/master/tcl/target">OpenOCD Supported Devices</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On Linux, openocd is available though the <a class="reference external" href="https://github.com/zephyrproject-rtos/sdk-ng/releases">Zephyr SDK</a>.
+Windows users should use the following steps to install
+openocd:</p>
+<ul class="simple">
+<li><p>Download openocd for Windows from here: <a class="reference external" href="http://gnutoolchains.com/arm-eabi/openocd/">OpenOCD Windows</a></p></li>
+<li><p>Copy bin and share dirs to <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\OpenOCD\</span></code></p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\OpenOCD\bin</span></code> to ‘PATH’ environment variable</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="pyocd-debug-host-tools">
+<span id="id3"></span><h2>pyOCD Debug Host Tools<a class="headerlink" href="#pyocd-debug-host-tools" title="Permalink to this headline">¶</a></h2>
+<p>pyOCD is an open source project from Arm that provides GDB remote debugging and
+flash programming support for Arm Cortex-M SoCs. It is distributed on PyPi and
+installed when you complete the <a class="reference internal" href="../../getting_started/index.html#gs-python-deps"><span class="std std-ref">Get Zephyr and install Python dependencies</span></a> step in the Getting
+Started Guide. pyOCD includes support for Zephyr RTOS-awareness.</p>
+<p>These debug host tools are compatible with the following debug probes:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="probes.html#opensda-daplink-onboard-debug-probe"><span class="std std-ref">OpenSDA DAPLink Onboard Debug Probe</span></a></p></li>
+<li><p><a class="reference internal" href="probes.html#stlink-v21-onboard-debug-probe"><span class="std std-ref">ST-LINK/V2-1 Onboard Debug Probe</span></a></p></li>
+</ul>
+<p>Check if your SoC is listed in <a class="reference external" href="https://github.com/mbedmicro/pyOCD/tree/master/pyocd/target/builtin">pyOCD Supported Devices</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="probes.html" class="btn btn-neutral float-right" title="Debug Probes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Flashing and Hardware Debugging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

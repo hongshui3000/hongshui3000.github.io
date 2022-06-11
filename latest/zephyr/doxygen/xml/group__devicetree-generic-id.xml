@@ -1,0 +1,535 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__devicetree-generic-id" kind="group">
+    <compoundname>devicetree-generic-id</compoundname>
+    <title>Node identifiers and helpers</title>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="group__devicetree-generic-id_1ga710cc4455dd7e738f43f750153163855" prot="public" static="no">
+        <name>DT_INVALID_NODE</name>
+        <initializer>_</initializer>
+        <briefdescription>
+<para>Name for an invalid node identifier. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This supports cases where factored macros can be invoked from paths where devicetree data may or may not be available. It is a preprocessor identifier that does not match any valid devicetree node identifier. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="76" column="9" bodyfile="include/devicetree.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1gad65aa36621281687b22fa5d72db33e86" prot="public" static="no">
+        <name>DT_ROOT</name>
+        <initializer>DT_N</initializer>
+        <briefdescription>
+<para>Node identifier for the root node in the devicetree. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="81" column="9" bodyfile="include/devicetree.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1ga015b4819473797982e83cae497697086" prot="public" static="no">
+        <name>DT_PATH</name>
+        <param><defname>...</defname></param>
+        <initializer><ref refid="devicetree_8h_1af51e66f69742fc2f083097682e9049a4" kindref="member">DT_PATH_INTERNAL</ref>(__VA_ARGS__)</initializer>
+        <briefdescription>
+<para>Get a node identifier for a devicetree path. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>(This macro returns a node identifier from path components. To get a path string from a node identifier, use <ref refid="group__devicetree-generic-id_1gacd79818b99724d834e3bb7ae74ee02cf" kindref="member">DT_NODE_PATH()</ref> instead.)</para>
+<para>The arguments to this macro are the names of non-root nodes in the tree required to reach the desired node, starting from the root. Non-alphanumeric characters in each name must be converted to underscores to form valid C tokens, and letters must be lowercased.</para>
+<para>Example devicetree fragment: <verbatim>/ {
+        soc {
+                serial1: serial@40001000 {
+                        status = &quot;okay&quot;;
+                        current-speed = &lt;115200&gt;;
+                        ...
+                };
+        };
+};
+</verbatim> You can use <ref refid="group__devicetree-generic-id_1ga015b4819473797982e83cae497697086" kindref="member">DT_PATH(soc, serial_40001000)</ref> to get a node identifier for the serial@40001000 node. Node labels like &quot;serial1&quot; cannot be used as <ref refid="group__devicetree-generic-id_1ga015b4819473797982e83cae497697086" kindref="member">DT_PATH()</ref> arguments; use <ref refid="group__devicetree-generic-id_1gab7d23294a6bf7fd44a98b48ec47d8a79" kindref="member">DT_NODELABEL()</ref> for those instead.</para>
+<para>Example usage with <ref refid="group__devicetree-generic-prop_1ga8e1fd9ebacd85d2013df027d041d506b" kindref="member">DT_PROP()</ref> to get the current-speed property: <verbatim>DT_PROP(DT_PATH(soc, serial_40001000), current_speed) // 115200
+</verbatim> (The current-speed property is also in &quot;lowercase-and-underscores&quot; form when used with this API.)</para>
+<para>When determining arguments to <ref refid="group__devicetree-generic-id_1ga015b4819473797982e83cae497697086" kindref="member">DT_PATH()</ref>:</para>
+<para><itemizedlist>
+<listitem><para>the first argument corresponds to a child node of the root (&quot;soc&quot; above)</para>
+</listitem><listitem><para>a second argument corresponds to a child of the first argument (&quot;serial_40001000&quot; above, from the node name &quot;serial@40001000&quot; after lowercasing and changing &quot;@&quot; to &quot;_&quot;)</para>
+</listitem><listitem><para>and so on for deeper nodes in the desired node&apos;s path</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lowercase-and-underscores node names along the node&apos;s path, with each name given as a separate argument </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>node identifier for the node with that path </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="129" column="9" bodyfile="include/devicetree.h" bodystart="129" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1gab7d23294a6bf7fd44a98b48ec47d8a79" prot="public" static="no">
+        <name>DT_NODELABEL</name>
+        <param><defname>label</defname></param>
+        <initializer><ref refid="devicetree_8h_1a8c1e6c5301ff391563977e563117d0f6" kindref="member">DT_CAT</ref>(DT_N_NODELABEL_, label)</initializer>
+        <briefdescription>
+<para>Get a node identifier for a node label. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Convert non-alphanumeric characters in the node label to underscores to form valid C tokens, and lowercase all letters. Note that node labels are not the same thing as label properties.</para>
+<para>Example devicetree fragment: <verbatim>serial1: serial@40001000 {
+        label = &quot;UART_0&quot;;
+        status = &quot;okay&quot;;
+        current-speed = &lt;115200&gt;;
+        ...
+};
+</verbatim> The only node label in this example is &quot;serial1&quot;.</para>
+<para>The string &quot;UART_0&quot; is <emphasis>not</emphasis> a node label; it&apos;s the value of a property named label.</para>
+<para>You can use <ref refid="group__devicetree-generic-id_1gab7d23294a6bf7fd44a98b48ec47d8a79" kindref="member">DT_NODELABEL(serial1)</ref> to get a node identifier for the serial@40001000 node. Example usage with <ref refid="group__devicetree-generic-prop_1ga8e1fd9ebacd85d2013df027d041d506b" kindref="member">DT_PROP()</ref> to get the current-speed property: <verbatim>DT_PROP(DT_NODELABEL(serial1), current_speed) // 115200
+</verbatim> Another example devicetree fragment: <verbatim>cpu@0 {
+       L2_0: l2-cache {
+               cache-level = &lt;2&gt;;
+               ...
+       };
+};
+</verbatim> Example usage to get the cache-level property: <verbatim>DT_PROP(DT_NODELABEL(l2_0), cache_level) // 2
+</verbatim> Notice how &quot;L2_0&quot; in the devicetree is lowercased to &quot;l2_0&quot; in the <ref refid="group__devicetree-generic-id_1gab7d23294a6bf7fd44a98b48ec47d8a79" kindref="member">DT_NODELABEL()</ref> argument.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>label</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lowercase-and-underscores node label name </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>node identifier for the node with that label </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="177" column="9" bodyfile="include/devicetree.h" bodystart="177" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1gaa49e19bbc39dc0d6f16b78a5d02482c9" prot="public" static="no">
+        <name>DT_ALIAS</name>
+        <param><defname>alias</defname></param>
+        <initializer><ref refid="devicetree_8h_1a8c1e6c5301ff391563977e563117d0f6" kindref="member">DT_CAT</ref>(DT_N_ALIAS_, alias)</initializer>
+        <briefdescription>
+<para>Get a node identifier from /aliases. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This macro&apos;s argument is a property of the /aliases node. It returns a node identifier for the node which is aliased. Convert non-alphanumeric characters in the alias property to underscores to form valid C tokens, and lowercase all letters.</para>
+<para>Example devicetree fragment: <verbatim>/ {
+        aliases {
+                my-serial = &amp;serial1;
+        };
+
+        soc {
+                serial1: serial@40001000 {
+                        status = &quot;okay&quot;;
+                        current-speed = &lt;115200&gt;;
+                        ...
+                };
+        };
+};
+</verbatim> You can use <ref refid="group__devicetree-generic-id_1gaa49e19bbc39dc0d6f16b78a5d02482c9" kindref="member">DT_ALIAS(my_serial)</ref> to get a node identifier for the serial@40001000 node. Notice how my-serial in the devicetree becomes my_serial in the <ref refid="group__devicetree-generic-id_1gaa49e19bbc39dc0d6f16b78a5d02482c9" kindref="member">DT_ALIAS()</ref> argument. Example usage with <ref refid="group__devicetree-generic-prop_1ga8e1fd9ebacd85d2013df027d041d506b" kindref="member">DT_PROP()</ref> to get the current-speed property: <verbatim>DT_PROP(DT_ALIAS(my_serial), current_speed) // 115200
+</verbatim> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>alias</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lowercase-and-underscores alias name. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>node identifier for the node with that alias </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="213" column="9" bodyfile="include/devicetree.h" bodystart="213" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1gae199b930cb21ff38dab284a696093ead" prot="public" static="no">
+        <name>DT_INST</name>
+        <param><defname>inst</defname></param>
+        <param><defname>compat</defname></param>
+        <initializer><ref refid="util__internal_8h_1a7e7766e792d1638bfbbc9d0f328d3d0d" kindref="member">UTIL_CAT</ref>(DT_N_INST, <ref refid="devicetree_8h_1af3f0bb55f6155a5188345d5ba6caf992" kindref="member">DT_DASH</ref>(inst, compat))</initializer>
+        <briefdescription>
+<para>Get a node identifier for an instance of a compatible. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>All nodes with a particular compatible property value are assigned instance numbers, which are zero-based indexes specific to that compatible. You can get a node identifier for these nodes by passing <ref refid="group__devicetree-generic-id_1gae199b930cb21ff38dab284a696093ead" kindref="member">DT_INST()</ref> an instance number, &quot;inst&quot;, along with the lowercase-and-underscores version of the compatible, &quot;compat&quot;.</para>
+<para>Instance numbers have the following properties:</para>
+<para><itemizedlist>
+<listitem><para>for each compatible, instance numbers start at 0 and are contiguous</para>
+</listitem><listitem><para>exactly one instance number is assigned for each node with a compatible, <bold>including disabled nodes</bold></para>
+</listitem><listitem><para>enabled nodes (status property is &quot;okay&quot; or missing) are assigned the instance numbers starting from 0, and disabled nodes have instance numbers which are greater than those of any enabled node</para>
+</listitem></itemizedlist>
+</para>
+<para>No other guarantees are made. In particular:</para>
+<para><itemizedlist>
+<listitem><para>instance numbers <bold>in no way reflect</bold> any numbering scheme that might exist in SoC documentation, node labels or unit addresses, or properties of the /aliases node (use <ref refid="group__devicetree-generic-id_1gab7d23294a6bf7fd44a98b48ec47d8a79" kindref="member">DT_NODELABEL()</ref> or <ref refid="group__devicetree-generic-id_1gaa49e19bbc39dc0d6f16b78a5d02482c9" kindref="member">DT_ALIAS()</ref> for those)</para>
+</listitem><listitem><para>there <bold>is no general guarantee</bold> that the same node will have the same instance number between builds, even if you are building the same application again in the same build directory</para>
+</listitem></itemizedlist>
+</para>
+<para>Example devicetree fragment: <verbatim>serial1: serial@40001000 {
+        compatible = &quot;vnd,soc-serial&quot;;
+        status = &quot;disabled&quot;;
+        current-speed = &lt;9600&gt;;
+        ...
+};
+
+serial2: serial@40002000 {
+        compatible = &quot;vnd,soc-serial&quot;;
+        status = &quot;okay&quot;;
+        current-speed = &lt;57600&gt;;
+        ...
+};
+
+serial3: serial@40003000 {
+        compatible = &quot;vnd,soc-serial&quot;;
+        current-speed = &lt;115200&gt;;
+        ...
+};
+</verbatim> Assuming no other nodes in the devicetree have compatible &quot;vnd,soc-serial&quot;, that compatible has nodes with instance numbers 0, 1, and 2.</para>
+<para>The nodes serial@40002000 and serial@40003000 are both enabled, so their instance numbers are 0 and 1, but no guarantees are made regarding which node has which instance number.</para>
+<para>Since serial@40001000 is the only disabled node, it has instance number 2, since disabled nodes are assigned the largest instance numbers. Therefore: <verbatim>// Could be 57600 or 115200. There is no way to be sure:
+// either serial@40002000 or serial@40003000 could
+// have instance number 0, so this could be the current-speed
+// property of either of those nodes.
+DT_PROP(DT_INST(0, vnd_soc_serial), current_speed)
+
+// Could be 57600 or 115200, for the same reason.
+// If the above expression expands to 57600, then
+// this expands to 115200, and vice-versa.
+DT_PROP(DT_INST(1, vnd_soc_serial), current_speed)
+
+// 9600, because there is only one disabled node, and
+// disabled nodes are &quot;at the the end&quot; of the instance
+// number &quot;list&quot;.
+DT_PROP(DT_INST(2, vnd_soc_serial), current_speed)
+</verbatim> Notice how &quot;vnd,soc-serial&quot; in the devicetree becomes vnd_soc_serial (without quotes) in the <ref refid="group__devicetree-generic-id_1gae199b930cb21ff38dab284a696093ead" kindref="member">DT_INST()</ref> arguments. (As usual, current-speed in the devicetree becomes current_speed as well.)</para>
+<para>Nodes whose &quot;compatible&quot; property has multiple values are assigned independent instance numbers for each compatible.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inst</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>instance number for compatible &quot;compat&quot; </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>compat</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lowercase-and-underscores compatible, without quotes </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>node identifier for the node with that instance number and compatible </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="305" column="9" bodyfile="include/devicetree.h" bodystart="305" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1ga3ac56d491510275ee1321446796ab63b" prot="public" static="no">
+        <name>DT_PARENT</name>
+        <param><defname>node_id</defname></param>
+        <initializer><ref refid="util__internal_8h_1a7e7766e792d1638bfbbc9d0f328d3d0d" kindref="member">UTIL_CAT</ref>(node_id, _PARENT)</initializer>
+        <briefdescription>
+<para>Get a node identifier for a parent node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Example devicetree fragment: <verbatim>parent: parent-node {
+        child: child-node {
+                ...
+        };
+};
+</verbatim> The following are equivalent ways to get the same node identifier: <verbatim>DT_NODELABEL(parent)
+DT_PARENT(DT_NODELABEL(child))
+</verbatim> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>node_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>node identifier </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a node identifier for the node&apos;s parent </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="326" column="9" bodyfile="include/devicetree.h" bodystart="326" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1ga176760ce1a019020b5465eebd4f44ff5" prot="public" static="no">
+        <name>DT_INST_PARENT</name>
+        <param><defname>inst</defname></param>
+        <initializer><ref refid="group__devicetree-generic-id_1ga3ac56d491510275ee1321446796ab63b" kindref="member">DT_PARENT</ref>(<ref refid="group__devicetree-inst_1ga219f413efba2f4c0151468b9a25a8dc1" kindref="member">DT_DRV_INST</ref>(inst))</initializer>
+        <briefdescription>
+<para>Get a DT_DRV_COMPAT parent&apos;s node identifier. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inst</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>instance number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a node identifier for the instance&apos;s parent </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="333" column="9" bodyfile="include/devicetree.h" bodystart="333" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1gaa4eccf276a426cbbc6e440d72b692753" prot="public" static="no">
+        <name>DT_GPARENT</name>
+        <param><defname>node_id</defname></param>
+        <initializer><ref refid="group__devicetree-generic-id_1ga3ac56d491510275ee1321446796ab63b" kindref="member">DT_PARENT</ref>(<ref refid="group__devicetree-generic-id_1ga3ac56d491510275ee1321446796ab63b" kindref="member">DT_PARENT</ref>(node_id))</initializer>
+        <briefdescription>
+<para>Get a node identifier for a grandparent node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Example devicetree fragment: <verbatim>gparent: grandparent-node {
+        parent: parent-node {
+                child: child-node { ... }
+        };
+};
+</verbatim> The following are equivalent ways to get the same node identifier: <verbatim>DT_GPARENT(DT_NODELABEL(child))
+DT_PARENT(DT_PARENT(DT_NODELABEL(child))
+</verbatim> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>node_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>node identifier </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a node identifier for the node&apos;s parent&apos;s parent </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="354" column="9" bodyfile="include/devicetree.h" bodystart="354" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1ga88259608f4e9083ccc2e9ca5ec2c212e" prot="public" static="no">
+        <name>DT_CHILD</name>
+        <param><defname>node_id</defname></param>
+        <param><defname>child</defname></param>
+        <initializer><ref refid="util__internal_8h_1a7e7766e792d1638bfbbc9d0f328d3d0d" kindref="member">UTIL_CAT</ref>(node_id, <ref refid="devicetree_8h_1a1dfb7bf7a80265200b90122e7bc79fd5" kindref="member">DT_S_PREFIX</ref>(child))</initializer>
+        <briefdescription>
+<para>Get a node identifier for a child node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Example devicetree fragment: <verbatim>/ {
+        soc-label: soc {
+                serial1: serial@40001000 {
+                        status = &quot;okay&quot;;
+                        current-speed = &lt;115200&gt;;
+                        ...
+                };
+        };
+};
+</verbatim> Example usage with <ref refid="group__devicetree-generic-prop_1ga8e1fd9ebacd85d2013df027d041d506b" kindref="member">DT_PROP()</ref> to get the status of the serial@40001000 node: <verbatim>#define SOC_NODE DT_NODELABEL(soc_label)
+DT_PROP(DT_CHILD(SOC_NODE, serial_40001000), status) // &quot;okay&quot;
+</verbatim> Node labels like &quot;serial1&quot; cannot be used as the &quot;child&quot; argument to this macro. Use <ref refid="group__devicetree-generic-id_1gab7d23294a6bf7fd44a98b48ec47d8a79" kindref="member">DT_NODELABEL()</ref> for that instead.</para>
+<para>You can also use <ref refid="group__devicetree-generic-foreach_1ga2f4eead8e8190110f5c0eb353e6a408f" kindref="member">DT_FOREACH_CHILD()</ref> to iterate over node identifiers for all of a node&apos;s children.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>node_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>node identifier </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>child</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lowercase-and-underscores child node name </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>node identifier for the node with the name referred to by &apos;child&apos; </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="387" column="9" bodyfile="include/devicetree.h" bodystart="387" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1ga4858c378b098dcb7c35de1db25442acc" prot="public" static="no">
+        <name>DT_COMPAT_GET_ANY_STATUS_OKAY</name>
+        <param><defname>compat</defname></param>
+        <initializer>	<ref refid="group__sys-util_1ga358bc3e7669c860a98839a51cd526b20" kindref="member">COND_CODE_1</ref>(<ref refid="group__devicetree-generic-exist_1ga916e11b66fdaab46e93c25241b62b52a" kindref="member">DT_HAS_COMPAT_STATUS_OKAY</ref>(compat),	\
+		    (<ref refid="group__devicetree-generic-id_1gae199b930cb21ff38dab284a696093ead" kindref="member">DT_INST</ref>(0, compat)),		\
+		    (<ref refid="group__devicetree-generic-id_1ga710cc4455dd7e738f43f750153163855" kindref="member">DT_INVALID_NODE</ref>))</initializer>
+        <briefdescription>
+<para>Get a node identifier for a status &quot;okay&quot; node with a compatible. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Use this if you want to get an arbitrary enabled node with a given compatible, and you do not care which one you get. If any enabled nodes with the given compatible exist, a node identifier for one of them is returned. Otherwise, <computeroutput>DT_INVALID_NODE</computeroutput> is returned.</para>
+<para>Example devicetree fragment: <verbatim> node-a {
+    compatible = &quot;vnd,device&quot;;
+    status = &quot;okay&quot;;
+ };
+
+ node-b {
+    compatible = &quot;vnd,device&quot;;
+    status = &quot;okay&quot;;
+ };
+
+ node-c {
+    compatible = &quot;vnd,device&quot;;
+    status = &quot;disabled&quot;;
+ };
+</verbatim> Example usage: <verbatim>DT_COMPAT_GET_ANY_STATUS_OKAY(vnd_device)
+</verbatim> This expands to a node identifier for either <computeroutput>node-a</computeroutput> or <computeroutput>node-b</computeroutput>. It will not expand to a node identifier for <computeroutput>node-c</computeroutput>, because that node does not have status &quot;okay&quot;.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>compat</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lowercase-and-underscores compatible, without quotes </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>node identifier for a node with that compatible, or DT_INVALID_NODE </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="425" column="9" bodyfile="include/devicetree.h" bodystart="425" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1gacd79818b99724d834e3bb7ae74ee02cf" prot="public" static="no">
+        <name>DT_NODE_PATH</name>
+        <param><defname>node_id</defname></param>
+        <initializer><ref refid="devicetree_8h_1a8c1e6c5301ff391563977e563117d0f6" kindref="member">DT_CAT</ref>(node_id, _PATH)</initializer>
+        <briefdescription>
+<para>Get a devicetree node&apos;s full path as a string literal. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This returns the path to a node from a node identifier. To get a node identifier from path components instead, use <ref refid="group__devicetree-generic-id_1ga015b4819473797982e83cae497697086" kindref="member">DT_PATH()</ref>.</para>
+<para>Example devicetree fragment: <verbatim>/ {
+        soc {
+                node: my-node@12345678 { ... };
+        };
+};
+</verbatim> Example usage:</para>
+<para><ref refid="group__devicetree-generic-id_1gacd79818b99724d834e3bb7ae74ee02cf" kindref="member">DT_NODE_PATH(DT_NODELABEL(node))</ref> // &quot;/soc/my-node@12345678&quot; <ref refid="group__devicetree-generic-id_1gacd79818b99724d834e3bb7ae74ee02cf" kindref="member">DT_NODE_PATH(DT_PATH(soc))</ref> // &quot;/soc&quot; <ref refid="group__devicetree-generic-id_1gacd79818b99724d834e3bb7ae74ee02cf" kindref="member">DT_NODE_PATH(DT_ROOT)</ref> // &quot;/&quot;</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>node_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>node identifier </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the node&apos;s full path in the devicetree </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="453" column="9" bodyfile="include/devicetree.h" bodystart="453" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1ga8a8ab5d12fe59787433d1add94fb1667" prot="public" static="no">
+        <name>DT_NODE_FULL_NAME</name>
+        <param><defname>node_id</defname></param>
+        <initializer><ref refid="devicetree_8h_1a8c1e6c5301ff391563977e563117d0f6" kindref="member">DT_CAT</ref>(node_id, _FULL_NAME)</initializer>
+        <briefdescription>
+<para>Get a devicetree node&apos;s name with unit-address as a string literal. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This returns the node name and unit-address from a node identifier.</para>
+<para>Example devicetree fragment: <verbatim>/ {
+        soc {
+                node: my-node@12345678 { ... };
+        };
+};
+</verbatim> Example usage:</para>
+<para><ref refid="group__devicetree-generic-id_1ga8a8ab5d12fe59787433d1add94fb1667" kindref="member">DT_NODE_FULL_NAME(DT_NODELABEL(node))</ref> // &quot;my-node@12345678&quot;</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>node_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>node identifier </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the node&apos;s name with unit-address as a string in the devicetree </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="475" column="9" bodyfile="include/devicetree.h" bodystart="475" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-id_1ga977d0ad58626e3ab906064fdcdace5e6" prot="public" static="no">
+        <name>DT_SAME_NODE</name>
+        <param><defname>node_id1</defname></param>
+        <param><defname>node_id2</defname></param>
+        <initializer>	(<ref refid="group__devicetree-dep-ord_1ga5b96dccfd349dd0ddba1812aa942c1bd" kindref="member">DT_DEP_ORD</ref>(node_id1) == (<ref refid="group__devicetree-dep-ord_1ga5b96dccfd349dd0ddba1812aa942c1bd" kindref="member">DT_DEP_ORD</ref>(node_id2)))</initializer>
+        <briefdescription>
+<para>Do node_id1 and node_id2 refer to the same node? </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Both &quot;node_id1&quot; and &quot;node_id2&quot; must be node identifiers for nodes that exist in the devicetree (if unsure, you can check with <ref refid="group__devicetree-generic-exist_1ga9d5cf40051d042b853f6b0088fd4500a" kindref="member">DT_NODE_EXISTS()</ref>).</para>
+<para>The expansion evaluates to 0 or 1, but may not be a literal integer 0 or 1.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>node_id1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>first node identifer </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>node_id2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second node identifier </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an expression that evaluates to 1 if the node identifiers refer to the same node, and evaluates to 0 otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="492" column="9" bodyfile="include/devicetree.h" bodystart="492" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

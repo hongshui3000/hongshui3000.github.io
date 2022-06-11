@@ -1,0 +1,895 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Network Packet Filtering &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Network Shell" href="net_shell.html" />
+    <link rel="prev" title="Traffic Classification" href="traffic-class.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="apis.html">Network APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buf_mgmt.html">Network Buffer Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="net_tech.html">Networking Technologies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="protocols.html">Protocols</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="system_mgmt.html">Network System Management</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="net_config.html">Network Configuration Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dhcpv4.html">DHCPv4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_hostname.html">Hostname Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_core.html">Network Core Helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_if.html">Network Interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_l2.html">L2 Layer Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_offload.html">Network Traffic Offloading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_linkaddr.html">Link Layer Address Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ethernet_mgmt.html">Ethernet Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="traffic-class.html">Traffic Classification</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Network Packet Filtering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_shell.html">Network Shell</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tsn.html">Time Sensitive Networking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsm_modem.html">Generic GSM Modem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="system_mgmt.html">Network System Management</a> &raquo;</li>
+        
+      <li>Network Packet Filtering</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/networking/net_pkt_filter.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="network-packet-filtering">
+<span id="net-pkt-filter-interface"></span><h1>Network Packet Filtering<a class="headerlink" href="#network-packet-filtering" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id2">Examples</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id3">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id1">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The Network Packet Filtering facility provides the infrastructure to
+construct custom rules for accepting and/or denying packet transmission
+and reception. This can be used to create a basic firewall, control
+network traffic, etc.</p>
+<p>The <a class="reference internal" href="../../kconfig.html#CONFIG_NET_PKT_FILTER" title="CONFIG_NET_PKT_FILTER"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_PKT_FILTER</span></code></a> must be set in order to enable the
+relevant APIs.</p>
+<p>Both the transmission and reception paths may have a list of filter rules.
+Each rule is made of a set of conditions and a packet outcome. Every packet
+is subjected to the conditions attached to a rule. When all the conditions
+for a given rule are true then the packet outcome is immediately determined
+as specified by the current rule and no more rules are considered. If one
+condition is false then the next rule in the list is considered.</p>
+<p>Packet outcome is either <code class="docutils literal notranslate"><span class="pre">NET_OK</span></code> to accept the packet or <code class="docutils literal notranslate"><span class="pre">NET_DROP</span></code> to
+drop it.</p>
+<p>A rule is represented by a <a class="reference internal" href="#c.npf_rule" title="npf_rule"><code class="xref c c-struct docutils literal notranslate"><span class="pre">npf_rule</span></code></a> object. It can be inserted to,
+appended to or removed from a rule list contained in a
+<a class="reference internal" href="#c.npf_rule_list" title="npf_rule_list"><code class="xref c c-struct docutils literal notranslate"><span class="pre">npf_rule_list</span></code></a> object using <a class="reference internal" href="#c.npf_insert_rule" title="npf_insert_rule"><code class="xref c c-func docutils literal notranslate"><span class="pre">npf_insert_rule()</span></code></a>,
+<a class="reference internal" href="#c.npf_append_rule" title="npf_append_rule"><code class="xref c c-func docutils literal notranslate"><span class="pre">npf_append_rule()</span></code></a>, and <a class="reference internal" href="#c.npf_remove_rule" title="npf_remove_rule"><code class="xref c c-func docutils literal notranslate"><span class="pre">npf_remove_rule()</span></code></a>.
+Currently, two such rule lists exist: <code class="docutils literal notranslate"><span class="pre">npf_send_rules</span></code> for outgoing packets,
+and <code class="docutils literal notranslate"><span class="pre">npf_recv_rules</span></code> for incoming packets.</p>
+<p>If a filter rule list is empty then <code class="docutils literal notranslate"><span class="pre">NET_OK</span></code> is assumed. If a non-empty
+rule list runs to the end then <code class="docutils literal notranslate"><span class="pre">NET_DROP</span></code> is assumed. However it is
+recommended to always terminate a non-empty rule list with an explicit
+default termination rule, either <code class="docutils literal notranslate"><span class="pre">npf_default_ok</span></code> or <code class="docutils literal notranslate"><span class="pre">npf_default_drop</span></code>.</p>
+<p>Rule conditions are represented by a <a class="reference internal" href="#c.npf_test" title="npf_test"><code class="xref c c-struct docutils literal notranslate"><span class="pre">npf_test</span></code></a>. This structure
+can be embedded into a larger structure when a specific condition requires
+extra test data. It is up to the test function for such conditions to
+retrieve the outer structure from the provided <code class="docutils literal notranslate"><span class="pre">npf_test</span></code> structure pointer.</p>
+<p>Convenience macros are provided in <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/net/net_pkt_filter.h">include/net/net_pkt_filter.h</a>
+to statically define condition instances for various conditions, and
+<a class="reference internal" href="#c.NPF_RULE" title="NPF_RULE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">NPF_RULE()</span></code></a> to create a rule instance to tie them.</p>
+</div>
+<div class="section" id="examples">
+<h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Here’s an example usage:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">NPF_SIZE_MAX</span><span class="p">(</span><span class="n">maxsize_200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+<span class="k">static</span> <span class="n">NPF_ETH_TYPE_MATCH</span><span class="p">(</span><span class="n">ip_packet</span><span class="p">,</span> <span class="n">NET_ETH_PTYPE_IP</span><span class="p">);</span>
+
+<span class="k">static</span> <span class="n">NPF_RULE</span><span class="p">(</span><span class="n">small_ip_pkt</span><span class="p">,</span> <span class="n">NET_OK</span><span class="p">,</span> <span class="n">ip_packet</span><span class="p">,</span> <span class="n">maxsize_200</span><span class="p">);</span>
+
+<span class="kt">void</span> <span class="nf">install_my_filter</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">npf_insert_recv_rule</span><span class="p">(</span><span class="o">&amp;</span><span class="n">npf_default_drop</span><span class="p">);</span>
+    <span class="n">npf_insert_recv_rule</span><span class="p">(</span><span class="o">&amp;</span><span class="n">small_ip_pkt</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The above would accept IP packets that are 200 bytes or smaller, and drop
+all other packets.</p>
+<p>Another (less efficient) way to achieve the same result could be:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">NPF_SIZE_MIN</span><span class="p">(</span><span class="n">minsize_201</span><span class="p">,</span> <span class="mi">201</span><span class="p">);</span>
+<span class="k">static</span> <span class="n">NPF_ETH_TYPE_UNMATCH</span><span class="p">(</span><span class="n">not_ip_packet</span><span class="p">,</span> <span class="n">NET_ETH_PTYPE_IP</span><span class="p">);</span>
+
+<span class="k">static</span> <span class="n">NPF_RULE</span><span class="p">(</span><span class="n">reject_big_pkts</span><span class="p">,</span> <span class="n">NET_DROP</span><span class="p">,</span> <span class="n">minsize_201</span><span class="p">);</span>
+<span class="k">static</span> <span class="n">NPF_RULE</span><span class="p">(</span><span class="n">reject_non_ip</span><span class="p">,</span> <span class="n">NET_DROP</span><span class="p">,</span> <span class="n">not_ip_packet</span><span class="p">);</span>
+
+<span class="kt">void</span> <span class="nf">install_my_filter</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">npf_append_recv_rule</span><span class="p">(</span><span class="o">&amp;</span><span class="n">reject_big_pkts</span><span class="p">);</span>
+    <span class="n">npf_append_recv_rule</span><span class="p">(</span><span class="o">&amp;</span><span class="n">reject_non_ip</span><span class="p">);</span>
+    <span class="n">npf_append_recv_rule</span><span class="p">(</span><span class="o">&amp;</span><span class="n">npf_default_ok</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id3">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__net__pkt__filter"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">net_pkt_filter</span></span></dt>
+<dd><p>Network Packet Filter API. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.npf_insert_send_rule">
+<span class="target" id="group__net__pkt__filter_1ga4d3592647f81cd44a84ded4fff8edcf5"></span><span class="sig-name descname"><span class="n"><span class="pre">npf_insert_send_rule</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_insert_send_rule" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.npf_insert_recv_rule">
+<span class="target" id="group__net__pkt__filter_1ga3f6ecadc4842b61731984968ab4c6b89"></span><span class="sig-name descname"><span class="n"><span class="pre">npf_insert_recv_rule</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_insert_recv_rule" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.npf_append_send_rule">
+<span class="target" id="group__net__pkt__filter_1ga8cd06cba4360c1b56709e59ff06dbeb3"></span><span class="sig-name descname"><span class="n"><span class="pre">npf_append_send_rule</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_append_send_rule" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.npf_append_recv_rule">
+<span class="target" id="group__net__pkt__filter_1ga263c7ee6e3c860353b5720c613690b0a"></span><span class="sig-name descname"><span class="n"><span class="pre">npf_append_recv_rule</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_append_recv_rule" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.npf_remove_send_rule">
+<span class="target" id="group__net__pkt__filter_1ga43f03a0ce73d6dee52f43fd3577aa240"></span><span class="sig-name descname"><span class="n"><span class="pre">npf_remove_send_rule</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_remove_send_rule" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.npf_remove_recv_rule">
+<span class="target" id="group__net__pkt__filter_1gae78cb092522564303a665d1a5d3596b9"></span><span class="sig-name descname"><span class="n"><span class="pre">npf_remove_recv_rule</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_remove_recv_rule" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.npf_remove_all_send_rules">
+<span class="target" id="group__net__pkt__filter_1gaea48284508ee244bce6d78b29bc2f471"></span><span class="sig-name descname"><span class="n"><span class="pre">npf_remove_all_send_rules</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_remove_all_send_rules" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.npf_remove_all_recv_rules">
+<span class="target" id="group__net__pkt__filter_1gac08801a6e8bd14bfd6eeaf2f28a1ed1a"></span><span class="sig-name descname"><span class="n"><span class="pre">npf_remove_all_recv_rules</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_remove_all_recv_rules" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_RULE">
+<span class="target" id="group__net__pkt__filter_1ga2f45093d5ad164d5c51a8996f7f04d32"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_RULE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_result</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_RULE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define one packet filter rule. </p>
+<p>This creates a rule from a variable amount of filter conditions. This rule can then be inserted or appended to the rule list for a given network packet path.</p>
+<p>Example:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">NPF_SIZE_MAX</span><span class="p">(</span><span class="n">maxsize_200</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+<span class="n">static</span> <span class="n">NPF_ETH_TYPE_MATCH</span><span class="p">(</span><span class="n">ip_packet</span><span class="p">,</span> <span class="n">NET_ETH_PTYPE_IP</span><span class="p">);</span>
+
+<span class="n">static</span> <span class="n">NPF_RULE</span><span class="p">(</span><span class="n">small_ip_pkt</span><span class="p">,</span> <span class="n">NET_OK</span><span class="p">,</span> <span class="n">ip_packet</span><span class="p">,</span> <span class="n">maxsize_200</span><span class="p">);</span>
+
+<span class="n">void</span> <span class="n">install_my_filter</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">npf_insert_recv_rule</span><span class="p">(</span><span class="o">&amp;</span><span class="n">npf_default_drop</span><span class="p">);</span>
+    <span class="n">npf_insert_recv_rule</span><span class="p">(</span><span class="o">&amp;</span><span class="n">small_ip_pkt</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+<p>The above would accept IP packets that are 200 bytes or smaller, and drop all other packets.</p>
+<p>Another (less efficient) way to create the same result could be:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">NPF_SIZE_MIN</span><span class="p">(</span><span class="n">minsize_201</span><span class="p">,</span> <span class="mi">201</span><span class="p">);</span>
+<span class="n">static</span> <span class="n">NPF_ETH_TYPE_UNMATCH</span><span class="p">(</span><span class="n">not_ip_packet</span><span class="p">,</span> <span class="n">NET_ETH_PTYPE_IP</span><span class="p">);</span>
+
+<span class="n">static</span> <span class="n">NPF_RULE</span><span class="p">(</span><span class="n">reject_big_pkts</span><span class="p">,</span> <span class="n">NET_DROP</span><span class="p">,</span> <span class="n">minsize_201</span><span class="p">);</span>
+<span class="n">static</span> <span class="n">NPF_RULE</span><span class="p">(</span><span class="n">reject_non_ip</span><span class="p">,</span> <span class="n">NET_DROP</span><span class="p">,</span> <span class="n">not_ip_packet</span><span class="p">);</span>
+
+<span class="n">void</span> <span class="n">install_my_filter</span><span class="p">(</span><span class="n">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">npf_append_recv_rule</span><span class="p">(</span><span class="o">&amp;</span><span class="n">reject_big_pkts</span><span class="p">);</span>
+    <span class="n">npf_append_recv_rule</span><span class="p">(</span><span class="o">&amp;</span><span class="n">reject_non_ip</span><span class="p">);</span>
+    <span class="n">npf_append_recv_rule</span><span class="p">(</span><span class="o">&amp;</span><span class="n">npf_default_ok</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+<p>The first rule in the list for which all conditions are true determines the fate of the packet. If one condition is false then the next rule in the list is evaluated.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name for this rule. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_result</span></code>: Fate of the packet if all conditions are true, either <code class="docutils literal notranslate"><span class="pre">NET_OK</span></code> or <code class="docutils literal notranslate"><span class="pre">NET_DROP</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code>: List of conditions for this rule. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.npf_insert_rule">
+<span class="target" id="group__net__pkt__filter_1ga3b2a85558b6756e76760d9a40c780e28"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">npf_insert_rule</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_rule_list" title="npf_rule_list"><span class="n"><span class="pre">npf_rule_list</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rules</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_rule" title="npf_rule"><span class="n"><span class="pre">npf_rule</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_insert_rule" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Insert a rule at the front of given rule list. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rules</span></code>: the affected rule list </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rule</span></code>: the rule to be inserted </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.npf_append_rule">
+<span class="target" id="group__net__pkt__filter_1gadfa956e4af3c45460846fc22f863e697"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">npf_append_rule</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_rule_list" title="npf_rule_list"><span class="n"><span class="pre">npf_rule_list</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rules</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_rule" title="npf_rule"><span class="n"><span class="pre">npf_rule</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_append_rule" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Append a rule at the end of given rule list. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rules</span></code>: the affected rule list </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rule</span></code>: the rule to be appended </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.npf_remove_rule">
+<span class="target" id="group__net__pkt__filter_1ga4d7426db901debff35e1de5805e06c71"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">npf_remove_rule</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_rule_list" title="npf_rule_list"><span class="n"><span class="pre">npf_rule_list</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rules</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_rule" title="npf_rule"><span class="n"><span class="pre">npf_rule</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_remove_rule" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remove a rule from the given rule list. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rules</span></code>: the affected rule list </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rule</span></code>: the rule to be removed </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: if given rule was found in the rule list and removed </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.npf_remove_all_rules">
+<span class="target" id="group__net__pkt__filter_1ga54916eb4943e4b47cd31eb23827d0dd5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">npf_remove_all_rules</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_rule_list" title="npf_rule_list"><span class="n"><span class="pre">npf_rule_list</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rules</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.npf_remove_all_rules" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remove all rules from the given rule list. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rules</span></code>: the affected rule list </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: if at least one rule was removed from the rule list </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.npf_default_ok">
+<span class="target" id="group__net__pkt__filter_1gaac489d75c023952243589cba7ff7367a"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_rule" title="npf_rule"><span class="n"><span class="pre">npf_rule</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">npf_default_ok</span></span></span><a class="headerlink" href="#c.npf_default_ok" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Default rule list termination for accepting a packet. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.npf_default_drop">
+<span class="target" id="group__net__pkt__filter_1ga8fc592feedeceb5172f8747a29697dd7"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_rule" title="npf_rule"><span class="n"><span class="pre">npf_rule</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">npf_default_drop</span></span></span><a class="headerlink" href="#c.npf_default_drop" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Default rule list termination for rejecting a packet. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.npf_send_rules">
+<span class="target" id="group__net__pkt__filter_1ga8017a041d3168c76e39bdfac011b9315"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_rule_list" title="npf_rule_list"><span class="n"><span class="pre">npf_rule_list</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">npf_send_rules</span></span></span><a class="headerlink" href="#c.npf_send_rules" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>rule list applied to outgoing packets </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.npf_recv_rules">
+<span class="target" id="group__net__pkt__filter_1ga9714529658625e906264a46ad1a9be6f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_rule_list" title="npf_rule_list"><span class="n"><span class="pre">npf_rule_list</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">npf_recv_rules</span></span></span><a class="headerlink" href="#c.npf_recv_rules" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>rule list applied to incoming packets </p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.npf_test">
+<span class="target" id="structnpf__test"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">npf_test</span></span></span><a class="headerlink" href="#c.npf_test" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_pkt_filter.h&gt;</em><p>common filter test structure to be embedded into larger structures </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.npf_test.fn">
+<span class="target" id="structnpf__test_1ac49921514690a71986ca4d07245cfe7d"></span><span class="n"><span class="pre">npf_test_fn_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">fn</span></span></span><a class="headerlink" href="#c.npf_test.fn" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>packet condition test function </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.npf_rule">
+<span class="target" id="structnpf__rule"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">npf_rule</span></span></span><a class="headerlink" href="#c.npf_rule" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_pkt_filter.h&gt;</em><p>filter rule structure </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.npf_rule.result">
+<span class="target" id="structnpf__rule_1a872daf53310dd8e20477eafd6808481f"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="net_core.html#c.net_verdict" title="net_verdict"><span class="n"><span class="pre">net_verdict</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">result</span></span></span><a class="headerlink" href="#c.npf_rule.result" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>result if all tests pass </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.npf_rule.nb_tests">
+<span class="target" id="structnpf__rule_1a06045c693cf06e6ebfc5a74b8c3f5ef7"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nb_tests</span></span></span><a class="headerlink" href="#c.npf_rule.nb_tests" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>number of tests for this rule </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.npf_rule.tests">
+<span class="target" id="structnpf__rule_1a72c032c55535c82f365b2cd1229cb1e0"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.npf_test" title="npf_test"><span class="n"><span class="pre">npf_test</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">tests</span></span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.npf_rule.tests" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>pointers to <a class="reference internal" href="#structnpf__test"><span class="std std-ref">npf_test</span></a> instances </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.npf_rule_list">
+<span class="target" id="structnpf__rule__list"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">npf_rule_list</span></span></span><a class="headerlink" href="#c.npf_rule_list" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_pkt_filter.h&gt;</em><p>rule set for a given test location </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__npf__basic__cond"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">npf_basic_cond</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_IFACE_MATCH">
+<span class="target" id="group__npf__basic__cond_1ga465578272b616c6267ecd13fd86ca73b"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_IFACE_MATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_iface</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_IFACE_MATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define an “interface match” packet filter condition. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_iface</span></code>: Interface to match </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_IFACE_UNMATCH">
+<span class="target" id="group__npf__basic__cond_1gac3607a6736d70b0ea044a2ec7ab6d313"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_IFACE_UNMATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_iface</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_IFACE_UNMATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define an “interface unmatch” packet filter condition. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_iface</span></code>: Interface to exclude </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_ORIG_IFACE_MATCH">
+<span class="target" id="group__npf__basic__cond_1ga55021acd131e4684568aaf6434b08789"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_ORIG_IFACE_MATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_iface</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_ORIG_IFACE_MATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define an “orig interface match” packet filter condition. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_iface</span></code>: Interface to match </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_ORIG_IFACE_UNMATCH">
+<span class="target" id="group__npf__basic__cond_1gad959dc62d47ca3b4d2f24a6c862c7623"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_ORIG_IFACE_UNMATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_iface</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_ORIG_IFACE_UNMATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define an “orig interface unmatch” packet filter condition. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_iface</span></code>: Interface to exclude </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_SIZE_MIN">
+<span class="target" id="group__npf__basic__cond_1gaf142455f9bea3dea8faa0a913072b63e"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_SIZE_MIN</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_SIZE_MIN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define a “data minimum size” packet filter condition. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_size</span></code>: Lower bound of the packet’s data size </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_SIZE_MAX">
+<span class="target" id="group__npf__basic__cond_1gacd56b9bcf2b2ba4759402650a9bff67a"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_SIZE_MAX</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_SIZE_MAX" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define a “data maximum size” packet filter condition. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_size</span></code>: Higher bound of the packet’s data size </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_SIZE_BOUNDS">
+<span class="target" id="group__npf__basic__cond_1gab402bb13c7899d57532d3dcf8a36ed4b"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_SIZE_BOUNDS</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_min_size</span></span>, <span class="n"><span class="pre">_max_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_SIZE_BOUNDS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define a “data bounded size” packet filter condition. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_min_size</span></code>: Lower bound of the packet’s data size </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_max_size</span></code>: Higher bound of the packet’s data size </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__npf__eth__cond"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">npf_eth_cond</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_ETH_SRC_ADDR_MATCH">
+<span class="target" id="group__npf__eth__cond_1gad2141ad8d6639c9b92569d55130ca1b1"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_ETH_SRC_ADDR_MATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_addr_array</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_ETH_SRC_ADDR_MATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define a “source address match” packet filter condition. </p>
+<p>This tests if the packet source address matches any of the Ethernet addresses contained in the provided set.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_addr_array</span></code>: Array of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net_eth_addr</span></code> items to test against </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_ETH_SRC_ADDR_UNMATCH">
+<span class="target" id="group__npf__eth__cond_1ga228eaa3784f663d8f2e2711e26409043"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_ETH_SRC_ADDR_UNMATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_addr_array</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_ETH_SRC_ADDR_UNMATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define a “source address unmatch” packet filter condition. </p>
+<p>This tests if the packet source address matches none of the Ethernet addresses contained in the provided set.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_addr_array</span></code>: Array of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net_eth_addr</span></code> items to test against </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_ETH_DST_ADDR_MATCH">
+<span class="target" id="group__npf__eth__cond_1ga3d22d687bcd56b7727c51c7bc7f36cac"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_ETH_DST_ADDR_MATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_addr_array</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_ETH_DST_ADDR_MATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define a “destination address match” packet filter condition. </p>
+<p>This tests if the packet destination address matches any of the Ethernet addresses contained in the provided set.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_addr_array</span></code>: Array of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net_eth_addr</span></code> items to test against </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_ETH_DST_ADDR_UNMATCH">
+<span class="target" id="group__npf__eth__cond_1ga3b8a8a22eb992c0e02223f70723c3641"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_ETH_DST_ADDR_UNMATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_addr_array</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_ETH_DST_ADDR_UNMATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define a “destination address unmatch” packet filter condition. </p>
+<p>This tests if the packet destination address matches none of the Ethernet addresses contained in the provided set.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_addr_array</span></code>: Array of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net_eth_addr</span></code> items to test against </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_ETH_SRC_ADDR_MASK_MATCH">
+<span class="target" id="group__npf__eth__cond_1ga0e06ebc4c9a1a960651be1ba89eeb2fd"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_ETH_SRC_ADDR_MASK_MATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_addr_array</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_ETH_SRC_ADDR_MASK_MATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define a “source address match with mask” packet filter condition. </p>
+<p>This tests if the packet source address matches any of the Ethernet addresses contained in the provided set after applying specified mask.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_addr_array</span></code>: Array of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net_eth_addr</span></code> items to test against </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code>: up to 6 mask bytes </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_ETH_DST_ADDR_MASK_MATCH">
+<span class="target" id="group__npf__eth__cond_1ga7cf793af7b91eccc6e675ff19ed59a14"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_ETH_DST_ADDR_MASK_MATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_addr_array</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_ETH_DST_ADDR_MASK_MATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define a “destination address match with mask” packet filter condition. </p>
+<p>This tests if the packet destination address matches any of the Ethernet addresses contained in the provided set after applying specified mask.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_addr_array</span></code>: Array of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net_eth_addr</span></code> items to test against </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code>: up to 6 mask bytes </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_ETH_TYPE_MATCH">
+<span class="target" id="group__npf__eth__cond_1gace7de72d4c64e128a825f28f94d8b1b2"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_ETH_TYPE_MATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_ETH_TYPE_MATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define an “Ethernet type match” packet filter condition. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_type</span></code>: Ethernet type to match </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NPF_ETH_TYPE_UNMATCH">
+<span class="target" id="group__npf__eth__cond_1gab9bf6d58433e273220c5fab76f608545"></span><span class="sig-name descname"><span class="n"><span class="pre">NPF_ETH_TYPE_UNMATCH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NPF_ETH_TYPE_UNMATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define an “Ethernet type unmatch” packet filter condition. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the condition </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_type</span></code>: Ethernet type to exclude </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="net_shell.html" class="btn btn-neutral float-right" title="Network Shell" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="traffic-class.html" class="btn btn-neutral" title="Traffic Classification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

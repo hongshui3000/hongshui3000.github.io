@@ -1,0 +1,1965 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>IPv4/IPv6 Primitives and Helpers &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="DNS Resolve" href="dns_resolve.html" />
+    <link rel="prev" title="BSD Sockets" href="sockets.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="apis.html">Network APIs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sockets.html">BSD Sockets</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">IPv4/IPv6 Primitives and Helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dns_resolve.html">DNS Resolve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_mgmt.html">Network Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_stats.html">Network Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_timeout.html">Network Timeout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_context.html">Networking Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="promiscuous.html">Promiscuous Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sntp.html">Simple Network Time Protocol Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="socks5.html">SOCKS5 Proxy Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="trickle.html">Trickle Timer Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.html">Websocket Client API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="capture.html">Network Packet Capture</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="buf_mgmt.html">Network Buffer Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="net_tech.html">Networking Technologies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="protocols.html">Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system_mgmt.html">Network System Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsn.html">Time Sensitive Networking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsm_modem.html">Generic GSM Modem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="apis.html">Network APIs</a> &raquo;</li>
+        
+      <li>IPv4/IPv6 Primitives and Helpers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/networking/ip_4_6.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ipv4-ipv6-primitives-and-helpers">
+<span id="ip-4-6-interface"></span><h1>IPv4/IPv6 Primitives and Helpers<a class="headerlink" href="#ipv4-ipv6-primitives-and-helpers" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id2">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id1">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Miscellaneous defines and helper functions for IP addresses and IP protocols.</p>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id2">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__ip__4__6"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">ip_4_6</span></span></dt>
+<dd><p>IPv4/IPv6 primitives and helpers. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PF_UNSPEC">
+<span class="target" id="group__ip__4__6_1ga51dba11ffc8e3b1bf695e721b3144094"></span><span class="sig-name descname"><span class="n"><span class="pre">PF_UNSPEC</span></span></span><a class="headerlink" href="#c.PF_UNSPEC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unspecified protocol family. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PF_INET">
+<span class="target" id="group__ip__4__6_1ga3f5da0b5be27fe31ec7cc11bfa8d1a25"></span><span class="sig-name descname"><span class="n"><span class="pre">PF_INET</span></span></span><a class="headerlink" href="#c.PF_INET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IP protocol family version 4. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PF_INET6">
+<span class="target" id="group__ip__4__6_1ga323f2649198fc7e64b19881869265618"></span><span class="sig-name descname"><span class="n"><span class="pre">PF_INET6</span></span></span><a class="headerlink" href="#c.PF_INET6" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IP protocol family version 6. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PF_PACKET">
+<span class="target" id="group__ip__4__6_1ga8e297adb5fe2e28b0d9d921a5d56a8e9"></span><span class="sig-name descname"><span class="n"><span class="pre">PF_PACKET</span></span></span><a class="headerlink" href="#c.PF_PACKET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Packet family. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PF_CAN">
+<span class="target" id="group__ip__4__6_1gaeac0c3db7a1e021f17987bcc76893849"></span><span class="sig-name descname"><span class="n"><span class="pre">PF_CAN</span></span></span><a class="headerlink" href="#c.PF_CAN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Controller Area Network. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PF_NET_MGMT">
+<span class="target" id="group__ip__4__6_1ga288b09307bcc46aef2acf2af5e3e1006"></span><span class="sig-name descname"><span class="n"><span class="pre">PF_NET_MGMT</span></span></span><a class="headerlink" href="#c.PF_NET_MGMT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Network management info. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PF_LOCAL">
+<span class="target" id="group__ip__4__6_1ga521c315ca2a2a4e6345878e84af4085e"></span><span class="sig-name descname"><span class="n"><span class="pre">PF_LOCAL</span></span></span><a class="headerlink" href="#c.PF_LOCAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Inter-process communication </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PF_UNIX">
+<span class="target" id="group__ip__4__6_1ga0407288f5fb975a03b21d5287c282b2e"></span><span class="sig-name descname"><span class="n"><span class="pre">PF_UNIX</span></span></span><a class="headerlink" href="#c.PF_UNIX" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Inter-process communication </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AF_UNSPEC">
+<span class="target" id="group__ip__4__6_1gae77ae24b14b7b7f294f3e04121173f12"></span><span class="sig-name descname"><span class="n"><span class="pre">AF_UNSPEC</span></span></span><a class="headerlink" href="#c.AF_UNSPEC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unspecified address family. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AF_INET">
+<span class="target" id="group__ip__4__6_1ga9930604d0e32588eae76f43ca38e7826"></span><span class="sig-name descname"><span class="n"><span class="pre">AF_INET</span></span></span><a class="headerlink" href="#c.AF_INET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IP protocol family version 4. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AF_INET6">
+<span class="target" id="group__ip__4__6_1gaa03706b2738b9a58d4985dfbe99e1bac"></span><span class="sig-name descname"><span class="n"><span class="pre">AF_INET6</span></span></span><a class="headerlink" href="#c.AF_INET6" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IP protocol family version 6. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AF_PACKET">
+<span class="target" id="group__ip__4__6_1gaa89aa4cd481fe17260c3f5d493cc23f5"></span><span class="sig-name descname"><span class="n"><span class="pre">AF_PACKET</span></span></span><a class="headerlink" href="#c.AF_PACKET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Packet family. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AF_CAN">
+<span class="target" id="group__ip__4__6_1ga546620c7e758f003b24b7fdae4f97bd4"></span><span class="sig-name descname"><span class="n"><span class="pre">AF_CAN</span></span></span><a class="headerlink" href="#c.AF_CAN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Controller Area Network. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AF_NET_MGMT">
+<span class="target" id="group__ip__4__6_1ga41d0cbb55cd9550a7f732b1520119c15"></span><span class="sig-name descname"><span class="n"><span class="pre">AF_NET_MGMT</span></span></span><a class="headerlink" href="#c.AF_NET_MGMT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Network management info. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AF_LOCAL">
+<span class="target" id="group__ip__4__6_1gae24f1f9ea44fcce3affcb2137f593dc1"></span><span class="sig-name descname"><span class="n"><span class="pre">AF_LOCAL</span></span></span><a class="headerlink" href="#c.AF_LOCAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Inter-process communication </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AF_UNIX">
+<span class="target" id="group__ip__4__6_1ga0fd8739854bc8b48d65f0b669fed3ffe"></span><span class="sig-name descname"><span class="n"><span class="pre">AF_UNIX</span></span></span><a class="headerlink" href="#c.AF_UNIX" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Inter-process communication </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ntohs">
+<span class="target" id="group__ip__4__6_1gada37feda716b4ba89cf9dba34288141d"></span><span class="sig-name descname"><span class="n"><span class="pre">ntohs</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ntohs" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert 16-bit value from network to host byte order. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Host byte order value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>: The network byte order value to convert.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ntohl">
+<span class="target" id="group__ip__4__6_1gac317b3e903719ba02894f1710f7f2439"></span><span class="sig-name descname"><span class="n"><span class="pre">ntohl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ntohl" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert 32-bit value from network to host byte order. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Host byte order value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>: The network byte order value to convert.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ntohll">
+<span class="target" id="group__ip__4__6_1ga3cfcf123d4ead264289232f91f2c9ca5"></span><span class="sig-name descname"><span class="n"><span class="pre">ntohll</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ntohll" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert 64-bit value from network to host byte order. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Host byte order value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>: The network byte order value to convert.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.htons">
+<span class="target" id="group__ip__4__6_1ga51799f5ebb4c7228ef7e95c247030f42"></span><span class="sig-name descname"><span class="n"><span class="pre">htons</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.htons" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert 16-bit value from host to network byte order. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Network byte order value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>: The host byte order value to convert.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.htonl">
+<span class="target" id="group__ip__4__6_1gae4027a6ad07f13aa12eab285a1b46019"></span><span class="sig-name descname"><span class="n"><span class="pre">htonl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.htonl" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert 32-bit value from host to network byte order. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Network byte order value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>: The host byte order value to convert.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.htonll">
+<span class="target" id="group__ip__4__6_1ga9f4bf0773c45ad9a9753a1b784a13fbb"></span><span class="sig-name descname"><span class="n"><span class="pre">htonll</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.htonll" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert 64-bit value from host to network byte order. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Network byte order value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>: The host byte order value to convert.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NET_IPV6_ADDR_SIZE">
+<span class="target" id="group__ip__4__6_1ga1eefdabf590090be9f98bdf4a2f43bb4"></span><span class="sig-name descname"><span class="n"><span class="pre">NET_IPV6_ADDR_SIZE</span></span></span><a class="headerlink" href="#c.NET_IPV6_ADDR_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NET_IPV4_ADDR_SIZE">
+<span class="target" id="group__ip__4__6_1ga10a82ea9ba9ca19f3b773bdd53c978e0"></span><span class="sig-name descname"><span class="n"><span class="pre">NET_IPV4_ADDR_SIZE</span></span></span><a class="headerlink" href="#c.NET_IPV4_ADDR_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ALIGN_H">
+<span class="target" id="group__ip__4__6_1ga051015580ee95f46da1d68f6be2b333d"></span><span class="sig-name descname"><span class="n"><span class="pre">ALIGN_H</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ALIGN_H" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ALIGN_D">
+<span class="target" id="group__ip__4__6_1gab67ab3f70af998e71325fb26ea0f6a83"></span><span class="sig-name descname"><span class="n"><span class="pre">ALIGN_D</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ALIGN_D" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CMSG_FIRSTHDR">
+<span class="target" id="group__ip__4__6_1ga39567a31d167fc53336d2ab4a2cd78a4"></span><span class="sig-name descname"><span class="n"><span class="pre">CMSG_FIRSTHDR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">msghdr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CMSG_FIRSTHDR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CMSG_NXTHDR">
+<span class="target" id="group__ip__4__6_1ga77c17efca635d597cb6e98b28172bdc0"></span><span class="sig-name descname"><span class="n"><span class="pre">CMSG_NXTHDR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">msghdr</span></span>, <span class="n"><span class="pre">cmsg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CMSG_NXTHDR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CMSG_DATA">
+<span class="target" id="group__ip__4__6_1ga5ab6d56e410ac0904107e84aeb1484cc"></span><span class="sig-name descname"><span class="n"><span class="pre">CMSG_DATA</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">cmsg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CMSG_DATA" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CMSG_SPACE">
+<span class="target" id="group__ip__4__6_1ga8db11d639dd07c723256f3bb5bc89044"></span><span class="sig-name descname"><span class="n"><span class="pre">CMSG_SPACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CMSG_SPACE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CMSG_LEN">
+<span class="target" id="group__ip__4__6_1gadb36e4ff4fa9a0c6730321c4bfcf64bc"></span><span class="sig-name descname"><span class="n"><span class="pre">CMSG_LEN</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CMSG_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.INET_ADDRSTRLEN">
+<span class="target" id="group__ip__4__6_1ga93b37007689284fd9c4bde1a8f4b9199"></span><span class="sig-name descname"><span class="n"><span class="pre">INET_ADDRSTRLEN</span></span></span><a class="headerlink" href="#c.INET_ADDRSTRLEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Max length of the IPv4 address as a string. Defined by POSIX. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.INET6_ADDRSTRLEN">
+<span class="target" id="group__ip__4__6_1gaf776b22a727aae7c9f4d869d50df47e8"></span><span class="sig-name descname"><span class="n"><span class="pre">INET6_ADDRSTRLEN</span></span></span><a class="headerlink" href="#c.INET6_ADDRSTRLEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Max length of the IPv6 address as a string. Takes into account possible mapped IPv4 addresses. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NET_MAX_PRIORITIES">
+<span class="target" id="group__ip__4__6_1ga5b32bdfc249437709bb25bd95ec7d6d7"></span><span class="sig-name descname"><span class="n"><span class="pre">NET_MAX_PRIORITIES</span></span></span><a class="headerlink" href="#c.NET_MAX_PRIORITIES" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.net_ipaddr_copy">
+<span class="target" id="group__ip__4__6_1ga75ffcc08e621c2d47d1ae043fce2acad"></span><span class="sig-name descname"><span class="n"><span class="pre">net_ipaddr_copy</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dest</span></span>, <span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipaddr_copy" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Copy an IPv4 or IPv6 address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Destination address. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dest</span></code>: Destination IP address. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code>: Source IP address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.sa_family_t">
+<span class="target" id="group__ip__4__6_1ga2d9e094abb99ebd0874373edf1c45eda"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">short</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_family_t</span></span></span><a class="headerlink" href="#c.sa_family_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Socket address family type </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.socklen_t">
+<span class="target" id="group__ip__4__6_1gacf0ed818b0a3c85ff6a9206679d6d91a"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">socklen_t</span></span></span><a class="headerlink" href="#c.socklen_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Length of a socket address </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.net_ip_protocol">
+<span class="target" id="group__ip__4__6_1gaf06819bf427cc58be1229b27b373ca31"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ip_protocol</span></span></span><a class="headerlink" href="#c.net_ip_protocol" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Protocol numbers from IANA/BSD </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol.IPPROTO_IP">
+<span class="target" id="group__ip__4__6_1ggaf06819bf427cc58be1229b27b373ca31a334b0a4a5a3e331e7c7864471e9eab08"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_IP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.net_ip_protocol.IPPROTO_IP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IP protocol (pseudo-val for setsockopt() </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol.IPPROTO_ICMP">
+<span class="target" id="group__ip__4__6_1ggaf06819bf427cc58be1229b27b373ca31a7ccd735b73f6955ae2f4abf3e7ca6bb4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_ICMP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.net_ip_protocol.IPPROTO_ICMP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>ICMP protocol </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol.IPPROTO_IGMP">
+<span class="target" id="group__ip__4__6_1ggaf06819bf427cc58be1229b27b373ca31a4cbcb48be0cd8eb6fb5b5741f1c7b639"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_IGMP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.net_ip_protocol.IPPROTO_IGMP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IGMP protocol </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol.IPPROTO_IPIP">
+<span class="target" id="group__ip__4__6_1ggaf06819bf427cc58be1229b27b373ca31a49a42f6d628bf65e78478e8eb4874ff2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_IPIP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.net_ip_protocol.IPPROTO_IPIP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IPIP tunnels </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol.IPPROTO_TCP">
+<span class="target" id="group__ip__4__6_1ggaf06819bf427cc58be1229b27b373ca31a4a3c433d15859f62bacc06312791a45e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_TCP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#c.net_ip_protocol.IPPROTO_TCP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>TCP protocol </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol.IPPROTO_UDP">
+<span class="target" id="group__ip__4__6_1ggaf06819bf427cc58be1229b27b373ca31abd7dfb22e255a4eed332f41de12d7321"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_UDP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">17</span></span><a class="headerlink" href="#c.net_ip_protocol.IPPROTO_UDP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>UDP protocol </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol.IPPROTO_IPV6">
+<span class="target" id="group__ip__4__6_1ggaf06819bf427cc58be1229b27b373ca31a892549243e60ed1e04e88a14b44d8185"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_IPV6</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">41</span></span><a class="headerlink" href="#c.net_ip_protocol.IPPROTO_IPV6" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IPv6 protocol </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol.IPPROTO_ICMPV6">
+<span class="target" id="group__ip__4__6_1ggaf06819bf427cc58be1229b27b373ca31aeeff57e3cf726718a92b2138e5842926"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_ICMPV6</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">58</span></span><a class="headerlink" href="#c.net_ip_protocol.IPPROTO_ICMPV6" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>ICMPv6 protocol </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol.IPPROTO_RAW">
+<span class="target" id="group__ip__4__6_1ggaf06819bf427cc58be1229b27b373ca31a3f186705d5c21da1b72ecb91cca1f7a4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_RAW</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">255</span></span><a class="headerlink" href="#c.net_ip_protocol.IPPROTO_RAW" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>RAW IP packets </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.net_ip_protocol_secure">
+<span class="target" id="group__ip__4__6_1ga721da18d2a3cfd9b3a56e9efc9f6e58b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ip_protocol_secure</span></span></span><a class="headerlink" href="#c.net_ip_protocol_secure" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Protocol numbers for TLS protocols </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol_secure.IPPROTO_TLS_1_0">
+<span class="target" id="group__ip__4__6_1gga721da18d2a3cfd9b3a56e9efc9f6e58ba6d479e64d940cea948c874d36c656fcc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_TLS_1_0</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">256</span></span><a class="headerlink" href="#c.net_ip_protocol_secure.IPPROTO_TLS_1_0" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>TLS 1.0 protocol </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol_secure.IPPROTO_TLS_1_1">
+<span class="target" id="group__ip__4__6_1gga721da18d2a3cfd9b3a56e9efc9f6e58ba102692f9f57dd0ec6f8c6cb54a235d4c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_TLS_1_1</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">257</span></span><a class="headerlink" href="#c.net_ip_protocol_secure.IPPROTO_TLS_1_1" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>TLS 1.1 protocol </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol_secure.IPPROTO_TLS_1_2">
+<span class="target" id="group__ip__4__6_1gga721da18d2a3cfd9b3a56e9efc9f6e58baa5e176fa47ca23a6f25101a5203f8e5a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_TLS_1_2</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">258</span></span><a class="headerlink" href="#c.net_ip_protocol_secure.IPPROTO_TLS_1_2" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>TLS 1.2 protocol </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol_secure.IPPROTO_DTLS_1_0">
+<span class="target" id="group__ip__4__6_1gga721da18d2a3cfd9b3a56e9efc9f6e58ba92e94005d7a80aacbffad2f3f10555ef"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_DTLS_1_0</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">272</span></span><a class="headerlink" href="#c.net_ip_protocol_secure.IPPROTO_DTLS_1_0" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>DTLS 1.0 protocol </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_protocol_secure.IPPROTO_DTLS_1_2">
+<span class="target" id="group__ip__4__6_1gga721da18d2a3cfd9b3a56e9efc9f6e58bad4d2a6ca8756ee52221f19fb06c34a1c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IPPROTO_DTLS_1_2</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">273</span></span><a class="headerlink" href="#c.net_ip_protocol_secure.IPPROTO_DTLS_1_2" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>DTLS 1.2 protocol </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.net_sock_type">
+<span class="target" id="group__ip__4__6_1gaaab4268707dbe08348b98fb028e7aa5c"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_sock_type</span></span></span><a class="headerlink" href="#c.net_sock_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Socket type </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_sock_type.SOCK_STREAM">
+<span class="target" id="group__ip__4__6_1ggaaab4268707dbe08348b98fb028e7aa5cae3b7fb9487113a31d403b23aaeaad424"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SOCK_STREAM</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.net_sock_type.SOCK_STREAM" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Stream socket type </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_sock_type.SOCK_DGRAM">
+<span class="target" id="group__ip__4__6_1ggaaab4268707dbe08348b98fb028e7aa5ca006b373a518eeeb717573f91e70d7fcc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SOCK_DGRAM</span></span></span><a class="headerlink" href="#c.net_sock_type.SOCK_DGRAM" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Datagram socket type </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_sock_type.SOCK_RAW">
+<span class="target" id="group__ip__4__6_1ggaaab4268707dbe08348b98fb028e7aa5cad78d54561daf9c4a7cda0ce115e3f231"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SOCK_RAW</span></span></span><a class="headerlink" href="#c.net_sock_type.SOCK_RAW" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>RAW socket type </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.net_ip_mtu">
+<span class="target" id="group__ip__4__6_1ga7a207761e4879c140f48f93978cb2f0b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ip_mtu</span></span></span><a class="headerlink" href="#c.net_ip_mtu" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_mtu.NET_IPV6_MTU">
+<span class="target" id="group__ip__4__6_1gga7a207761e4879c140f48f93978cb2f0ba76d0214e90b8507d3074a5b1ab38267c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_IPV6_MTU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1280</span></span><a class="headerlink" href="#c.net_ip_mtu.NET_IPV6_MTU" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IPv6 MTU length. We must be able to receive this size IPv6 packet without fragmentation. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_ip_mtu.NET_IPV4_MTU">
+<span class="target" id="group__ip__4__6_1gga7a207761e4879c140f48f93978cb2f0ba500ea814a9a955fbb4a65fdf96e784d1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_IPV4_MTU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">576</span></span><a class="headerlink" href="#c.net_ip_mtu.NET_IPV4_MTU" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IPv4 MTU length. We must be able to receive this size IPv4 packet without fragmentation. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.net_priority">
+<span class="target" id="group__ip__4__6_1gae87ef466e77ded673ed7e593d3eddffd"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_priority</span></span></span><a class="headerlink" href="#c.net_priority" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Network packet priority settings described in IEEE 802.1Q Annex I.1 </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_priority.NET_PRIORITY_BK">
+<span class="target" id="group__ip__4__6_1ggae87ef466e77ded673ed7e593d3eddffdae01a1318d81935d370f030456435202b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_PRIORITY_BK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.net_priority.NET_PRIORITY_BK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Background (lowest) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_priority.NET_PRIORITY_BE">
+<span class="target" id="group__ip__4__6_1ggae87ef466e77ded673ed7e593d3eddffda8bc1e038efe3e2332ccd3840990a64ce"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_PRIORITY_BE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.net_priority.NET_PRIORITY_BE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Best effort (default) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_priority.NET_PRIORITY_EE">
+<span class="target" id="group__ip__4__6_1ggae87ef466e77ded673ed7e593d3eddffdac9c5e9073459374d56491c26b692d5b0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_PRIORITY_EE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.net_priority.NET_PRIORITY_EE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Excellent effort </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_priority.NET_PRIORITY_CA">
+<span class="target" id="group__ip__4__6_1ggae87ef466e77ded673ed7e593d3eddffda38103e3ab83f8fd693a5a1c18de98354"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_PRIORITY_CA</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.net_priority.NET_PRIORITY_CA" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Critical applications (highest) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_priority.NET_PRIORITY_VI">
+<span class="target" id="group__ip__4__6_1ggae87ef466e77ded673ed7e593d3eddffda7878127d03fb7d0a34b8d68b9461e792"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_PRIORITY_VI</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.net_priority.NET_PRIORITY_VI" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Video, &lt; 100 ms latency and jitter </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_priority.NET_PRIORITY_VO">
+<span class="target" id="group__ip__4__6_1ggae87ef466e77ded673ed7e593d3eddffda6919b414160f3ed8ac7c391761c77e8a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_PRIORITY_VO</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#c.net_priority.NET_PRIORITY_VO" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Voice, &lt; 10 ms latency and jitter </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_priority.NET_PRIORITY_IC">
+<span class="target" id="group__ip__4__6_1ggae87ef466e77ded673ed7e593d3eddffda23090c0b06a54b8a41be3f44497b0c05"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_PRIORITY_IC</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#c.net_priority.NET_PRIORITY_IC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Internetwork control </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_priority.NET_PRIORITY_NC">
+<span class="target" id="group__ip__4__6_1ggae87ef466e77ded673ed7e593d3eddffda05855ea3da85f60bec646a4491b554ef"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_PRIORITY_NC</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">7</span></span><a class="headerlink" href="#c.net_priority.NET_PRIORITY_NC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Network control </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.net_addr_state">
+<span class="target" id="group__ip__4__6_1ga32e58fc83532ef57eeb6ff952f17288d"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_addr_state</span></span></span><a class="headerlink" href="#c.net_addr_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>What is the current state of the network address </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_addr_state.NET_ADDR_ANY_STATE">
+<span class="target" id="group__ip__4__6_1gga32e58fc83532ef57eeb6ff952f17288da1de25b6f7d4c58957bce10d5f32fb5df"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_ADDR_ANY_STATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.net_addr_state.NET_ADDR_ANY_STATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Default (invalid) address type </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_addr_state.NET_ADDR_TENTATIVE">
+<span class="target" id="group__ip__4__6_1gga32e58fc83532ef57eeb6ff952f17288da6581c6c65c8f4e857fe9275e9ad1f8a9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_ADDR_TENTATIVE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.net_addr_state.NET_ADDR_TENTATIVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Tentative address </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_addr_state.NET_ADDR_PREFERRED">
+<span class="target" id="group__ip__4__6_1gga32e58fc83532ef57eeb6ff952f17288da8f25e58072ffdfac2832740893ad881a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_ADDR_PREFERRED</span></span></span><a class="headerlink" href="#c.net_addr_state.NET_ADDR_PREFERRED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Preferred address </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_addr_state.NET_ADDR_DEPRECATED">
+<span class="target" id="group__ip__4__6_1gga32e58fc83532ef57eeb6ff952f17288da85f4224bf8692e4b4a09ebb7b411f9a3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_ADDR_DEPRECATED</span></span></span><a class="headerlink" href="#c.net_addr_state.NET_ADDR_DEPRECATED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Deprecated address </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.net_addr_type">
+<span class="target" id="group__ip__4__6_1gafecee2d4a331dc85ad962b81a6303e41"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_addr_type</span></span></span><a class="headerlink" href="#c.net_addr_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>How the network address is assigned to network interface </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_addr_type.NET_ADDR_ANY">
+<span class="target" id="group__ip__4__6_1ggafecee2d4a331dc85ad962b81a6303e41a1c62cc5fe7d788175da915c25fc689e6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_ADDR_ANY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.net_addr_type.NET_ADDR_ANY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Default value. This is not a valid value. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_addr_type.NET_ADDR_AUTOCONF">
+<span class="target" id="group__ip__4__6_1ggafecee2d4a331dc85ad962b81a6303e41ae0dbfc40ad42a55a176578a55d0c4006"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_ADDR_AUTOCONF</span></span></span><a class="headerlink" href="#c.net_addr_type.NET_ADDR_AUTOCONF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Auto configured address </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_addr_type.NET_ADDR_DHCP">
+<span class="target" id="group__ip__4__6_1ggafecee2d4a331dc85ad962b81a6303e41a7f6748a05d02325bd41b23cd05e6d1db"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_ADDR_DHCP</span></span></span><a class="headerlink" href="#c.net_addr_type.NET_ADDR_DHCP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Address is from DHCP </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_addr_type.NET_ADDR_MANUAL">
+<span class="target" id="group__ip__4__6_1ggafecee2d4a331dc85ad962b81a6303e41adc6d5d3b52bddf03930e125b0f21ae9e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_ADDR_MANUAL</span></span></span><a class="headerlink" href="#c.net_addr_type.NET_ADDR_MANUAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Manually set address </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_addr_type.NET_ADDR_OVERRIDABLE">
+<span class="target" id="group__ip__4__6_1ggafecee2d4a331dc85ad962b81a6303e41a4dc979a84d5aaca6ae6f0f4e1c9bbff4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_ADDR_OVERRIDABLE</span></span></span><a class="headerlink" href="#c.net_addr_type.NET_ADDR_OVERRIDABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Manually set address which is overridable by DHCP </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_loopback">
+<span class="target" id="group__ip__4__6_1gaa662667005bdc00bf1eb5cf243aad874"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_loopback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_loopback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is a loopback address (::1). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if address is a loopback address, False otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast">
+<span class="target" id="group__ip__4__6_1ga1a2fb0427eeab1a5dec6d69208ad7f02"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is a multicast address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if address is multicast address, False otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_if_ipv6_addr_lookup">
+<span class="target" id="group__ip__4__6_1ga74d643ec88f96b58784c4d1d0df8d68b"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if_addr" title="net_if_addr"><span class="n"><span class="pre">net_if_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_if_ipv6_addr_lookup</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_if_ipv6_addr_lookup" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_my_addr">
+<span class="target" id="group__ip__4__6_1ga00853528daf79c947dcdc320035ed538"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_my_addr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_my_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if IPv6 address is found in one of the network interfaces. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if address was found, False otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_if_ipv6_maddr_lookup">
+<span class="target" id="group__ip__4__6_1gae1dd7019c972902dedc1959be7bd7ad4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if_mcast_addr" title="net_if_mcast_addr"><span class="n"><span class="pre">net_if_mcast_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_if_ipv6_maddr_lookup</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_if_ipv6_maddr_lookup" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_my_maddr">
+<span class="target" id="group__ip__4__6_1gaf8c5158de9a65d840faa61bb3dec341c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_my_maddr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">maddr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_my_maddr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if IPv6 multicast address is found in one of the network interfaces. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if address was found, False otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">maddr</span></code>: Multicast IPv6 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_prefix">
+<span class="target" id="group__ip__4__6_1ga9654007b0a3c4d033df1ec3d00bd26ee"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_prefix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr2</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_prefix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if two IPv6 addresses are same when compared after prefix mask. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if IPv6 prefixes are the same, False otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr1</span></code>: First IPv6 address. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr2</span></code>: Second IPv6 address. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code>: Prefix length (max length is 128).</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_is_addr_loopback">
+<span class="target" id="group__ip__4__6_1ga879e4aed725d7ea3fe609fa989f14735"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_is_addr_loopback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_is_addr_loopback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv4 address is a loopback address (127.0.0.0/8). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if address is a loopback address, False otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv4 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_is_addr_unspecified">
+<span class="target" id="group__ip__4__6_1gadc623ecacf024733ab6d477d87cc4b9d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_is_addr_unspecified</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_is_addr_unspecified" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv4 address is unspecified (all bits zero) </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is unspecified, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv4 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_is_addr_mcast">
+<span class="target" id="group__ip__4__6_1gae8c3302cf9ca457de32eabcf65975b70"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_is_addr_mcast</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_is_addr_mcast" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv4 address is a multicast address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if address is multicast address, False otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv4 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_is_ll_addr">
+<span class="target" id="group__ip__4__6_1gac000a319de7a6f95d4a63719bca3b865"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_is_ll_addr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_is_ll_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the given IPv4 address is a link local address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if it is, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: A valid pointer on an IPv4 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_addr_copy_raw">
+<span class="target" id="group__ip__4__6_1gaf731738fb1761208739976d767736f87"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_addr_copy_raw</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_addr_copy_raw" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Copy an IPv4 address raw buffer. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dest</span></code>: Destination IP address. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code>: Source IP address. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_addr_copy_raw">
+<span class="target" id="group__ip__4__6_1ga4925e6f3734b8fc1d9cb1ca1a510b5f1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_addr_copy_raw</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_addr_copy_raw" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Copy an IPv6 address raw buffer. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dest</span></code>: Destination IP address. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code>: Source IP address. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_addr_cmp">
+<span class="target" id="group__ip__4__6_1ga0bdcc8dad8eb42c02426e55378ececf8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_addr_cmp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_addr_cmp" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compare two IPv4 addresses. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the addresses are the same, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr1</span></code>: Pointer to IPv4 address. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr2</span></code>: Pointer to IPv4 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_addr_cmp_raw">
+<span class="target" id="group__ip__4__6_1ga32ffb42c62169ac9b34a0faa7c7ffd12"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_addr_cmp_raw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_addr_cmp_raw" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compare two raw IPv4 address buffers. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the addresses are the same, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr1</span></code>: Pointer to IPv4 address buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr2</span></code>: Pointer to IPv4 address buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_addr_cmp">
+<span class="target" id="group__ip__4__6_1ga3456f90a2ea094d16f05a358645a6eb8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_addr_cmp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_addr_cmp" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compare two IPv6 addresses. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the addresses are the same, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr1</span></code>: Pointer to IPv6 address. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr2</span></code>: Pointer to IPv6 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_addr_cmp_raw">
+<span class="target" id="group__ip__4__6_1gafbe40461a645cf11fc8b3a07e1d9156e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_addr_cmp_raw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_addr_cmp_raw" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compare two raw IPv6 address buffers. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the addresses are the same, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr1</span></code>: Pointer to IPv6 address buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr2</span></code>: Pointer to IPv6 address buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_ll_addr">
+<span class="target" id="group__ip__4__6_1gacac4279ee8896ddf2a76c612b36edf38"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_ll_addr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_ll_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the given IPv6 address is a link local address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if it is, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: A valid pointer on an IPv6 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_ula_addr">
+<span class="target" id="group__ip__4__6_1gae10578b8801d213482de7d7d7e7ba230"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_ula_addr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_ula_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the given IPv6 address is a unique local address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if it is, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: A valid pointer on an IPv6 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_unspecified_address">
+<span class="target" id="group__ip__4__6_1ga70b35aa72e0ba08f92459ac9d7c034de"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_unspecified_address</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_unspecified_address" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return pointer to any (all bits zeros) IPv6 address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Any IPv6 address. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_unspecified_address">
+<span class="target" id="group__ip__4__6_1ga31756756a1534acd8efb4fdbe820dcdc"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_unspecified_address</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_unspecified_address" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return pointer to any (all bits zeros) IPv4 address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Any IPv4 address. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_broadcast_address">
+<span class="target" id="group__ip__4__6_1gaa67c4687ec834f92994eb966f2480a0a"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_broadcast_address</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_broadcast_address" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return pointer to broadcast (all bits ones) IPv4 address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Broadcast IPv4 address. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_if_ipv4_addr_mask_cmp">
+<span class="target" id="group__ip__4__6_1ga558b31e556a1a4b8d1e68a78f3f755ea"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_if_ipv4_addr_mask_cmp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_if_ipv4_addr_mask_cmp" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_addr_mask_cmp">
+<span class="target" id="group__ip__4__6_1ga715455ec5e8041c5d7075fa6913674cd"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_addr_mask_cmp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_addr_mask_cmp" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the given address belongs to same subnet that has been configured for the interface. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if address is in same subnet, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface</span></code>: A valid pointer on an interface </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv4 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_if_ipv4_is_addr_bcast">
+<span class="target" id="group__ip__4__6_1ga8f93179138c1942bc1a099102a4314cf"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_if_ipv4_is_addr_bcast</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_if_ipv4_is_addr_bcast" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_is_addr_bcast">
+<span class="target" id="group__ip__4__6_1gac545e2252f221c73c80cea746dffa083"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_is_addr_bcast</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_is_addr_bcast" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the given IPv4 address is a broadcast address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if address is a broadcast address, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface</span></code>: Interface to use. Must be a valid pointer to an interface. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv4 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_if_ipv4_addr_lookup">
+<span class="target" id="group__ip__4__6_1gaeb590939d2006c42fd39a8ebfb6e3e30"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if_addr" title="net_if_addr"><span class="n"><span class="pre">net_if_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_if_ipv4_addr_lookup</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_if_ipv4_addr_lookup" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv4_is_my_addr">
+<span class="target" id="group__ip__4__6_1ga3db2a1fca0b525a7202277700b987eb9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv4_is_my_addr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in_addr" title="in_addr"><span class="n"><span class="pre">in_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv4_is_my_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv4 address is assigned to any network interface in the system. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if IPv4 address is found in one of the network interfaces, False otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: A valid pointer on an IPv4 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_unspecified">
+<span class="target" id="group__ip__4__6_1gafe2c8dc0bdb677ba9bc872d051aab2a0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_unspecified</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_unspecified" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is unspecified (all bits zero) </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is unspecified, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_solicited_node">
+<span class="target" id="group__ip__4__6_1ga5a334819f4e4bf87aea5caa7ef28c68a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_solicited_node</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_solicited_node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is solicited node multicast address FF02:0:0:0:0:1:FFXX:XXXX defined in RFC 3513. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is solicited node address, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast_scope">
+<span class="target" id="group__ip__4__6_1gadc75208131d5a4333f31291ac5f8ce94"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast_scope</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">scope</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast_scope" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is a given scope multicast address (FFyx::). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is in given scope multicast address, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scope</span></code>: Scope to check</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_same_mcast_scope">
+<span class="target" id="group__ip__4__6_1ga3f80a84f330a31aaa875fdea64dc18ec"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_same_mcast_scope</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr_1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr_2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_same_mcast_scope" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 addresses have the same multicast scope (FFyx::). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if both addresses have same multicast scope, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr_1</span></code>: IPv6 address 1 </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr_2</span></code>: IPv6 address 2</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast_global">
+<span class="target" id="group__ip__4__6_1ga55d67d4349dd354a7254a2f8e8320693"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast_global</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast_global" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is a global multicast address (FFxE::/16). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is global multicast address, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast_iface">
+<span class="target" id="group__ip__4__6_1gae27ca6956f943469cad0faa0ba738fc2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast_iface</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast_iface" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is a interface scope multicast address (FFx1::). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is a interface scope multicast address, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast_link">
+<span class="target" id="group__ip__4__6_1ga6f83a3a8701ec378b47337acba59d5e4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast_link</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast_link" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is a link local scope multicast address (FFx2::). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is a link local scope multicast address, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast_mesh">
+<span class="target" id="group__ip__4__6_1ga497a148717c1c1095abeb4482566dda0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast_mesh</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast_mesh" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is a mesh-local scope multicast address (FFx3::). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is a mesh-local scope multicast address, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast_site">
+<span class="target" id="group__ip__4__6_1ga6704146124a14be9cf2a636947c35a00"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast_site</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast_site" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is a site scope multicast address (FFx5::). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is a site scope multicast address, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast_org">
+<span class="target" id="group__ip__4__6_1ga141ed5de3043dd7d6b45098aea38a4b1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast_org</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast_org" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is an organization scope multicast address (FFx8::). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is an organization scope multicast address, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast_group">
+<span class="target" id="group__ip__4__6_1ga611a4adb332715d983375899dcf101d0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast_group</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">group</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast_group" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address belongs to certain multicast group. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the IPv6 multicast address belongs to given multicast group, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">group</span></code>: Group id IPv6 address, the values must be in network byte order</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast_all_nodes_group">
+<span class="target" id="group__ip__4__6_1gacf00ae106727f97e2fd35be68418354d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast_all_nodes_group</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast_all_nodes_group" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address belongs to the all nodes multicast group. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the IPv6 multicast address belongs to the all nodes multicast group, false otherwise </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast_iface_all_nodes">
+<span class="target" id="group__ip__4__6_1ga35bdad7c958f1ea656680000ee3f6bfd"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast_iface_all_nodes</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast_iface_all_nodes" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is a interface scope all nodes multicast address (FF01::1). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is a interface scope all nodes multicast address, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_is_addr_mcast_link_all_nodes">
+<span class="target" id="group__ip__4__6_1gaba3e1259f452381ef3e109bb2eb34c09"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_is_addr_mcast_link_all_nodes</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_is_addr_mcast_link_all_nodes" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the IPv6 address is a link local scope all nodes multicast address (FF02::1). </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the address is a link local scope all nodes multicast address, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_addr_create_solicited_node">
+<span class="target" id="group__ip__4__6_1ga6091a7406c136fcf480517cb969c9d90"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_addr_create_solicited_node</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dst</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_addr_create_solicited_node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create solicited node IPv6 multicast address FF02:0:0:0:0:1:FFXX:XXXX defined in RFC 3513. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code>: IPv6 address. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dst</span></code>: IPv6 address. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_addr_create">
+<span class="target" id="group__ip__4__6_1ga0a78f83dcb4e341d86d9352506196696"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_addr_create</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr0</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr1</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr2</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr3</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr4</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr5</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr6</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr7</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_addr_create" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Construct an IPv6 address from eight 16-bit words. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr0</span></code>: 16-bit word which is part of the address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr1</span></code>: 16-bit word which is part of the address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr2</span></code>: 16-bit word which is part of the address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr3</span></code>: 16-bit word which is part of the address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr4</span></code>: 16-bit word which is part of the address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr5</span></code>: 16-bit word which is part of the address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr6</span></code>: 16-bit word which is part of the address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr7</span></code>: 16-bit word which is part of the address </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_addr_create_ll_allnodes_mcast">
+<span class="target" id="group__ip__4__6_1ga58cbba1c522815b1ce201b0377ffe0b2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_addr_create_ll_allnodes_mcast</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_addr_create_ll_allnodes_mcast" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create link local allnodes multicast IPv6 address. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_addr_create_ll_allrouters_mcast">
+<span class="target" id="group__ip__4__6_1ga30821f0a2c08b4b01b71d362e3a25de1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_addr_create_ll_allrouters_mcast</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_addr_create_ll_allrouters_mcast" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create link local allrouters multicast IPv6 address. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_addr_create_iid">
+<span class="target" id="group__ip__4__6_1ga6d41f1de27e2e8fbb8f12925eba852b4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_addr_create_iid</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_linkaddr.html#c.net_linkaddr" title="net_linkaddr"><span class="n"><span class="pre">net_linkaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lladdr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_addr_create_iid" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create IPv6 address interface identifier. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: IPv6 address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lladdr</span></code>: Link local address </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipv6_addr_based_on_ll">
+<span class="target" id="group__ip__4__6_1gaf4b0c30b926748625bd3c4c81d06ffc5"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipv6_addr_based_on_ll</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.in6_addr" title="in6_addr"><span class="n"><span class="pre">in6_addr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_linkaddr.html#c.net_linkaddr" title="net_linkaddr"><span class="n"><span class="pre">net_linkaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lladdr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipv6_addr_based_on_ll" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if given address is based on link layer address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if it is, False otherwise </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_sin6">
+<span class="target" id="group__ip__4__6_1ga14ce4e8b4fcdf5af5e968b3fcdf6297d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sockaddr_in6" title="sockaddr_in6"><span class="n"><span class="pre">sockaddr_in6</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_sin6</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sockaddr" title="sockaddr"><span class="n"><span class="pre">sockaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_sin6" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get <a class="reference internal" href="#structsockaddr__in6"><span class="std std-ref">sockaddr_in6</span></a> from sockaddr. This is a helper so that the code calling this function can be made shorter. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to IPv6 socket address </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Socket address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_sin">
+<span class="target" id="group__ip__4__6_1ga1beed413398240ca3cab55fdbbe934b8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sockaddr_in" title="sockaddr_in"><span class="n"><span class="pre">sockaddr_in</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_sin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sockaddr" title="sockaddr"><span class="n"><span class="pre">sockaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_sin" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get <a class="reference internal" href="#structsockaddr__in"><span class="std std-ref">sockaddr_in</span></a> from sockaddr. This is a helper so that the code calling this function can be made shorter. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to IPv4 socket address </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Socket address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_sin6_ptr">
+<span class="target" id="group__ip__4__6_1ga68b5c1d689852317fecfe17fa832e9a0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sockaddr_in6_ptr" title="sockaddr_in6_ptr"><span class="n"><span class="pre">sockaddr_in6_ptr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_sin6_ptr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr_ptr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_sin6_ptr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get <a class="reference internal" href="#structsockaddr__in6__ptr"><span class="std std-ref">sockaddr_in6_ptr</span></a> from sockaddr_ptr. This is a helper so that the code calling this function can be made shorter. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to IPv6 socket address </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Socket address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_sin_ptr">
+<span class="target" id="group__ip__4__6_1gac5e0c692ef72df1a5250b5f5096f362d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sockaddr_in_ptr" title="sockaddr_in_ptr"><span class="n"><span class="pre">sockaddr_in_ptr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_sin_ptr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr_ptr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_sin_ptr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get <a class="reference internal" href="#structsockaddr__in__ptr"><span class="std std-ref">sockaddr_in_ptr</span></a> from sockaddr_ptr. This is a helper so that the code calling this function can be made shorter. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to IPv4 socket address </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Socket address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_sll_ptr">
+<span class="target" id="group__ip__4__6_1gaf2de756c793540384495988e30ef7347"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sockaddr_ll_ptr" title="sockaddr_ll_ptr"><span class="n"><span class="pre">sockaddr_ll_ptr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_sll_ptr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr_ptr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_sll_ptr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get <a class="reference internal" href="#structsockaddr__ll__ptr"><span class="std std-ref">sockaddr_ll_ptr</span></a> from sockaddr_ptr. This is a helper so that the code calling this function can be made shorter. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to linklayer socket address </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Socket address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_can_ptr">
+<span class="target" id="group__ip__4__6_1gab195c911da3026ea725c65fdeab0797a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sockaddr_can_ptr" title="sockaddr_can_ptr"><span class="n"><span class="pre">sockaddr_can_ptr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_can_ptr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr_ptr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_can_ptr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get <a class="reference internal" href="#structsockaddr__can__ptr"><span class="std std-ref">sockaddr_can_ptr</span></a> from sockaddr_ptr. This is a helper so that the code needing this functionality can be made shorter. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to CAN socket address </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Socket address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_addr_pton">
+<span class="target" id="group__ip__4__6_1ga264b3c0a13493eac291ddc85d0b4d43d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_addr_pton</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.sa_family_t" title="sa_family_t"><span class="n"><span class="pre">sa_family_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">family</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dst</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_addr_pton" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert a string to IP address. </p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This function doesn’t do precise error checking, do not use for untrusted strings.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>0 if ok, &lt; 0 if error </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">family</span></code>: IP address family (AF_INET or AF_INET6) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code>: IP address in a null terminated string </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dst</span></code>: Pointer to struct <a class="reference internal" href="#structin__addr"><span class="std std-ref">in_addr</span></a> if family is AF_INET or pointer to struct <a class="reference internal" href="#structin6__addr"><span class="std std-ref">in6_addr</span></a> if family is AF_INET6</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_addr_ntop">
+<span class="target" id="group__ip__4__6_1ga3551e7fdd74c9320476ea84ba24b4f1b"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_addr_ntop</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.sa_family_t" title="sa_family_t"><span class="n"><span class="pre">sa_family_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">family</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dst</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_addr_ntop" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert IP address to string form. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>dst pointer if ok, NULL if error </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">family</span></code>: IP address family (AF_INET or AF_INET6) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code>: Pointer to struct <a class="reference internal" href="#structin__addr"><span class="std std-ref">in_addr</span></a> if family is AF_INET or pointer to struct <a class="reference internal" href="#structin6__addr"><span class="std std-ref">in6_addr</span></a> if family is AF_INET6 </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dst</span></code>: Buffer for IP address as a null terminated string </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of bytes available in the buffer</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_ipaddr_parse">
+<span class="target" id="group__ip__4__6_1ga9918e156f0039cf45d487a112e0a2ada"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_ipaddr_parse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">str</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">str_len</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sockaddr" title="sockaddr"><span class="n"><span class="pre">sockaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_ipaddr_parse" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Parse a string that contains either IPv4 or IPv6 address and optional port, and store the information in user supplied sockaddr struct. </p>
+<p>Syntax of the IP address string: 192.0.2.1:80 192.0.2.42</p>
+<p>[2001:db8::2] 2001:db::42 Note that the str_len parameter is used to restrict the amount of characters that are checked. If the string does not contain port number, then the port number in sockaddr is not modified.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if parsing could be done, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: String that contains the IP address. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str_len</span></code>: Length of the string to be parsed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Pointer to user supplied struct sockaddr.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_tcp_seq_cmp">
+<span class="target" id="group__ip__4__6_1ga1695009388402938dcc2e49b526ebd1f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_tcp_seq_cmp</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">seq1</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">seq2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_tcp_seq_cmp" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compare TCP sequence numbers. </p>
+<p>This function compares TCP sequence numbers, accounting for wraparound effects.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>&lt; 0 if seq1 &lt; seq2, 0 if seq1 == seq2, &gt; 0 if seq &gt; seq2 </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">seq1</span></code>: First sequence number </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seq2</span></code>: Seconds sequence number</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_tcp_seq_greater">
+<span class="target" id="group__ip__4__6_1gaa77b299f53e5535ac4c4bea1b6531a34"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_tcp_seq_greater</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">seq1</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">seq2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_tcp_seq_greater" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check that one TCP sequence number is greater. </p>
+<p>This is convenience function on top of <a class="reference internal" href="#group__ip__4__6_1ga1695009388402938dcc2e49b526ebd1f"><span class="std std-ref">net_tcp_seq_cmp()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if seq &gt; seq2 </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">seq1</span></code>: First sequence number </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seq2</span></code>: Seconds sequence number</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_bytes_from_str">
+<span class="target" id="group__ip__4__6_1ga8b794f251cf8412c769ab415902a9f32"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_bytes_from_str</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">buf_len</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_bytes_from_str" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert a string of hex values to array of bytes. </p>
+<p>The syntax of the string is “ab:02:98:fa:42:01”</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 if ok, &lt;0 if error </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Pointer to memory where the bytes are written. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf_len</span></code>: Length of the memory area. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code>: String of bytes.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_tx_priority2tc">
+<span class="target" id="group__ip__4__6_1gae74c9ba7ff4addbce7f931bd6fa91fa0"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_tx_priority2tc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.net_priority" title="net_priority"><span class="n"><span class="pre">net_priority</span></span></a><span class="w"> </span><span class="n"><span class="pre">prio</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_tx_priority2tc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert Tx network packet priority to traffic class so we can place the packet into correct Tx queue. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Tx traffic class that handles that priority network traffic. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">prio</span></code>: Network priority</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_rx_priority2tc">
+<span class="target" id="group__ip__4__6_1ga7b3c41ae9b3962090d72c130a9fa61b1"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_rx_priority2tc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.net_priority" title="net_priority"><span class="n"><span class="pre">net_priority</span></span></a><span class="w"> </span><span class="n"><span class="pre">prio</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_rx_priority2tc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert Rx network packet priority to traffic class so we can place the packet into correct Rx queue. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Rx traffic class that handles that priority network traffic. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">prio</span></code>: Network priority</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_vlan2priority">
+<span class="target" id="group__ip__4__6_1ga14bc7018e3dd7c3e320b44a077343ce4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.net_priority" title="net_priority"><span class="n"><span class="pre">net_priority</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_vlan2priority</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">priority</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_vlan2priority" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert network packet VLAN priority to network packet priority so we can place the packet into correct queue. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Network priority </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">priority</span></code>: VLAN priority</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_priority2vlan">
+<span class="target" id="group__ip__4__6_1ga8be77d043d4d1d29e0879b3b22274629"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_priority2vlan</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.net_priority" title="net_priority"><span class="n"><span class="pre">net_priority</span></span></a><span class="w"> </span><span class="n"><span class="pre">priority</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_priority2vlan" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert network packet priority to network packet VLAN priority. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>VLAN priority (PCP) </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">priority</span></code>: Packet priority</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_family2str">
+<span class="target" id="group__ip__4__6_1gac3734960d06613f5b3b090c1e90355f0"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_family2str</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.sa_family_t" title="sa_family_t"><span class="n"><span class="pre">sa_family_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">family</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_family2str" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return network address family value as a string. This is only usable for debugging. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Network address family as a string, or NULL if family is unknown. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">family</span></code>: Network address family code</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.in6_addr">
+<span class="target" id="structin6__addr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">in6_addr</span></span></span><a class="headerlink" href="#c.in6_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em><p>IPv6 address struct </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.in_addr">
+<span class="target" id="structin__addr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">in_addr</span></span></span><a class="headerlink" href="#c.in_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em><p>IPv4 address struct </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.sockaddr_in6">
+<span class="target" id="structsockaddr__in6"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sockaddr_in6</span></span></span><a class="headerlink" href="#c.sockaddr_in6" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em><p>Socket address struct for IPv6. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.sockaddr_in6_ptr">
+<span class="target" id="structsockaddr__in6__ptr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sockaddr_in6_ptr</span></span></span><a class="headerlink" href="#c.sockaddr_in6_ptr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em></dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.sockaddr_in">
+<span class="target" id="structsockaddr__in"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sockaddr_in</span></span></span><a class="headerlink" href="#c.sockaddr_in" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em><p>Socket address struct for IPv4. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.sockaddr_in_ptr">
+<span class="target" id="structsockaddr__in__ptr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sockaddr_in_ptr</span></span></span><a class="headerlink" href="#c.sockaddr_in_ptr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em></dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.sockaddr_ll">
+<span class="target" id="structsockaddr__ll"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sockaddr_ll</span></span></span><a class="headerlink" href="#c.sockaddr_ll" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em><p>Socket address struct for packet socket. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.sockaddr_ll_ptr">
+<span class="target" id="structsockaddr__ll__ptr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sockaddr_ll_ptr</span></span></span><a class="headerlink" href="#c.sockaddr_ll_ptr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em></dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.sockaddr_can_ptr">
+<span class="target" id="structsockaddr__can__ptr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sockaddr_can_ptr</span></span></span><a class="headerlink" href="#c.sockaddr_can_ptr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em></dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.iovec">
+<span class="target" id="structiovec"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iovec</span></span></span><a class="headerlink" href="#c.iovec" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em></dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.msghdr">
+<span class="target" id="structmsghdr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">msghdr</span></span></span><a class="headerlink" href="#c.msghdr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em></dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.cmsghdr">
+<span class="target" id="structcmsghdr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cmsghdr</span></span></span><a class="headerlink" href="#c.cmsghdr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em></dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.sockaddr">
+<span class="target" id="structsockaddr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sockaddr</span></span></span><a class="headerlink" href="#c.sockaddr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em><p>Generic sockaddr struct. Must be cast to proper type. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.net_tuple">
+<span class="target" id="structnet__tuple"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_tuple</span></span></span><a class="headerlink" href="#c.net_tuple" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_ip.h&gt;</em><p>IPv6/IPv4 network connection tuple </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_tuple.remote_addr">
+<span class="target" id="structnet__tuple_1a8f9a1aab3c3aedeead795ca6624d4d6d"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">net_addr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">remote_addr</span></span></span><a class="headerlink" href="#c.net_tuple.remote_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IPv6/IPv4 remote address </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_tuple.local_addr">
+<span class="target" id="structnet__tuple_1af7004f8f8d74d49d6771393825612294"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">net_addr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">local_addr</span></span></span><a class="headerlink" href="#c.net_tuple.local_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IPv6/IPv4 local address </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_tuple.remote_port">
+<span class="target" id="structnet__tuple_1ab4c31093a23bc60d8dcf5b784e3fb39a"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remote_port</span></span></span><a class="headerlink" href="#c.net_tuple.remote_port" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>UDP/TCP remote port </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_tuple.local_port">
+<span class="target" id="structnet__tuple_1a9a1cd0dd55a9e866cb0e910120362b7e"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">local_port</span></span></span><a class="headerlink" href="#c.net_tuple.local_port" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>UDP/TCP local port </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_tuple.ip_proto">
+<span class="target" id="structnet__tuple_1aa9eeba2c8e263afbf6368e04353d6014"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.net_ip_protocol" title="net_ip_protocol"><span class="n"><span class="pre">net_ip_protocol</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ip_proto</span></span></span><a class="headerlink" href="#c.net_tuple.ip_proto" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IP protocol </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dns_resolve.html" class="btn btn-neutral float-right" title="DNS Resolve" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sockets.html" class="btn btn-neutral" title="BSD Sockets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

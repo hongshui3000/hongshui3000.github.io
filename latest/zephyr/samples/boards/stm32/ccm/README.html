@@ -1,0 +1,587 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>STM32 CCM example &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../../copyright.html" />
+    <link rel="next" title="STM32 PM Blinky" href="../power_mgmt/blinky/README.html" />
+    <link rel="prev" title="STM32 Backup SRAM" href="../backup_sram/README.html" />
+  <link rel="shortcut icon" href="../../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../security/index.html">Security</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Samples and Demos</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../classic.html">Classic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basic/basic.html">Basic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../userspace/index.html">Userspace Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../subsys/subsys.html">Various Subsystems Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../net/net.html">Networking Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bluetooth/bluetooth.html">Bluetooth samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sensor/sensor.html">Sensor Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arch/index.html">Architecture Dependent Samples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../boards.html">Board-specific samples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../96b_argonkey/microphone/README.html">ArgonKey Board Microphone</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../96b_argonkey/sensors/README.html">ArgonKey Board Sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../arc_secure_services/README.html">ARC Secure Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bbc_microbit/display/README.html">BBC micro:bit display</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bbc_microbit/line_follower_robot/README.html">BBC micro:bit line-follower robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bbc_microbit/microbit.html">BBC micro:bit Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bbc_microbit/pong/README.html">BBC micro:bit pong game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bbc_microbit/sound/README.html">BBC micro:bit sound</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../esp32/spiram_test/README.html">Espressif ESP32 SPIRAM test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../esp32/wifi_station/README.html">Espressif ESP32 WiFi Station</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../google_kukui/README.html">Kukui general features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../intel_s1000_crb/audio/README.html">Sue Creek 2-Way Audio Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../intel_s1000_crb/dmic/README.html">Intel® S1000 Digital Microphone Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../intel_s1000_crb/i2s/README.html">Intel® S1000 I2S Audio Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../intel_s1000_crb/intel_s1000_crb.html">Intel® S1000 Customer Reference Board Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mec15xxevb_assy6853/mec15xxevb_assy6853.html">MEC15xxEVB Reference Board Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mec15xxevb_assy6853/power_management/README.html">MEC15xx sample board test application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf/battery/README.html">Battery Voltage Measurement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf/clock_skew/README.html">nRF5x Clock Skew Demo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf/dynamic_pinctrl/README.html">Dynamic Pin Control (nRF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf/ieee802154/802154_rpmsg/README.html">nRF IEEE 802.15.4: Serialization RPMsg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf/mesh/onoff-app/README.html">Bluetooth: Mesh OnOff Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf/mesh/onoff_level_lighting_vnd_app/README.html">Bluetooth: Mesh Generic OnOff, Generic Level, Lighting &amp; Vendor Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf/nrf53_sync_rtc/README.html">Synchronized RTC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf/nrf_led_matrix/README.html">nRF LED matrix sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf/nrfx/README.html">nrfx use example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf/nrfx_prs/README.html">nrfx peripheral resource sharing example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf/system_off/README.html">nRF5x System Off demo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../reel_board/mesh_badge/README.html">Mesh Badge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sensortile_box/README.html">ST SensorTile.box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../backup_sram/README.html">STM32 Backup SRAM</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">STM32 CCM example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-and-running">Building and Running</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../power_mgmt/blinky/README.html">STM32 PM Blinky</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../power_mgmt/stm32wb_ble/README.html">STM32: PM BLE Power Management (STM32WB)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../usbc/sink/README.html">Basic USBC SINK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ti/cc13x2_cc26x2/system_off/README.html">cc13x2_cc26x2 System Off demo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up_squared/gpio_counter/README.html">UP Squared GPIO Counter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../drivers/drivers.html">Driver Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../application_development/application_development.html">Application development samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../shields/shields.html">Shields Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../posix/posix.html">POSIX Subsystem Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../kernel/index.html">Various Kernel and Scheduler Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tfm_integration/tfm_integration.html">TF-M Integration Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tfm_integration/tfm_integration.html#trusted-firmware-m-tf-m">Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules/index.html">External Module Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../compression/compression.html">Compression Samples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Samples and Demos</a> &raquo;</li>
+        
+          <li><a href="../../boards.html">Board-specific samples</a> &raquo;</li>
+        
+      <li>STM32 CCM example</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/samples/boards/stm32/ccm/README.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="stm32-ccm-example">
+<span id="samples-boards-stm32-ccm"></span><h1>STM32 CCM example<a class="headerlink" href="#stm32-ccm-example" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Show usage of the Core Coupled Memory (CCM) that is available
+on several STM32 devices. The very important difference with
+normal RAM is that CCM can not be used for DMA.</p>
+<p>By prefixing a variable with __ccm_data_section, __ccm_bss_section,
+or __ccm_noinit_section those variables are placed in the CCM.</p>
+<p>The __ccm_data_section prefix should be used for variables that
+are initialized. Like the normal data section the initial
+values take up space in the FLASH image.</p>
+<p>The __ccm_bss_section prefix should be used for variables that
+should be initialized to 0. Like the normal bss section they
+do not take up FLASH space.</p>
+<p>The __ccm_noinit_section prefix should be used for variables
+that don’t need to have a defined initial value (for example
+buffers that will receive data). Compared to bss or data the
+kernel does not need to initialize the noinit section making
+the startup slightly faster.</p>
+<p>To add CCM support to a board, add the following line to the
+board’s DTS file <code class="docutils literal notranslate"><span class="pre">chosen</span></code> section:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">zephyr,ccm = &amp;ccm0;</span>
+</pre></div>
+</div>
+<p>For example the olimex STM32 E407 DTS file looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="o">/*</span>
+<span class="linenos">  2</span> <span class="o">*</span> <span class="n">Copyright</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="mi">2017</span><span class="p">,</span> <span class="n">Erwin</span> <span class="n">Rol</span> <span class="o">&lt;</span><span class="n">erwin</span><span class="nd">@erwinrol</span><span class="o">.</span><span class="n">com</span><span class="o">&gt;</span>
+<span class="linenos">  3</span> <span class="o">*</span>
+<span class="linenos">  4</span> <span class="o">*</span> <span class="n">SPDX</span><span class="o">-</span><span class="n">License</span><span class="o">-</span><span class="n">Identifier</span><span class="p">:</span> <span class="n">Apache</span><span class="o">-</span><span class="mf">2.0</span>
+<span class="linenos">  5</span> <span class="o">*/</span>
+<span class="linenos">  6</span>
+<span class="linenos">  7</span><span class="o">/</span><span class="n">dts</span><span class="o">-</span><span class="n">v1</span><span class="o">/</span><span class="p">;</span>
+<span class="linenos">  8</span><span class="c1">#include &lt;st/f4/stm32f407Xg.dtsi&gt;</span>
+<span class="linenos">  9</span><span class="c1">#include &lt;st/f4/stm32f407z(e-g)tx-pinctrl.dtsi&gt;</span>
+<span class="linenos"> 10</span>
+<span class="linenos"> 11</span><span class="o">/</span> <span class="p">{</span>
+<span class="linenos"> 12</span>	<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;Olimex STM32-E407 board&quot;</span><span class="p">;</span>
+<span class="linenos"> 13</span>	<span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;olimex,stm32-e407&quot;</span><span class="p">;</span>
+<span class="linenos"> 14</span>
+<span class="linenos"> 15</span>	<span class="n">chosen</span> <span class="p">{</span>
+<span class="linenos"> 16</span>		<span class="n">zephyr</span><span class="p">,</span><span class="n">console</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">usart1</span><span class="p">;</span>
+<span class="linenos"> 17</span>		<span class="n">zephyr</span><span class="p">,</span><span class="n">shell</span><span class="o">-</span><span class="n">uart</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">usart1</span><span class="p">;</span>
+<span class="linenos"> 18</span>		<span class="n">zephyr</span><span class="p">,</span><span class="n">sram</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">sram0</span><span class="p">;</span>
+<span class="linenos"> 19</span>		<span class="n">zephyr</span><span class="p">,</span><span class="n">flash</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">flash0</span><span class="p">;</span>
+<span class="linenos"> 20</span>		<span class="n">zephyr</span><span class="p">,</span><span class="n">ccm</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ccm0</span><span class="p">;</span>
+<span class="linenos"> 21</span>	<span class="p">};</span>
+<span class="linenos"> 22</span>
+<span class="linenos"> 23</span>	<span class="n">leds</span> <span class="p">{</span>
+<span class="linenos"> 24</span>		<span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;gpio-leds&quot;</span><span class="p">;</span>
+<span class="linenos"> 25</span>		<span class="n">green_led_1</span><span class="p">:</span> <span class="n">led_1</span> <span class="p">{</span>
+<span class="linenos"> 26</span>			<span class="n">gpios</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">gpioc</span> <span class="mi">13</span> <span class="n">GPIO_ACTIVE_HIGH</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 27</span>			<span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;LED1&quot;</span><span class="p">;</span>
+<span class="linenos"> 28</span>		<span class="p">};</span>
+<span class="linenos"> 29</span>	<span class="p">};</span>
+<span class="linenos"> 30</span>
+<span class="linenos"> 31</span>	<span class="n">gpio_keys</span> <span class="p">{</span>
+<span class="linenos"> 32</span>		<span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;gpio-keys&quot;</span><span class="p">;</span>
+<span class="linenos"> 33</span>		<span class="n">user_button</span><span class="p">:</span> <span class="n">button</span> <span class="p">{</span>
+<span class="linenos"> 34</span>			<span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Key&quot;</span><span class="p">;</span>
+<span class="linenos"> 35</span>			<span class="n">gpios</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">gpioa</span> <span class="mi">0</span> <span class="n">GPIO_ACTIVE_LOW</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 36</span>		<span class="p">};</span>
+<span class="linenos"> 37</span>	<span class="p">};</span>
+<span class="linenos"> 38</span>
+<span class="linenos"> 39</span>	<span class="n">aliases</span> <span class="p">{</span>
+<span class="linenos"> 40</span>		<span class="n">led0</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">green_led_1</span><span class="p">;</span>
+<span class="linenos"> 41</span>		<span class="n">sw0</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">user_button</span><span class="p">;</span>
+<span class="linenos"> 42</span>	<span class="p">};</span>
+<span class="linenos"> 43</span><span class="p">};</span>
+<span class="linenos"> 44</span>
+<span class="linenos"> 45</span><span class="o">&amp;</span><span class="n">clk_hse</span> <span class="p">{</span>
+<span class="linenos"> 46</span>	<span class="n">clock</span><span class="o">-</span><span class="n">frequency</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">DT_FREQ_M</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 47</span>	<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;okay&quot;</span><span class="p">;</span>
+<span class="linenos"> 48</span><span class="p">};</span>
+<span class="linenos"> 49</span>
+<span class="linenos"> 50</span><span class="o">&amp;</span><span class="n">pll</span> <span class="p">{</span>
+<span class="linenos"> 51</span>	<span class="n">div</span><span class="o">-</span><span class="n">m</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">6</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 52</span>	<span class="n">mul</span><span class="o">-</span><span class="n">n</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">168</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 53</span>	<span class="n">div</span><span class="o">-</span><span class="n">p</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 54</span>	<span class="n">div</span><span class="o">-</span><span class="n">q</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">7</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 55</span>	<span class="n">clocks</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">clk_hse</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 56</span>	<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;okay&quot;</span><span class="p">;</span>
+<span class="linenos"> 57</span><span class="p">};</span>
+<span class="linenos"> 58</span>
+<span class="linenos"> 59</span><span class="o">&amp;</span><span class="n">rcc</span> <span class="p">{</span>
+<span class="linenos"> 60</span>	<span class="n">clocks</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">pll</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 61</span>	<span class="n">clock</span><span class="o">-</span><span class="n">frequency</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">DT_FREQ_M</span><span class="p">(</span><span class="mi">168</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 62</span>	<span class="n">ahb</span><span class="o">-</span><span class="n">prescaler</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 63</span>	<span class="n">apb1</span><span class="o">-</span><span class="n">prescaler</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">4</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 64</span>	<span class="n">apb2</span><span class="o">-</span><span class="n">prescaler</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 65</span><span class="p">};</span>
+<span class="linenos"> 66</span>
+<span class="linenos"> 67</span><span class="o">&amp;</span><span class="n">usart1</span> <span class="p">{</span>
+<span class="linenos"> 68</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="mi">0</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">usart1_tx_pb6</span> <span class="o">&amp;</span><span class="n">usart1_rx_pb7</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 69</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">;</span>
+<span class="linenos"> 70</span>	<span class="n">current</span><span class="o">-</span><span class="n">speed</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">115200</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 71</span>	<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;okay&quot;</span><span class="p">;</span>
+<span class="linenos"> 72</span><span class="p">};</span>
+<span class="linenos"> 73</span>
+<span class="linenos"> 74</span><span class="o">&amp;</span><span class="n">usart3</span> <span class="p">{</span>
+<span class="linenos"> 75</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="mi">0</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">usart3_tx_pb10</span> <span class="o">&amp;</span><span class="n">usart3_rx_pb11</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 76</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">;</span>
+<span class="linenos"> 77</span>	<span class="n">current</span><span class="o">-</span><span class="n">speed</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">115200</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 78</span>	<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;okay&quot;</span><span class="p">;</span>
+<span class="linenos"> 79</span><span class="p">};</span>
+<span class="linenos"> 80</span>
+<span class="linenos"> 81</span><span class="o">&amp;</span><span class="n">usart6</span> <span class="p">{</span>
+<span class="linenos"> 82</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="mi">0</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">usart6_tx_pc6</span> <span class="o">&amp;</span><span class="n">usart6_rx_pc7</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 83</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">;</span>
+<span class="linenos"> 84</span>	<span class="n">current</span><span class="o">-</span><span class="n">speed</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">115200</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 85</span>	<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;okay&quot;</span><span class="p">;</span>
+<span class="linenos"> 86</span><span class="p">};</span>
+<span class="linenos"> 87</span>
+<span class="linenos"> 88</span><span class="o">&amp;</span><span class="n">rtc</span> <span class="p">{</span>
+<span class="linenos"> 89</span>	<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;okay&quot;</span><span class="p">;</span>
+<span class="linenos"> 90</span><span class="p">};</span>
+<span class="linenos"> 91</span>
+<span class="linenos"> 92</span><span class="o">&amp;</span><span class="n">rng</span> <span class="p">{</span>
+<span class="linenos"> 93</span>	<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;okay&quot;</span><span class="p">;</span>
+<span class="linenos"> 94</span><span class="p">};</span>
+<span class="linenos"> 95</span>
+<span class="linenos"> 96</span><span class="o">/*</span> <span class="n">Only</span> <span class="n">one</span> <span class="n">interface</span> <span class="n">should</span> <span class="n">be</span> <span class="n">enabled</span> <span class="n">at</span> <span class="n">a</span> <span class="n">time</span><span class="p">:</span> <span class="n">usbotg_fs</span> <span class="ow">or</span> <span class="n">usbotg_hs</span> <span class="o">*/</span>
+<span class="linenos"> 97</span><span class="n">usb_otg1</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">usbotg_fs</span> <span class="p">{</span>
+<span class="linenos"> 98</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="mi">0</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">usb_otg_fs_dm_pa11</span> <span class="o">&amp;</span><span class="n">usb_otg_fs_dp_pa12</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos"> 99</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">;</span>
+<span class="linenos">100</span>	<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;disabled&quot;</span><span class="p">;</span>
+<span class="linenos">101</span><span class="p">};</span>
+<span class="linenos">102</span>
+<span class="linenos">103</span><span class="n">zephyr_udc0</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">usbotg_hs</span> <span class="p">{</span>
+<span class="linenos">104</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="mi">0</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">usb_otg_hs_dm_pb14</span> <span class="o">&amp;</span><span class="n">usb_otg_hs_dp_pb15</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos">105</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">;</span>
+<span class="linenos">106</span>	<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;okay&quot;</span><span class="p">;</span>
+<span class="linenos">107</span><span class="p">};</span>
+<span class="linenos">108</span>
+<span class="linenos">109</span><span class="o">&amp;</span><span class="n">mac</span> <span class="p">{</span>
+<span class="linenos">110</span>	<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;okay&quot;</span><span class="p">;</span>
+<span class="linenos">111</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="mi">0</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">eth_mdc_pc1</span>
+<span class="linenos">112</span>		     <span class="o">&amp;</span><span class="n">eth_rxd0_pc4</span>
+<span class="linenos">113</span>		     <span class="o">&amp;</span><span class="n">eth_rxd1_pc5</span>
+<span class="linenos">114</span>		     <span class="o">&amp;</span><span class="n">eth_ref_clk_pa1</span>
+<span class="linenos">115</span>		     <span class="o">&amp;</span><span class="n">eth_mdio_pa2</span>
+<span class="linenos">116</span>		     <span class="o">&amp;</span><span class="n">eth_col_pa3</span>
+<span class="linenos">117</span>		     <span class="o">&amp;</span><span class="n">eth_crs_dv_pa7</span>
+<span class="linenos">118</span>		     <span class="o">&amp;</span><span class="n">eth_tx_en_pg11</span>
+<span class="linenos">119</span>		     <span class="o">&amp;</span><span class="n">eth_txd0_pg13</span>
+<span class="linenos">120</span>		     <span class="o">&amp;</span><span class="n">eth_txd1_pg14</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos">121</span>	<span class="n">pinctrl</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">;</span>
+<span class="linenos">122</span><span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-and-running">
+<h2>Building and Running<a class="headerlink" href="#building-and-running" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b None samples/boards/olimex_stm32_e407/ccm</span>
+<span class="go">west flash</span>
+</pre></div>
+</div>
+<p>The first time the example is run after power on, the output will
+look like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">***** BOOTING ZEPHYR OS v1.10.99 - BUILD: Jan 14 2018 09:32:46 *****</span>
+
+<span class="go">CCM (Core Coupled Memory) usage example</span>
+
+<span class="go">The total used CCM area   : [0x10000000, 0x10000021)</span>
+<span class="go">Zero initialized BSS area : [0x10000000, 0x10000007)</span>
+<span class="go">Unitialized NOINIT area   : [0x10000008, 0x10000013)</span>
+<span class="go">Initialised DATA area     : [0x10000014, 0x10000021)</span>
+<span class="go">Start of DATA in FLASH    : 0x08003940</span>
+
+<span class="go">Checking initial variable values: ... PASSED</span>
+
+<span class="go">Initial variable values:</span>
+<span class="go">ccm_data_var_8  addr: 0x10000014 value: 0x12</span>
+<span class="go">ccm_data_var_16 addr: 0x10000016 value: 0x3456</span>
+<span class="go">ccm_data_var_32 addr: 0x10000018 value: 0x789abcde</span>
+<span class="go">ccm_data_array  addr: 0x1000001c size: 5 value:</span>
+<span class="go">        0x11 0x22 0x33 0x44 0x55</span>
+<span class="go">ccm_bss_array addr: 0x10000000 size: 7 value:</span>
+<span class="go">        0x00 0x00 0x00 0x00 0x00 0x00 0x00</span>
+<span class="go">ccm_noinit_array addr: 0x10000008 size: 11 value:</span>
+<span class="go">        0xa9 0x99 0xba 0x90 0xe1 0x2a 0xba 0x93 0x4c 0xfe 0x4b</span>
+
+<span class="go">Variable values after writing:</span>
+<span class="go">ccm_data_var_8  addr: 0x10000014 value: 0xed</span>
+<span class="go">ccm_data_var_16 addr: 0x10000016 value: 0xcba9</span>
+<span class="go">ccm_data_var_32 addr: 0x10000018 value: 0x87654321</span>
+<span class="go">ccm_data_array  addr: 0x1000001c size: 5 value:</span>
+<span class="go">        0xaa 0xaa 0xaa 0xaa 0xaa</span>
+<span class="go">ccm_bss_array addr: 0x10000000 size: 7 value:</span>
+<span class="go">        0xbb 0xbb 0xbb 0xbb 0xbb 0xbb 0xbb</span>
+<span class="go">ccm_noinit_array addr: 0x10000008 size: 11 value:</span>
+<span class="go">        0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc</span>
+
+<span class="go">Example end</span>
+</pre></div>
+</div>
+<p>First, each CCM section is listed with its address and size. Next, some usage
+examples are shown. Note that the <code class="docutils literal notranslate"><span class="pre">noinit</span></code> section holds variables with
+uninitialized data. After writing to the variables, they all should hold the
+values shown above.</p>
+<p>When the board is reset (without power-cycling), the output looks like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">***** BOOTING ZEPHYR OS v1.10.99 - BUILD: Jan 14 2018 09:32:46 *****</span>
+
+<span class="go">CCM (Core Coupled Memory) usage example</span>
+
+<span class="go">The total used CCM area   : [0x10000000, 0x10000021)</span>
+<span class="go">Zero initialized BSS area : [0x10000000, 0x10000007)</span>
+<span class="go">Unitialized NOINIT area   : [0x10000008, 0x10000013)</span>
+<span class="go">Initialised DATA area     : [0x10000014, 0x10000021)</span>
+<span class="go">Start of DATA in FLASH    : 0x08003940</span>
+
+<span class="go">Checking initial variable values: ... PASSED</span>
+
+<span class="go">Initial variable values:</span>
+<span class="go">ccm_data_var_8  addr: 0x10000014 value: 0x12</span>
+<span class="go">ccm_data_var_16 addr: 0x10000016 value: 0x3456</span>
+<span class="go">ccm_data_var_32 addr: 0x10000018 value: 0x789abcde</span>
+<span class="go">ccm_data_array  addr: 0x1000001c size: 5 value:</span>
+<span class="go">        0x11 0x22 0x33 0x44 0x55</span>
+<span class="go">ccm_bss_array addr: 0x10000000 size: 7 value:</span>
+<span class="go">        0x00 0x00 0x00 0x00 0x00 0x00 0x00</span>
+<span class="go">ccm_noinit_array addr: 0x10000008 size: 11 value:</span>
+<span class="go">        0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc</span>
+
+<span class="go">Variable values after writing:</span>
+<span class="go">ccm_data_var_8  addr: 0x10000014 value: 0xed</span>
+<span class="go">ccm_data_var_16 addr: 0x10000016 value: 0xcba9</span>
+<span class="go">ccm_data_var_32 addr: 0x10000018 value: 0x87654321</span>
+<span class="go">ccm_data_array  addr: 0x1000001c size: 5 value:</span>
+<span class="go">        0xaa 0xaa 0xaa 0xaa 0xaa</span>
+<span class="go">ccm_bss_array addr: 0x10000000 size: 7 value:</span>
+<span class="go">        0xbb 0xbb 0xbb 0xbb 0xbb 0xbb 0xbb</span>
+<span class="go">ccm_noinit_array addr: 0x10000008 size: 11 value:</span>
+<span class="go">        0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc 0xcc</span>
+
+<span class="go">Example end</span>
+</pre></div>
+</div>
+<p>The difference with the first run is that the ccm_noinit section still has the
+values from the last write. It is important to notice that this is not guaranteed,
+it still should be considered uninitialized leftover data.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../power_mgmt/blinky/README.html" class="btn btn-neutral float-right" title="STM32 PM Blinky" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../backup_sram/README.html" class="btn btn-neutral" title="STM32 Backup SRAM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

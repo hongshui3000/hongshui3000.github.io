@@ -1,0 +1,331 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__arch-threads" kind="group">
+    <compoundname>arch-threads</compoundname>
+    <title>Architecture thread APIs</title>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__arch-threads_1gade449838e445fa8201266e38215c616c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void arch_new_thread</definition>
+        <argsstring>(struct k_thread *thread, k_thread_stack_t *stack, char *stack_ptr, k_thread_entry_t entry, void *p1, void *p2, void *p3)</argsstring>
+        <name>arch_new_thread</name>
+        <param>
+          <type>struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *</type>
+          <declname>thread</declname>
+        </param>
+        <param>
+          <type><ref refid="arch__interface_8h_1a3e4bde3075edb41069b258d999333b0e" kindref="member">k_thread_stack_t</ref> *</type>
+          <declname>stack</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>stack_ptr</declname>
+        </param>
+        <param>
+          <type><ref refid="arch__interface_8h_1af1bd193a26c6e6a8658140185cae42e1" kindref="member">k_thread_entry_t</ref></type>
+          <declname>entry</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>p2</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>p3</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Handle arch-specific logic for setting up new threads</para>
+<para>The stack and arch-specific thread state variables must be set up such that a later attempt to switch to this thread will succeed and we will enter z_thread_entry with the requested thread and arguments as its parameters.</para>
+<para>At some point in this function&apos;s implementation, z_setup_new_thread() must be called with the true bounds of the available stack buffer within the thread&apos;s stack object.</para>
+<para>The provided stack pointer is guaranteed to be properly aligned with respect to the CPU and ABI requirements. There may be space reserved between the stack pointer and the bounds of the stack buffer for initial stack pointer randomization and thread-local storage.</para>
+<para>Fields in thread-&gt;base will be initialized when this is called.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to uninitialized struct <ref refid="structk__thread" kindref="compound">k_thread</ref> </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stack</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the stack object </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stack_ptr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Aligned initial stack pointer </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>entry</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread entry function </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>1st entry point parameter </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>2nd entry point parameter </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p3</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>3rd entry point parameter </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="76" column="6" declfile="kernel/include/kernel_arch_interface.h" declline="76" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-threads_1gab411d82ce5b60f062171f5a19e33e025" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void arch_switch</definition>
+        <argsstring>(void *switch_to, void **switched_from)</argsstring>
+        <name>arch_switch</name>
+        <param>
+          <type>void *</type>
+          <declname>switch_to</declname>
+        </param>
+        <param>
+          <type>void **</type>
+          <declname>switched_from</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cooperative context switch primitive</para>
+<para>The action of <ref refid="group__arch-threads_1gab411d82ce5b60f062171f5a19e33e025" kindref="member">arch_switch()</ref> should be to switch to a new context passed in the first argument, and save a pointer to the current context into the address passed in the second argument.</para>
+<para>The actual type and interpretation of the switch handle is specified by the architecture. It is the same data structure stored in the &quot;switch_handle&quot; field of a newly-created thread in <ref refid="group__arch-threads_1gade449838e445fa8201266e38215c616c" kindref="member">arch_new_thread()</ref>, and passed to the kernel as the &quot;interrupted&quot; argument to z_get_next_switch_handle().</para>
+<para>Note that on SMP systems, the kernel uses the store through the second pointer as a synchronization point to detect when a thread context is completely saved (so another CPU can know when it is safe to switch). This store must be done AFTER all relevant state is saved, and must include whatever memory barriers or cache management code is required to be sure another CPU will see the result correctly.</para>
+<para>The simplest implementation of <ref refid="group__arch-threads_1gab411d82ce5b60f062171f5a19e33e025" kindref="member">arch_switch()</ref> is generally to push state onto the thread stack and use the resulting stack pointer as the switch handle. Some architectures may instead decide to use a pointer into the thread struct as the &quot;switch handle&quot; type. These can legally assume that the second argument to <ref refid="group__arch-threads_1gab411d82ce5b60f062171f5a19e33e025" kindref="member">arch_switch()</ref> is the address of the switch_handle field of struct thread_base and can use an offset on this value to find other parts of the thread struct. For example a (C pseudocode) implementation of <ref refid="group__arch-threads_1gab411d82ce5b60f062171f5a19e33e025" kindref="member">arch_switch()</ref> might look like:</para>
+<para>void <ref refid="group__arch-threads_1gab411d82ce5b60f062171f5a19e33e025" kindref="member">arch_switch(void *switch_to, void **switched_from)</ref> { struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *new = switch_to; struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *old = CONTAINER_OF(switched_from, struct <ref refid="structk__thread" kindref="compound">k_thread</ref>, switch_handle);</para>
+<para>// save old context... *switched_from = old; // restore new context... }</para>
+<para>Note that the kernel manages the switch_handle field for synchronization as described above. So it is not legal for architecture code to assume that it has any particular value at any other time. In particular it is not legal to read the field from the address passed in the second argument.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>switch_to</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incoming thread&apos;s switch handle </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>switched_from</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to outgoing thread&apos;s switch handle storage location, which must be updated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="131" column="20" declfile="kernel/include/kernel_arch_interface.h" declline="131" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-threads_1ga3ddd51635018a2e0235d5599401f5269" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void arch_switch_to_main_thread</definition>
+        <argsstring>(struct k_thread *main_thread, char *stack_ptr, k_thread_entry_t _main)</argsstring>
+        <name>arch_switch_to_main_thread</name>
+        <param>
+          <type>struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *</type>
+          <declname>main_thread</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>stack_ptr</declname>
+        </param>
+        <param>
+          <type><ref refid="arch__interface_8h_1af1bd193a26c6e6a8658140185cae42e1" kindref="member">k_thread_entry_t</ref></type>
+          <declname>_main</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Custom logic for entering main thread context at early boot</para>
+<para>Used by architectures where the typical trick of setting up a dummy thread in early boot context to &quot;switch out&quot; of isn&apos;t workable.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>main_thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>main thread object </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stack_ptr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial stack pointer </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>_main</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Entry point for application main function. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="170" column="6" declfile="kernel/include/kernel_arch_interface.h" declline="170" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-threads_1ga7c2f0ee0bee6f9de0bd23a0aa321a46d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int arch_float_disable</definition>
+        <argsstring>(struct k_thread *thread)</argsstring>
+        <name>arch_float_disable</name>
+        <param>
+          <type>struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *</type>
+          <declname>thread</declname>
+        </param>
+        <briefdescription>
+<para>Disable floating point context preservation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The function is used to disable the preservation of floating point context information for a particular thread.</para>
+<para><simplesect kind="note"><para>For ARM architecture, disabling floating point preservation may only be requested for the current thread and cannot be requested in ISRs.</para>
+</simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>On success. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EINVAL</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If the floating point disabling could not be performed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-ENOTSUP</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If the operation is not supported </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="188" column="5" declfile="kernel/include/kernel_arch_interface.h" declline="188" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-threads_1gacd40e26783f3dbd8a658fc1af512fb18" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int arch_float_enable</definition>
+        <argsstring>(struct k_thread *thread, unsigned int options)</argsstring>
+        <name>arch_float_enable</name>
+        <param>
+          <type>struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *</type>
+          <declname>thread</declname>
+        </param>
+        <param>
+          <type><ref refid="lib_2libc_2minimal_2include_2sys_2types_8h_1a4089fb16419d359081465355db05f846" kindref="member">unsigned</ref> int</type>
+          <declname>options</declname>
+        </param>
+        <briefdescription>
+<para>Enable floating point context preservation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The function is used to enable the preservation of floating point context information for a particular thread. This API depends on each architecture implimentation. If the architecture does not support enabling, this API will always be failed.</para>
+<para>The <emphasis>options</emphasis> parameter indicates which floating point register sets will be used by the specified thread. Currently it is used by x86 only.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of thread. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>options</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>architecture dependent options</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>On success. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EINVAL</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If the floating point enabling could not be performed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-ENOTSUP</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If the operation is not supported </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="208" column="5" declfile="kernel/include/kernel_arch_interface.h" declline="208" declcolumn="5"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

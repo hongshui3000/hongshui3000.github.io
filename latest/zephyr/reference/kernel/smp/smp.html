@@ -1,0 +1,669 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Symmetric Multiprocessing &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Queues" href="../data_passing/queues.html" />
+    <link rel="prev" title="Events" href="../synchronization/events.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Kernel Services</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#scheduling-interrupts-and-synchronization">Scheduling, Interrupts, and Synchronization</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../threads/index.html">Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../scheduling/index.html">Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/system_threads.html">System Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/workqueue.html">Workqueue Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/nothread.html">Zephyr Without Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../other/interrupts.html">Interrupts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../other/polling.html">Polling API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/semaphores.html">Semaphores</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/mutexes.html">Mutexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/condvar.html">Condition Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/events.html">Events</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Symmetric Multiprocessing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data-passing">Data Passing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#memory-management">Memory Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#timing">Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Kernel Services</a> &raquo;</li>
+        
+      <li>Symmetric Multiprocessing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/kernel/smp/smp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="symmetric-multiprocessing">
+<span id="smp-arch"></span><h1>Symmetric Multiprocessing<a class="headerlink" href="#symmetric-multiprocessing" title="Permalink to this headline">¶</a></h1>
+<p>On multiprocessor architectures, Zephyr supports the use of multiple
+physical CPUs running Zephyr application code.  This support is
+“symmetric” in the sense that no specific CPU is treated specially by
+default.  Any processor is capable of running any Zephyr thread, with
+access to all standard Zephyr APIs supported.</p>
+<p>No special application code needs to be written to take advantage of
+this feature.  If there are two Zephyr application threads runnable on
+a supported dual processor device, they will both run simultaneously.</p>
+<p>SMP configuration is controlled under the <a class="reference internal" href="../../../kconfig.html#CONFIG_SMP" title="CONFIG_SMP"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SMP</span></code></a> kconfig
+variable.  This must be set to “y” to enable SMP features, otherwise
+a uniprocessor kernel will be built.  In general the platform default
+will have enabled this anywhere it’s supported. When enabled, the
+number of physical CPUs available is visible at build time as
+<a class="reference internal" href="../../../kconfig.html#CONFIG_MP_NUM_CPUS" title="CONFIG_MP_NUM_CPUS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MP_NUM_CPUS</span></code></a>.  Likewise, the default for this will be the
+number of available CPUs on the platform and it is not expected that
+typical apps will change it.  But it is legal and supported to set
+this to a smaller (but obviously not larger) number for special
+purposes (e.g. for testing, or to reserve a physical CPU for running
+non-Zephyr code).</p>
+<div class="section" id="synchronization">
+<h2>Synchronization<a class="headerlink" href="#synchronization" title="Permalink to this headline">¶</a></h2>
+<p>At the application level, core Zephyr IPC and synchronization
+primitives all behave identically under an SMP kernel.  For example
+semaphores used to implement blocking mutual exclusion continue to be
+a proper application choice.</p>
+<p>At the lowest level, however, Zephyr code has often used the
+<a class="reference internal" href="../other/interrupts.html#c.irq_lock" title="irq_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_lock()</span></code></a>/<a class="reference internal" href="../other/interrupts.html#c.irq_unlock" title="irq_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_unlock()</span></code></a> primitives to implement fine grained
+critical sections using interrupt masking.  These APIs continue to
+work via an emulation layer (see below), but the masking technique
+does not: the fact that your CPU will not be interrupted while you are
+in your critical section says nothing about whether a different CPU
+will be running simultaneously and be inspecting or modifying the same
+data!</p>
+<div class="section" id="spinlocks">
+<h3>Spinlocks<a class="headerlink" href="#spinlocks" title="Permalink to this headline">¶</a></h3>
+<p>SMP systems provide a more constrained <a class="reference internal" href="#c.k_spin_lock" title="k_spin_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_spin_lock()</span></code></a> primitive
+that not only masks interrupts locally, as done by <a class="reference internal" href="../other/interrupts.html#c.irq_lock" title="irq_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_lock()</span></code></a>, but
+also atomically validates that a shared lock variable has been
+modified before returning to the caller, “spinning” on the check if
+needed to wait for the other CPU to exit the lock.  The default Zephyr
+implementation of <a class="reference internal" href="#c.k_spin_lock" title="k_spin_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_spin_lock()</span></code></a> and <a class="reference internal" href="#c.k_spin_unlock" title="k_spin_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_spin_unlock()</span></code></a> is built
+on top of the pre-existing <code class="xref c c-struct docutils literal notranslate"><span class="pre">atomic_</span></code> layer (itself usually
+implemented using compiler intrinsics), though facilities exist for
+architectures to define their own for performance reasons.</p>
+<p>One important difference between IRQ locks and spinlocks is that the
+earlier API was naturally recursive: the lock was global, so it was
+legal to acquire a nested lock inside of a critical section.
+Spinlocks are separable: you can have many locks for separate
+subsystems or data structures, preventing CPUs from contending on a
+single global resource.  But that means that spinlocks must not be
+used recursively.  Code that holds a specific lock must not try to
+re-acquire it or it will deadlock (it is perfectly legal to nest
+<strong>distinct</strong> spinlocks, however).  A validation layer is available to
+detect and report bugs like this.</p>
+<p>When used on a uniprocessor system, the data component of the spinlock
+(the atomic lock variable) is unnecessary and elided.  Except for the
+recursive semantics above, spinlocks in single-CPU contexts produce
+identical code to legacy IRQ locks.  In fact the entirety of the
+Zephyr core kernel has now been ported to use spinlocks exclusively.</p>
+</div>
+<div class="section" id="legacy-irq-lock-emulation">
+<h3>Legacy irq_lock() emulation<a class="headerlink" href="#legacy-irq-lock-emulation" title="Permalink to this headline">¶</a></h3>
+<p>For the benefit of applications written to the uniprocessor locking
+API, <a class="reference internal" href="../other/interrupts.html#c.irq_lock" title="irq_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_lock()</span></code></a> and <a class="reference internal" href="../other/interrupts.html#c.irq_unlock" title="irq_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_unlock()</span></code></a> continue to work compatibly on
+SMP systems with identical semantics to their legacy versions.  They
+are implemented as a single global spinlock, with a nesting count and
+the ability to be atomically reacquired on context switch into locked
+threads.  The kernel will ensure that only one thread across all CPUs
+can hold the lock at any time, that it is released on context switch,
+and that it is re-acquired when necessary to restore the lock state
+when a thread is switched in.  Other CPUs will spin waiting for the
+release to happen.</p>
+<p>The overhead involved in this process has measurable performance
+impact, however.  Unlike uniprocessor apps, SMP apps using
+<a class="reference internal" href="../other/interrupts.html#c.irq_lock" title="irq_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_lock()</span></code></a> are not simply invoking a very short (often ~1
+instruction) interrupt masking operation.  That, and the fact that the
+IRQ lock is global, means that code expecting to be run in an SMP
+context should be using the spinlock API wherever possible.</p>
+</div>
+</div>
+<div class="section" id="cpu-mask">
+<h2>CPU Mask<a class="headerlink" href="#cpu-mask" title="Permalink to this headline">¶</a></h2>
+<p>It is often desirable for real time applications to deliberately
+partition work across physical CPUs instead of relying solely on the
+kernel scheduler to decide on which threads to execute.  Zephyr
+provides an API, controlled by the <a class="reference internal" href="../../../kconfig.html#CONFIG_SCHED_CPU_MASK" title="CONFIG_SCHED_CPU_MASK"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SCHED_CPU_MASK</span></code></a>
+kconfig variable, which can associate a specific set of CPUs with each
+thread, indicating on which CPUs it can run.</p>
+<p>By default, new threads can run on any CPU.  Calling
+<a class="reference internal" href="../threads/index.html#c.k_thread_cpu_mask_disable" title="k_thread_cpu_mask_disable"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_cpu_mask_disable()</span></code></a> with a particular CPU ID will prevent
+that thread from running on that CPU in the future.  Likewise
+<a class="reference internal" href="../threads/index.html#c.k_thread_cpu_mask_enable" title="k_thread_cpu_mask_enable"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_cpu_mask_enable()</span></code></a> will re-enable execution.  There are also
+<a class="reference internal" href="../threads/index.html#c.k_thread_cpu_mask_clear" title="k_thread_cpu_mask_clear"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_cpu_mask_clear()</span></code></a> and <a class="reference internal" href="../threads/index.html#c.k_thread_cpu_mask_enable_all" title="k_thread_cpu_mask_enable_all"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_cpu_mask_enable_all()</span></code></a> APIs
+available for convenience.  For obvious reasons, these APIs are
+illegal if called on a runnable thread.  The thread must be blocked or
+suspended, otherwise an <code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code> will be returned.</p>
+<p>Note that when this feature is enabled, the scheduler algorithm
+involved in doing the per-CPU mask test requires that the list be
+traversed in full.  The kernel does not keep a per-CPU run queue.
+That means that the performance benefits from the
+<a class="reference internal" href="../../../kconfig.html#CONFIG_SCHED_SCALABLE" title="CONFIG_SCHED_SCALABLE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SCHED_SCALABLE</span></code></a> and <a class="reference internal" href="../../../kconfig.html#CONFIG_SCHED_MULTIQ" title="CONFIG_SCHED_MULTIQ"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SCHED_MULTIQ</span></code></a>
+scheduler backends cannot be realized.  CPU mask processing is
+available only when <a class="reference internal" href="../../../kconfig.html#CONFIG_SCHED_DUMB" title="CONFIG_SCHED_DUMB"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SCHED_DUMB</span></code></a> is the selected
+backend.  This requirement is enforced in the configuration layer.</p>
+</div>
+<div class="section" id="smp-boot-process">
+<h2>SMP Boot Process<a class="headerlink" href="#smp-boot-process" title="Permalink to this headline">¶</a></h2>
+<p>A Zephyr SMP kernel begins boot identically to a uniprocessor kernel.
+Auxiliary CPUs begin in a disabled state in the architecture layer.
+All standard kernel initialization, including device initialization,
+happens on a single CPU before other CPUs are brought online.</p>
+<p>Just before entering the application <code class="xref c c-func docutils literal notranslate"><span class="pre">main()</span></code> function, the kernel
+calls <code class="xref c c-func docutils literal notranslate"><span class="pre">z_smp_init()</span></code> to launch the SMP initialization process.  This
+enumerates over the configured CPUs, calling into the architecture
+layer using <a class="reference internal" href="../../../guides/porting/arch.html#c.arch_start_cpu" title="arch_start_cpu"><code class="xref c c-func docutils literal notranslate"><span class="pre">arch_start_cpu()</span></code></a> for each one.  This function is
+passed a memory region to use as a stack on the foreign CPU (in
+practice it uses the area that will become that CPU’s interrupt
+stack), the address of a local <code class="xref c c-func docutils literal notranslate"><span class="pre">smp_init_top()</span></code> callback function to
+run on that CPU, and a pointer to a “start flag” address which will be
+used as an atomic signal.</p>
+<p>The local SMP initialization (<code class="xref c c-func docutils literal notranslate"><span class="pre">smp_init_top()</span></code>) on each CPU is then
+invoked by the architecture layer.  Note that interrupts are still
+masked at this point.  This routine is responsible for calling
+<code class="xref c c-func docutils literal notranslate"><span class="pre">smp_timer_init()</span></code> to set up any needed stat in the timer driver.  On
+many architectures the timer is a per-CPU device and needs to be
+configured specially on auxiliary CPUs.  Then it waits (spinning) for
+the atomic “start flag” to be released in the main thread, to
+guarantee that all SMP initialization is complete before any Zephyr
+application code runs, and finally calls <code class="xref c c-func docutils literal notranslate"><span class="pre">z_swap()</span></code> to transfer
+control to the appropriate runnable thread via the standard scheduler
+API.</p>
+<div class="align-center figure" id="id1">
+<img alt="SMP Initialization" src="../../../_images/smpinit.svg" /><p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Example SMP initialization process, showing a configuration with
+two CPUs and two app threads which begin operating simultaneously.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="interprocessor-interrupts">
+<h2>Interprocessor Interrupts<a class="headerlink" href="#interprocessor-interrupts" title="Permalink to this headline">¶</a></h2>
+<p>When running in multiprocessor environments, it is occasionally the
+case that state modified on the local CPU needs to be synchronously
+handled on a different processor.</p>
+<p>One example is the Zephyr <a class="reference internal" href="../threads/index.html#c.k_thread_abort" title="k_thread_abort"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_abort()</span></code></a> API, which cannot return
+until the thread that had been aborted is no longer runnable.  If it
+is currently running on another CPU, that becomes difficult to
+implement.</p>
+<p>Another is low power idle.  It is a firm requirement on many devices
+that system idle be implemented using a low-power mode with as many
+interrupts (including periodic timer interrupts) disabled or deferred
+as is possible.  If a CPU is in such a state, and on another CPU a
+thread becomes runnable, the idle CPU has no way to “wake up” to
+handle the newly-runnable load.</p>
+<p>So where possible, Zephyr SMP architectures should implement an
+interprocessor interrupt.  The current framework is very simple: the
+architecture provides a <a class="reference internal" href="../../../guides/porting/arch.html#c.arch_sched_ipi" title="arch_sched_ipi"><code class="xref c c-func docutils literal notranslate"><span class="pre">arch_sched_ipi()</span></code></a> call, which when invoked
+will flag an interrupt on all CPUs (except the current one, though
+that is allowed behavior) which will then invoke the <code class="xref c c-func docutils literal notranslate"><span class="pre">z_sched_ipi()</span></code>
+function implemented in the scheduler.  The expectation is that these
+APIs will evolve over time to encompass more functionality
+(e.g. cross-CPU calls), and that the scheduler-specific calls here
+will be implemented in terms of a more general framework.</p>
+<p>Note that not all SMP architectures will have a usable IPI mechanism
+(either missing, or just undocumented/unimplemented).  In those cases
+Zephyr provides fallback behavior that is correct, but perhaps
+suboptimal.</p>
+<p>Using this, <a class="reference internal" href="../threads/index.html#c.k_thread_abort" title="k_thread_abort"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_abort()</span></code></a> becomes only slightly more
+complicated in SMP: for the case where a thread is actually running on
+another CPU (we can detect this atomically inside the scheduler), we
+broadcast an IPI and spin, waiting for the thread to either become
+“DEAD” or for it to re-enter the queue (in which case we terminate it
+the same way we would have in uniprocessor mode).  Note that the
+“aborted” check happens on any interrupt exit, so there is no special
+handling needed in the IPI per se.  This allows us to implement a
+reasonable fallback when IPI is not available: we can simply spin,
+waiting until the foreign CPU receives any interrupt, though this may
+be a much longer time!</p>
+<p>Likewise idle wakeups are trivially implementable with an empty IPI
+handler.  If a thread is added to an empty run queue (i.e. there may
+have been idle CPUs), we broadcast an IPI.  A foreign CPU will then be
+able to see the new thread when exiting from the interrupt and will
+switch to it if available.</p>
+<p>Without an IPI, however, a low power idle that requires an interrupt
+will not work to synchronously run new threads.  The workaround in
+that case is more invasive: Zephyr will <strong>not</strong> enter the system idle
+handler and will instead spin in its idle loop, testing the scheduler
+state at high frequency (not spinning on it though, as that would
+involve severe lock contention) for new threads.  The expectation is
+that power constrained SMP applications are always going to provide an
+IPI, and this code will only be used for testing purposes or on
+systems without power consumption requirements.</p>
+</div>
+<div class="section" id="smp-kernel-internals">
+<h2>SMP Kernel Internals<a class="headerlink" href="#smp-kernel-internals" title="Permalink to this headline">¶</a></h2>
+<p>In general, Zephyr kernel code is SMP-agnostic and, like application
+code, will work correctly regardless of the number of CPUs available.
+But in a few areas there are notable changes in structure or behavior.</p>
+<div class="section" id="per-cpu-data">
+<h3>Per-CPU data<a class="headerlink" href="#per-cpu-data" title="Permalink to this headline">¶</a></h3>
+<p>Many elements of the core kernel data need to be implemented for each
+CPU in SMP mode.  For example, the <code class="docutils literal notranslate"><span class="pre">_current</span></code> thread pointer obviously
+needs to reflect what is running locally, there are many threads
+running concurrently.  Likewise a kernel-provided interrupt stack
+needs to be created and assigned for each physical CPU, as does the
+interrupt nesting count used to detect ISR state.</p>
+<p>These fields are now moved into a separate struct <code class="xref c c-struct docutils literal notranslate"><span class="pre">_cpu</span></code> instance
+within the <code class="xref c c-struct docutils literal notranslate"><span class="pre">_kernel</span></code> struct, which has a <code class="docutils literal notranslate"><span class="pre">cpus[]</span></code> array indexed by ID.
+Compatibility fields are provided for legacy uniprocessor code trying
+to access the fields of <code class="docutils literal notranslate"><span class="pre">cpus[0]</span></code> using the older syntax and assembly
+offsets.</p>
+<p>Note that an important requirement on the architecture layer is that
+the pointer to this CPU struct be available rapidly when in kernel
+context.  The expectation is that <a class="reference internal" href="../../../guides/porting/arch.html#c.arch_curr_cpu" title="arch_curr_cpu"><code class="xref c c-func docutils literal notranslate"><span class="pre">arch_curr_cpu()</span></code></a> will be
+implemented using a CPU-provided register or addressing mode that can
+store this value across arbitrary context switches or interrupts and
+make it available to any kernel-mode code.</p>
+<p>Similarly, where on a uniprocessor system Zephyr could simply create a
+global “idle thread” at the lowest priority, in SMP we may need one
+for each CPU.  This makes the internal predicate test for “_is_idle()”
+in the scheduler, which is a hot path performance environment, more
+complicated than simply testing the thread pointer for equality with a
+known static variable.  In SMP mode, idle threads are distinguished by
+a separate field in the thread struct.</p>
+</div>
+<div class="section" id="switch-based-context-switching">
+<h3>Switch-based context switching<a class="headerlink" href="#switch-based-context-switching" title="Permalink to this headline">¶</a></h3>
+<p>The traditional Zephyr context switch primitive has been <code class="xref c c-func docutils literal notranslate"><span class="pre">z_swap()</span></code>.
+Unfortunately, this function takes no argument specifying a thread to
+switch to.  The expectation has always been that the scheduler has
+already made its preemption decision when its state was last modified
+and cached the resulting “next thread” pointer in a location where
+architecture context switch primitives can find it via a simple struct
+offset.  That technique will not work in SMP, because the other CPU
+may have modified scheduler state since the current CPU last exited
+the scheduler (for example: it might already be running that cached
+thread!).</p>
+<p>Instead, the SMP “switch to” decision needs to be made synchronously
+with the swap call, and as we don’t want per-architecture assembly
+code to be handling scheduler internal state, Zephyr requires a
+somewhat lower-level context switch primitives for SMP systems:
+<a class="reference internal" href="../../../guides/porting/arch.html#c.arch_switch" title="arch_switch"><code class="xref c c-func docutils literal notranslate"><span class="pre">arch_switch()</span></code></a> is always called with interrupts masked, and takes
+exactly two arguments.  The first is an opaque (architecture defined)
+handle to the context to which it should switch, and the second is a
+pointer to such a handle into which it should store the handle
+resulting from the thread that is being switched out.</p>
+<p>The kernel then implements a portable <code class="xref c c-func docutils literal notranslate"><span class="pre">z_swap()</span></code> implementation on top
+of this primitive which includes the relevant scheduler logic in a
+location where the architecture doesn’t need to understand it.
+Similarly, on interrupt exit, switch-based architectures are expected
+to call <code class="xref c c-func docutils literal notranslate"><span class="pre">z_get_next_switch_handle()</span></code> to retrieve the next thread to
+run from the scheduler, passing in an “interrupted” handle reflecting
+the same opaque type used by switch, which the kernel will then save
+in the interrupted thread struct.</p>
+<p>Note that while SMP requires <a class="reference internal" href="../../../kconfig.html#CONFIG_USE_SWITCH" title="CONFIG_USE_SWITCH"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USE_SWITCH</span></code></a>, the reverse is not
+true.  A uniprocessor architecture built with <a class="reference internal" href="../../../kconfig.html#CONFIG_SMP" title="CONFIG_SMP"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SMP</span></code></a> set to No might
+still decide to implement its context switching using
+<a class="reference internal" href="../../../guides/porting/arch.html#c.arch_switch" title="arch_switch"><code class="xref c c-func docutils literal notranslate"><span class="pre">arch_switch()</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__spinlock__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">spinlock_apis</span></span></dt>
+<dd><p>Spinlock APIs. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.k_spinlock_key_t">
+<span class="target" id="group__spinlock__apis_1gacacd3d3bbd31416dbbf6a0239be82ef0"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">z_spinlock_key</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_spinlock_key_t</span></span></span><a class="headerlink" href="#c.k_spinlock_key_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Spinlock key type. </p>
+<p>This type defines a “key” value used by a spinlock implementation to store the system interrupt state at the time of a call to <a class="reference internal" href="#group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"><span class="std std-ref">k_spin_lock()</span></a>. It is expected to be passed to a matching <a class="reference internal" href="#group__spinlock__apis_1gaa54fc60d17d1033276aed4605671ed8e"><span class="std std-ref">k_spin_unlock()</span></a>.</p>
+<p>This type is opaque and should not be inspected by application code. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_spin_lock">
+<span class="target" id="group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"></span><span class="pre">ALWAYS_INLINE</span><span class="w"> </span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#c.k_spinlock_key_t" title="k_spinlock_key_t"><span class="n"><span class="pre">k_spinlock_key_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_spin_lock</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_spinlock" title="k_spinlock"><span class="n"><span class="pre">k_spinlock</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_spin_lock" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Lock a spinlock. </p>
+<p>This routine locks the specified spinlock, returning a key handle representing interrupt state needed at unlock time. Upon returning, the calling thread is guaranteed not to be suspended or interrupted on its current CPU until it calls <a class="reference internal" href="#group__spinlock__apis_1gaa54fc60d17d1033276aed4605671ed8e"><span class="std std-ref">k_spin_unlock()</span></a>. The implementation guarantees mutual exclusion: exactly one thread on one CPU will return from <a class="reference internal" href="#group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"><span class="std std-ref">k_spin_lock()</span></a> at a time. Other CPUs trying to acquire a lock already held by another CPU will enter an implementation-defined busy loop (“spinning”) until the lock is released.</p>
+<p>Separate spin locks may be nested. It is legal to lock an (unlocked) spin lock while holding a different lock. Spin locks are not recursive, however: an attempt to acquire a spin lock that the CPU already holds will deadlock.</p>
+<p>In circumstances where only one CPU exists, the behavior of <a class="reference internal" href="#group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"><span class="std std-ref">k_spin_lock()</span></a> remains as specified above, though obviously no spinning will take place. Implementations may be free to optimize in uniprocessor contexts such that the locking reduces to an interrupt mask operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>A key value that must be passed to <a class="reference internal" href="#group__spinlock__apis_1gaa54fc60d17d1033276aed4605671ed8e"><span class="std std-ref">k_spin_unlock()</span></a> when the lock is released. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">l</span></code>: A pointer to the spinlock to lock </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_spin_unlock">
+<span class="target" id="group__spinlock__apis_1gaa54fc60d17d1033276aed4605671ed8e"></span><span class="pre">ALWAYS_INLINE</span><span class="w"> </span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_spin_unlock</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_spinlock" title="k_spinlock"><span class="n"><span class="pre">k_spinlock</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">l</span></span>, <a class="reference internal" href="#c.k_spinlock_key_t" title="k_spinlock_key_t"><span class="n"><span class="pre">k_spinlock_key_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_spin_unlock" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unlock a spin lock. </p>
+<p>This releases a lock acquired by <a class="reference internal" href="#group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"><span class="std std-ref">k_spin_lock()</span></a>. After this function is called, any CPU will be able to acquire the lock. If other CPUs are currently spinning inside <a class="reference internal" href="#group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"><span class="std std-ref">k_spin_lock()</span></a> waiting for this lock, exactly one of them will return synchronously with the lock held.</p>
+<p>Spin locks must be properly nested. A call to <a class="reference internal" href="#group__spinlock__apis_1gaa54fc60d17d1033276aed4605671ed8e"><span class="std std-ref">k_spin_unlock()</span></a> must be made on the lock object most recently locked using <a class="reference internal" href="#group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"><span class="std std-ref">k_spin_lock()</span></a>, using the key value that it returned. Attempts to unlock mis-nested locks, or to unlock locks that are not held, or to passing a key parameter other than the one returned from <a class="reference internal" href="#group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"><span class="std std-ref">k_spin_lock()</span></a>, are illegal. When CONFIG_SPIN_VALIDATE is set, some of these errors can be detected by the framework.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">l</span></code>: A pointer to the spinlock to release </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">key</span></code>: The value returned from <a class="reference internal" href="#group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"><span class="std std-ref">k_spin_lock()</span></a> when this lock was acquired </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_spin_release">
+<span class="target" id="group__spinlock__apis_1ga0380368fc016ee2a757ad02e1b6804b0"></span><span class="pre">ALWAYS_INLINE</span><span class="w"> </span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_spin_release</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_spinlock" title="k_spinlock"><span class="n"><span class="pre">k_spinlock</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_spin_release" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.k_spinlock">
+<span class="target" id="structk__spinlock"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_spinlock</span></span></span><a class="headerlink" href="#c.k_spinlock" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;spinlock.h&gt;</em><p>Kernel Spin Lock. </p>
+<p>This struct defines a spin lock record on which CPUs can wait with <a class="reference internal" href="#group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"><span class="std std-ref">k_spin_lock()</span></a>. Any number of spinlocks may be defined in application code. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../data_passing/queues.html" class="btn btn-neutral float-right" title="Queues" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../synchronization/events.html" class="btn btn-neutral" title="Events" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

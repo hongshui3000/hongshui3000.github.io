@@ -1,0 +1,1754 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>USB Human Interface Devices (HID) support &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="USB device stack CDC ACM support" href="uds_cdc_acm.html" />
+    <link rel="prev" title="Testing USB device support" href="uds_testing.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">USB device support</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="udc.html">USB device controller driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uds.html">USB device stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uds_testing.html">Testing USB device support</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">USB Human Interface Devices (HID) support</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hid-item-helpers">HID Item helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hid-items-reference">HID items reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hid-types-reference">HID types reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hid-mouse-and-keyboard-report-descriptors">HID Mouse and Keyboard report descriptors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hid-class-device-api-reference">HID Class Device API reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="uds_cdc_acm.html">USB device stack CDC ACM support</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">USB device support</a> &raquo;</li>
+        
+      <li>USB Human Interface Devices (HID) support</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/usb/hid.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="usb-human-interface-devices-hid-support">
+<span id="usb-device-hid"></span><h1>USB Human Interface Devices (HID) support<a class="headerlink" href="#usb-human-interface-devices-hid-support" title="Permalink to this headline">¶</a></h1>
+<p>Since the USB HID specification is not only used by the USB subsystem, the USB HID API
+is split into two header files <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/usb/class/hid.h">include/usb/class/hid.h</a>
+and <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/usb/class/usb_hid.h">include/usb/class/usb_hid.h</a>. The second includes a specific
+part for HID support in the USB device stack.</p>
+<div class="section" id="hid-item-helpers">
+<h2>HID Item helpers<a class="headerlink" href="#hid-item-helpers" title="Permalink to this headline">¶</a></h2>
+<p>HID item helper macros can be used to compose a HID Report Descriptor.
+The names correspond to those used in the USB HID Specification.</p>
+<p>Example of a HID Report Descriptor:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="kt">uint8_t</span> <span class="n">hid_report_desc</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">HID_USAGE_PAGE</span><span class="p">(</span><span class="n">HID_USAGE_GEN_DESKTOP</span><span class="p">),</span>
+    <span class="n">HID_USAGE</span><span class="p">(</span><span class="n">HID_USAGE_GEN_DESKTOP_UNDEFINED</span><span class="p">),</span>
+    <span class="n">HID_COLLECTION</span><span class="p">(</span><span class="n">HID_COLLECTION_APPLICATION</span><span class="p">),</span>
+    <span class="n">HID_LOGICAL_MIN8</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+    <span class="cm">/* logical maximum 255 */</span>
+    <span class="n">HID_LOGICAL_MAX16</span><span class="p">(</span><span class="mh">0xFF</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">),</span>
+    <span class="n">HID_REPORT_ID</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">HID_REPORT_SIZE</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span>
+    <span class="n">HID_REPORT_COUNT</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">HID_USAGE</span><span class="p">(</span><span class="n">HID_USAGE_GEN_DESKTOP_UNDEFINED</span><span class="p">),</span>
+    <span class="cm">/* HID_INPUT (Data, Variable, Absolute) */</span>
+    <span class="n">HID_INPUT</span><span class="p">(</span><span class="mh">0x02</span><span class="p">),</span>
+    <span class="n">HID_END_COLLECTION</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hid-items-reference">
+<h2>HID items reference<a class="headerlink" href="#hid-items-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__usb__hid__items"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">usb_hid_items</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM">
+<span class="target" id="group__usb__hid__items_1ga4e9dc6652402e0b87e1313c143737ed4"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">bTag</span></span>, <span class="n"><span class="pre">bType</span></span>, <span class="n"><span class="pre">bSize</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_ITEM" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID short item. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Input item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bTag</span></code>: Item tag </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bType</span></code>: Item type </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bSize</span></code>: Item data size </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_INPUT">
+<span class="target" id="group__usb__hid__items_1ga8646699330c45fb008d50b54be339c6c"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_INPUT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_INPUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Input item with the data length of one byte. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Input item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Input item data </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_OUTPUT">
+<span class="target" id="group__usb__hid__items_1ga6ef7aa576bf69f9ba5f93df500a1403c"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_OUTPUT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_OUTPUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Output item with the data length of one byte. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Output item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Output item data </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_FEATURE">
+<span class="target" id="group__usb__hid__items_1ga951a415e05e95492250d4fb43a37090d"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_FEATURE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_FEATURE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Feature item with the data length of one byte. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Feature item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Feature item data </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_COLLECTION">
+<span class="target" id="group__usb__hid__items_1gad010ed98662b0e653754caff1dfd352f"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_COLLECTION</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_COLLECTION" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Collection item with the data length of one byte. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Collection item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Collection item data </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_END_COLLECTION">
+<span class="target" id="group__usb__hid__items_1ga6cd6affb9d52e0bf98c7a5c83d03a764"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_END_COLLECTION</span></span></span><a class="headerlink" href="#c.HID_END_COLLECTION" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID End Collection (non-data) item. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID End Collection item </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_PAGE">
+<span class="target" id="group__usb__hid__items_1ga30dc3f62583822ba27edd984dc2dec39"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_PAGE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">page</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_USAGE_PAGE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Usage Page item. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Usage Page item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">page</span></code>: Usage Page </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_LOGICAL_MIN8">
+<span class="target" id="group__usb__hid__items_1gacd141f6ede5122f260cd50338649d458"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_LOGICAL_MIN8</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_LOGICAL_MIN8" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Logical Minimum item with the data length of one byte. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Logical Minimum item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Minimum value in logical units </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_LOGICAL_MAX8">
+<span class="target" id="group__usb__hid__items_1ga2f6b809ae85b6716ade8c52da4fa56af"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_LOGICAL_MAX8</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_LOGICAL_MAX8" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Logical Maximum item with the data length of one byte. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Logical Maximum item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Maximum value in logical units </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_LOGICAL_MIN16">
+<span class="target" id="group__usb__hid__items_1ga5e290798d55bccd7474dbfb6bc2d1033"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_LOGICAL_MIN16</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_LOGICAL_MIN16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Logical Minimum item with the data length of two bytes. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Logical Minimum item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Minimum value lower byte </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code>: Minimum value higher byte </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_LOGICAL_MAX16">
+<span class="target" id="group__usb__hid__items_1ga9b804d676812dcfb0ec12f3aa887e37f"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_LOGICAL_MAX16</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_LOGICAL_MAX16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Logical Maximum item with the data length of two bytes. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Logical Maximum item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Minimum value lower byte </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code>: Minimum value higher byte </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_LOGICAL_MIN32">
+<span class="target" id="group__usb__hid__items_1gad4b2ff8642676d692fd0d56ab0cbeaa7"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_LOGICAL_MIN32</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">b</span></span>, <span class="n"><span class="pre">c</span></span>, <span class="n"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_LOGICAL_MIN32" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Logical Minimum item with the data length of four bytes. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Logical Minimum item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Minimum value lower byte </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code>: Minimum value low middle byte </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: Minimum value high middle byte </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">d</span></code>: Minimum value higher byte </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_LOGICAL_MAX32">
+<span class="target" id="group__usb__hid__items_1gae9d17e753685b0df6c53f942ce9c95d2"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_LOGICAL_MAX32</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">b</span></span>, <span class="n"><span class="pre">c</span></span>, <span class="n"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_LOGICAL_MAX32" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Logical Maximum item with the data length of four bytes. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Logical Maximum item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Minimum value lower byte </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code>: Minimum value low middle byte </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: Minimum value high middle byte </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">d</span></code>: Minimum value higher byte </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_REPORT_SIZE">
+<span class="target" id="group__usb__hid__items_1ga3135a21a63c491daf8647fa771def0e7"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_REPORT_SIZE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_REPORT_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Report Size item with the data length of one byte. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Report Size item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Report field size in bits </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_REPORT_ID">
+<span class="target" id="group__usb__hid__items_1ga1b45fce2c7df2847b1326fca29cef389"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_REPORT_ID</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_REPORT_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Report ID item with the data length of one byte. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Report ID item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: Report ID </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_REPORT_COUNT">
+<span class="target" id="group__usb__hid__items_1ga71192f2a55f05456b893069ebfbc5b98"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_REPORT_COUNT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">count</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_REPORT_COUNT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Report Count item with the data length of one byte. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Report Count item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">count</span></code>: Number of data fields included in the report </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE">
+<span class="target" id="group__usb__hid__items_1gac8429a70866a898887ead55664e04bd7"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">idx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_USAGE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Usage Index item with the data length of one byte. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Usage Index item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">idx</span></code>: Number of data fields included in the report </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_MIN8">
+<span class="target" id="group__usb__hid__items_1gabf53f1e2eae6d686aeb7d62cc46b22ad"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_MIN8</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_USAGE_MIN8" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Usage Minimum item with the data length of one byte. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Usage Minimum item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Starting Usage </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_MAX8">
+<span class="target" id="group__usb__hid__items_1gae7fc9684ef10f50d69df6f495cc09e91"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_MAX8</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_USAGE_MAX8" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Usage Maximum item with the data length of one byte. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Usage Maximum item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Ending Usage </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_MIN16">
+<span class="target" id="group__usb__hid__items_1ga0dbc847d11cf64676f7cfc51b54150fa"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_MIN16</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_USAGE_MIN16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Usage Minimum item with the data length of two bytes. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Usage Minimum item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Starting Usage lower byte </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code>: Starting Usage higher byte </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_MAX16">
+<span class="target" id="group__usb__hid__items_1gadd11a09546bc275c82e7a992cb9441cc"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_MAX16</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_USAGE_MAX16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define HID Usage Maximum item with the data length of two bytes. </p>
+<p>For usage examples, see <a class="reference internal" href="#group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"><span class="std std-ref">HID_MOUSE_REPORT_DESC()</span></a>, <a class="reference internal" href="#group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"><span class="std std-ref">HID_KEYBOARD_REPORT_DESC()</span></a></p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>HID Usage Maximum item </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: Ending Usage lower byte </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code>: Ending Usage higher byte </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="hid-types-reference">
+<h2>HID types reference<a class="headerlink" href="#hid-types-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__usb__hid__types"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">usb_hid_types</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.USB_DESC_HID">
+<span class="target" id="group__usb__hid__types_1ga07e8028979ff1c3d30408b08778bfd3d"></span><span class="sig-name descname"><span class="n"><span class="pre">USB_DESC_HID</span></span></span><a class="headerlink" href="#c.USB_DESC_HID" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Class HID descriptor type </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.USB_DESC_HID_REPORT">
+<span class="target" id="group__usb__hid__types_1gaca594a2caf9cb5ebac863c6c2f233f31"></span><span class="sig-name descname"><span class="n"><span class="pre">USB_DESC_HID_REPORT</span></span></span><a class="headerlink" href="#c.USB_DESC_HID_REPORT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Class Report descriptor type </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.USB_DESC_HID_PHYSICAL">
+<span class="target" id="group__usb__hid__types_1ga2d543337d798d1c85436d2fee1c5be3f"></span><span class="sig-name descname"><span class="n"><span class="pre">USB_DESC_HID_PHYSICAL</span></span></span><a class="headerlink" href="#c.USB_DESC_HID_PHYSICAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Class physical descriptor type </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.USB_HID_GET_REPORT">
+<span class="target" id="group__usb__hid__types_1ga3d4f67db0b3531f3493cde381110809d"></span><span class="sig-name descname"><span class="n"><span class="pre">USB_HID_GET_REPORT</span></span></span><a class="headerlink" href="#c.USB_HID_GET_REPORT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Class GetReport bRequest value </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.USB_HID_GET_IDLE">
+<span class="target" id="group__usb__hid__types_1ga9d69e0dae00cf3c6c5dc5602f63b2f2f"></span><span class="sig-name descname"><span class="n"><span class="pre">USB_HID_GET_IDLE</span></span></span><a class="headerlink" href="#c.USB_HID_GET_IDLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Class GetIdle bRequest value </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.USB_HID_GET_PROTOCOL">
+<span class="target" id="group__usb__hid__types_1ga09469e20036a4c3df8281a2575358747"></span><span class="sig-name descname"><span class="n"><span class="pre">USB_HID_GET_PROTOCOL</span></span></span><a class="headerlink" href="#c.USB_HID_GET_PROTOCOL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Class GetProtocol bRequest value </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.USB_HID_SET_REPORT">
+<span class="target" id="group__usb__hid__types_1gaed6de2caf14f9caa049fab82902299cf"></span><span class="sig-name descname"><span class="n"><span class="pre">USB_HID_SET_REPORT</span></span></span><a class="headerlink" href="#c.USB_HID_SET_REPORT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Class SetReport bRequest value </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.USB_HID_SET_IDLE">
+<span class="target" id="group__usb__hid__types_1ga1cbc5f99d9bd85fca7b9a624efb41078"></span><span class="sig-name descname"><span class="n"><span class="pre">USB_HID_SET_IDLE</span></span></span><a class="headerlink" href="#c.USB_HID_SET_IDLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Class SetIdle bRequest value </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.USB_HID_SET_PROTOCOL">
+<span class="target" id="group__usb__hid__types_1ga2058ed723b6a4613b4dcb8040b739684"></span><span class="sig-name descname"><span class="n"><span class="pre">USB_HID_SET_PROTOCOL</span></span></span><a class="headerlink" href="#c.USB_HID_SET_PROTOCOL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Class SetProtocol bRequest value </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_BOOT_IFACE_CODE_NONE">
+<span class="target" id="group__usb__hid__types_1ga953074178d707cd3538da80f36a96ff6"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_BOOT_IFACE_CODE_NONE</span></span></span><a class="headerlink" href="#c.HID_BOOT_IFACE_CODE_NONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Boot Interface Protocol (bInterfaceProtocol) Code None </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_BOOT_IFACE_CODE_KEYBOARD">
+<span class="target" id="group__usb__hid__types_1ga6e6276ae88c414e10c602d5e041738ab"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_BOOT_IFACE_CODE_KEYBOARD</span></span></span><a class="headerlink" href="#c.HID_BOOT_IFACE_CODE_KEYBOARD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Boot Interface Protocol (bInterfaceProtocol) Code Keyboard </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_BOOT_IFACE_CODE_MOUSE">
+<span class="target" id="group__usb__hid__types_1ga900873d4834ea511a08b08debe62bedf"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_BOOT_IFACE_CODE_MOUSE</span></span></span><a class="headerlink" href="#c.HID_BOOT_IFACE_CODE_MOUSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Boot Interface Protocol (bInterfaceProtocol) Code Mouse </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_PROTOCOL_BOOT">
+<span class="target" id="group__usb__hid__types_1gafd24e87747c82293e689f58157f06128"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_PROTOCOL_BOOT</span></span></span><a class="headerlink" href="#c.HID_PROTOCOL_BOOT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Class Boot protocol code </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_PROTOCOL_REPORT">
+<span class="target" id="group__usb__hid__types_1ga982c0da911cbda6e09bd48a5e4ab85f1"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_PROTOCOL_REPORT</span></span></span><a class="headerlink" href="#c.HID_PROTOCOL_REPORT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB HID Class Report protocol code </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TYPE_MAIN">
+<span class="target" id="group__usb__hid__types_1ga9a71248c522943951b5af70ec9c14c02"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TYPE_MAIN</span></span></span><a class="headerlink" href="#c.HID_ITEM_TYPE_MAIN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Main item type </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TYPE_GLOBAL">
+<span class="target" id="group__usb__hid__types_1ga8e56e8090f1af7aae473e8a8b6832fb8"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TYPE_GLOBAL</span></span></span><a class="headerlink" href="#c.HID_ITEM_TYPE_GLOBAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Global item type </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TYPE_LOCAL">
+<span class="target" id="group__usb__hid__types_1ga0bfb0e326d9a01072c029cba788d6456"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TYPE_LOCAL</span></span></span><a class="headerlink" href="#c.HID_ITEM_TYPE_LOCAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Local item type </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_INPUT">
+<span class="target" id="group__usb__hid__types_1ga66e1c50fe814fd05d61dce12ce3888c1"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_INPUT</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_INPUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Input item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_OUTPUT">
+<span class="target" id="group__usb__hid__types_1ga70c32518a6b538831e821ad30022679b"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_OUTPUT</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_OUTPUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Output item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_COLLECTION">
+<span class="target" id="group__usb__hid__types_1ga2c06052593b060466f4c338a88319485"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_COLLECTION</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_COLLECTION" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Collection item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_FEATURE">
+<span class="target" id="group__usb__hid__types_1gaeadcca849f0a0923d9a70605c44464a6"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_FEATURE</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_FEATURE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Feature item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_COLLECTION_END">
+<span class="target" id="group__usb__hid__types_1ga3f4fe1817887966f0d05aa597cd0ab79"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_COLLECTION_END</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_COLLECTION_END" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID End Collection item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_USAGE_PAGE">
+<span class="target" id="group__usb__hid__types_1ga73f58fa37c0bf6698463b9d31c8a511f"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_USAGE_PAGE</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_USAGE_PAGE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Usage Page item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_LOGICAL_MIN">
+<span class="target" id="group__usb__hid__types_1ga034033b1ae6f4677aef82d4243c6f712"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_LOGICAL_MIN</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_LOGICAL_MIN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Logical Minimum item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_LOGICAL_MAX">
+<span class="target" id="group__usb__hid__types_1gaab6aec72cca41670464605d6970ad553"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_LOGICAL_MAX</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_LOGICAL_MAX" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Logical Maximum item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_PHYSICAL_MIN">
+<span class="target" id="group__usb__hid__types_1ga6dfdd60d0b985d683a58ad752d3ef3c3"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_PHYSICAL_MIN</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_PHYSICAL_MIN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Physical Minimum item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_PHYSICAL_MAX">
+<span class="target" id="group__usb__hid__types_1gaa68bd8a73cee33d810484f4aa3f30e92"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_PHYSICAL_MAX</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_PHYSICAL_MAX" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Physical Maximum item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_UNIT_EXPONENT">
+<span class="target" id="group__usb__hid__types_1ga7c6d81ee211814ec9b5d17f95e57639b"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_UNIT_EXPONENT</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_UNIT_EXPONENT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Unit Exponent item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_UNIT">
+<span class="target" id="group__usb__hid__types_1ga98267b4ff28f435d67d2a7bf1055fc7c"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_UNIT</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_UNIT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Unit item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_REPORT_SIZE">
+<span class="target" id="group__usb__hid__types_1ga0e6d7a56593bd25a5e15683e9271bb19"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_REPORT_SIZE</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_REPORT_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Report Size item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_REPORT_ID">
+<span class="target" id="group__usb__hid__types_1ga76cd3a266ae5d5e29292d93caceece72"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_REPORT_ID</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_REPORT_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Report ID item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_REPORT_COUNT">
+<span class="target" id="group__usb__hid__types_1ga1847701703130ce8f57547811f28b2b4"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_REPORT_COUNT</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_REPORT_COUNT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Report count item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_USAGE">
+<span class="target" id="group__usb__hid__types_1gaefd616ecaa8fc8762e65ec9d7b01f0cd"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_USAGE</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_USAGE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Usage item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_USAGE_MIN">
+<span class="target" id="group__usb__hid__types_1ga4e6f4133f12276f4f9fa51ab06580676"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_USAGE_MIN</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_USAGE_MIN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Usage Minimum item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_ITEM_TAG_USAGE_MAX">
+<span class="target" id="group__usb__hid__types_1gac2a0aff74caff6c03511fc0b6db6167b"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_ITEM_TAG_USAGE_MAX</span></span></span><a class="headerlink" href="#c.HID_ITEM_TAG_USAGE_MAX" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Usage Maximum item tag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_COLLECTION_PHYSICAL">
+<span class="target" id="group__usb__hid__types_1gaca1e227f9241c217b8b1aeae6c4bd672"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_COLLECTION_PHYSICAL</span></span></span><a class="headerlink" href="#c.HID_COLLECTION_PHYSICAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Physical collection type </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_COLLECTION_APPLICATION">
+<span class="target" id="group__usb__hid__types_1ga2e5e5ad0919fbaea0e6f8e5d86f4c2fd"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_COLLECTION_APPLICATION</span></span></span><a class="headerlink" href="#c.HID_COLLECTION_APPLICATION" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Application collection type </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_DESKTOP">
+<span class="target" id="group__usb__hid__types_1gacb3fc5b0f838dfa5eb95e9e1bf52b589"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_DESKTOP</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_DESKTOP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Generic Desktop Controls Usage page </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_KEYBOARD">
+<span class="target" id="group__usb__hid__types_1ga1fdbfffd0b343cec1480e9f0347efa5d"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_KEYBOARD</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_KEYBOARD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Keyboard Usage page </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_LEDS">
+<span class="target" id="group__usb__hid__types_1gae632e9a37203506c051c3cacfdf0c2c7"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_LEDS</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_LEDS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID LEDs Usage page </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_BUTTON">
+<span class="target" id="group__usb__hid__types_1ga13401731a0ead5448a0823d0f6142404"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_BUTTON</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_BUTTON" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Button Usage page </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_DESKTOP_UNDEFINED">
+<span class="target" id="group__usb__hid__types_1ga1441517d7c57529dcf726a1dd8b09a07"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_DESKTOP_UNDEFINED</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_DESKTOP_UNDEFINED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Generic Desktop Undefined Usage ID </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_DESKTOP_POINTER">
+<span class="target" id="group__usb__hid__types_1ga77a7162980a77efa1e2e7b21942bb7dd"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_DESKTOP_POINTER</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_DESKTOP_POINTER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Generic Desktop Pointer Usage ID </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_DESKTOP_MOUSE">
+<span class="target" id="group__usb__hid__types_1ga983274dd50058de26e0e86d10d50e81a"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_DESKTOP_MOUSE</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_DESKTOP_MOUSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Generic Desktop Mouse Usage ID </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_DESKTOP_JOYSTICK">
+<span class="target" id="group__usb__hid__types_1gada59a9f3aeaeaefc6112c7d9902b2d6d"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_DESKTOP_JOYSTICK</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_DESKTOP_JOYSTICK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Generic Desktop Joystick Usage ID </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_DESKTOP_GAMEPAD">
+<span class="target" id="group__usb__hid__types_1ga17404e33133204a538f976d321c84ff0"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_DESKTOP_GAMEPAD</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_DESKTOP_GAMEPAD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Generic Desktop Gamepad Usage ID </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_DESKTOP_KEYBOARD">
+<span class="target" id="group__usb__hid__types_1ga0bdaa3d23c79204a1064cb53b279bd77"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_DESKTOP_KEYBOARD</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_DESKTOP_KEYBOARD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Generic Desktop Keyboard Usage ID </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_DESKTOP_KEYPAD">
+<span class="target" id="group__usb__hid__types_1ga69f8e44306828b3f44d3a7704ff07807"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_DESKTOP_KEYPAD</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_DESKTOP_KEYPAD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Generic Desktop Keypad Usage ID </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_DESKTOP_X">
+<span class="target" id="group__usb__hid__types_1gae283a3558ba536e163140a3b6cdbb273"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_DESKTOP_X</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_DESKTOP_X" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Generic Desktop X Usage ID </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_DESKTOP_Y">
+<span class="target" id="group__usb__hid__types_1gad1ab1f8f9c8a4a80bfc8e3a327e3b2fb"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_DESKTOP_Y</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_DESKTOP_Y" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Generic Desktop Y Usage ID </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_USAGE_GEN_DESKTOP_WHEEL">
+<span class="target" id="group__usb__hid__types_1gaa8c772d412ac1ac7a36739c52f04c0a9"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_USAGE_GEN_DESKTOP_WHEEL</span></span></span><a class="headerlink" href="#c.HID_USAGE_GEN_DESKTOP_WHEEL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID Generic Desktop Wheel Usage ID </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="hid-mouse-and-keyboard-report-descriptors">
+<h2>HID Mouse and Keyboard report descriptors<a class="headerlink" href="#hid-mouse-and-keyboard-report-descriptors" title="Permalink to this headline">¶</a></h2>
+<p>The pre-defined Mouse and Keyboard report descriptors can be used by
+a HID device implementation or simply as examples.</p>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__usb__hid__mk__report__desc"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">usb_hid_mk_report_desc</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_MOUSE_REPORT_DESC">
+<span class="target" id="group__usb__hid__mk__report__desc_1ga3696f0782268d504b0c8bb540236779f"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_MOUSE_REPORT_DESC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">bcnt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_MOUSE_REPORT_DESC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Simple HID mouse report descriptor for n button mouse. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bcnt</span></code>: Button count. Allowed values from 1 to 8. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HID_KEYBOARD_REPORT_DESC">
+<span class="target" id="group__usb__hid__mk__report__desc_1gaea973ffbe1612187c90614133956cfd6"></span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEYBOARD_REPORT_DESC</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.HID_KEYBOARD_REPORT_DESC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Simple HID keyboard report descriptor. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.hid_kbd_code">
+<span class="target" id="group__usb__hid__mk__report__desc_1ga4f2bb15109c64695f852afd6bd99e3bf"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hid_kbd_code</span></span></span><a class="headerlink" href="#c.hid_kbd_code" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID keyboard button codes. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_A">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa5413afa6a28a21dd52f07db101f2d139"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_A</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_A" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_B">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfabb0b25fe8c201dc75b72c7b078f745d6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_B</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_B" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_C">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa932c610512cc99157654c3997bc2b922"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_C</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_C" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_D">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfabc172093417a4c40a7443eee551e9700"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_D</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">7</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_D" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_E">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaff7192b9ddd4228e02c44b6fb2d7bf85"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_E</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfacc002ca9f0f3bdc01b4de42d00e5560b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">9</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_G">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa1eadd56346bbd64b1c33fa5393f65bda"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_G</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">10</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_G" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_H">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa4bfc341fccde664ec9267af6e705ba0c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_H</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">11</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_H" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_I">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfafcd25dc5bba218f7097698f8f49fdc45"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_I</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">12</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_I" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_J">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa2a78196208c634941d63429cd1e1df7a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_J</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">13</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_J" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_K">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa4ceddaaaa90d84f0afb3e1ee9a35a976"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_K</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">14</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_K" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_L">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaf5de66adc9eb2aa183eab1e23f977894"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_L</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">15</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_L" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_M">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa4f8174feca1eb72901576c4e24c8f8a9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_M</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_M" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_N">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfab4d202043e8b0b7a8c2d4c519fd1eb07"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_N</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">17</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_N" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_O">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfad8884ef7e77722099e6bd61265f6564c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_O</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">18</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_O" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_P">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaca0480331288d15eccec9f072f123817"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_P</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">19</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_P" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_Q">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa05fb920f8129f57dd350036f17fbe519"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_Q</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">20</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_Q" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_R">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa037de00c763ae6b270895b7a5f0f57a7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_R</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">21</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_R" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_S">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfae6a84e8474b6c3e8f9f7d344408cfa0b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_S</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">22</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_S" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_T">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa893799f48b30c438349335556a0e15b6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_T</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">23</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_T" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_U">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfab3c7c9f3a73e83623c651cdfddddeb05"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_U</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">24</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_U" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_V">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa02f14e6303b4d2e4e46747324d649dda"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_V</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">25</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_V" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_W">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfadf81a88f3f92f15e2abec83911bf3732"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_W</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">26</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_W" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_X">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa9f3b8bb63f6628db9a1678b72ec12b6d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_X</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">27</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_X" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_Y">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa4ca2ebe26c09f2400a8ebc0aa445ce89"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_Y</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">28</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_Y" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_Z">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaa5cd01ad23ede98de1ae176920b8fc8f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_Z</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">29</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_Z" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_1">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa039ced168420140b97e2d0676e1bb12a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_1</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">30</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_1" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_2">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfae98dd71460def5e66fcf32e9783b96ea"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_2</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">31</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_2" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_3">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaf58d848786f8d2dfac702f7fae178311"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_3</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">32</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_3" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_4">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa17019d72e84302486f72f7d8101baca5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_4</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">33</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_4" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_5">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaf32ab36da2e30066c9ed2816596011c8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_5</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">34</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_5" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_6">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfae16b76c1bf9f7aa58a1b1c556a6b6022"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_6</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">35</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_6" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_7">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa5887a1854f7d0787121bd75034cdd726"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_7</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">36</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_7" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_8">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa1761228849d7dc2b84d0565d3337b2e2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_8</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">37</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_9">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa758aec2540a6a2153702d6905c44ce52"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_9</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">38</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_9" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_0">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa856ca663233681e789ef4aa94c44ebaf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_0</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">39</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_0" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_ENTER">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaeeab6ddad27c449cbc44ca2458912a75"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_ENTER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">40</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_ENTER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_ESC">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa763b39fe76a92c4cc1fc32f47d2a760a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_ESC</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">41</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_ESC" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_BACKSPACE">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfafd6cf6a44966d518b173df4ed57ae720"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_BACKSPACE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">42</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_BACKSPACE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_TAB">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa5a6c79e8ea85f6593c06d19098d69a03"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_TAB</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">43</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_TAB" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_SPACE">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaf4fc3d7b4b86f9f095cec624d190ebec"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_SPACE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">44</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_SPACE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_MINUS">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaa59864204064d3e8fac5271b69a7da23"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_MINUS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">45</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_MINUS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_EQUAL">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfac8d82858905175ba79c24b0be1b1b1a8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_EQUAL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">46</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_EQUAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_LEFTBRACE">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfac232473666b21ca772c84b68be6c1f3d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_LEFTBRACE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">47</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_LEFTBRACE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_RIGHTBRACE">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaef692bd882621d292255cb99d4697513"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_RIGHTBRACE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">48</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_RIGHTBRACE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_BACKSLASH">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa25ba5457bc128593b1624d95ec536182"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_BACKSLASH</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">49</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_BACKSLASH" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_HASH">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa0d57ce7c99d06ee9b15fef880af075eb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_HASH</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">50</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_HASH" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_SEMICOLON">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa3743f920856a12e726e1be05932c7411"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_SEMICOLON</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">51</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_SEMICOLON" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_APOSTROPHE">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa7325a5bd52e9dc0cc38a85609b1c55ab"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_APOSTROPHE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">52</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_APOSTROPHE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_GRAVE">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa8b84c64da5b8c5f5d99b86c1cfe09ffc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_GRAVE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">53</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_GRAVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_COMMA">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaa81aa5b3424f02fdf02295de47b11b19"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_COMMA</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">54</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_COMMA" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_DOT">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa403fe927ebb0014e2c1b3dc25e1d9779"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_DOT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">55</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_DOT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_SLASH">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa24c2c93a1c895745828311affc011dea"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_SLASH</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">56</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_SLASH" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_CAPSLOCK">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa4d40549a59fdcfdd0b2d592a6675bc89"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_CAPSLOCK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">57</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_CAPSLOCK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F1">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa9642163abbbad8aa5c7088c8529aadd7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F1</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">58</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F1" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F2">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa9ce331f5f41ba3e3e05f485bc2d4138e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F2</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">59</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F2" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F3">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa76adde1d9295cf62e7efb35e27911a1e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F3</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">60</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F3" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F4">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaa9956a2b95afe1a05fda65db5cc66467"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F4</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">61</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F4" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F5">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bface9e8d409d981f193f69fc5b29f38ca7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F5</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">62</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F5" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F6">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfabc92147e725c8108c18f4e03005afbdc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F6</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">63</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F6" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F7">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa1e2eabf8b9fa6cbfea613696b2c4122a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F7</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">64</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F7" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F8">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa5092add2863231d273ba60cd583ebe33"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F8</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">65</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F9">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa5a09deabde1a3a44378b7de44dad27b6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F9</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">66</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F9" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F10">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfac2c4a3aec85b4d8171de4429ccabbe19"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F10</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">67</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F10" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F11">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa76bb35a0f71733b0a0f1bd7e3837064c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F11</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">68</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F11" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_F12">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfab44ba4426c1574f4b296794b7bfe2172"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_F12</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">69</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_F12" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_SYSRQ">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfae5405b62cb20962cb5864ba6e90a4ab2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_SYSRQ</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">70</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_SYSRQ" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_SCROLLLOCK">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfae16bd57629c7aba96a554d0446e83d98"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_SCROLLLOCK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">71</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_SCROLLLOCK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_PAUSE">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa1905733a0fe81f78e0752e3b0bb99c69"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_PAUSE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">72</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_PAUSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_INSERT">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa1e1c320cea0644c3dc38da06c865837b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_INSERT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">73</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_INSERT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_HOME">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa5fc1127fe9014018f4831cbf272c883b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_HOME</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">74</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_HOME" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_PAGEUP">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa2468ac3b37d38b6158cd989ed54bcd8c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_PAGEUP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">75</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_PAGEUP" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_DELETE">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfae8f5051cb476c3e9253b008094c431fc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">76</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_END">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa8f933f0f6e5a1a3c3cdc1819ffcdce63"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_END</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">77</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_END" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_PAGEDOWN">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaf7615ff4f608d64ae20a61540d939065"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_PAGEDOWN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">78</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_PAGEDOWN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_RIGHT">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa4c203feb452e3212089e8246b8d75f6c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_RIGHT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">79</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_RIGHT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_LEFT">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaf7d3c678a8ac31916068a0c5aff54d4b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_LEFT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">80</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_LEFT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_DOWN">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa9e2597c2a109abda1c63c8d5ca5376b3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_DOWN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">81</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_DOWN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_UP">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaf5fe431b55adf16d82604e0fc2239090"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_UP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">82</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_UP" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_NUMLOCK">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfafec8c71efd5ee9decd156f0d33739fbe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_NUMLOCK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">83</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_NUMLOCK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KPSLASH">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa44e83040efab214dcfe462ac0d338e0c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KPSLASH</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">84</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KPSLASH" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KPASTERISK">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfaff47eb8157a7118183573e3aefb7df08"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KPASTERISK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">85</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KPASTERISK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KPMINUS">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa6fb35c78b12ae434cb7a7280501886e9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KPMINUS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">86</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KPMINUS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KPPLUS">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa2cb7852467d2ebd785e2f7556383a883"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KPPLUS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">87</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KPPLUS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KPENTER">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfab5b923992d0bdc176f716cd8ace3a66e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KPENTER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">88</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KPENTER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KP_1">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa7eea75b0eb4b4f0306daa3e6fccf09e4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KP_1</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">89</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KP_1" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KP_2">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa68db65e7002e7cc599394a7eea116e3c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KP_2</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">90</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KP_2" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KP_3">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa4210f9a5ae469c8b863b28b9b2d8189d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KP_3</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">91</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KP_3" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KP_4">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa48eefeeb48a942eaaa0726bd4a2df01d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KP_4</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">92</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KP_4" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KP_5">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa1b8d299d56a0289ae15cbf8c67e36a7c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KP_5</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">93</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KP_5" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KP_6">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa90f2c51ad42e335a474061c4d5e4e5a9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KP_6</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">94</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KP_6" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KP_7">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa1e191017084fadf830a7394de0e1cc05"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KP_7</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">95</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KP_7" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KP_8">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfadd7c795e2c9c212a4adeaba904bda447"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KP_8</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">96</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KP_8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KP_9">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bface8d41615c6afd45724f4b6d16238c36"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KP_9</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">97</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KP_9" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_code.HID_KEY_KP_0">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga4f2bb15109c64695f852afd6bd99e3bfa4ae4af2b06f6f2585a598353bfef9af7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KEY_KP_0</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">98</span></span><a class="headerlink" href="#c.hid_kbd_code.HID_KEY_KP_0" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.hid_kbd_modifier">
+<span class="target" id="group__usb__hid__mk__report__desc_1ga12f11556b697518b00fa86eb040f9eb8"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hid_kbd_modifier</span></span></span><a class="headerlink" href="#c.hid_kbd_modifier" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID keyboard modifiers. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_modifier.HID_KBD_MODIFIER_NONE">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga12f11556b697518b00fa86eb040f9eb8a79b0eb4f485bedb745180f1b8798c603"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_MODIFIER_NONE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x00</span></span><a class="headerlink" href="#c.hid_kbd_modifier.HID_KBD_MODIFIER_NONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_modifier.HID_KBD_MODIFIER_LEFT_CTRL">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga12f11556b697518b00fa86eb040f9eb8a4df663509a05599fd66657cfc90a37c7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_MODIFIER_LEFT_CTRL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x01</span></span><a class="headerlink" href="#c.hid_kbd_modifier.HID_KBD_MODIFIER_LEFT_CTRL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_modifier.HID_KBD_MODIFIER_LEFT_SHIFT">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga12f11556b697518b00fa86eb040f9eb8aba69ca183306d3d1427b66666803e57f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_MODIFIER_LEFT_SHIFT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x02</span></span><a class="headerlink" href="#c.hid_kbd_modifier.HID_KBD_MODIFIER_LEFT_SHIFT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_modifier.HID_KBD_MODIFIER_LEFT_ALT">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga12f11556b697518b00fa86eb040f9eb8a829d884291b546c0e276afa4ad92ac18"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_MODIFIER_LEFT_ALT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x04</span></span><a class="headerlink" href="#c.hid_kbd_modifier.HID_KBD_MODIFIER_LEFT_ALT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_modifier.HID_KBD_MODIFIER_LEFT_UI">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga12f11556b697518b00fa86eb040f9eb8a718c92a2d0ca9dd6603825b97a99fc77"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_MODIFIER_LEFT_UI</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x08</span></span><a class="headerlink" href="#c.hid_kbd_modifier.HID_KBD_MODIFIER_LEFT_UI" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_modifier.HID_KBD_MODIFIER_RIGHT_CTRL">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga12f11556b697518b00fa86eb040f9eb8a8e346c0e9c7d5b58e4b8748380423a92"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_MODIFIER_RIGHT_CTRL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x10</span></span><a class="headerlink" href="#c.hid_kbd_modifier.HID_KBD_MODIFIER_RIGHT_CTRL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_modifier.HID_KBD_MODIFIER_RIGHT_SHIFT">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga12f11556b697518b00fa86eb040f9eb8affdba298e8860b000a0916be7495c2dc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_MODIFIER_RIGHT_SHIFT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x20</span></span><a class="headerlink" href="#c.hid_kbd_modifier.HID_KBD_MODIFIER_RIGHT_SHIFT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_modifier.HID_KBD_MODIFIER_RIGHT_ALT">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga12f11556b697518b00fa86eb040f9eb8a85ce29a6ab9feef68350deca92001db2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_MODIFIER_RIGHT_ALT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x40</span></span><a class="headerlink" href="#c.hid_kbd_modifier.HID_KBD_MODIFIER_RIGHT_ALT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_modifier.HID_KBD_MODIFIER_RIGHT_UI">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga12f11556b697518b00fa86eb040f9eb8a1b4b75cd0364824cbfc80dfc68e294dd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_MODIFIER_RIGHT_UI</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x80</span></span><a class="headerlink" href="#c.hid_kbd_modifier.HID_KBD_MODIFIER_RIGHT_UI" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.hid_kbd_led">
+<span class="target" id="group__usb__hid__mk__report__desc_1ga8cef56ba216d0a01c6cc89f723d1740b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hid_kbd_led</span></span></span><a class="headerlink" href="#c.hid_kbd_led" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HID keyboard LEDs. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_led.HID_KBD_LED_NUM_LOCK">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga8cef56ba216d0a01c6cc89f723d1740ba6cb2e1acb52cc5bab8dd3aa6ef6ac01b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_LED_NUM_LOCK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x01</span></span><a class="headerlink" href="#c.hid_kbd_led.HID_KBD_LED_NUM_LOCK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_led.HID_KBD_LED_CAPS_LOCK">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga8cef56ba216d0a01c6cc89f723d1740baa17e5130bd8c45eb21661d8783517266"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_LED_CAPS_LOCK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x02</span></span><a class="headerlink" href="#c.hid_kbd_led.HID_KBD_LED_CAPS_LOCK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_led.HID_KBD_LED_SCROLL_LOCK">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga8cef56ba216d0a01c6cc89f723d1740ba6ea943f59b98680aefd0d5be4ef22e36"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_LED_SCROLL_LOCK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x04</span></span><a class="headerlink" href="#c.hid_kbd_led.HID_KBD_LED_SCROLL_LOCK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_led.HID_KBD_LED_COMPOSE">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga8cef56ba216d0a01c6cc89f723d1740bad62692e71ae45351311c8bf2ce13e3c9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_LED_COMPOSE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x08</span></span><a class="headerlink" href="#c.hid_kbd_led.HID_KBD_LED_COMPOSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.hid_kbd_led.HID_KBD_LED_KANA">
+<span class="target" id="group__usb__hid__mk__report__desc_1gga8cef56ba216d0a01c6cc89f723d1740bafd5d599c1955bdb1c62c7b17286b37f1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HID_KBD_LED_KANA</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x10</span></span><a class="headerlink" href="#c.hid_kbd_led.HID_KBD_LED_KANA" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="hid-class-device-api-reference">
+<h2>HID Class Device API reference<a class="headerlink" href="#hid-class-device-api-reference" title="Permalink to this headline">¶</a></h2>
+<p>USB HID devices like mouse, keyboard, or any other specific device use this API.</p>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__usb__hid__device__api"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">usb_hid_device_api</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.hid_cb_t">
+<span class="target" id="group__usb__hid__device__api_1ga04ec088255198d1597df8d70db6257ee"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">hid_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">usb_setup_packet</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">setup</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">len</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.hid_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.hid_int_ready_callback">
+<span class="target" id="group__usb__hid__device__api_1gaed433e24f8487d4e451d9f9daa08c5b0"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">hid_int_ready_callback</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.hid_int_ready_callback" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.hid_protocol_cb_t">
+<span class="target" id="group__usb__hid__device__api_1gae3d308c55f5594cc0c926b52aaa28fc7"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">hid_protocol_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">protocol</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.hid_protocol_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.hid_idle_cb_t">
+<span class="target" id="group__usb__hid__device__api_1ga61b4facfbfb729159135f5c7534ca593"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">hid_idle_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">report_id</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.hid_idle_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_hid_register_device">
+<span class="target" id="group__usb__hid__device__api_1ga8b08b633472ceb1323f09ef81176520f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_hid_register_device</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">desc</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.hid_ops" title="hid_ops"><span class="n"><span class="pre">hid_ops</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_hid_register_device" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Register HID device. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">dev</span></code>: Pointer to USB HID device </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">desc</span></code>: Pointer to HID report descriptor </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">size</span></code>: Size of HID report descriptor </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">op</span></code>: Pointer to USB HID device interrupt struct </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.hid_int_ep_write">
+<span class="target" id="group__usb__hid__device__api_1ga9d82d48c9c6c94ad90e01f44c1f0e72b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hid_int_ep_write</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">data_len</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bytes_ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.hid_int_ep_write" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write to USB HID interrupt endpoint buffer. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">dev</span></code>: Pointer to USB HID device </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">data</span></code>: Pointer to data buffer </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">data_len</span></code>: Length of data to copy </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">bytes_ret</span></code>: Bytes written to the EP buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.hid_int_ep_read">
+<span class="target" id="group__usb__hid__device__api_1ga7d1b97dd70c25c816a2c78447be13c84"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hid_int_ep_read</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">max_data_len</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.hid_int_ep_read" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read from USB HID interrupt endpoint buffer. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">dev</span></code>: Pointer to USB HID device </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">data</span></code>: Pointer to data buffer </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">max_data_len</span></code>: Max length of data to copy </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">ret_bytes</span></code>: Number of bytes to copy. If data is NULL and ret_bytes is 0 the number of bytes available in the buffer will be returned.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_hid_set_proto_code">
+<span class="target" id="group__usb__hid__device__api_1gafb6073889bf17eb6a93bb8f182cd3f79"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_hid_set_proto_code</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">proto_code</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_hid_set_proto_code" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set USB HID class Protocol Code. </p>
+<p>Should be called before <a class="reference internal" href="#group__usb__hid__device__api_1ga88c23fc42f45f4ac05d9b2c1f6d7ec9b"><span class="std std-ref">usb_hid_init()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">dev</span></code>: Pointer to USB HID device </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">proto_code</span></code>: Protocol Code to be used for bInterfaceProtocol</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_hid_init">
+<span class="target" id="group__usb__hid__device__api_1ga88c23fc42f45f4ac05d9b2c1f6d7ec9b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_hid_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_hid_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize USB HID class support. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">dev</span></code>: Pointer to USB HID device</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.hid_ops">
+<span class="target" id="structhid__ops"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hid_ops</span></span></span><a class="headerlink" href="#c.hid_ops" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;usb_hid.h&gt;</em><p>USB HID device interface. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="uds_cdc_acm.html" class="btn btn-neutral float-right" title="USB device stack CDC ACM support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="uds_testing.html" class="btn btn-neutral" title="Testing USB device support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,491 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Build SOF with Docker &mdash; SOF Project 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/sof.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Build SOF with a 3rd Party Toolchain" href="build-3rd-party-toolchain.html" />
+    <link rel="prev" title="Build SOF from scratch" href="build-from-scratch.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SOF Project
+          
+
+          
+            
+            <img src="../../_static/logo_sof_white_200w.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://sofproject.org">SOF project website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction to the SOF Project</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting Started Guides</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#build-sof">Build SOF</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="build-from-scratch.html">Build SOF from scratch</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Build SOF with Docker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#set-up-the-workspace-directory">Set up the workspace directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-up-docker">Set up Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Build with Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="build-3rd-party-toolchain.html">Build SOF with a 3rd Party Toolchain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build-with-zephyr.html">Build SOF with Zephyr</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#set-up-sof-on-hardware">Set up SOF on hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#debug-audio-issues-on-intel-platforms">Debug Audio issues on Intel platforms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../architectures/index.html">Supported Architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/index.html">Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algos/index.html">Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guides/index.html">Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release.html">Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contributing to the Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tsc/index.html">Technical Steering Committee (TSC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maintainers/index.html">SOF admin, maintainers and code owners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../presentations/index.html">Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SOF Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Getting Started Guides</a> &raquo;</li>
+        
+      <li>Build SOF with Docker</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/getting_started/build-guide/build-with-docker.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="build-sof-with-docker">
+<span id="build-with-docker"></span><h1>Build SOF with Docker<a class="headerlink" href="#build-sof-with-docker" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#set-up-the-workspace-directory" id="id4">Set up the workspace directory</a></p></li>
+<li><p><a class="reference internal" href="#set-up-docker" id="id5">Set up Docker</a></p>
+<ul>
+<li><p><a class="reference internal" href="#set-proxy" id="id6">Set Proxy</a></p></li>
+<li><p><a class="reference internal" href="#set-user-group" id="id7">Set user group</a></p></li>
+<li><p><a class="reference internal" href="#get-docker-image" id="id8">Get Docker image</a></p>
+<ul>
+<li><p><a class="reference internal" href="#pull-docker-image" id="id9">Pull Docker image</a></p></li>
+<li><p><a class="reference internal" href="#build-docker-image" id="id10">Build Docker image</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#id1" id="id11">Build with Docker</a></p>
+<ul>
+<li><p><a class="reference internal" href="#build-firmware-binaries" id="id12">Build firmware binaries</a></p>
+<ul>
+<li><p><a class="reference internal" href="#build-with-scripts" id="id13">Build with scripts</a></p></li>
+<li><p><a class="reference internal" href="#build-inside-container" id="id14">Build inside container</a></p></li>
+<li><p><a class="reference internal" href="#firmware-build-results" id="id15">Firmware build results</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#build-topology-and-tools" id="id16">Build topology and tools</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id2" id="id17">Build with scripts</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id18">Build inside container</a></p></li>
+<li><p><a class="reference internal" href="#topology-and-tools-build-results" id="id19">Topology and tools build results</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This guide will show you how to use a Docker image containing the
+Sound Open Firmware build environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The example uses <code class="docutils literal notranslate"><span class="pre">$SOF_WORKSPACE</span></code> as the working directory.</p>
+</div>
+<div class="section" id="set-up-the-workspace-directory">
+<h2><a class="toc-backref" href="#id4">Set up the workspace directory</a><a class="headerlink" href="#set-up-the-workspace-directory" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SOF_WORKSPACE</span><span class="o">=</span>~/work/sof
+mkdir <span class="s2">&quot;</span><span class="nv">$SOF_WORKSPACE</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Clone the <em>sof</em> repo.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="s2">&quot;</span><span class="nv">$SOF_WORKSPACE</span><span class="s2">&quot;</span>
+git clone --recurse-submodules https://github.com/thesofproject/sof.git
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-up-docker">
+<h2><a class="toc-backref" href="#id5">Set up Docker</a><a class="headerlink" href="#set-up-docker" title="Permalink to this headline">¶</a></h2>
+<p>Docker is a popular container management framework. To install on Ubuntu,
+visit <a class="reference external" href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">Get Docker CE for Ubuntu</a>.</p>
+<p>Installation instructions for other Linux distributions: <a class="reference external" href="https://docs.docker.com/install/">About Docker CE</a>.</p>
+<div class="section" id="set-proxy">
+<h3><a class="toc-backref" href="#id6">Set Proxy</a><a class="headerlink" href="#set-proxy" title="Permalink to this headline">¶</a></h3>
+<p>Docker must be configured if used behind a proxy.
+Visit <a class="reference external" href="https://docs.docker.com/config/daemon/systemd/#httphttps-proxy">HTTP/HTTPS proxy</a> for the guide.</p>
+</div>
+<div class="section" id="set-user-group">
+<h3><a class="toc-backref" href="#id7">Set user group</a><a class="headerlink" href="#set-user-group" title="Permalink to this headline">¶</a></h3>
+<p>To use Docker without <code class="docutils literal notranslate"><span class="pre">sudo</span></code> follow these post-install steps.
+<a class="reference external" href="https://docs.docker.com/install/linux/linux-postinstall/">Post-installation steps for Linux</a></p>
+</div>
+<div class="section" id="get-docker-image">
+<h3><a class="toc-backref" href="#id8">Get Docker image</a><a class="headerlink" href="#get-docker-image" title="Permalink to this headline">¶</a></h3>
+<p>To easily build SOF binaries, we need a Docker image containing all
+of the cross-compiler and build environment dependencies. We can either
+build a Docker image from a DockerFile or pull an image binary from
+Docker Hub.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Building the container from DockerFile will take more than 2 hours,
+so we recommend using the pre-built image.</p>
+</div>
+<div class="section" id="pull-docker-image">
+<h4><a class="toc-backref" href="#id9">Pull Docker image</a><a class="headerlink" href="#pull-docker-image" title="Permalink to this headline">¶</a></h4>
+<p>Pull the docker image from Docker Hub.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker pull thesofproject/sof
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since there is not yet an offical Sound Open Firmware presence on Dockerhub, the
+image is hosted in a personal Docker Hub repo until the
+official image can go live.</p>
+</div>
+<p>Retag the image with <cite>sof</cite> for scripts.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker tag thesofproject/sof sof
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-docker-image">
+<h4><a class="toc-backref" href="#id10">Build Docker image</a><a class="headerlink" href="#build-docker-image" title="Permalink to this headline">¶</a></h4>
+<p>Run the Docker build from the <cite>sof</cite> repo.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">SOF_WORKSPACE</span><span class="si">}</span><span class="s2">&quot;</span>/sof/scripts/docker_build/sof_qemu
+./docker-build.sh
+<span class="nb">cd</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">SOF_WORKSPACE</span><span class="si">}</span><span class="s2">&quot;</span>/sof/scripts/docker_build/sof_builder
+./docker-build.sh
+</pre></div>
+</div>
+<p>After building the Docker image you will see:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker images
+<span class="c1">#REPOSITORY             TAG                 IMAGE ID            CREATED             SIZE</span>
+<span class="c1">#sof                    latest              c8b0e8913fcb        2 days ago          1.46 GB</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2><a class="toc-backref" href="#id11">Build with Docker</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="build-firmware-binaries">
+<h3><a class="toc-backref" href="#id12">Build firmware binaries</a><a class="headerlink" href="#build-firmware-binaries" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="build-with-scripts">
+<h4><a class="toc-backref" href="#id13">Build with scripts</a><a class="headerlink" href="#build-with-scripts" title="Permalink to this headline">¶</a></h4>
+<p>Build the SOF binaries:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">SOF_WORKSPACE</span><span class="si">}</span><span class="s2">&quot;</span>/sof/
+./scripts/docker-run.sh ./scripts/xtensa-build-all.sh
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>./scripts/docker-run.sh will mount the <em>sof</em> and directories
+into Docker container and build them inside the container. The build
+result can be accessed outside the container after the build.</p>
+</div>
+<p>Build one or more platform binaries.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">SOF_WORKSPACE</span><span class="si">}</span><span class="s2">&quot;</span>/sof/
+<span class="c1"># Baytrail</span>
+./scripts/docker-run.sh ./scripts/xtensa-build-all.sh byt
+<span class="c1"># Baytrail and Apollo Lake</span>
+./scripts/docker-run.sh ./scripts/xtensa-build-all.sh byt apl
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-inside-container">
+<h4><a class="toc-backref" href="#id14">Build inside container</a><a class="headerlink" href="#build-inside-container" title="Permalink to this headline">¶</a></h4>
+<p>Enter the container bash.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">SOF_WORKSPACE</span><span class="si">}</span><span class="s2">&quot;</span>/sof/
+./scripts/docker-run.sh bash
+</pre></div>
+</div>
+<p>From inside the container, follow the manual configuration and build steps.</p>
+</div>
+<div class="section" id="firmware-build-results">
+<h4><a class="toc-backref" href="#id15">Firmware build results</a><a class="headerlink" href="#firmware-build-results" title="Permalink to this headline">¶</a></h4>
+<p>The firmware binary files are located in src/arch/xtensa/. Copy them to
+your target machine’s /lib/firmware/intel/sof folder.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-apl.ri  sof-bdw.ri  sof-byt.ri  sof-cht.ri  sof-cnl.ri  sof-hsw.ri
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="build-topology-and-tools">
+<span id="docker-topology-tools"></span><h3><a class="toc-backref" href="#id16">Build topology and tools</a><a class="headerlink" href="#build-topology-and-tools" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h4><a class="toc-backref" href="#id17">Build with scripts</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>Build the <em>sof</em> tools and topology files.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">SOF_WORKSPACE</span><span class="si">}</span><span class="s2">&quot;</span>/sof/
+./scripts/docker-run.sh ./scripts/build-tools.sh
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h4><a class="toc-backref" href="#id18">Build inside container</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>Enter the container bash.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">SOF_WORKSPACE</span><span class="si">}</span><span class="s2">&quot;</span>/sof/
+./scripts/docker-run.sh bash
+</pre></div>
+</div>
+<p>From inside the container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> tools
+</pre></div>
+</div>
+<p>and follow the manual configuration and build steps.</p>
+</div>
+<div class="section" id="topology-and-tools-build-results">
+<h4><a class="toc-backref" href="#id19">Topology and tools build results</a><a class="headerlink" href="#topology-and-tools-build-results" title="Permalink to this headline">¶</a></h4>
+<p>The topology files are all in the topology folder (“${SOF_WORKSPACE}”/sof/tools/build_tools/topology). Copy them to the target
+machine’s /lib/firmware/intel/sof-tplg folder.</p>
+<p>The <em>sof-logger</em> tool is in the <em>tools/logger</em> folder. Copy it to the target machine’s
+/usr/bin directory.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="build-3rd-party-toolchain.html" class="btn btn-neutral float-right" title="Build SOF with a 3rd Party Toolchain" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="build-from-scratch.html" class="btn btn-neutral" title="Build SOF from scratch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; Copyright 2021, SOF Project..
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> SOF Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version zephyr">
+        <a href="../../../zephyr/index.html">Zephyr Project</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

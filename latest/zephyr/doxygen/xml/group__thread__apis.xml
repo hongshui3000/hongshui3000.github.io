@@ -1,0 +1,1767 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__thread__apis" kind="group">
+    <compoundname>thread_apis</compoundname>
+    <title>Thread APIs</title>
+    <innerclass refid="structk__thread" prot="public">k_thread</innerclass>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="group__thread__apis_1gaf9f23a6ff9dae76af56f25b373e74c75" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* k_thread_user_cb_t) (const struct k_thread *thread, void *user_data)</definition>
+        <argsstring>)(const struct k_thread *thread, void *user_data)</argsstring>
+        <name>k_thread_user_cb_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="95" column="9" bodyfile="include/kernel.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__thread__apis_1gae2596d56800769b06fc03c194a126a97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_thread_foreach</definition>
+        <argsstring>(k_thread_user_cb_t user_cb, void *user_data)</argsstring>
+        <name>k_thread_foreach</name>
+        <param>
+          <type><ref refid="group__thread__apis_1gaf9f23a6ff9dae76af56f25b373e74c75" kindref="member">k_thread_user_cb_t</ref></type>
+          <declname>user_cb</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>user_data</declname>
+        </param>
+        <briefdescription>
+<para>Iterate over all the threads in the system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine iterates over all the threads in the system and calls the user_cb function for each thread.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>user_cb</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the user callback function. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>user_data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to user data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para><verbatim>embed:rst:inline :kconfig:option:`CONFIG_THREAD_MONITOR` </verbatim> must be set for this function to be effective. </para>
+</simplesect>
+<simplesect kind="note"><para>This API uses <ref refid="group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf" kindref="member">k_spin_lock</ref> to protect the _kernel.threads list which means creation of new threads and terminations of existing threads are blocked until this API returns. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="113" column="13" declfile="include/kernel.h" declline="113" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga30ef8b445a6c1b4a82651674dbb737fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_thread_foreach_unlocked</definition>
+        <argsstring>(k_thread_user_cb_t user_cb, void *user_data)</argsstring>
+        <name>k_thread_foreach_unlocked</name>
+        <param>
+          <type><ref refid="group__thread__apis_1gaf9f23a6ff9dae76af56f25b373e74c75" kindref="member">k_thread_user_cb_t</ref></type>
+          <declname>user_cb</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>user_data</declname>
+        </param>
+        <briefdescription>
+<para>Iterate over all the threads in the system without locking. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine works exactly the same like <ref refid="group__thread__apis_1gae2596d56800769b06fc03c194a126a97" kindref="member">k_thread_foreach</ref> but unlocks interrupts when user_cb is executed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>user_cb</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the user callback function. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>user_data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to user data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para><verbatim>embed:rst:inline :kconfig:option:`CONFIG_THREAD_MONITOR` </verbatim> must be set for this function to be effective. </para>
+</simplesect>
+<simplesect kind="note"><para>This API uses <ref refid="group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf" kindref="member">k_spin_lock</ref> only when accessing the _kernel.threads queue elements. It unlocks it during user callback function processing. If a new task is created when this <computeroutput>foreach</computeroutput> function is in progress, the added new task would not be included in the enumeration. If a task is aborted during this enumeration, there would be a race here and there is a possibility that this aborted task would be included in the enumeration. </para>
+</simplesect>
+<simplesect kind="note"><para>If the task is aborted and the memory occupied by its <computeroutput><ref refid="structk__thread" kindref="compound">k_thread</ref></computeroutput> structure is reused when this <computeroutput>k_thread_foreach_unlocked</computeroutput> is in progress it might even lead to the system behave unstable. This function may never return, as it would follow some <computeroutput>next</computeroutput> task pointers treating given pointer as a pointer to the <ref refid="structk__thread" kindref="compound">k_thread</ref> structure while it is something different right now. Do not reuse the memory that was occupied by <ref refid="structk__thread" kindref="compound">k_thread</ref> structure of aborted task if it was aborted after this function was called in any context. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="142" column="13" declfile="include/kernel.h" declline="142" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1gad5b0bff3102f1656089f5875d999a367" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+        <definition>k_tid_t k_thread_create</definition>
+        <argsstring>(struct k_thread *new_thread, k_thread_stack_t *stack, size_t stack_size, k_thread_entry_t entry, void *p1, void *p2, void *p3, int prio, uint32_t options, k_timeout_t delay)</argsstring>
+        <name>k_thread_create</name>
+        <param>
+          <type>struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *</type>
+          <declname>new_thread</declname>
+        </param>
+        <param>
+          <type><ref refid="arch__interface_8h_1a3e4bde3075edb41069b258d999333b0e" kindref="member">k_thread_stack_t</ref> *</type>
+          <declname>stack</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>stack_size</declname>
+        </param>
+        <param>
+          <type><ref refid="arch__interface_8h_1af1bd193a26c6e6a8658140185cae42e1" kindref="member">k_thread_entry_t</ref></type>
+          <declname>entry</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>p2</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>p3</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>prio</declname>
+        </param>
+        <param>
+          <type><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref></type>
+          <declname>options</declname>
+        </param>
+        <param>
+          <type><ref refid="structk__timeout__t" kindref="compound">k_timeout_t</ref></type>
+          <declname>delay</declname>
+        </param>
+        <briefdescription>
+<para>Create a thread. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine initializes a thread, then schedules it for execution.</para>
+<para>The new thread may be scheduled for immediate execution or a delayed start. If the newly spawned thread does not have a delayed start the kernel scheduler may preempt the current thread to allow the new thread to execute.</para>
+<para>Thread options are architecture-specific, and can include K_ESSENTIAL, K_FP_REGS, and K_SSE_REGS. Multiple options may be specified by separating them using &quot;|&quot; (the logical OR operator).</para>
+<para>Stack objects passed to this function must be originally defined with either of these macros in order to be portable:</para>
+<para><itemizedlist>
+<listitem><para><ref refid="group__thread__stack__api_1gac5368ce24fdeab3863b5c8dee2ebd955" kindref="member">K_THREAD_STACK_DEFINE()</ref> - For stacks that may support either user or supervisor threads.</para>
+</listitem><listitem><para><ref refid="threads_2thread__stack_2src_2main_8c_1a72c0793eec55b1d100382b62b7d3c06d" kindref="member">K_KERNEL_STACK_DEFINE()</ref> - For stacks that may support supervisor threads only. These stacks use less memory if CONFIG_USERSPACE is enabled.</para>
+</listitem></itemizedlist>
+</para>
+<para>The stack_size parameter has constraints. It must either be:</para>
+<para><itemizedlist>
+<listitem><para>The original size value passed to <ref refid="group__thread__stack__api_1gac5368ce24fdeab3863b5c8dee2ebd955" kindref="member">K_THREAD_STACK_DEFINE()</ref> or <ref refid="threads_2thread__stack_2src_2main_8c_1a72c0793eec55b1d100382b62b7d3c06d" kindref="member">K_KERNEL_STACK_DEFINE()</ref></para>
+</listitem><listitem><para>The return value of <ref refid="group__thread__stack__api_1ga775f8e6b4144cfdd24f3261b6db64150" kindref="member">K_THREAD_STACK_SIZEOF(stack)</ref> if the stack was defined with <ref refid="group__thread__stack__api_1gac5368ce24fdeab3863b5c8dee2ebd955" kindref="member">K_THREAD_STACK_DEFINE()</ref></para>
+</listitem><listitem><para>The return value of <ref refid="group__thread__stack__api_1ga57b3824b117c634dbb6052d47dc4301c" kindref="member">K_KERNEL_STACK_SIZEOF(stack)</ref> if the stack was defined with <ref refid="threads_2thread__stack_2src_2main_8c_1a72c0793eec55b1d100382b62b7d3c06d" kindref="member">K_KERNEL_STACK_DEFINE()</ref>.</para>
+</listitem></itemizedlist>
+</para>
+<para>Using other values, or sizeof(stack) may produce undefined behavior.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>new_thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to uninitialized struct <ref refid="structk__thread" kindref="compound">k_thread</ref> </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stack</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the stack space. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stack_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stack size in bytes. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>entry</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread entry function. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>1st entry point parameter. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>2nd entry point parameter. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p3</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>3rd entry point parameter. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prio</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread priority. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>options</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread options. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>delay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scheduling delay, or K_NO_WAIT (for no delay).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>ID of new thread. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="276" column="10" declfile="include/kernel.h" declline="276" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga3fbe1c8a5f3ef1c25382c7d6fca35764" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>FUNC_NORETURN void</type>
+        <definition>FUNC_NORETURN void k_thread_user_mode_enter</definition>
+        <argsstring>(k_thread_entry_t entry, void *p1, void *p2, void *p3)</argsstring>
+        <name>k_thread_user_mode_enter</name>
+        <param>
+          <type><ref refid="arch__interface_8h_1af1bd193a26c6e6a8658140185cae42e1" kindref="member">k_thread_entry_t</ref></type>
+          <declname>entry</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>p2</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>p3</declname>
+        </param>
+        <briefdescription>
+<para>Drop a thread&apos;s privileges permanently to user mode. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This allows a supervisor thread to be re-used as a user thread. This function does not return, but control will transfer to the provided entry point as if this was a new user thread.</para>
+<para>The implementation ensures that the stack buffer contents are erased. Any thread-local storage will be reverted to a pristine state.</para>
+<para>Memory domain membership, resource pool assignment, kernel object permissions, priority, and thread options are preserved.</para>
+<para>A common use of this function is to re-use the main thread as a user thread once all supervisor mode-only tasks have been completed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>entry</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function to start executing from </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>1st entry point parameter </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>2nd entry point parameter </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p3</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>3rd entry point parameter </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="304" column="27" declfile="include/kernel.h" declline="304" declcolumn="27"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga3f46c06833add2a2e0ddb7242f06702c" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void k_thread_heap_assign</definition>
+        <argsstring>(struct k_thread *thread, struct k_heap *heap)</argsstring>
+        <name>k_thread_heap_assign</name>
+        <param>
+          <type>struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *</type>
+          <declname>thread</declname>
+        </param>
+        <param>
+          <type>struct <ref refid="structk__heap" kindref="compound">k_heap</ref> *</type>
+          <declname>heap</declname>
+        </param>
+        <briefdescription>
+<para>Assign a resource memory pool to a thread. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>By default, threads have no resource pool assigned unless their parent thread has a resource pool, in which case it is inherited. Multiple threads may be assigned to the same memory pool.</para>
+<para>Changing a thread&apos;s resource pool will not migrate allocations from the previous pool.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target thread to assign a memory pool for resource requests. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>heap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Heap object to use for resources, or NULL if the thread should no longer have a memory pool. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="338" column="20" bodyfile="include/kernel.h" bodystart="338" bodyend="342"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga220d22dc35115fcdc0badb262e7a019d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_thread_system_pool_assign</definition>
+        <argsstring>(struct k_thread *thread)</argsstring>
+        <name>k_thread_system_pool_assign</name>
+        <param>
+          <type>struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *</type>
+          <declname>thread</declname>
+        </param>
+        <briefdescription>
+<para>Assign the system heap as a thread&apos;s resource pool. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Similar to z_thread_heap_assign(), but the thread will use the kernel heap to draw memory.</para>
+<para>Use with caution, as a malicious thread could perform DoS attacks on the kernel heap.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target thread to assign the system heap for resource requests </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="382" column="6" declfile="include/kernel.h" declline="382" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga40a733561eb1f64dcaae0e01b167d233" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_thread_join</definition>
+        <argsstring>(struct k_thread *thread, k_timeout_t timeout)</argsstring>
+        <name>k_thread_join</name>
+        <param>
+          <type>struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *</type>
+          <declname>thread</declname>
+        </param>
+        <param>
+          <type><ref refid="structk__timeout__t" kindref="compound">k_timeout_t</ref></type>
+          <declname>timeout</declname>
+        </param>
+        <briefdescription>
+<para>Sleep until a thread exits. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The caller will be put to sleep until the target thread exits, either due to being aborted, self-exiting, or taking a fatal error. This API returns immediately if the thread isn&apos;t running.</para>
+<para>This API may only be called from ISRs with a K_NO_WAIT timeout, where it can be useful as a predicate to detect when a thread has aborted.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread to wait to exit </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeout</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>upper bound time to wait for the thread to exit. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>success, target thread has exited or wasn&apos;t running </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EBUSY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>returned without waiting </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EAGAIN</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>waiting period timed out </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EDEADLK</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>target thread is joining on the caller, or target thread is the caller </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="404" column="6" declfile="include/kernel.h" declline="404" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga48d4b041790454da4d68ac8711f29657" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref></type>
+        <definition>int32_t k_sleep</definition>
+        <argsstring>(k_timeout_t timeout)</argsstring>
+        <name>k_sleep</name>
+        <param>
+          <type><ref refid="structk__timeout__t" kindref="compound">k_timeout_t</ref></type>
+          <declname>timeout</declname>
+        </param>
+        <briefdescription>
+<para>Put the current thread to sleep. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine puts the current thread to sleep for <emphasis>duration</emphasis>, specified as a <ref refid="structk__timeout__t" kindref="compound">k_timeout_t</ref> object.</para>
+<para><simplesect kind="note"><para>if <emphasis>timeout</emphasis> is set to K_FOREVER then the thread is suspended.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>timeout</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Desired duration of sleep.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Zero if the requested time has elapsed or the number of milliseconds left to sleep, if thread was woken up by <ref refid="group__thread__apis_1ga9275a019c8ff3c7fe49a81f8c078157e" kindref="member">k_wakeup</ref> call. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="419" column="10" declfile="include/kernel.h" declline="419" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga51307cdfe153ab3e918b18755d97c5d9" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref></type>
+        <definition>static int32_t k_msleep</definition>
+        <argsstring>(int32_t ms)</argsstring>
+        <name>k_msleep</name>
+        <param>
+          <type><ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref></type>
+          <declname>ms</declname>
+        </param>
+        <briefdescription>
+<para>Put the current thread to sleep. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine puts the current thread to sleep for <emphasis>duration</emphasis> milliseconds.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ms</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of milliseconds to sleep.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Zero if the requested time has elapsed or the number of milliseconds left to sleep, if thread was woken up by <ref refid="group__thread__apis_1ga9275a019c8ff3c7fe49a81f8c078157e" kindref="member">k_wakeup</ref> call. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="431" column="23" bodyfile="include/kernel.h" bodystart="431" bodyend="434"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1gaeac56bb072ce295b9fdc372ab8cee67e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref></type>
+        <definition>int32_t k_usleep</definition>
+        <argsstring>(int32_t us)</argsstring>
+        <name>k_usleep</name>
+        <param>
+          <type><ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref></type>
+          <declname>us</declname>
+        </param>
+        <briefdescription>
+<para>Put the current thread to sleep with microsecond resolution. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function is unlikely to work as expected without kernel tuning. In particular, because the lower bound on the duration of a sleep is the duration of a tick,<verbatim>embed:rst:inline :kconfig:option:`CONFIG_SYS_CLOCK_TICKS_PER_SEC` </verbatim> must be adjusted to achieve the resolution desired. The implications of doing this must be understood before attempting to use <ref refid="group__thread__apis_1gaeac56bb072ce295b9fdc372ab8cee67e" kindref="member">k_usleep()</ref>. Use with caution.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>us</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of microseconds to sleep.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Zero if the requested time has elapsed or the number of microseconds left to sleep, if thread was woken up by <ref refid="group__thread__apis_1ga9275a019c8ff3c7fe49a81f8c078157e" kindref="member">k_wakeup</ref> call. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="451" column="10" declfile="include/kernel.h" declline="451" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga550b642e071480323e589866abb99c22" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_busy_wait</definition>
+        <argsstring>(uint32_t usec_to_wait)</argsstring>
+        <name>k_busy_wait</name>
+        <param>
+          <type><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref></type>
+          <declname>usec_to_wait</declname>
+        </param>
+        <briefdescription>
+<para>Cause the current thread to busy wait. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine causes the current thread to execute a &quot;do nothing&quot; loop for <emphasis>usec_to_wait</emphasis> microseconds.</para>
+<para><simplesect kind="note"><para>The clock used for the microsecond-resolution delay here may be skewed relative to the clock used for system timeouts like <ref refid="group__thread__apis_1ga48d4b041790454da4d68ac8711f29657" kindref="member">k_sleep()</ref>. For example k_busy_wait(1000) may take slightly more or less time than k_sleep(K_MSEC(1)), with the offset dependent on clock tolerances. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="465" column="7" declfile="include/kernel.h" declline="465" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga08a3484c33444ecedc2d71d78495a295" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_yield</definition>
+        <argsstring>(void)</argsstring>
+        <name>k_yield</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Yield the current thread. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine causes the current thread to yield execution to another thread of the same or higher priority. If there are no other ready threads of the same or higher priority, the routine returns immediately. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="474" column="7" declfile="include/kernel.h" declline="474" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga9275a019c8ff3c7fe49a81f8c078157e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_wakeup</definition>
+        <argsstring>(k_tid_t thread)</argsstring>
+        <name>k_wakeup</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <briefdescription>
+<para>Wake up a sleeping thread. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine prematurely wakes up <emphasis>thread</emphasis> from sleeping.</para>
+<para>If <emphasis>thread</emphasis> is not currently sleeping, the routine has no effect.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of thread to wake. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="485" column="7" declfile="include/kernel.h" declline="485" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga7ef1ed0fb9513df8096ede1e52fc76b2" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>__attribute_const__ <ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+        <definition>static __attribute_const__ k_tid_t k_current_get</definition>
+        <argsstring>(void)</argsstring>
+        <name>k_current_get</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Get thread ID of the current thread. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>ID of current thread. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="509" column="23" bodyfile="include/kernel.h" bodystart="509" bodyend="516"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga1f44bb0307bea7a97227764ecd7bf963" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_thread_abort</definition>
+        <argsstring>(k_tid_t thread)</argsstring>
+        <name>k_thread_abort</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <briefdescription>
+<para>Abort a thread. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine permanently stops execution of <emphasis>thread</emphasis>. The thread is taken off all kernel queues it is part of (i.e. the ready queue, the timeout queue, or a kernel object wait queue). However, any kernel resources the thread might currently own (such as mutexes or memory blocks) are not released. It is the responsibility of the caller of this routine to ensure all necessary cleanup is performed.</para>
+<para>After <ref refid="group__thread__apis_1ga1f44bb0307bea7a97227764ecd7bf963" kindref="member">k_thread_abort()</ref> returns, the thread is guaranteed not to be running or to become runnable anywhere on the system. Normally this is done via blocking the caller (in the same manner as <ref refid="group__thread__apis_1ga40a733561eb1f64dcaae0e01b167d233" kindref="member">k_thread_join()</ref>), but in interrupt context on SMP systems the implementation is required to spin for threads that are running on other CPUs. Note that as specified, this means that on SMP platforms it is possible for application code to create a deadlock condition by simultaneously aborting a cycle of threads using at least one termination from interrupt context. Zephyr cannot detect all such conditions.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of thread to abort. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="541" column="7" declfile="include/kernel.h" declline="541" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga88031bd9fcfcd4305bae4029a4d8416f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_thread_start</definition>
+        <argsstring>(k_tid_t thread)</argsstring>
+        <name>k_thread_start</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <briefdescription>
+<para>Start an inactive thread. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If a thread was created with K_FOREVER in the delay parameter, it will not be added to the scheduling queue until this function is called on it.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>thread to start </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="553" column="7" declfile="include/kernel.h" declline="553" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga80013f10d12ccdffbbd88cee048f1c21" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="group__clock__apis_1ga9832cb0adc2d1866420e5c370a0863e2" kindref="member">k_ticks_t</ref></type>
+        <definition>k_ticks_t k_thread_timeout_expires_ticks</definition>
+        <argsstring>(const struct k_thread *t)</argsstring>
+        <name>k_thread_timeout_expires_ticks</name>
+        <param>
+          <type>const struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Get time when a thread wakes up, in system ticks. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine computes the system uptime when a waiting thread next executes, in units of system ticks. If the thread is not waiting, it returns current system time. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="567" column="12" declfile="include/kernel.h" declline="567" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga4cb4126c8e4f62bd44f3dd03f2e4a423" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="group__clock__apis_1ga9832cb0adc2d1866420e5c370a0863e2" kindref="member">k_ticks_t</ref></type>
+        <definition>k_ticks_t k_thread_timeout_remaining_ticks</definition>
+        <argsstring>(const struct k_thread *t)</argsstring>
+        <name>k_thread_timeout_remaining_ticks</name>
+        <param>
+          <type>const struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Get time remaining before a thread wakes up, in system ticks. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine computes the time remaining before a waiting thread next executes, in units of system ticks. If the thread is not waiting, it returns zero. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="582" column="12" declfile="include/kernel.h" declline="582" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga3a46ed8ad2c3b12416fafe11325f82b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_thread_priority_get</definition>
+        <argsstring>(k_tid_t thread)</argsstring>
+        <name>k_thread_priority_get</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <briefdescription>
+<para>Get a thread&apos;s priority. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine gets the priority of <emphasis>thread</emphasis>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of thread whose priority is needed.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Priority of <emphasis>thread</emphasis>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="686" column="6" declfile="include/kernel.h" declline="686" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga24e50a60c524d1eb22fe21cdf269b6a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_thread_priority_set</definition>
+        <argsstring>(k_tid_t thread, int prio)</argsstring>
+        <name>k_thread_priority_set</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>prio</declname>
+        </param>
+        <briefdescription>
+<para>Set a thread&apos;s priority. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine immediately changes the priority of <emphasis>thread</emphasis>.</para>
+<para>Rescheduling can occur immediately depending on the priority <emphasis>thread</emphasis> is set to:</para>
+<para><itemizedlist>
+<listitem><para>If its priority is raised above the priority of the caller of this function, and the caller is preemptible, <emphasis>thread</emphasis> will be scheduled in.</para>
+</listitem><listitem><para>If the caller operates on itself, it lowers its priority below that of other threads in the system, and the caller is preemptible, the thread of highest priority will be scheduled in.</para>
+</listitem></itemizedlist>
+</para>
+<para>Priority can be assigned in the range of -CONFIG_NUM_COOP_PRIORITIES to CONFIG_NUM_PREEMPT_PRIORITIES-1, where -CONFIG_NUM_COOP_PRIORITIES is the highest priority.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of thread whose priority is to be set. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prio</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New priority.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="warning"><para>Changing the priority of a thread currently involved in mutex priority inheritance may result in undefined behavior. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="713" column="7" declfile="include/kernel.h" declline="713" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1gad887f16c1dd6f3247682a83beb22d1ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_thread_deadline_set</definition>
+        <argsstring>(k_tid_t thread, int deadline)</argsstring>
+        <name>k_thread_deadline_set</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>deadline</declname>
+        </param>
+        <briefdescription>
+<para>Set deadline expiration time for scheduler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This sets the &quot;deadline&quot; expiration as a time delta from the current time, in the same units used by <ref refid="group__clock__apis_1ga208687de625e0036558343b4e66143d3" kindref="member">k_cycle_get_32()</ref>. The scheduler (when deadline scheduling is enabled) will choose the next expiring thread when selecting between threads at the same static priority. Threads at different priorities will be scheduled according to their static priority.</para>
+<para><simplesect kind="note"><para>Deadlines are stored internally using 32 bit unsigned integers. The number of cycles between the &quot;first&quot; deadline in the scheduler queue and the &quot;last&quot; deadline must be less than 2^31 (i.e a signed non-negative quantity). Failure to adhere to this rule may result in scheduled threads running in an incorrect deadline order.</para>
+</simplesect>
+<simplesect kind="note"><para>Despite the API naming, the scheduler makes no guarantees the the thread WILL be scheduled within that deadline, nor does it take extra metadata (like e.g. the &quot;runtime&quot; and &quot;period&quot; parameters in Linux sched_setattr()) that allows the kernel to validate the scheduling for achievability. Such features could be implemented above this call, which is simply input to the priority selection logic.</para>
+</simplesect>
+<simplesect kind="note"><para>You should enable<verbatim>embed:rst:inline :kconfig:option:`CONFIG_SCHED_DEADLINE` </verbatim> in your project configuration.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A thread on which to set the deadline </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>deadline</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A time delta, in cycle units </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="749" column="7" declfile="include/kernel.h" declline="749" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga80b9c58df6600c7e79f16756c128f44c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_thread_cpu_mask_clear</definition>
+        <argsstring>(k_tid_t thread)</argsstring>
+        <name>k_thread_cpu_mask_clear</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <briefdescription>
+<para>Sets all CPU enable masks to zero. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>After this returns, the thread will no longer be schedulable on any CPUs. The thread must not be currently runnable.</para>
+<para><simplesect kind="note"><para>You should enable<verbatim>embed:rst:inline :kconfig:option:`CONFIG_SCHED_DEADLINE` </verbatim> in your project configuration.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread to operate upon </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Zero on success, otherwise error code </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="765" column="5" declfile="include/kernel.h" declline="765" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1gaedcfeb0964ae72611791241580b2119d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_thread_cpu_mask_enable_all</definition>
+        <argsstring>(k_tid_t thread)</argsstring>
+        <name>k_thread_cpu_mask_enable_all</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <briefdescription>
+<para>Sets all CPU enable masks to one. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>After this returns, the thread will be schedulable on any CPU. The thread must not be currently runnable.</para>
+<para><simplesect kind="note"><para>You should enable<verbatim>embed:rst:inline :kconfig:option:`CONFIG_SCHED_DEADLINE` </verbatim> in your project configuration.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread to operate upon </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Zero on success, otherwise error code </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="779" column="5" declfile="include/kernel.h" declline="779" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga306587604a7496db8059bd395fd90fc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_thread_cpu_mask_enable</definition>
+        <argsstring>(k_tid_t thread, int cpu)</argsstring>
+        <name>k_thread_cpu_mask_enable</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cpu</declname>
+        </param>
+        <briefdescription>
+<para>Enable thread to run on specified CPU. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The thread must not be currently runnable.</para>
+<para><simplesect kind="note"><para>You should enable<verbatim>embed:rst:inline :kconfig:option:`CONFIG_SCHED_DEADLINE` </verbatim> in your project configuration.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread to operate upon </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cpu</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>CPU index </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Zero on success, otherwise error code </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="793" column="5" declfile="include/kernel.h" declline="793" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga89e6c07ac112da75b2ef115d1a557d44" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_thread_cpu_mask_disable</definition>
+        <argsstring>(k_tid_t thread, int cpu)</argsstring>
+        <name>k_thread_cpu_mask_disable</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cpu</declname>
+        </param>
+        <briefdescription>
+<para>Prevent thread to run on specified CPU. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The thread must not be currently runnable.</para>
+<para><simplesect kind="note"><para>You should enable<verbatim>embed:rst:inline :kconfig:option:`CONFIG_SCHED_DEADLINE` </verbatim> in your project configuration.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread to operate upon </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cpu</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>CPU index </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Zero on success, otherwise error code </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="807" column="5" declfile="include/kernel.h" declline="807" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga66cf8682fb65870eceb5e57d667a8d4e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_thread_suspend</definition>
+        <argsstring>(k_tid_t thread)</argsstring>
+        <name>k_thread_suspend</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <briefdescription>
+<para>Suspend a thread. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine prevents the kernel scheduler from making <emphasis>thread</emphasis> the current thread. All other internal operations on <emphasis>thread</emphasis> are still performed; for example, kernel objects it is waiting on are still handed to it. Note that any existing timeouts (e.g. <ref refid="group__thread__apis_1ga48d4b041790454da4d68ac8711f29657" kindref="member">k_sleep()</ref>, or a timeout argument to <ref refid="group__semaphore__apis_1gac71e2383c1920dddc45a561cacfef090" kindref="member">k_sem_take()</ref> et. al.) will be canceled. On resume, the thread will begin running immediately and return from the blocked call.</para>
+<para>If <emphasis>thread</emphasis> is already suspended, the routine has no effect.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of thread to suspend. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="825" column="7" declfile="include/kernel.h" declline="825" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga117b26f8569ec3045ead1fad1851663d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_thread_resume</definition>
+        <argsstring>(k_tid_t thread)</argsstring>
+        <name>k_thread_resume</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <briefdescription>
+<para>Resume a suspended thread. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine allows the kernel scheduler to make <emphasis>thread</emphasis> the current thread, when it is next eligible for that role.</para>
+<para>If <emphasis>thread</emphasis> is not currently suspended, the routine has no effect.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of thread to resume. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="837" column="7" declfile="include/kernel.h" declline="837" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga877c1bfeffbf8f097d1656f9e10a66e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_sched_time_slice_set</definition>
+        <argsstring>(int32_t slice, int prio)</argsstring>
+        <name>k_sched_time_slice_set</name>
+        <param>
+          <type><ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref></type>
+          <declname>slice</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>prio</declname>
+        </param>
+        <briefdescription>
+<para>Set time-slicing period and scope. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine specifies how the scheduler will perform time slicing of preemptible threads.</para>
+<para>To enable time slicing, <emphasis>slice</emphasis> must be non-zero. The scheduler ensures that no thread runs for more than the specified time limit before other threads of that priority are given a chance to execute. Any thread whose priority is higher than <emphasis>prio</emphasis> is exempted, and may execute as long as desired without being preempted due to time slicing.</para>
+<para>Time slicing only limits the maximum amount of time a thread may continuously execute. Once the scheduler selects a thread for execution, there is no minimum guaranteed time the thread will execute before threads of greater or equal priority are scheduled.</para>
+<para>When the current thread is the only one of that priority eligible for execution, this routine has no effect; the thread is immediately rescheduled after the slice period expires.</para>
+<para>To disable timeslicing, set both <emphasis>slice</emphasis> and <emphasis>prio</emphasis> to zero.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>slice</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum time slice length (in milliseconds). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prio</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Highest thread priority level eligible for time slicing. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="865" column="13" declfile="include/kernel.h" declline="865" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga563928f292a4134acd4142029b60e631" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_thread_time_slice_set</definition>
+        <argsstring>(struct k_thread *th, int32_t slice_ticks, k_thread_timeslice_fn_t expired, void *data)</argsstring>
+        <name>k_thread_time_slice_set</name>
+        <param>
+          <type>struct <ref refid="structk__thread" kindref="compound">k_thread</ref> *</type>
+          <declname>th</declname>
+        </param>
+        <param>
+          <type><ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref></type>
+          <declname>slice_ticks</declname>
+        </param>
+        <param>
+          <type><ref refid="kernel__structs_8h_1a44c6f88a879877ad8da28706e274064f" kindref="member">k_thread_timeslice_fn_t</ref></type>
+          <declname>expired</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+<para>Set thread time slice. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>As for k_sched_time_slice_set, but (when CONFIG_TIMESLICE_PER_THREAD=y) sets the timeslice for a specific thread. When non-zero, this timeslice will take precedence over the global value.</para>
+<para>When such a thread&apos;s timeslice expires, the configured callback will be called before the thread is removed/re-added to the run queue. This callback will occur in interrupt context, and the specified thread is guaranteed to have been preempted by the currently-executing ISR. Such a callback is free to, for example, modify the thread priority or slice time for future execution, suspend the thread, etc...</para>
+<para><simplesect kind="note"><para>Unlike the older API, the time slice parameter here is specified in ticks, not milliseconds. Ticks have always been the internal unit, and not all platforms have integer conversions between the two.</para>
+</simplesect>
+<simplesect kind="note"><para>Threads with a non-zero slice time set will be timesliced always, even if they are higher priority than the maximum timeslice priority set via <ref refid="group__thread__apis_1ga877c1bfeffbf8f097d1656f9e10a66e8" kindref="member">k_sched_time_slice_set()</ref>.</para>
+</simplesect>
+<simplesect kind="note"><para>The callback notification for slice expiration happens, as it must, while the thread is still &quot;current&quot;, and thus it happens before any registered timeouts at this tick. This has the somewhat confusing side effect that the tick time (c.f. <ref refid="group__clock__apis_1gae3e992cd3257c23d5b26d765fcbb2b69" kindref="member">k_uptime_get()</ref>) does not yet reflect the expired ticks. Applications wishing to make fine-grained timing decisions within this callback should use the cycle API, or derived facilities like <ref refid="include_2kernel_8h_1a82d886a1c911b39c1b47c32200cedac6" kindref="member">k_thread_runtime_stats_get()</ref>.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>th</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A valid, initialized thread </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>slice_ticks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum timeslice, in ticks </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>expired</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Callback function called on slice expiration </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parameter for the expiration handler </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="905" column="6" declfile="include/kernel.h" declline="905" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga4f0c5d0b9f279b12a4ad97db0c116a5f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_sched_lock</definition>
+        <argsstring>(void)</argsstring>
+        <name>k_sched_lock</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Lock the scheduler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine prevents the current thread from being preempted by another thread by instructing the scheduler to treat it as a cooperative thread. If the thread subsequently performs an operation that makes it unready, it will be context switched out in the normal manner. When the thread again becomes the current thread, its non-preemptible status is maintained.</para>
+<para>This routine can be called recursively.</para>
+<para><simplesect kind="note"><para><ref refid="group__thread__apis_1ga4f0c5d0b9f279b12a4ad97db0c116a5f" kindref="member">k_sched_lock()</ref> and <ref refid="group__thread__apis_1ga7b26f64523cc4c36522cc828ccf85580" kindref="member">k_sched_unlock()</ref> should normally be used when the operation being performed can be safely interrupted by ISRs. However, if the amount of processing involved is very small, better performance may be obtained by using <ref refid="group__isr__apis_1ga19fdde73c3b02fcca6cf1d1e67631228" kindref="member">irq_lock()</ref> and <ref refid="group__isr__apis_1ga646045943b3b2a130738bcc48867bf57" kindref="member">irq_unlock()</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="989" column="13" declfile="include/kernel.h" declline="989" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga7b26f64523cc4c36522cc828ccf85580" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_sched_unlock</definition>
+        <argsstring>(void)</argsstring>
+        <name>k_sched_unlock</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Unlock the scheduler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine reverses the effect of a previous call to <ref refid="group__thread__apis_1ga4f0c5d0b9f279b12a4ad97db0c116a5f" kindref="member">k_sched_lock()</ref>. A thread must call the routine once for each time it called <ref refid="group__thread__apis_1ga4f0c5d0b9f279b12a4ad97db0c116a5f" kindref="member">k_sched_lock()</ref> before the thread becomes preemptible. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="998" column="13" declfile="include/kernel.h" declline="998" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga4834d9b81ed60c00eee77b0d4f8ab9e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_thread_custom_data_set</definition>
+        <argsstring>(void *value)</argsstring>
+        <name>k_thread_custom_data_set</name>
+        <param>
+          <type>void *</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Set current thread&apos;s custom data. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine sets the custom data for the current thread to @ value.</para>
+<para>Custom data is not used by the kernel itself, and is freely available for a thread to use as it sees fit. It can be used as a framework upon which to build thread-local storage.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New custom data value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1012" column="7" declfile="include/kernel.h" declline="1012" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga8a53350c009f408fdfcd5002437132ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void* k_thread_custom_data_get</definition>
+        <argsstring>(void)</argsstring>
+        <name>k_thread_custom_data_get</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Get current thread&apos;s custom data. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine returns the custom data for the current thread.</para>
+<para><simplesect kind="return"><para>Current custom data value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1021" column="7" declfile="include/kernel.h" declline="1021" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga23107333f134b9c9a8b692374211e841" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_thread_name_set</definition>
+        <argsstring>(k_tid_t thread, const char *str)</argsstring>
+        <name>k_thread_name_set</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+<para>Set current thread name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the name of the thread to be used when<verbatim>embed:rst:inline :kconfig:option:`CONFIG_THREAD_MONITOR` </verbatim> is enabled for tracing and debugging.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread to set name, or NULL to set the current thread </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name string </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>on success </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EFAULT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Memory access error with supplied string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-ENOSYS</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread name configuration option not enabled </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EINVAL</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread name too long </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1036" column="6" declfile="include/kernel.h" declline="1036" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1gae98efad5213c80e4018190e78d376ae8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char* k_thread_name_get</definition>
+        <argsstring>(k_tid_t thread)</argsstring>
+        <name>k_thread_name_get</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <briefdescription>
+<para>Get thread name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the name of a thread</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread ID </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>Thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>name, or NULL if configuration not enabled </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1046" column="12" declfile="include/kernel.h" declline="1046" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1ga07b59ade055c69929ccdc08a14361794" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_thread_name_copy</definition>
+        <argsstring>(k_tid_t thread, char *buf, size_t size)</argsstring>
+        <name>k_thread_name_copy</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>buf</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+<para>Copy the thread name into a supplied buffer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread to obtain name information </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>buf</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Destination buffer </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Destination buffer size </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>-ENOSPC</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Destination buffer too small </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EFAULT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Memory access error </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-ENOSYS</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread name feature not enabled </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Success </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1059" column="6" declfile="include/kernel.h" declline="1059" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__thread__apis_1gac38ea93f4a8899f95492894d2a671cac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char* k_thread_state_str</definition>
+        <argsstring>(k_tid_t thread_id)</argsstring>
+        <name>k_thread_state_str</name>
+        <param>
+          <type><ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref></type>
+          <declname>thread_id</declname>
+        </param>
+        <briefdescription>
+<para>Get thread state string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the human friendly thread state string</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread ID </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>Thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>state string, empty if no state flag is set </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1070" column="12" declfile="include/kernel.h" declline="1070" declcolumn="12"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="group__thread__apis_1gad503fbcca905a9266b0e154e3ded258c" prot="public" static="no">
+        <name>K_ESSENTIAL</name>
+        <initializer>(<ref refid="group__sys-util_1ga3a8ea58898cb58fc96013383d39f482c" kindref="member">BIT</ref>(0))</initializer>
+        <briefdescription>
+<para>system thread that must not abort </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="164" column="9" bodyfile="include/kernel.h" bodystart="164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__thread__apis_1gab18cf1e8728e7adf53db2ae4bbcdd951" prot="public" static="no">
+        <name>K_FP_REGS</name>
+        <initializer>(<ref refid="group__sys-util_1ga3a8ea58898cb58fc96013383d39f482c" kindref="member">BIT</ref>(1))</initializer>
+        <briefdescription>
+<para>FPU registers are managed by context switch. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This option indicates that the thread uses the CPU&apos;s floating point registers. This instructs the kernel to take additional steps to save and restore the contents of these registers when scheduling the thread. No effect if<verbatim>embed:rst:inline :kconfig:option:`CONFIG_FPU_SHARING` </verbatim> is not enabled. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="176" column="9" bodyfile="include/kernel.h" bodystart="176" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__thread__apis_1gacb5340339892f22301e02697c6039ccc" prot="public" static="no">
+        <name>K_USER</name>
+        <initializer>(<ref refid="group__sys-util_1ga3a8ea58898cb58fc96013383d39f482c" kindref="member">BIT</ref>(2))</initializer>
+        <briefdescription>
+<para>user mode thread </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This thread has dropped from supervisor mode to user mode and consequently has additional restrictions </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="185" column="9" bodyfile="include/kernel.h" bodystart="185" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__thread__apis_1gaa1788a413a055745d1de71b4da7c2eb2" prot="public" static="no">
+        <name>K_INHERIT_PERMS</name>
+        <initializer>(<ref refid="group__sys-util_1ga3a8ea58898cb58fc96013383d39f482c" kindref="member">BIT</ref>(3))</initializer>
+        <briefdescription>
+<para>Inherit Permissions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Indicates that the thread being created should inherit all kernel object permissions from the thread that created it. No effect if <verbatim>embed:rst:inline :kconfig:option:`CONFIG_USERSPACE` </verbatim> is not enabled. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="195" column="9" bodyfile="include/kernel.h" bodystart="195" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__thread__apis_1gacbdb579370978fe07e4a863a84bd8bee" prot="public" static="no">
+        <name>K_CALLBACK_STATE</name>
+        <initializer>(<ref refid="group__sys-util_1ga3a8ea58898cb58fc96013383d39f482c" kindref="member">BIT</ref>(4))</initializer>
+        <briefdescription>
+<para>Callback item state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This is a single bit of state reserved for &quot;callback manager&quot; utilities (p4wq initially) who need to track operations invoked from within a user-provided callback they have been invoked. Effectively it serves as a tiny bit of zero-overhead TLS data. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="206" column="9" bodyfile="include/kernel.h" bodystart="206" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__thread__apis_1gafec540511e6d2e0a074a5bfb515c53b0" prot="public" static="no">
+        <name>k_thread_access_grant</name>
+        <param><defname>thread</defname></param>
+        <param><defname>...</defname></param>
+        <initializer>	<ref refid="group__sys-util_1ga1a2b2aa21d7cc37f33e6a62abd2ae340" kindref="member">FOR_EACH_FIXED_ARG</ref>(<ref refid="group__usermode__apis_1ga94087bedf96fe2a2bea437d3d585ca22" kindref="member">k_object_access_grant</ref>, (;), <ref refid="timeout__order_8c_1a2ff5187d48101eb303964e1b8983beb4" kindref="member">thread</ref>, __VA_ARGS__)</initializer>
+        <briefdescription>
+<para>Grant a thread access to a set of kernel objects. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This is a convenience function. For the provided thread, grant access to the remaining arguments, which must be pointers to kernel objects.</para>
+<para>The thread object must be initialized (i.e. running). The objects don&apos;t need to be. Note that NULL shouldn&apos;t be passed as an argument.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>thread</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread to grant access to objects </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>list of kernel object pointers </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="321" column="9" bodyfile="include/kernel.h" bodystart="321" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__thread__apis_1gab3ced58648ca35788a40676e8478ecd2" prot="public" static="no">
+        <name>K_THREAD_DEFINE</name>
+        <param><defname>name</defname></param>
+        <param><defname>stack_size</defname></param>
+        <param><defname>entry</defname></param>
+        <param><defname>p1</defname></param>
+        <param><defname>p2</defname></param>
+        <param><defname>p3</defname></param>
+        <param><defname>prio</defname></param>
+        <param><defname>options</defname></param>
+        <param><defname>delay</defname></param>
+        <initializer>	<ref refid="workq_2work__queue_2src_2main_8c_1a3cae6f14ff609be8071cbbcf686729b6" kindref="member">K_THREAD_STACK_DEFINE</ref>(_k_thread_stack_##name, stack_size);	 \
+	struct <ref refid="structk__thread" kindref="compound">k_thread</ref> _k_thread_obj_##name;				 \
+	<ref refid="group__iterable__section__apis_1gabed6642b8cc06863ce97dd536698004d" kindref="member">STRUCT_SECTION_ITERABLE</ref>(_static_thread_data, _k_thread_data_##name) = \
+		Z_THREAD_INITIALIZER(&amp;_k_thread_obj_##name,		 \
+				    _k_thread_stack_##name, stack_size,  \
+				entry, p1, p2, p3, prio, options, delay, \
+				NULL, name);				 	 \
+	const <ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref> name = (<ref refid="kernel_2thread_8h_1a6379f5a1f19ffbc262a6877c4f6e3647" kindref="member">k_tid_t</ref>)&amp;_k_thread_obj_##name</initializer>
+        <briefdescription>
+<para>Statically define and initialize a thread. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The thread may be scheduled for immediate execution or a delayed start.</para>
+<para>Thread options are architecture-specific, and can include K_ESSENTIAL, K_FP_REGS, and K_SSE_REGS. Multiple options may be specified by separating them using &quot;|&quot; (the logical OR operator).</para>
+<para>The ID of the thread can be accessed using:</para>
+<para><programlisting><codeline><highlight class="normal">extern<sp/>const<sp/>k_tid_t<sp/>&lt;name&gt;;<sp/></highlight></codeline>
+</programlisting></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the thread. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stack_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stack size in bytes. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>entry</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread entry function. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>1st entry point parameter. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>2nd entry point parameter. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p3</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>3rd entry point parameter. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prio</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread priority. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>options</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Thread options. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>delay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scheduling delay (in milliseconds), zero for no delay. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="667" column="9" bodyfile="include/kernel.h" bodystart="665" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

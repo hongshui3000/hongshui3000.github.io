@@ -1,0 +1,26 @@
+var mcuboot_8h =
+[
+    [ "mcuboot_img_sem_ver", "structmcuboot__img__sem__ver.html", "structmcuboot__img__sem__ver" ],
+    [ "mcuboot_img_header_v1", "structmcuboot__img__header__v1.html", "structmcuboot__img__header__v1" ],
+    [ "mcuboot_img_header", "structmcuboot__img__header.html", "structmcuboot__img__header" ],
+    [ "BOOT_IMG_VER_STRLEN_MAX", "mcuboot_8h.html#a1e697351ff503f9a53b17916e63cce06", null ],
+    [ "BOOT_MAGIC_SZ", "mcuboot_8h.html#a3a916a1c0ccc53d12c28de3892af3897", null ],
+    [ "BOOT_MAX_ALIGN", "mcuboot_8h.html#a4a32d15f3cf338f519af849eba394919", null ],
+    [ "BOOT_SWAP_TYPE_FAIL", "mcuboot_8h.html#a28cb43e6bfacdd285d95751cda80de13", null ],
+    [ "BOOT_SWAP_TYPE_NONE", "mcuboot_8h.html#abb6482b898e8307074d8aef01b1102b7", null ],
+    [ "BOOT_SWAP_TYPE_PERM", "mcuboot_8h.html#a09ebc9ba28e294e71388480bb9e4f677", null ],
+    [ "BOOT_SWAP_TYPE_REVERT", "mcuboot_8h.html#a8ca7bd765c6ab669db0774c0b0122494", null ],
+    [ "BOOT_SWAP_TYPE_TEST", "mcuboot_8h.html#a3aa4415c47231a120c4cab455ea0beef", null ],
+    [ "BOOT_TRAILER_IMG_STATUS_OFFS", "mcuboot_8h.html#a8be8758496083a7f91285c8a25e5d85f", null ],
+    [ "BOOT_UPGRADE_PERMANENT", "mcuboot_8h.html#ab48b79d246df6ebc712040c5ee00aa73", null ],
+    [ "BOOT_UPGRADE_TEST", "mcuboot_8h.html#a9ed69fcd1ebf57cc356ce2bb835853f7", null ],
+    [ "boot_erase_img_bank", "mcuboot_8h.html#a03b691762d00e4cab6a5bd91979d8d80", null ],
+    [ "boot_is_img_confirmed", "mcuboot_8h.html#a2eadd700521a8b94dea3d3d04c9f5bd8", null ],
+    [ "boot_read_bank_header", "mcuboot_8h.html#a652ffad55e2917c62a62f6463935fe59", null ],
+    [ "boot_request_upgrade", "mcuboot_8h.html#ad47f2356938a7b5acf8e0bbe4d9e4494", null ],
+    [ "boot_request_upgrade_multi", "mcuboot_8h.html#ae9e0e43663c3671aa4b4df6d30511d39", null ],
+    [ "boot_write_img_confirmed", "mcuboot_8h.html#a95ccc9e1c7460fec16b9ce9ac8ad7a72", null ],
+    [ "boot_write_img_confirmed_multi", "mcuboot_8h.html#aa0f2410f520ef57e6d793c169639a6f8", null ],
+    [ "mcuboot_swap_type", "mcuboot_8h.html#aa0ce517ba1c0b21c4898762fab959b12", null ],
+    [ "mcuboot_swap_type_multi", "mcuboot_8h.html#a1e679c6fefe7deaaed9a2265ce69cf1e", null ]
+];

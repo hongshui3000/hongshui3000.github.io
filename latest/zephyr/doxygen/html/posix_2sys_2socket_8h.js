@@ -1,0 +1,25 @@
+var posix_2sys_2socket_8h =
+[
+    [ "MSG_DONTWAIT", "posix_2sys_2socket_8h.html#ab18d3d439e4a9c8d0f73e7166e8eb376", null ],
+    [ "MSG_PEEK", "posix_2sys_2socket_8h.html#a60c35b1016d0d87fe1066ea817acad98", null ],
+    [ "MSG_TRUNC", "posix_2sys_2socket_8h.html#a6a90f17f258e36353f09375263324f41", null ],
+    [ "MSG_WAITALL", "posix_2sys_2socket_8h.html#a0c0fac4635e91ca9d839e20a09d3989e", null ],
+    [ "SHUT_RD", "posix_2sys_2socket_8h.html#af1c8cf84ac37451afaef3bde9976b6e1", null ],
+    [ "SHUT_RDWR", "posix_2sys_2socket_8h.html#a80c54d1399557c97a0c81a319d08e9db", null ],
+    [ "SHUT_WR", "posix_2sys_2socket_8h.html#addb0a758e6fafdd89f5b7120f84738eb", null ],
+    [ "accept", "posix_2sys_2socket_8h.html#a33e6ea428ff537ed7a4763ce91b7d9bb", null ],
+    [ "bind", "posix_2sys_2socket_8h.html#a0de5e0b54a93dc6462078539b0a4a0b9", null ],
+    [ "connect", "posix_2sys_2socket_8h.html#adfa930dd3c38f6c287d64e1680dbf386", null ],
+    [ "getsockname", "posix_2sys_2socket_8h.html#aa64d4aea83941c69d5405bd2f2de7a72", null ],
+    [ "getsockopt", "posix_2sys_2socket_8h.html#a2ea64db46a2b23badc726616b2fb6c84", null ],
+    [ "listen", "posix_2sys_2socket_8h.html#a36f501240a9428fe2ae63a9540c97adb", null ],
+    [ "recv", "posix_2sys_2socket_8h.html#ae11da452beee536eac85d5f26e5cdd40", null ],
+    [ "recvfrom", "posix_2sys_2socket_8h.html#a2aa207302b058bbb5b88533c752218a2", null ],
+    [ "send", "posix_2sys_2socket_8h.html#ad32c12370c1d09a96775091bbbf3c44d", null ],
+    [ "sendmsg", "posix_2sys_2socket_8h.html#a1d7ee25c28352b2e7af55f75d721c4b8", null ],
+    [ "sendto", "posix_2sys_2socket_8h.html#acdc42cdbe2f9480ed58a2bdc2af57035", null ],
+    [ "setsockopt", "posix_2sys_2socket_8h.html#a9e476c4da1bb69b721e4aaa384114328", null ],
+    [ "shutdown", "posix_2sys_2socket_8h.html#afe31a414f8777d15266fe84df7b66cbf", null ],
+    [ "socket", "posix_2sys_2socket_8h.html#a00c0ed5f8528aac995d803af4b827a9c", null ],
+    [ "socketpair", "posix_2sys_2socket_8h.html#ad8e31e081924ef65e482f355604009cb", null ]
+];

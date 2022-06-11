@@ -1,0 +1,945 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Test Runner (Twister) &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Generating coverage reports" href="coverage.html" />
+    <link rel="prev" title="Test Framework" href="ztest.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Testing</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ztest.html">Test Framework</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Test Runner (Twister)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#board-configuration">Board Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test-cases">Test Cases</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-in-integration-mode">Running in Integration Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-tests-on-hardware">Running Tests on Hardware</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="coverage.html">Generating coverage reports</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Testing</a> &raquo;</li>
+        
+      <li>Test Runner (Twister)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/test/twister.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="test-runner-twister">
+<span id="twister-script"></span><h1>Test Runner (Twister)<a class="headerlink" href="#test-runner-twister" title="Permalink to this headline">¶</a></h1>
+<p>This script scans for the set of unit test applications in the git repository
+and attempts to execute them. By default, it tries to build each test
+case on boards marked as default in the board definition file.</p>
+<p>The default options will build the majority of the tests on a defined set of
+boards and will run in an emulated environment if available for the
+architecture or configuration being tested.</p>
+<p>In normal use, twister runs a limited set of kernel tests (inside
+an emulator).  Because of its limited test execution coverage, twister
+cannot guarantee local changes will succeed in the full build
+environment, but it does sufficient testing by building samples and
+tests for different boards and different configurations to help keep the
+complete code tree buildable.</p>
+<p>When using (at least) one <code class="docutils literal notranslate"><span class="pre">-v</span></code> option, twister’s console output
+shows for every test how the test is run (qemu, native_posix, etc.) or
+whether the binary was just built.  There are a few reasons why twister
+only builds a test and doesn’t run it:</p>
+<ul class="simple">
+<li><p>The test is marked as <code class="docutils literal notranslate"><span class="pre">build_only:</span> <span class="pre">true</span></code> in its <code class="docutils literal notranslate"><span class="pre">.yaml</span></code>
+configuration file.</p></li>
+<li><p>The test configuration has defined a <code class="docutils literal notranslate"><span class="pre">harness</span></code> but you don’t have
+it or haven’t set it up.</p></li>
+<li><p>The target device is not connected and not available for flashing</p></li>
+<li><p>You or some higher level automation invoked twister with
+<code class="docutils literal notranslate"><span class="pre">--build-only</span></code>.</p></li>
+</ul>
+<p>These also affect the outputs of <code class="docutils literal notranslate"><span class="pre">--testcase-report</span></code> and
+<code class="docutils literal notranslate"><span class="pre">--detailed-report</span></code>, see their respective <code class="docutils literal notranslate"><span class="pre">--help</span></code> sections.</p>
+<p>To run the script in the local tree, follow the steps below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ source zephyr-env.sh
+$ ./scripts/twister
+</pre></div>
+</div>
+<p>If you have a system with a large number of cores and plenty of free storage space,
+you can build and run all possible tests using the following options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./scripts/twister --all --enable-slow
+</pre></div>
+</div>
+<p>This will build for all available boards and run all applicable tests in
+a simulated (for example QEMU) environment.</p>
+<p>The list of command line options supported by twister can be viewed using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./scripts/twister --help
+</pre></div>
+</div>
+<div class="section" id="board-configuration">
+<h2>Board Configuration<a class="headerlink" href="#board-configuration" title="Permalink to this headline">¶</a></h2>
+<p>To build tests for a specific board and to execute some of the tests on real
+hardware or in an emulation environment such as QEMU a board configuration file
+is required which is generic enough to be used for other tasks that require a
+board inventory with details about the board and its configuration that is only
+available during build time otherwise.</p>
+<p>The board metadata file is located in the board directory and is structured
+using the YAML markup language. The example below shows a board with a data
+required for best test coverage for this specific board:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">identifier</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">frdm_k64f</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">NXP FRDM-K64F</span>
+<span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mcu</span>
+<span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">arm</span>
+<span class="nt">toolchain</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">zephyr</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">gnuarmemb</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">xtools</span>
+<span class="nt">supported</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">arduino_gpio</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">arduino_i2c</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">netif:eth</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">adc</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">i2c</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">nvs</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">spi</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">gpio</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">usb_device</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">watchdog</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">can</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pwm</span>
+<span class="nt">testing</span><span class="p">:</span>
+  <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<dl>
+<dt>identifier:</dt><dd><p>A string that matches how the board is defined in the build system. This same
+string is used when building, for example when calling <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cmake</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># with west</span>
+<span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">reel_board</span>
+<span class="c1"># with cmake</span>
+<span class="n">cmake</span> <span class="o">-</span><span class="n">DBOARD</span><span class="o">=</span><span class="n">reel_board</span> <span class="o">..</span>
+</pre></div>
+</div>
+</dd>
+<dt>name:</dt><dd><p>The actual name of the board as it appears in marketing material.</p>
+</dd>
+<dt>type:</dt><dd><p>Type of the board or configuration, currently we support 2 types: mcu, qemu</p>
+</dd>
+<dt>arch:</dt><dd><p>Architecture of the board</p>
+</dd>
+<dt>toolchain:</dt><dd><p>The list of supported toolchains that can build this board. This should match
+one of the values used for ‘ZEPHYR_TOOLCHAIN_VARIANT’ when building on the command line</p>
+</dd>
+<dt>ram:</dt><dd><p>Available RAM on the board (specified in KB). This is used to match testcase
+requirements.  If not specified we default to 128KB.</p>
+</dd>
+<dt>flash:</dt><dd><p>Available FLASH on the board (specified in KB). This is used to match testcase
+requirements.  If not specified we default to 512KB.</p>
+</dd>
+<dt>supported:</dt><dd><p>A list of features this board supports. This can be specified as a single word
+feature or as a variant of a feature class. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">supported</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">pci</span>
+</pre></div>
+</div>
+<p>This indicates the board does support PCI. You can make a testcase build or
+run only on such boards, or:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">supported</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">netif</span><span class="p">:</span><span class="n">eth</span>
+  <span class="o">-</span> <span class="n">sensor</span><span class="p">:</span><span class="n">bmi16</span>
+</pre></div>
+</div>
+<p>A testcase can both depend on ‘eth’ to only test ethernet or on ‘netif’ to run
+on any board with a networking interface.</p>
+</dd>
+<dt>testing:</dt><dd><p>testing relating keywords to provide best coverage for the features of this
+board.</p>
+<dl class="simple">
+<dt>default: [True|False]:</dt><dd><p>This is a default board, it will tested with the highest priority and is
+covered when invoking the simplified twister without any additional
+arguments.</p>
+</dd>
+<dt>ignore_tags:</dt><dd><p>Do not attempt to build (and therefore run) tests marked with this list of
+tags.</p>
+</dd>
+<dt>only_tags:</dt><dd><p>Only execute tests with this list of tags on a specific platform.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="test-cases">
+<h2>Test Cases<a class="headerlink" href="#test-cases" title="Permalink to this headline">¶</a></h2>
+<p>Test cases are detected by the presence of a ‘testcase.yaml’ or a ‘sample.yaml’
+files in the application’s project directory. This file may contain one or more
+entries in the test section each identifying a test scenario.</p>
+<p>The name of each testcase needs to be unique in the context of the overall
+testsuite and has to follow basic rules:</p>
+<ol class="arabic simple">
+<li><p>The format of the test identifier shall be a string without any spaces or
+special characters (allowed characters: alphanumric and [_=]) consisting of
+multiple sections delimited with a dot (.).</p></li>
+<li><p>Each test identifier shall start with a section followed by a subsection
+separated by a dot. For example, a test that covers semaphores in the kernel
+shall start with <code class="docutils literal notranslate"><span class="pre">kernel.sempahore</span></code>.</p></li>
+<li><p>All test identifiers within a testcase.yaml file need to be unique. For
+example a testcase.yaml file covering semaphores in the kernel can have:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">kernel.semaphore</span></code>: For general semaphore tests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kernel.semaphore.stress</span></code>: Stress testng semaphores in the kernel.</p></li>
+</ul>
+</li>
+<li><p>Depending on the nature of the test, an identifier can consist of at least
+two sections:</p>
+<ul class="simple">
+<li><p>Ztest tests: The individual testcases in the ztest testsuite will be
+concatenated to identifier in the testcase.yaml file generating unique
+identifiers for every testcase in the suite.</p></li>
+<li><p>Standalone tests and samples: This type of test should at least have 3
+sections in the test identifier in the testcase.yaml (or sample.yaml) file.
+The last section of the name shall signify the test itself.</p></li>
+</ul>
+</li>
+</ol>
+<p>Test cases are written using the YAML syntax and share the same structure as
+samples. The following is an example test with a few options that are
+explained in this document.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tests</span><span class="p">:</span>
+  <span class="n">bluetooth</span><span class="o">.</span><span class="n">gatt</span><span class="p">:</span>
+    <span class="n">build_only</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">platform_allow</span><span class="p">:</span> <span class="n">qemu_cortex_m3</span> <span class="n">qemu_x86</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">bluetooth</span>
+  <span class="n">bluetooth</span><span class="o">.</span><span class="n">gatt</span><span class="o">.</span><span class="n">br</span><span class="p">:</span>
+    <span class="n">build_only</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">extra_args</span><span class="p">:</span> <span class="n">CONF_FILE</span><span class="o">=</span><span class="s2">&quot;prj_br.conf&quot;</span>
+    <span class="nb">filter</span><span class="p">:</span> <span class="ow">not</span> <span class="n">CONFIG_DEBUG</span>
+    <span class="n">platform_exclude</span><span class="p">:</span> <span class="n">up_squared</span>
+    <span class="n">platform_allow</span><span class="p">:</span> <span class="n">qemu_cortex_m3</span> <span class="n">qemu_x86</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">bluetooth</span>
+</pre></div>
+</div>
+<p>A sample with tests will have the same structure with additional information
+related to the sample and what is being demonstrated:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span><span class="p">:</span>
+  <span class="n">name</span><span class="p">:</span> <span class="n">hello</span> <span class="n">world</span>
+  <span class="n">description</span><span class="p">:</span> <span class="n">Hello</span> <span class="n">World</span> <span class="n">sample</span><span class="p">,</span> <span class="n">the</span> <span class="n">simplest</span> <span class="n">Zephyr</span> <span class="n">application</span>
+<span class="n">tests</span><span class="p">:</span>
+  <span class="n">sample</span><span class="o">.</span><span class="n">basic</span><span class="o">.</span><span class="n">hello_world</span><span class="p">:</span>
+    <span class="n">build_only</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">tests</span>
+    <span class="n">min_ram</span><span class="p">:</span> <span class="mi">16</span>
+  <span class="n">sample</span><span class="o">.</span><span class="n">basic</span><span class="o">.</span><span class="n">hello_world</span><span class="o">.</span><span class="n">singlethread</span><span class="p">:</span>
+    <span class="n">build_only</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">extra_args</span><span class="p">:</span> <span class="n">CONF_FILE</span><span class="o">=</span><span class="n">prj_single</span><span class="o">.</span><span class="n">conf</span>
+    <span class="nb">filter</span><span class="p">:</span> <span class="ow">not</span> <span class="n">CONFIG_BT</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">tests</span>
+    <span class="n">min_ram</span><span class="p">:</span> <span class="mi">16</span>
+</pre></div>
+</div>
+<p>The full canonical name for each test case is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">test</span> <span class="n">case</span><span class="o">&gt;/&lt;</span><span class="n">test</span> <span class="n">entry</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Each test block in the testcase meta data can define the following key/value
+pairs:</p>
+<dl>
+<dt>tags: &lt;list of tags&gt; (required)</dt><dd><p>A set of string tags for the testcase. Usually pertains to
+functional domains but can be anything. Command line invocations
+of this script can filter the set of tests to run based on tag.</p>
+</dd>
+<dt>skip: &lt;True|False&gt; (default False)</dt><dd><p>skip testcase unconditionally. This can be used for broken tests.</p>
+</dd>
+<dt>slow: &lt;True|False&gt; (default False)</dt><dd><p>Don’t run this test case unless –enable-slow was passed in on the
+command line. Intended for time-consuming test cases that are only
+run under certain circumstances, like daily builds. These test cases
+are still compiled.</p>
+</dd>
+<dt>extra_args: &lt;list of extra arguments&gt;</dt><dd><p>Extra arguments to pass to Make when building or running the
+test case.</p>
+</dd>
+<dt>extra_configs: &lt;list of extra configurations&gt;</dt><dd><p>Extra configuration options to be merged with a master prj.conf
+when building or running the test case. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">common</span><span class="p">:</span>
+  <span class="n">tags</span><span class="p">:</span> <span class="n">drivers</span> <span class="n">adc</span>
+<span class="n">tests</span><span class="p">:</span>
+  <span class="n">test</span><span class="p">:</span>
+    <span class="n">depends_on</span><span class="p">:</span> <span class="n">adc</span>
+  <span class="n">test_async</span><span class="p">:</span>
+    <span class="n">extra_configs</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">CONFIG_ADC_ASYNC</span><span class="o">=</span><span class="n">y</span>
+</pre></div>
+</div>
+</dd>
+<dt>build_only: &lt;True|False&gt; (default False)</dt><dd><p>If true, don’t try to run the test even if the
+selected platform supports it.</p>
+</dd>
+<dt>build_on_all: &lt;True|False&gt; (default False)</dt><dd><p>If true, attempt to build test on all available platforms.</p>
+</dd>
+<dt>depends_on: &lt;list of features&gt;</dt><dd><p>A board or platform can announce what features it supports, this option
+will enable the test only those platforms that provide this feature.</p>
+</dd>
+<dt>min_ram: &lt;integer&gt;</dt><dd><p>minimum amount of RAM in KB needed for this test to build and run. This is
+compared with information provided by the board metadata.</p>
+</dd>
+<dt>min_flash: &lt;integer&gt;</dt><dd><p>minimum amount of ROM in KB needed for this test to build and run. This is
+compared with information provided by the board metadata.</p>
+</dd>
+<dt>timeout: &lt;number of seconds&gt;</dt><dd><p>Length of time to run test in QEMU before automatically killing it.
+Default to 60 seconds.</p>
+</dd>
+<dt>arch_allow: &lt;list of arches, such as x86, arm, arc&gt;</dt><dd><p>Set of architectures that this test case should only be run for.</p>
+</dd>
+<dt>arch_exclude: &lt;list of arches, such as x86, arm, arc&gt;</dt><dd><p>Set of architectures that this test case should not run on.</p>
+</dd>
+<dt>platform_allow: &lt;list of platforms&gt;</dt><dd><p>Set of platforms that this test case should only be run for. Do not use
+this option to limit testing or building in CI due to time or resource
+constraints, this option should only be used if the test or sample can
+only be run on the allowed platform and nothing else.</p>
+</dd>
+<dt>integration_platforms: &lt;YML list of platforms/boards&gt;</dt><dd><p>This option limits the scope to the listed platforms when twister is
+invoked with the –integration option. Use this instead of
+platform_allow if the goal is to limit scope due to timing or
+resource constraints.</p>
+</dd>
+<dt>platform_exclude: &lt;list of platforms&gt;</dt><dd><p>Set of platforms that this test case should not run on.</p>
+</dd>
+<dt>extra_sections: &lt;list of extra binary sections&gt;</dt><dd><p>When computing sizes, twister will report errors if it finds
+extra, unexpected sections in the Zephyr binary unless they are named
+here. They will not be included in the size calculation.</p>
+</dd>
+<dt>harness: &lt;string&gt;</dt><dd><p>A harness string needed to run the tests successfully. This can be as
+simple as a loopback wiring or a complete hardware test setup for
+sensor and IO testing.
+Usually pertains to external dependency domains but can be anything such as
+console, sensor, net, keyboard, Bluetooth or pytest.</p>
+</dd>
+<dt>harness_config: &lt;harness configuration options&gt;</dt><dd><p>Extra harness configuration options to be used to select a board and/or
+for handling generic Console with regex matching. Config can announce
+what features it supports. This option will enable the test to run on
+only those platforms that fulfill this external dependency.</p>
+<p>The following options are currently supported:</p>
+<dl class="simple">
+<dt>type: &lt;one_line|multi_line&gt; (required)</dt><dd><p>Depends on the regex string to be matched</p>
+</dd>
+</dl>
+<p>record: &lt;recording options&gt;</p>
+<blockquote>
+<div><dl class="simple">
+<dt>regex: &lt;expression&gt; (required)</dt><dd><p>Any string that the particular test case prints to record test
+results.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>regex: &lt;expression&gt; (required)</dt><dd><p>Any string that the particular test case prints to confirm test
+runs as expected.</p>
+</dd>
+<dt>ordered: &lt;True|False&gt; (default False)</dt><dd><p>Check the regular expression strings in orderly or randomly fashion</p>
+</dd>
+<dt>repeat: &lt;integer&gt;</dt><dd><p>Number of times to validate the repeated regex expression</p>
+</dd>
+<dt>fixture: &lt;expression&gt;</dt><dd><p>Specify a test case dependency on an external device(e.g., sensor),
+and identify setups that fulfill this dependency. It depends on
+specific test setup and board selection logic to pick the particular
+board(s) out of multiple boards that fulfill the dependency in an
+automation setup based on “fixture” keyword. Some sample fixture names
+are i2c_hts221, i2c_bme280, i2c_FRAM, ble_fw and gpio_loop.</p>
+<p>Only one fixture can be defined per testcase.</p>
+</dd>
+<dt>pytest_root: &lt;pytest directory&gt; (default pytest)</dt><dd><p>Specify a pytest directory which need to excute when test case begin to running,
+default pytest directory name is pytest, after pytest finished, twister will
+check if this case pass or fail according the pytest report.</p>
+</dd>
+<dt>pytest_args: &lt;list of arguments&gt; (default empty)</dt><dd><p>Specify a list of additional arguments to pass to <code class="docutils literal notranslate"><span class="pre">pytest</span></code>.</p>
+</dd>
+</dl>
+<p>The following is an example yaml file with a few harness_config options.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span><span class="p">:</span>
+  <span class="n">name</span><span class="p">:</span> <span class="n">HTS221</span> <span class="n">Temperature</span> <span class="ow">and</span> <span class="n">Humidity</span> <span class="n">Monitor</span>
+<span class="n">common</span><span class="p">:</span>
+  <span class="n">tags</span><span class="p">:</span> <span class="n">sensor</span>
+  <span class="n">harness</span><span class="p">:</span> <span class="n">console</span>
+  <span class="n">harness_config</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">multi_line</span>
+    <span class="n">ordered</span><span class="p">:</span> <span class="n">false</span>
+    <span class="n">regex</span><span class="p">:</span>
+      <span class="o">-</span> <span class="s2">&quot;Temperature:(.*)C&quot;</span>
+      <span class="o">-</span> <span class="s2">&quot;Relative Humidity:(.*)%&quot;</span>
+    <span class="n">fixture</span><span class="p">:</span> <span class="n">i2c_hts221</span>
+<span class="n">tests</span><span class="p">:</span>
+  <span class="n">test</span><span class="p">:</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">sensors</span>
+    <span class="n">depends_on</span><span class="p">:</span> <span class="n">i2c</span>
+</pre></div>
+</div>
+<p>The following is an example yaml file with pytest harness_config options,
+default pytest_root name “pytest” will be used if pytest_root not specified.
+please refer the example in samples/subsys/testsuite/pytest/.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tests</span><span class="p">:</span>
+  <span class="n">pytest</span><span class="o">.</span><span class="n">example</span><span class="p">:</span>
+    <span class="n">harness</span><span class="p">:</span> <span class="n">pytest</span>
+    <span class="n">harness_config</span><span class="p">:</span>
+      <span class="n">pytest_root</span><span class="p">:</span> <span class="p">[</span><span class="n">pytest</span> <span class="n">directory</span> <span class="n">name</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd>
+<dt>filter: &lt;expression&gt;</dt><dd><p>Filter whether the testcase should be run by evaluating an expression
+against an environment containing the following values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="n">ARCH</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">architecture</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="n">PLATFORM</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">platform</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="o">&lt;</span><span class="nb">all</span> <span class="n">CONFIG_</span><span class="o">*</span> <span class="n">key</span><span class="o">/</span><span class="n">value</span> <span class="n">pairs</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">test</span><span class="s1">&#39;s generated defconfig&gt;,</span>
+  <span class="o">*&lt;</span><span class="n">env</span><span class="o">&gt;</span><span class="p">:</span> <span class="nb">any</span> <span class="n">environment</span> <span class="n">variable</span> <span class="n">available</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The grammar for the expression language is as follows:</p>
+<dl>
+<dt>expression ::= expression “and” expression</dt><dd><div class="line-block">
+<div class="line">expression “or” expression</div>
+<div class="line">“not” expression</div>
+<div class="line">“(” expression “)”</div>
+<div class="line">symbol “==” constant</div>
+<div class="line">symbol “!=” constant</div>
+<div class="line">symbol “&lt;” number</div>
+<div class="line">symbol “&gt;” number</div>
+<div class="line">symbol “&gt;=” number</div>
+<div class="line">symbol “&lt;=” number</div>
+<div class="line">symbol “in” list</div>
+<div class="line">symbol “:” string</div>
+<div class="line">symbol</div>
+</div>
+</dd>
+</dl>
+<p>list ::= “[” list_contents “]”</p>
+<dl>
+<dt>list_contents ::= constant</dt><dd><div class="line-block">
+<div class="line">list_contents “,” constant</div>
+</div>
+</dd>
+<dt>constant ::= number</dt><dd><div class="line-block">
+<div class="line">string</div>
+</div>
+</dd>
+</dl>
+<p>For the case where expression ::= symbol, it evaluates to true
+if the symbol is defined to a non-empty string.</p>
+<p>Operator precedence, starting from lowest to highest:</p>
+<blockquote>
+<div><p>or (left associative)
+and (left associative)
+not (right associative)
+all comparison operators (non-associative)</p>
+</div></blockquote>
+<p>arch_allow, arch_exclude, platform_allow, platform_exclude
+are all syntactic sugar for these expressions. For instance</p>
+<blockquote>
+<div><p>arch_exclude = x86 arc</p>
+</div></blockquote>
+<p>Is the same as:</p>
+<blockquote>
+<div><p>filter = not ARCH in [“x86”, “arc”]</p>
+</div></blockquote>
+<p>The ‘:’ operator compiles the string argument as a regular expression,
+and then returns a true value only if the symbol’s value in the environment
+matches. For example, if CONFIG_SOC=”stm32f107xc” then</p>
+<blockquote>
+<div><p>filter = CONFIG_SOC : “stm.*”</p>
+</div></blockquote>
+<p>Would match it.</p>
+</dd>
+</dl>
+<p>The set of test cases that actually run depends on directives in the testcase
+filed and options passed in on the command line. If there is any confusion,
+running with -v or examining the discard report
+(<code class="file docutils literal notranslate"><span class="pre">twister_discard.csv</span></code>) can help show why particular test cases were
+skipped.</p>
+<p>Metrics (such as pass/fail state and binary size) for the last code
+release are stored in scripts/release/twister_last_release.csv.
+To update this, pass the –all –release options.</p>
+<p>To load arguments from a file, write ‘+’ before the file name, e.g.,
++file_name. File content must be one or more valid arguments separated by
+line break instead of white spaces.</p>
+<p>Most everyday users will run with no arguments.</p>
+</div>
+<div class="section" id="running-in-integration-mode">
+<h2>Running in Integration Mode<a class="headerlink" href="#running-in-integration-mode" title="Permalink to this headline">¶</a></h2>
+<p>This mode is used in continuous integration (CI) and other automated
+environments used to give developers fast feedback on changes. The mode can
+be activated using the –integration option of twister and narrows down
+the scope of builds and tests if applicable to platforms defined under the
+integration keyword in the testcase definition file (testcase.yaml and
+sample.yaml).</p>
+</div>
+<div class="section" id="running-tests-on-hardware">
+<h2>Running Tests on Hardware<a class="headerlink" href="#running-tests-on-hardware" title="Permalink to this headline">¶</a></h2>
+<p>Beside being able to run tests in QEMU and other simulated environments,
+twister supports running most of the tests on real devices and produces
+reports for each run with detailed FAIL/PASS results.</p>
+<div class="section" id="executing-tests-on-a-single-device">
+<h3>Executing tests on a single device<a class="headerlink" href="#executing-tests-on-a-single-device" title="Permalink to this headline">¶</a></h3>
+<p>To use this feature on a single connected device, run twister with
+the following new options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scripts</span><span class="o">/</span><span class="n">twister</span> <span class="o">--</span><span class="n">device</span><span class="o">-</span><span class="n">testing</span> <span class="o">--</span><span class="n">device</span><span class="o">-</span><span class="n">serial</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ttyACM0</span> \
+<span class="o">--</span><span class="n">device</span><span class="o">-</span><span class="n">serial</span><span class="o">-</span><span class="n">baud</span> <span class="mi">9600</span> <span class="o">-</span><span class="n">p</span> <span class="n">frdm_k64f</span>  <span class="o">-</span><span class="n">T</span> <span class="n">tests</span><span class="o">/</span><span class="n">kernel</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">--device-serial</span></code> option denotes the serial device the board is connected to.
+This needs to be accessible by the user running twister. You can run this on
+only one board at a time, specified using the <code class="docutils literal notranslate"><span class="pre">--platform</span></code> option.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--device-serial-baud</span></code> option is only needed if your device does not run at
+115200 baud.</p>
+</div>
+<div class="section" id="executing-tests-on-multiple-devices">
+<h3>Executing tests on multiple devices<a class="headerlink" href="#executing-tests-on-multiple-devices" title="Permalink to this headline">¶</a></h3>
+<p>To build and execute tests on multiple devices connected to the host PC, a
+hardware map needs to be created with all connected devices and their
+details such as the serial device, baud and their IDs if available.
+Run the following command to produce the hardware map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">twister</span> <span class="o">--</span><span class="n">generate</span><span class="o">-</span><span class="n">hardware</span><span class="o">-</span><span class="nb">map</span> <span class="nb">map</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+<p>The generated hardware map file (map.yml) will have the list of connected
+devices, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">connected</span><span class="p">:</span> <span class="n">true</span>
+  <span class="nb">id</span><span class="p">:</span> <span class="n">OSHW000032254e4500128002ab98002784d1000097969900</span>
+  <span class="n">platform</span><span class="p">:</span> <span class="n">unknown</span>
+  <span class="n">product</span><span class="p">:</span> <span class="n">DAPLink</span> <span class="n">CMSIS</span><span class="o">-</span><span class="n">DAP</span>
+  <span class="n">runner</span><span class="p">:</span> <span class="n">pyocd</span>
+  <span class="n">serial</span><span class="p">:</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">cu</span><span class="o">.</span><span class="n">usbmodem146114202</span>
+<span class="o">-</span> <span class="n">connected</span><span class="p">:</span> <span class="n">true</span>
+  <span class="nb">id</span><span class="p">:</span> <span class="mi">000683759358</span>
+  <span class="n">platform</span><span class="p">:</span> <span class="n">unknown</span>
+  <span class="n">product</span><span class="p">:</span> <span class="n">J</span><span class="o">-</span><span class="n">Link</span>
+  <span class="n">runner</span><span class="p">:</span> <span class="n">unknown</span>
+  <span class="n">serial</span><span class="p">:</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">cu</span><span class="o">.</span><span class="n">usbmodem0006837593581</span>
+</pre></div>
+</div>
+<p>Any options marked as ‘unknown’ need to be changed and set with the correct
+values, in the above example both the platform names and the runners need to be
+replaced with the correct values corresponding to the connected hardware. In
+this example we are using a reel_board and an nrf52840dk_nrf52840:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">connected</span><span class="p">:</span> <span class="n">true</span>
+  <span class="nb">id</span><span class="p">:</span> <span class="n">OSHW000032254e4500128002ab98002784d1000097969900</span>
+  <span class="n">platform</span><span class="p">:</span> <span class="n">reel_board</span>
+  <span class="n">product</span><span class="p">:</span> <span class="n">DAPLink</span> <span class="n">CMSIS</span><span class="o">-</span><span class="n">DAP</span>
+  <span class="n">runner</span><span class="p">:</span> <span class="n">pyocd</span>
+  <span class="n">serial</span><span class="p">:</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">cu</span><span class="o">.</span><span class="n">usbmodem146114202</span>
+  <span class="n">baud</span><span class="p">:</span> <span class="mi">9600</span>
+<span class="o">-</span> <span class="n">connected</span><span class="p">:</span> <span class="n">true</span>
+  <span class="nb">id</span><span class="p">:</span> <span class="mi">000683759358</span>
+  <span class="n">platform</span><span class="p">:</span> <span class="n">nrf52840dk_nrf52840</span>
+  <span class="n">product</span><span class="p">:</span> <span class="n">J</span><span class="o">-</span><span class="n">Link</span>
+  <span class="n">runner</span><span class="p">:</span> <span class="n">nrfjprog</span>
+  <span class="n">serial</span><span class="p">:</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">cu</span><span class="o">.</span><span class="n">usbmodem0006837593581</span>
+  <span class="n">baud</span><span class="p">:</span> <span class="mi">9600</span>
+</pre></div>
+</div>
+<p>The baud entry is only needed if not running at 115200.</p>
+<p>If the map file already exists, then new entries are added and existing entries
+will be updated. This way you can use one single master hardware map and update
+it for every run to get the correct serial devices and status of the devices.</p>
+<p>With the hardware map ready, you can run any tests by pointing to the map
+file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">twister</span> <span class="o">--</span><span class="n">device</span><span class="o">-</span><span class="n">testing</span> <span class="o">--</span><span class="n">hardware</span><span class="o">-</span><span class="nb">map</span> <span class="nb">map</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">T</span> <span class="n">samples</span><span class="o">/</span><span class="n">hello_world</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>The above command will result in twister building tests for the platforms
+defined in the hardware map and subsequently flashing and running the tests
+on those platforms.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently only boards with support for both pyocd and nrfjprog are supported
+with the hardware map features. Boards that require other runners to flash the
+Zephyr binary are still work in progress.</p>
+</div>
+<div class="section" id="fixtures">
+<h4>Fixtures<a class="headerlink" href="#fixtures" title="Permalink to this headline">¶</a></h4>
+<p>Some tests require additional setup or special wiring specific to the test.
+Running the tests without this setup or test fixture may fail. A testcase can
+specify the fixture it needs which can then be matched with hardware capability
+of a board and the fixtures it supports via the command line or using the hardware
+map file.</p>
+<p>Fixtures are defined in the hardware map file as a list:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">connected</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">fixtures</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">gpio_loopback</span>
+  <span class="nb">id</span><span class="p">:</span> <span class="mf">0240000026334e450015400</span><span class="n">f5e0e000b4eb1000097969900</span>
+  <span class="n">platform</span><span class="p">:</span> <span class="n">frdm_k64f</span>
+  <span class="n">product</span><span class="p">:</span> <span class="n">DAPLink</span> <span class="n">CMSIS</span><span class="o">-</span><span class="n">DAP</span>
+  <span class="n">runner</span><span class="p">:</span> <span class="n">pyocd</span>
+  <span class="n">serial</span><span class="p">:</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ttyACM9</span>
+</pre></div>
+</div>
+<p>When running <code class="docutils literal notranslate"><span class="pre">twister</span></code> with <code class="docutils literal notranslate"><span class="pre">--device-testing</span></code>, the configured fixture
+in the hardware map file will be matched to testcases requesting the same fixtures
+and these tests will be executed on the boards that provide this fixture.</p>
+<div class="align-center figure align-default">
+<img alt="../../_images/fixtures.svg" src="../../_images/fixtures.svg" /></div>
+<p>Fixtures can also be provided via twister command option <code class="docutils literal notranslate"><span class="pre">--fixture</span></code>, this option
+can be used multiple times and all given fixtures will be appended as a list. And the
+given fixtures will be assigned to all boards, this means that all boards set by
+current twister command can run those testcases which request the same fixtures.</p>
+</div>
+<div class="section" id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h4>
+<p>It may be useful to annotate board descriptions in the hardware map file
+with additional information.  Use the “notes” keyword to do this.  For
+example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">connected</span><span class="p">:</span> <span class="n">false</span>
+  <span class="n">fixtures</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">gpio_loopback</span>
+  <span class="nb">id</span><span class="p">:</span> <span class="mi">000683290670</span>
+  <span class="n">notes</span><span class="p">:</span> <span class="n">An</span> <span class="n">nrf5340dk_nrf5340</span> <span class="ow">is</span> <span class="n">detected</span> <span class="k">as</span> <span class="n">an</span> <span class="n">nrf52840dk_nrf52840</span> <span class="k">with</span> <span class="n">no</span> <span class="n">serial</span>
+    <span class="n">port</span><span class="p">,</span> <span class="ow">and</span> <span class="n">three</span> <span class="n">serial</span> <span class="n">ports</span> <span class="k">with</span> <span class="n">an</span> <span class="n">unknown</span> <span class="n">platform</span><span class="o">.</span>  <span class="n">The</span> <span class="n">board</span> <span class="nb">id</span> <span class="n">of</span> <span class="n">the</span> <span class="n">serial</span>
+    <span class="n">ports</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">the</span> <span class="n">same</span> <span class="k">as</span> <span class="n">the</span> <span class="n">board</span> <span class="nb">id</span> <span class="n">of</span> <span class="n">the</span> <span class="n">the</span> <span class="n">development</span> <span class="n">kit</span><span class="o">.</span>  <span class="n">If</span> <span class="n">you</span> <span class="n">regenerate</span>
+    <span class="n">this</span> <span class="n">file</span> <span class="n">you</span> <span class="n">will</span> <span class="n">need</span> <span class="n">to</span> <span class="n">update</span> <span class="n">serial</span> <span class="n">to</span> <span class="n">reference</span> <span class="n">the</span> <span class="n">third</span> <span class="n">port</span><span class="p">,</span> <span class="ow">and</span> <span class="n">platform</span>
+    <span class="n">to</span> <span class="n">nrf5340dk_nrf5340_cpuapp</span> <span class="ow">or</span> <span class="n">another</span> <span class="n">supported</span> <span class="n">board</span> <span class="n">target</span><span class="o">.</span>
+  <span class="n">platform</span><span class="p">:</span> <span class="n">nrf52840dk_nrf52840</span>
+  <span class="n">product</span><span class="p">:</span> <span class="n">J</span><span class="o">-</span><span class="n">Link</span>
+  <span class="n">runner</span><span class="p">:</span> <span class="n">jlink</span>
+  <span class="n">serial</span><span class="p">:</span> <span class="n">null</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="overriding-board-identifier">
+<h4>Overriding Board Identifier<a class="headerlink" href="#overriding-board-identifier" title="Permalink to this headline">¶</a></h4>
+<p>When (re-)generated the hardware map file will contain an “id” keyword
+that serves as the argument to <code class="docutils literal notranslate"><span class="pre">--board-id</span></code> when flashing.  In some
+cases the detected ID is not the correct one to use, for example when
+using an external J-Link probe.  The “probe_id” keyword overrides the
+“id” keyword for this purpose.   For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">connected</span><span class="p">:</span> <span class="n">false</span>
+  <span class="nb">id</span><span class="p">:</span> <span class="mi">0229000005</span><span class="n">d9ebc600000000000000000000000097969905</span>
+  <span class="n">platform</span><span class="p">:</span> <span class="n">mimxrt1060_evk</span>
+  <span class="n">probe_id</span><span class="p">:</span> <span class="mi">000609301751</span>
+  <span class="n">product</span><span class="p">:</span> <span class="n">DAPLink</span> <span class="n">CMSIS</span><span class="o">-</span><span class="n">DAP</span>
+  <span class="n">runner</span><span class="p">:</span> <span class="n">jlink</span>
+  <span class="n">serial</span><span class="p">:</span> <span class="n">null</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="quarantine">
+<h4>Quarantine<a class="headerlink" href="#quarantine" title="Permalink to this headline">¶</a></h4>
+<p>Twister allows using user-defined yaml files defining the list of tests to be put
+under quarantine. Such tests will be skipped and marked accordingly in the output
+reports. This feature is especially useful when running larger test suits, where
+a failure of one test can affect the execution of other tests (e.g. putting the
+physical board in a corrupted state).</p>
+<p>To use the quarantine feature one has to add the argument
+<code class="docutils literal notranslate"><span class="pre">--quarantine-list</span> <span class="pre">&lt;PATH_TO_QUARANTINE_YAML&gt;</span></code> to a twister call.
+The current status of tests on the quarantine list can also be verified by adding
+<code class="docutils literal notranslate"><span class="pre">--quarantine-verify</span></code> to the above argument. This will make twister skip all tests
+which are not on the given list.</p>
+<p>A quarantine yaml has to be a sequence of dictionaries. Each dictionary has to have
+“scenarios” and “platforms” entries listing combinations of scenarios and platforms
+to put under quarantine. In addition, an optional entry “comment” can be used, where
+some more details can be given (e.g. link to a reported issue). These comments will also
+be added to the output reports.</p>
+<p>An example of entries in a quarantine yaml:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">scenarios</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">sample</span><span class="o">.</span><span class="n">basic</span><span class="o">.</span><span class="n">helloworld</span>
+  <span class="n">platforms</span><span class="p">:</span>
+    <span class="o">-</span> <span class="nb">all</span>
+  <span class="n">comment</span><span class="p">:</span> <span class="s2">&quot;Link to the issue: https://github.com/zephyrproject-rtos/zephyr/pull/33287&quot;</span>
+
+<span class="o">-</span> <span class="n">scenarios</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">kernel</span><span class="o">.</span><span class="n">common</span>
+    <span class="o">-</span> <span class="n">kernel</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">misra</span>
+    <span class="o">-</span> <span class="n">kernel</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">nano64</span>
+  <span class="n">platforms</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">qemu_cortex_m3</span>
+    <span class="o">-</span> <span class="n">native_posix</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="coverage.html" class="btn btn-neutral float-right" title="Generating coverage reports" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ztest.html" class="btn btn-neutral" title="Test Framework" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

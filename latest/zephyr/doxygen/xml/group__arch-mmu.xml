@@ -1,0 +1,519 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__arch-mmu" kind="group">
+    <compoundname>arch-mmu</compoundname>
+    <title>Architecture-specific memory-mapping APIs</title>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="group__arch-mmu_1ga65e10c80055d7e695add000f2ccfbb0b" prot="public" static="no" strong="no">
+        <type></type>
+        <name>arch_page_location</name>
+        <enumvalue id="group__arch-mmu_1gga65e10c80055d7e695add000f2ccfbb0bacf9e624eac380ea2bfa37632c4d17a3a" prot="public">
+          <name>ARCH_PAGE_LOCATION_PAGED_OUT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="group__arch-mmu_1gga65e10c80055d7e695add000f2ccfbb0bae378a008f497ae10ab50cab06f8c36db" prot="public">
+          <name>ARCH_PAGE_LOCATION_PAGED_IN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="group__arch-mmu_1gga65e10c80055d7e695add000f2ccfbb0ba7ff70acdf02345b5fa4c42ed2b2adde9" prot="public">
+          <name>ARCH_PAGE_LOCATION_BAD</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="405" column="1" bodyfile="kernel/include/kernel_arch_interface.h" bodystart="405" bodyend="409"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__arch-mmu_1ga627bee468e54bb2d5ebe6ac53bb7fc94" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void arch_mem_map</definition>
+        <argsstring>(void *virt, uintptr_t phys, size_t size, uint32_t flags)</argsstring>
+        <name>arch_mem_map</name>
+        <param>
+          <type>void *</type>
+          <declname>virt</declname>
+        </param>
+        <param>
+          <type><ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref></type>
+          <declname>phys</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref></type>
+          <declname>flags</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Map physical memory into the virtual address space</para>
+<para>This is a low-level interface to mapping pages into the address space. Behavior when providing unaligned addresses/sizes is undefined, these are assumed to be aligned to CONFIG_MMU_PAGE_SIZE.</para>
+<para>The core kernel handles all management of the virtual address space; by the time we invoke this function, we know exactly where this mapping will be established. If the page tables already had mappings installed for the virtual memory region, these will be overwritten.</para>
+<para>If the target architecture supports multiple page sizes, currently only the smallest page size will be used.</para>
+<para>The memory range itself is never accessed by this operation.</para>
+<para>This API must be safe to call in ISRs or exception handlers. Calls to this API are assumed to be serialized, and indeed all usage will originate from kernel/mm.c which handles virtual memory management.</para>
+<para>Architectures are expected to pre-allocate page tables for the entire address space, as defined by CONFIG_KERNEL_VM_BASE and CONFIG_KERNEL_VM_SIZE. This operation should never require any kind of allocation for paging structures.</para>
+<para>Validation of arguments should be done via assertions.</para>
+<para>This API is part of infrastructure still under development and may change.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>virt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Page-aligned Destination virtual address to map </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>phys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Page-aligned Source physical address to map </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Page-aligned size of the mapped memory region in bytes </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Caching, access and control flags, see K_MAP_* macros </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="284" column="6" declfile="kernel/include/kernel_arch_interface.h" declline="284" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-mmu_1ga8783e1d292510477b3816b6686d7d8cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void arch_mem_unmap</definition>
+        <argsstring>(void *addr, size_t size)</argsstring>
+        <name>arch_mem_unmap</name>
+        <param>
+          <type>void *</type>
+          <declname>addr</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Remove mappings for a provided virtual address range</para>
+<para>This is a low-level interface for un-mapping pages from the address space. When this completes, the relevant page table entries will be updated as if no mapping was ever made for that memory range. No previous context needs to be preserved. This function must update mappings in all active page tables.</para>
+<para>Behavior when providing unaligned addresses/sizes is undefined, these are assumed to be aligned to CONFIG_MMU_PAGE_SIZE.</para>
+<para>Behavior when providing an address range that is not already mapped is undefined.</para>
+<para>This function should never require memory allocations for paging structures, and it is not necessary to free any paging structures. Empty page tables due to all contained entries being un-mapped may remain in place.</para>
+<para>Implementations must invalidate TLBs as necessary.</para>
+<para>This API is part of infrastructure still under development and may change.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>addr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Page-aligned base virtual address to un-map </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Page-aligned region size </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="312" column="6" declfile="kernel/include/kernel_arch_interface.h" declline="312" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-mmu_1gaa31a233dab4ad575a9a969de10965200" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int arch_page_phys_get</definition>
+        <argsstring>(void *virt, uintptr_t *phys)</argsstring>
+        <name>arch_page_phys_get</name>
+        <param>
+          <type>void *</type>
+          <declname>virt</declname>
+        </param>
+        <param>
+          <type><ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref> *</type>
+          <declname>phys</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the mapped physical memory address from virtual address.</para>
+<para>The function only needs to query the current set of page tables as the information it reports must be common to all of them if multiple page tables are in use. If multiple page tables are active it is unnecessary to iterate over all of them.</para>
+<para>Unless otherwise specified, virtual pages have the same mappings across all page tables. Calling this function on data pages that are exceptions to this rule (such as the scratch page) is undefined behavior. Just check the currently installed page tables and return the information in that.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>virt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Page-aligned virtual address </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">phys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Mapped physical address (can be NULL if only checking if virtual address is mapped)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if mapping is found and valid </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EFAULT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if virtual address is not mapped </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="335" column="5" declfile="kernel/include/kernel_arch_interface.h" declline="335" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-mmu_1ga229fa5699ad47951235af494f3d2a06a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void arch_reserved_pages_update</definition>
+        <argsstring>(void)</argsstring>
+        <name>arch_reserved_pages_update</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update page frame database with reserved pages</para>
+<para>Some page frames within system RAM may not be available for use. A good example of this is reserved regions in the first megabyte on PC-like systems.</para>
+<para>Implementations of this function should mark all relavent entries in z_page_frames with K_PAGE_FRAME_RESERVED. This function is called at early system initialization with mm_lock held. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="347" column="6" declfile="kernel/include/kernel_arch_interface.h" declline="347" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-mmu_1ga4c13ffab5b5a5f8c93971c4d3b51bd8f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void arch_mem_page_out</definition>
+        <argsstring>(void *addr, uintptr_t location)</argsstring>
+        <name>arch_mem_page_out</name>
+        <param>
+          <type>void *</type>
+          <declname>addr</declname>
+        </param>
+        <param>
+          <type><ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref></type>
+          <declname>location</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update all page tables for a paged-out data page</para>
+<para>This function:<itemizedlist>
+<listitem><para>Sets the data page virtual address to trigger a fault if accessed that can be distinguished from access violations or un-mapped pages.</para>
+</listitem><listitem><para>Saves the provided location value so that it can retrieved for that data page in the page fault handler.</para>
+</listitem><listitem><para>The location value semantics are undefined here but the value will be always be page-aligned. It could be 0.</para>
+</listitem></itemizedlist>
+</para>
+<para>If multiple page tables are in use, this must update all page tables. This function is called with interrupts locked.</para>
+<para>Calling this function on data pages which are already paged out is undefined behavior.</para>
+<para>This API is part of infrastructure still under development and may change. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="368" column="6" declfile="kernel/include/kernel_arch_interface.h" declline="368" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-mmu_1ga3c446aea862e37d479a809582322b3ae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void arch_mem_page_in</definition>
+        <argsstring>(void *addr, uintptr_t phys)</argsstring>
+        <name>arch_mem_page_in</name>
+        <param>
+          <type>void *</type>
+          <declname>addr</declname>
+        </param>
+        <param>
+          <type><ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref></type>
+          <declname>phys</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update all page tables for a paged-in data page</para>
+<para>This function:<itemizedlist>
+<listitem><para>Maps the specified virtual data page address to the provided physical page frame address, such that future memory accesses will function as expected. Access and caching attributes are undisturbed.</para>
+</listitem><listitem><para>Clears any accounting for &quot;accessed&quot; and &quot;dirty&quot; states.</para>
+</listitem></itemizedlist>
+</para>
+<para>If multiple page tables are in use, this must update all page tables. This function is called with interrupts locked.</para>
+<para>Calling this function on data pages which are already paged in is undefined behavior.</para>
+<para>This API is part of infrastructure still under development and may change. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="387" column="6" declfile="kernel/include/kernel_arch_interface.h" declline="387" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-mmu_1gae4e82c3100b08bdfdcd9361d316735a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void arch_mem_scratch</definition>
+        <argsstring>(uintptr_t phys)</argsstring>
+        <name>arch_mem_scratch</name>
+        <param>
+          <type><ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref></type>
+          <declname>phys</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update current page tables for a temporary mapping</para>
+<para>Map a physical page frame address to a special virtual address Z_SCRATCH_PAGE, with read/write access to supervisor mode, such that when this function returns, the calling context can read/write the page frame&apos;s contents from the Z_SCRATCH_PAGE address.</para>
+<para>This mapping only needs to be done on the current set of page tables, as it is only used for a short period of time exclusively by the caller. This function is called with interrupts locked.</para>
+<para>This API is part of infrastructure still under development and may change. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="403" column="6" declfile="kernel/include/kernel_arch_interface.h" declline="403" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-mmu_1ga74b3ce1173b91a8f82c25ef89f9fbbc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>enum <ref refid="group__arch-mmu_1ga65e10c80055d7e695add000f2ccfbb0b" kindref="member">arch_page_location</ref></type>
+        <definition>enum arch_page_location arch_page_location_get</definition>
+        <argsstring>(void *addr, uintptr_t *location)</argsstring>
+        <name>arch_page_location_get</name>
+        <param>
+          <type>void *</type>
+          <declname>addr</declname>
+        </param>
+        <param>
+          <type><ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref> *</type>
+          <declname>location</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Fetch location information about a page at a particular address</para>
+<para>The function only needs to query the current set of page tables as the information it reports must be common to all of them if multiple page tables are in use. If multiple page tables are active it is unnecessary to iterate over all of them. This may allow certain types of optimizations (such as reverse page table mapping on x86).</para>
+<para>This function is called with interrupts locked, so that the reported information can&apos;t become stale while decisions are being made based on it.</para>
+<para>Unless otherwise specified, virtual data pages have the same mappings across all page tables. Calling this function on data pages that are exceptions to this rule (such as the scratch page) is undefined behavior. Just check the currently installed page tables and return the information in that.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>addr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Virtual data page address that took the page fault </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">location</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>In the case of ARCH_PAGE_FAULT_PAGED_OUT, the backing store location value used to retrieve the data page. In the case of ARCH_PAGE_FAULT_PAGED_IN, the physical address the page is mapped to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>ARCH_PAGE_FAULT_PAGED_OUT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The page was evicted to the backing store. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ARCH_PAGE_FAULT_PAGED_IN</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The data page is resident in memory. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ARCH_PAGE_FAULT_BAD</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The page is un-mapped or otherwise has had invalid access </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="403" column="6" declfile="kernel/include/kernel_arch_interface.h" declline="403" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__arch-mmu_1gab32a4bb6b3d44c126d63a473caf28b70" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref></type>
+        <definition>uintptr_t arch_page_info_get</definition>
+        <argsstring>(void *addr, uintptr_t *location, bool clear_accessed)</argsstring>
+        <name>arch_page_info_get</name>
+        <param>
+          <type>void *</type>
+          <declname>addr</declname>
+        </param>
+        <param>
+          <type><ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref> *</type>
+          <declname>location</declname>
+        </param>
+        <param>
+          <type><ref refid="stdbool_8h_1abb452686968e48b67397da5f97445f5b" kindref="member">bool</ref></type>
+          <declname>clear_accessed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieve page characteristics from the page table(s)</para>
+<para>The architecture is responsible for maintaining &quot;accessed&quot; and &quot;dirty&quot; states of data pages to support marking eviction algorithms. This can either be directly supported by hardware or emulated by modifying protection policy to generate faults on reads or writes. In all cases the architecture must maintain this information in some way.</para>
+<para>For the provided virtual address, report the logical OR of the accessed and dirty states for the relevant entries in all active page tables in the system if the page is mapped and not paged out.</para>
+<para>If clear_accessed is true, the ARCH_DATA_PAGE_ACCESSED flag will be reset. This function will report its prior state. If multiple page tables are in use, this function clears accessed state in all of them.</para>
+<para>This function is called with interrupts locked, so that the reported information can&apos;t become stale while decisions are being made based on it.</para>
+<para>The return value may have other bits set which the caller must ignore.</para>
+<para>Clearing accessed state for data pages that are not ARCH_DATA_PAGE_LOADED is undefined behavior.</para>
+<para>ARCH_DATA_PAGE_DIRTY and ARCH_DATA_PAGE_ACCESSED bits in the return value are only significant if ARCH_DATA_PAGE_LOADED is set, otherwise ignore them.</para>
+<para>ARCH_DATA_PAGE_NOT_MAPPED bit in the return value is only significant if ARCH_DATA_PAGE_LOADED is un-set, otherwise ignore it.</para>
+<para>Unless otherwise specified, virtual data pages have the same mappings across all page tables. Calling this function on data pages that are exceptions to this rule (such as the scratch page) is undefined behavior.</para>
+<para>This API is part of infrastructure still under development and may change.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>addr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Virtual address to look up in page tables </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">location</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If non-NULL, updated with either physical page frame address or backing store location depending on ARCH_DATA_PAGE_LOADED state. This is not touched if ARCH_DATA_PAGE_NOT_MAPPED. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>clear_accessed</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to clear ARCH_DATA_PAGE_ACCESSED state </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>Value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>with ARCH_DATA_PAGE_* bits set reflecting the data page configuration </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="kernel/include/kernel_arch_interface.h" line="523" column="11" declfile="kernel/include/kernel_arch_interface.h" declline="523" declcolumn="11"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="group__arch-mmu_1ga38cfc7602d259972cdd0b557ab26c2b4" prot="public" static="no">
+        <name>ARCH_DATA_PAGE_ACCESSED</name>
+        <initializer>((<ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref>)<ref refid="group__sys-util_1ga3a8ea58898cb58fc96013383d39f482c" kindref="member">BIT</ref>(5))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Bit indicating the data page was accessed since the value was last cleared.</para>
+<para>Used by marking eviction algorithms. Safe to set this if uncertain.</para>
+<para>This bit is undefined if ARCH_DATA_PAGE_LOADED is not set. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/arch/x86/mmustructs.h" line="30" column="9" bodyfile="include/arch/x86/mmustructs.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__arch-mmu_1ga4a60b63f47f88db455d67c33ef7bb85d" prot="public" static="no">
+        <name>ARCH_DATA_PAGE_DIRTY</name>
+        <initializer>((<ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref>)<ref refid="group__sys-util_1ga3a8ea58898cb58fc96013383d39f482c" kindref="member">BIT</ref>(6))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Bit indicating the data page, if evicted, will need to be paged out.</para>
+<para>Set if the data page was modified since it was last paged out, or if it has never been paged out before. Safe to set this if uncertain.</para>
+<para>This bit is undefined if ARCH_DATA_PAGE_LOADED is not set. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/arch/x86/mmustructs.h" line="28" column="9" bodyfile="include/arch/x86/mmustructs.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__arch-mmu_1gae76ce742aca8b4ac12907a2bfce98b0e" prot="public" static="no">
+        <name>ARCH_DATA_PAGE_LOADED</name>
+        <initializer>((<ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref>)<ref refid="group__sys-util_1ga3a8ea58898cb58fc96013383d39f482c" kindref="member">BIT</ref>(0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Bit indicating that the data page is loaded into a physical page frame.</para>
+<para>If un-set, the data page is paged out or not mapped. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/arch/x86/mmustructs.h" line="29" column="9" bodyfile="include/arch/x86/mmustructs.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__arch-mmu_1ga843c53394b00d80b1649a6224557a56a" prot="public" static="no">
+        <name>ARCH_DATA_PAGE_NOT_MAPPED</name>
+        <initializer>((<ref refid="stdint_8h_1a4788399d1d0b37ccf098a7da82254808" kindref="member">uintptr_t</ref>)<ref refid="group__sys-util_1ga3a8ea58898cb58fc96013383d39f482c" kindref="member">BIT</ref>(7))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>If ARCH_DATA_PAGE_LOADED is un-set, this will indicate that the page is not mapped at all. This bit is undefined if ARCH_DATA_PAGE_LOADED is set. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/arch/x86/mmustructs.h" line="33" column="9" bodyfile="include/arch/x86/mmustructs.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1672 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Service Discovery Protocol (SDP) &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Universal Unique Identifiers (UUIDs)" href="uuid.html" />
+    <link rel="prev" title="Serial Port Emulation (RFCOMM)" href="rfcomm.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Bluetooth</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="connection_mgmt.html">Connection Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="controller.html">Bluetooth Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crypto.html">Cryptography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_buffer.html">Data Buffers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gap.html">Generic Access Profile (GAP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gatt.html">Generic Attribute Profile (GATT)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci_drivers.html">HCI Drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci_raw.html">HCI RAW channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hfp.html">Hands Free Profile (HFP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l2cap.html">Logical Link Control and Adaptation Protocol (L2CAP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mesh.html">Bluetooth Mesh Profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfcomm.html">Serial Port Emulation (RFCOMM)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Service Discovery Protocol (SDP)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="uuid.html">Universal Unique Identifiers (UUIDs)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/audio.html">Bluetooth: Basic Audio Profile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Bluetooth</a> &raquo;</li>
+        
+      <li>Service Discovery Protocol (SDP)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/bluetooth/sdp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="service-discovery-protocol-sdp">
+<span id="bt-sdp"></span><h1>Service Discovery Protocol (SDP)<a class="headerlink" href="#service-discovery-protocol-sdp" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__bt__sdp"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">bt_sdp</span></span></dt>
+<dd><p>Service Discovery Protocol (SDP) </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SDP_SERVER_SVCLASS">
+<span class="target" id="group__bt__sdp_1gac2c2379f8e483939826297dc49657837"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SDP_SERVER_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_SDP_SERVER_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_BROWSE_GRP_DESC_SVCLASS">
+<span class="target" id="group__bt__sdp_1gabe05780702a9be7da54a8c04f79ad752"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_BROWSE_GRP_DESC_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_BROWSE_GRP_DESC_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_PUBLIC_BROWSE_GROUP">
+<span class="target" id="group__bt__sdp_1ga383233a0ff3159ed653786490a4c06ae"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_PUBLIC_BROWSE_GROUP</span></span></span><a class="headerlink" href="#c.BT_SDP_PUBLIC_BROWSE_GROUP" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SERIAL_PORT_SVCLASS">
+<span class="target" id="group__bt__sdp_1gab1234d808a7e347328bf95ad065fd9c4"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SERIAL_PORT_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_SERIAL_PORT_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_LAN_ACCESS_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaf0199837105ded0d65314e573da6a3ed"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_LAN_ACCESS_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_LAN_ACCESS_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_DIALUP_NET_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaab655c1f93029ed64743156734e2519e"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_DIALUP_NET_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_DIALUP_NET_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_IRMC_SYNC_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga28fc78fc21e4d88569e5ca5727ed6202"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_IRMC_SYNC_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_IRMC_SYNC_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_OBEX_OBJPUSH_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaaf64788e0cc6d54a8511c07af22f6740"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_OBEX_OBJPUSH_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_OBEX_OBJPUSH_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_OBEX_FILETRANS_SVCLASS">
+<span class="target" id="group__bt__sdp_1gacd25278a573edcb16aa4b60f8ffad20d"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_OBEX_FILETRANS_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_OBEX_FILETRANS_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_IRMC_SYNC_CMD_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga39d4ce2465b10c10ee746c1491c49bea"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_IRMC_SYNC_CMD_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_IRMC_SYNC_CMD_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_HEADSET_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga6eb16aacf468b460fa7675ffc4703e68"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_HEADSET_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_HEADSET_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_CORDLESS_TELEPHONY_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga16e1bc10528ac82f6cec822912f97d8c"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_CORDLESS_TELEPHONY_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_CORDLESS_TELEPHONY_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_AUDIO_SOURCE_SVCLASS">
+<span class="target" id="group__bt__sdp_1gafeb3a3184a0b83e0045187cbe3cf24dc"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_AUDIO_SOURCE_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_AUDIO_SOURCE_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_AUDIO_SINK_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaa0e334873b5477523572caa2359a4098"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_AUDIO_SINK_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_AUDIO_SINK_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_AV_REMOTE_TARGET_SVCLASS">
+<span class="target" id="group__bt__sdp_1gafe96e9d32797a83c793f0ed278054b80"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_AV_REMOTE_TARGET_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_AV_REMOTE_TARGET_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ADVANCED_AUDIO_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga2fdc3eb32196b5135b7f595a36cacb4c"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ADVANCED_AUDIO_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_ADVANCED_AUDIO_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_AV_REMOTE_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaea94250bed4c5e6ad47749a1237778f5"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_AV_REMOTE_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_AV_REMOTE_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_AV_REMOTE_CONTROLLER_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaaae997769dfc8325c38830707f4d22e3"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_AV_REMOTE_CONTROLLER_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_AV_REMOTE_CONTROLLER_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_INTERCOM_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga9681e34d78cea87e413fa4be40e4239a"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_INTERCOM_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_INTERCOM_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_FAX_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga31962fab5bed7c54311c4b291713a836"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_FAX_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_FAX_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_HEADSET_AGW_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga4c9322cf28a8b1aa96828152e8ee7379"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_HEADSET_AGW_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_HEADSET_AGW_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_WAP_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga2ab79d7ff4e88820773cf24f0b0b6e20"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_WAP_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_WAP_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_WAP_CLIENT_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga22624d29917aaeaa0c281d9517178821"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_WAP_CLIENT_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_WAP_CLIENT_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_PANU_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaa9abb444e3b43c1164d6b450b1c066e5"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_PANU_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_PANU_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_NAP_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga78a7be1db8be8d7eece0d17c629dd009"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_NAP_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_NAP_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_GN_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaed2d6f72c344e2e9b9bdcefd23cb4086"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_GN_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_GN_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_DIRECT_PRINTING_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga30f6edbd67d96f7752a223409c8e4431"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_DIRECT_PRINTING_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_DIRECT_PRINTING_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_REFERENCE_PRINTING_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga6bc247854656613d2fa9b47d55bd69d6"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_REFERENCE_PRINTING_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_REFERENCE_PRINTING_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_IMAGING_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga08730b1fd7088101fadb85e5dc13fd24"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_IMAGING_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_IMAGING_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_IMAGING_RESPONDER_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaf19cd136b780ef303c1290b26ab2ca17"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_IMAGING_RESPONDER_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_IMAGING_RESPONDER_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_IMAGING_ARCHIVE_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga3f04a28d9764a0c7755babe379c25393"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_IMAGING_ARCHIVE_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_IMAGING_ARCHIVE_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_IMAGING_REFOBJS_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga51a4cfc28f86a650b03a7bbe6e5b883a"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_IMAGING_REFOBJS_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_IMAGING_REFOBJS_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_HANDSFREE_SVCLASS">
+<span class="target" id="group__bt__sdp_1gab9f99989420545b3b0e71da6c5475f90"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_HANDSFREE_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_HANDSFREE_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_HANDSFREE_AGW_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga1c44ae236a292c91dc81539c9c89947c"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_HANDSFREE_AGW_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_HANDSFREE_AGW_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_DIRECT_PRT_REFOBJS_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga79d34c3b7641cf523adf6515720ceceb"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_DIRECT_PRT_REFOBJS_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_DIRECT_PRT_REFOBJS_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_REFLECTED_UI_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga78607a42f5228b37d348614b12e48a77"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_REFLECTED_UI_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_REFLECTED_UI_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_BASIC_PRINTING_SVCLASS">
+<span class="target" id="group__bt__sdp_1gac727f387a55a76c9a071cf62792f50e4"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_BASIC_PRINTING_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_BASIC_PRINTING_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_PRINTING_STATUS_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga9298ac73a26a1ab2e53733f404e5c6ea"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_PRINTING_STATUS_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_PRINTING_STATUS_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_HID_SVCLASS">
+<span class="target" id="group__bt__sdp_1gab63eab5791898a47bd540eed4d55cddc"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_HID_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_HID_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_HCR_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga873f8e03aeb696d3eb287a8d00796a4f"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_HCR_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_HCR_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_HCR_PRINT_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga4ca1e6eb6fe385e526f8d84ed65ab285"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_HCR_PRINT_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_HCR_PRINT_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_HCR_SCAN_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga621afe0f5a6d176c26e140c4162bee07"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_HCR_SCAN_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_HCR_SCAN_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_CIP_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga9617c02c6999d9fe987e91c6c2dc5dca"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_CIP_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_CIP_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_VIDEO_CONF_GW_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga3e087c095a78f07efae660eceae9c11e"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_VIDEO_CONF_GW_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_VIDEO_CONF_GW_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UDI_MT_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga629179357eff2cd60621f0e1e435df06"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UDI_MT_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_UDI_MT_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UDI_TA_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga846599abf75f1cbb27028aea8a619f31"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UDI_TA_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_UDI_TA_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_AV_SVCLASS">
+<span class="target" id="group__bt__sdp_1gab7a8499dbb73a2700389d55d331bd23e"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_AV_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_AV_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SAP_SVCLASS">
+<span class="target" id="group__bt__sdp_1gad2234f8e0bce0e6b55d18c7a7c950e1d"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SAP_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_SAP_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_PBAP_PCE_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaec2475b7ba36b860c0f8a9cfc33df4a8"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_PBAP_PCE_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_PBAP_PCE_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_PBAP_PSE_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga612bb83e9f08edd163433a5fbe9528fc"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_PBAP_PSE_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_PBAP_PSE_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_PBAP_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga60a9fad26300c15e988e101f90c06435"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_PBAP_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_PBAP_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_MAP_MSE_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga58f5cc54014e3723720e7c3b7ba82fd8"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_MAP_MSE_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_MAP_MSE_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_MAP_MCE_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga47849c599678f7ec48c237b8b36e9cb7"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_MAP_MCE_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_MAP_MCE_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_MAP_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaec665050af4cc3affcef3912bb212fc0"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_MAP_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_MAP_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_GNSS_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga300585062ed9ae05daca226cb3c5440d"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_GNSS_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_GNSS_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_GNSS_SERVER_SVCLASS">
+<span class="target" id="group__bt__sdp_1gacdfb8ca6a776f57a2df38b4a6eaa8403"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_GNSS_SERVER_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_GNSS_SERVER_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_MPS_SC_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga9cce7e3a576329661b363b102cefa494"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_MPS_SC_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_MPS_SC_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_MPS_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaf847b2675482d3bb9674f569c3604e40"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_MPS_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_MPS_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_PNP_INFO_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaed5403661e0eb8f798a950bead59369a"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_PNP_INFO_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_PNP_INFO_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_GENERIC_NETWORKING_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga1b9a169ff4db4fda939cba3ce21f808b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_GENERIC_NETWORKING_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_GENERIC_NETWORKING_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_GENERIC_FILETRANS_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaa8e5c423fca1fb0d06504cdc5be276d1"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_GENERIC_FILETRANS_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_GENERIC_FILETRANS_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_GENERIC_AUDIO_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaec7548467ffb686b22a907d05e38f275"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_GENERIC_AUDIO_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_GENERIC_AUDIO_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_GENERIC_TELEPHONY_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga010b005cfdb69c67cfc7e3c5c8426778"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_GENERIC_TELEPHONY_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_GENERIC_TELEPHONY_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UPNP_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga9e7fa3bcf139462a2c33f90b526e1ad1"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UPNP_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_UPNP_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UPNP_IP_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga102b24708429877c4f37a5008fb176b1"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UPNP_IP_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_UPNP_IP_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UPNP_PAN_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga3f50947a742b24089f86193e773d623b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UPNP_PAN_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_UPNP_PAN_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UPNP_LAP_SVCLASS">
+<span class="target" id="group__bt__sdp_1gad418094573383e6252719abed97d24dd"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UPNP_LAP_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_UPNP_LAP_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UPNP_L2CAP_SVCLASS">
+<span class="target" id="group__bt__sdp_1gad4d97c0b664c48bdc0842f92240409c7"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UPNP_L2CAP_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_UPNP_L2CAP_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_VIDEO_SOURCE_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga17d7fb3a77ef7266ea2d760fb3696a83"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_VIDEO_SOURCE_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_VIDEO_SOURCE_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_VIDEO_SINK_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga1e3428b6d0197bd7c9d72154c025e9f5"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_VIDEO_SINK_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_VIDEO_SINK_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_VIDEO_DISTRIBUTION_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga4e2ef8310c9396f9fb7781ab4732f308"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_VIDEO_DISTRIBUTION_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_VIDEO_DISTRIBUTION_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_HDP_SVCLASS">
+<span class="target" id="group__bt__sdp_1gaf8fc80f3b2ff245b7d354aa0488bb42b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_HDP_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_HDP_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_HDP_SOURCE_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga87ba9fdf39fb99397a6dec4d92b6e3f1"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_HDP_SOURCE_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_HDP_SOURCE_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_HDP_SINK_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga2125a92c6eb724a63d04188919a12bf1"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_HDP_SINK_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_HDP_SINK_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_GENERIC_ACCESS_SVCLASS">
+<span class="target" id="group__bt__sdp_1gae8010af5b12cd1c1b1633a4d2c9f5ab0"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_GENERIC_ACCESS_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_GENERIC_ACCESS_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_GENERIC_ATTRIB_SVCLASS">
+<span class="target" id="group__bt__sdp_1gad3f345431526bb713921f4b51c48b056"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_GENERIC_ATTRIB_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_GENERIC_ATTRIB_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_APPLE_AGENT_SVCLASS">
+<span class="target" id="group__bt__sdp_1ga694b04c2dae3b06b7fd66640468a5a38"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_APPLE_AGENT_SVCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_APPLE_AGENT_SVCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SERVER_RECORD_HANDLE">
+<span class="target" id="group__bt__sdp_1ga610e7cab0a598f272eeb2838f4c4c996"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SERVER_RECORD_HANDLE</span></span></span><a class="headerlink" href="#c.BT_SDP_SERVER_RECORD_HANDLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_RECORD_HANDLE">
+<span class="target" id="group__bt__sdp_1ga38f32cae462272b51eb4edca0c5c95a2"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_RECORD_HANDLE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_RECORD_HANDLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SVCLASS_ID_LIST">
+<span class="target" id="group__bt__sdp_1gab5c5be56c54d3f8bd4ac6defff0b1e7c"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SVCLASS_ID_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SVCLASS_ID_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_RECORD_STATE">
+<span class="target" id="group__bt__sdp_1ga4d458591f8eba26feaab1220c49f6a29"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_RECORD_STATE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_RECORD_STATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SERVICE_ID">
+<span class="target" id="group__bt__sdp_1gad2149fd761f7ae2ea6ef761ab2545ab4"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SERVICE_ID</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SERVICE_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_PROTO_DESC_LIST">
+<span class="target" id="group__bt__sdp_1ga3e7dad966deab42ff9fa0fd04d3d4514"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_PROTO_DESC_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_PROTO_DESC_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_BROWSE_GRP_LIST">
+<span class="target" id="group__bt__sdp_1ga2609212bf5400c31351bc3ec5f60a7e1"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_BROWSE_GRP_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_BROWSE_GRP_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_LANG_BASE_ATTR_ID_LIST">
+<span class="target" id="group__bt__sdp_1ga462ec997a81c6b439a24e2de085676ab"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_LANG_BASE_ATTR_ID_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_LANG_BASE_ATTR_ID_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SVCINFO_TTL">
+<span class="target" id="group__bt__sdp_1ga7ef037ed6628aa7354736295e0e4ec77"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SVCINFO_TTL</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SVCINFO_TTL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SERVICE_AVAILABILITY">
+<span class="target" id="group__bt__sdp_1gaf55a72ce05def1da08d15a23cee4c5e3"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SERVICE_AVAILABILITY</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SERVICE_AVAILABILITY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_PROFILE_DESC_LIST">
+<span class="target" id="group__bt__sdp_1ga0b5b19caa523e4cb9da8a2bfc6eab20a"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_PROFILE_DESC_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_PROFILE_DESC_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_DOC_URL">
+<span class="target" id="group__bt__sdp_1gad8302739bca706f6da851d912ada0f82"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_DOC_URL</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_DOC_URL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_CLNT_EXEC_URL">
+<span class="target" id="group__bt__sdp_1ga0bc613d68dace4cce7a4eec654f5a1e4"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_CLNT_EXEC_URL</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_CLNT_EXEC_URL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_ICON_URL">
+<span class="target" id="group__bt__sdp_1ga365048bcb0ad2989aec9dd0d89abbfb9"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_ICON_URL</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_ICON_URL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_ADD_PROTO_DESC_LIST">
+<span class="target" id="group__bt__sdp_1gaf7f0b2f30ede36cf280bf31c5e76a99c"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_ADD_PROTO_DESC_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_ADD_PROTO_DESC_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_GROUP_ID">
+<span class="target" id="group__bt__sdp_1ga15a104c78357f2353cd49eb858de057d"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_GROUP_ID</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_GROUP_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_IP_SUBNET">
+<span class="target" id="group__bt__sdp_1ga23a63b424ab381048cb898ebbdb64a02"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_IP_SUBNET</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_IP_SUBNET" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_VERSION_NUM_LIST">
+<span class="target" id="group__bt__sdp_1gab698c476197acca0d499e39f7f246c66"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_VERSION_NUM_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_VERSION_NUM_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SUPPORTED_FEATURES_LIST">
+<span class="target" id="group__bt__sdp_1ga8a693e5265c7801e3c1125473c31445f"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SUPPORTED_FEATURES_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SUPPORTED_FEATURES_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_GOEP_L2CAP_PSM">
+<span class="target" id="group__bt__sdp_1gac7583b3d2a0ebc82e5cf2e6705249201"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_GOEP_L2CAP_PSM</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_GOEP_L2CAP_PSM" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SVCDB_STATE">
+<span class="target" id="group__bt__sdp_1gab8fe8881b4470ab3522e710e36470ddb"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SVCDB_STATE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SVCDB_STATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_MPSD_SCENARIOS">
+<span class="target" id="group__bt__sdp_1ga39b3436f9da303bd2ce1ad38f072ed9f"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_MPSD_SCENARIOS</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_MPSD_SCENARIOS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_MPMD_SCENARIOS">
+<span class="target" id="group__bt__sdp_1gaa3cc3d9a6ac7375e66b0892631698fd0"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_MPMD_SCENARIOS</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_MPMD_SCENARIOS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_MPS_DEPENDENCIES">
+<span class="target" id="group__bt__sdp_1ga45795e50564492ac9bce8d6832883741"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_MPS_DEPENDENCIES</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_MPS_DEPENDENCIES" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SERVICE_VERSION">
+<span class="target" id="group__bt__sdp_1ga230f70b576c14ba1dbe0cf6eda6220e0"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SERVICE_VERSION</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SERVICE_VERSION" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_EXTERNAL_NETWORK">
+<span class="target" id="group__bt__sdp_1ga617dc829eb1192cd283bef67a357d75f"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_EXTERNAL_NETWORK</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_EXTERNAL_NETWORK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SUPPORTED_DATA_STORES_LIST">
+<span class="target" id="group__bt__sdp_1gae12e2daea8febbbd047c1c3843f56933"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SUPPORTED_DATA_STORES_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SUPPORTED_DATA_STORES_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_DATA_EXCHANGE_SPEC">
+<span class="target" id="group__bt__sdp_1ga4732f83c88de43a90ca3d58a136907b6"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_DATA_EXCHANGE_SPEC</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_DATA_EXCHANGE_SPEC" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_NETWORK">
+<span class="target" id="group__bt__sdp_1ga9c78d47f54e82a51f7d04a6f6c97663c"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_NETWORK</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_NETWORK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_FAX_CLASS1_SUPPORT">
+<span class="target" id="group__bt__sdp_1gaeebfb4a085417db65241b21a27258d84"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_FAX_CLASS1_SUPPORT</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_FAX_CLASS1_SUPPORT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_REMOTE_AUDIO_VOLUME_CONTROL">
+<span class="target" id="group__bt__sdp_1gaa122bfee476a8e83346823e23978f7a0"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_REMOTE_AUDIO_VOLUME_CONTROL</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_REMOTE_AUDIO_VOLUME_CONTROL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_MCAP_SUPPORTED_PROCEDURES">
+<span class="target" id="group__bt__sdp_1ga54e285c7a12becef9742093e1777c06b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_MCAP_SUPPORTED_PROCEDURES</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_MCAP_SUPPORTED_PROCEDURES" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_FAX_CLASS20_SUPPORT">
+<span class="target" id="group__bt__sdp_1ga861470cd4b505d074abb727ba72c088a"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_FAX_CLASS20_SUPPORT</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_FAX_CLASS20_SUPPORT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SUPPORTED_FORMATS_LIST">
+<span class="target" id="group__bt__sdp_1gac12ed37044c3f12c2d41b1fd23eacada"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SUPPORTED_FORMATS_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SUPPORTED_FORMATS_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_FAX_CLASS2_SUPPORT">
+<span class="target" id="group__bt__sdp_1ga2475947ccdb9f30ece61a34959fd6ce2"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_FAX_CLASS2_SUPPORT</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_FAX_CLASS2_SUPPORT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_AUDIO_FEEDBACK_SUPPORT">
+<span class="target" id="group__bt__sdp_1gac4906f9fa368fbf604830cd5c5fdcb57"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_AUDIO_FEEDBACK_SUPPORT</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_AUDIO_FEEDBACK_SUPPORT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_NETWORK_ADDRESS">
+<span class="target" id="group__bt__sdp_1ga74dacfd7807d7f3ec7a7594a9329f0b2"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_NETWORK_ADDRESS</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_NETWORK_ADDRESS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_WAP_GATEWAY">
+<span class="target" id="group__bt__sdp_1ga1ef964c955473601910ee3997b9ce5cd"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_WAP_GATEWAY</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_WAP_GATEWAY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HOMEPAGE_URL">
+<span class="target" id="group__bt__sdp_1gafeff5e5b60bd47c44f8edbe8ff7e78a0"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HOMEPAGE_URL</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HOMEPAGE_URL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_WAP_STACK_TYPE">
+<span class="target" id="group__bt__sdp_1gae1a3ff84a5588e55258c35ee57d6a5b5"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_WAP_STACK_TYPE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_WAP_STACK_TYPE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SECURITY_DESC">
+<span class="target" id="group__bt__sdp_1ga21214c2236a5dca24a45998640761e7b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SECURITY_DESC</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SECURITY_DESC" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_NET_ACCESS_TYPE">
+<span class="target" id="group__bt__sdp_1ga13851f9f9a5ba8514d20cffbe5eb9f14"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_NET_ACCESS_TYPE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_NET_ACCESS_TYPE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_MAX_NET_ACCESSRATE">
+<span class="target" id="group__bt__sdp_1ga7347caab1c7e8755250567d9d8cc7266"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_MAX_NET_ACCESSRATE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_MAX_NET_ACCESSRATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_IP4_SUBNET">
+<span class="target" id="group__bt__sdp_1ga01c0cdb8975484242e6c4b052dabfd91"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_IP4_SUBNET</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_IP4_SUBNET" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_IP6_SUBNET">
+<span class="target" id="group__bt__sdp_1ga10b3d4826904489d474af5e9c21c0831"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_IP6_SUBNET</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_IP6_SUBNET" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SUPPORTED_CAPABILITIES">
+<span class="target" id="group__bt__sdp_1ga5347dbc038ac9c259d17c14ed9a812d3"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SUPPORTED_CAPABILITIES</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SUPPORTED_CAPABILITIES" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SUPPORTED_FEATURES">
+<span class="target" id="group__bt__sdp_1ga498d9beaa7877570fe834d854de36fcb"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SUPPORTED_FEATURES</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SUPPORTED_FEATURES" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SUPPORTED_FUNCTIONS">
+<span class="target" id="group__bt__sdp_1gabc7cdfd247da5e2ecfd441c0436471f3"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SUPPORTED_FUNCTIONS</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SUPPORTED_FUNCTIONS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_TOTAL_IMAGING_DATA_CAPACITY">
+<span class="target" id="group__bt__sdp_1gadbce181b739c201070d6abcbdc4139f4"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_TOTAL_IMAGING_DATA_CAPACITY</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_TOTAL_IMAGING_DATA_CAPACITY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SUPPORTED_REPOSITORIES">
+<span class="target" id="group__bt__sdp_1gada3d989d6c8c0664ba0bf998414a0328"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SUPPORTED_REPOSITORIES</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SUPPORTED_REPOSITORIES" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_MAS_INSTANCE_ID">
+<span class="target" id="group__bt__sdp_1ga03d653957d68b5d0eeda1fa7c9aa4587"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_MAS_INSTANCE_ID</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_MAS_INSTANCE_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SUPPORTED_MESSAGE_TYPES">
+<span class="target" id="group__bt__sdp_1ga41fc674e8571556397135734d28b829a"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SUPPORTED_MESSAGE_TYPES</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SUPPORTED_MESSAGE_TYPES" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_PBAP_SUPPORTED_FEATURES">
+<span class="target" id="group__bt__sdp_1gaa681b17ebfe013c196cf372dcd030c6e"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_PBAP_SUPPORTED_FEATURES</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_PBAP_SUPPORTED_FEATURES" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_MAP_SUPPORTED_FEATURES">
+<span class="target" id="group__bt__sdp_1gaa50f16945c15f7a954c10dbc8fc394bf"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_MAP_SUPPORTED_FEATURES</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_MAP_SUPPORTED_FEATURES" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SPECIFICATION_ID">
+<span class="target" id="group__bt__sdp_1ga4af959fbdfe7cee84008642091df948d"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SPECIFICATION_ID</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SPECIFICATION_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_VENDOR_ID">
+<span class="target" id="group__bt__sdp_1gab5c2534491b43cfc9d2c7e8807b29ff2"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_VENDOR_ID</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_VENDOR_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_PRODUCT_ID">
+<span class="target" id="group__bt__sdp_1gaac9298efffbcf07303f972a12b50f4b6"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_PRODUCT_ID</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_PRODUCT_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_VERSION">
+<span class="target" id="group__bt__sdp_1gae0f4af728f964ee1c11d86b785575a87"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_VERSION</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_VERSION" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_PRIMARY_RECORD">
+<span class="target" id="group__bt__sdp_1ga0868f7d90e3944f105028868511896cf"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_PRIMARY_RECORD</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_PRIMARY_RECORD" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_VENDOR_ID_SOURCE">
+<span class="target" id="group__bt__sdp_1gad0ac4a65c51ccdf4cd128eb8697e56ca"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_VENDOR_ID_SOURCE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_VENDOR_ID_SOURCE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_DEVICE_RELEASE_NUMBER">
+<span class="target" id="group__bt__sdp_1gab33be247c7574e985dfb34e3c121dd23"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_DEVICE_RELEASE_NUMBER</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_DEVICE_RELEASE_NUMBER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_PARSER_VERSION">
+<span class="target" id="group__bt__sdp_1ga8bb0a4f69b029048958a1395cc98d285"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_PARSER_VERSION</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_PARSER_VERSION" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_DEVICE_SUBCLASS">
+<span class="target" id="group__bt__sdp_1ga43aa99ef47032c04be1bdee571dcfa5c"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_DEVICE_SUBCLASS</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_DEVICE_SUBCLASS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_COUNTRY_CODE">
+<span class="target" id="group__bt__sdp_1ga5c06a7b07412b0a319656208700ac48e"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_COUNTRY_CODE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_COUNTRY_CODE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_VIRTUAL_CABLE">
+<span class="target" id="group__bt__sdp_1ga26ff5394958b41c5a595952992e0bbbe"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_VIRTUAL_CABLE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_VIRTUAL_CABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_RECONNECT_INITIATE">
+<span class="target" id="group__bt__sdp_1ga30c601e79bd47f29bcc8325ac19a8391"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_RECONNECT_INITIATE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_RECONNECT_INITIATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_DESCRIPTOR_LIST">
+<span class="target" id="group__bt__sdp_1gaadf6a1c7740d5055e1877142b75d07c2"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_DESCRIPTOR_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_DESCRIPTOR_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_LANG_ID_BASE_LIST">
+<span class="target" id="group__bt__sdp_1ga732063505ff39f236b03646f8b7a78c6"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_LANG_ID_BASE_LIST</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_LANG_ID_BASE_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_SDP_DISABLE">
+<span class="target" id="group__bt__sdp_1ga498779c65f410192862aa288cb1e277f"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_SDP_DISABLE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_SDP_DISABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_BATTERY_POWER">
+<span class="target" id="group__bt__sdp_1gac92ef24a03422abdc6ca932e0675aa57"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_BATTERY_POWER</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_BATTERY_POWER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_REMOTE_WAKEUP">
+<span class="target" id="group__bt__sdp_1ga4bd0452184af1530887b0a785e30fca7"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_REMOTE_WAKEUP</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_REMOTE_WAKEUP" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_PROFILE_VERSION">
+<span class="target" id="group__bt__sdp_1gaa792255345fe4f62062a848aebb220c7"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_PROFILE_VERSION</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_PROFILE_VERSION" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_SUPERVISION_TIMEOUT">
+<span class="target" id="group__bt__sdp_1ga1cd5f256115ef60736eb1089bf66988c"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_SUPERVISION_TIMEOUT</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_SUPERVISION_TIMEOUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_NORMALLY_CONNECTABLE">
+<span class="target" id="group__bt__sdp_1ga866194b8e0ec3eebe086998ae0c6e2ab"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_NORMALLY_CONNECTABLE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_NORMALLY_CONNECTABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_HID_BOOT_DEVICE">
+<span class="target" id="group__bt__sdp_1ga511980e049b047618f97ac38a4ea3f4e"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_HID_BOOT_DEVICE</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_HID_BOOT_DEVICE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_PRIMARY_LANG_BASE">
+<span class="target" id="group__bt__sdp_1gab502c9288e5f01dfdaaf8390bb3f6e49"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_PRIMARY_LANG_BASE</span></span></span><a class="headerlink" href="#c.BT_SDP_PRIMARY_LANG_BASE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SVCNAME_PRIMARY">
+<span class="target" id="group__bt__sdp_1ga76737502226c623bf508ae53a6015e08"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SVCNAME_PRIMARY</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SVCNAME_PRIMARY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_SVCDESC_PRIMARY">
+<span class="target" id="group__bt__sdp_1ga3e991ec1d5467c0b3ce5d9a7e750a300"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_SVCDESC_PRIMARY</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_SVCDESC_PRIMARY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ATTR_PROVNAME_PRIMARY">
+<span class="target" id="group__bt__sdp_1gab8b0110be857d6eca206e00c3b5e373a"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ATTR_PROVNAME_PRIMARY</span></span></span><a class="headerlink" href="#c.BT_SDP_ATTR_PROVNAME_PRIMARY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_DATA_NIL">
+<span class="target" id="group__bt__sdp_1ga36f257de103356c3ebeb55e23186ed99"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_DATA_NIL</span></span></span><a class="headerlink" href="#c.BT_SDP_DATA_NIL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UINT8">
+<span class="target" id="group__bt__sdp_1ga546a46c2aa7eb3306eb46768fb8737a4"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UINT8</span></span></span><a class="headerlink" href="#c.BT_SDP_UINT8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UINT16">
+<span class="target" id="group__bt__sdp_1ga1129f3a1364f29c9ce36f6f74ca21327"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UINT16</span></span></span><a class="headerlink" href="#c.BT_SDP_UINT16" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UINT32">
+<span class="target" id="group__bt__sdp_1ga4f3bcb36dfce975c2d9ab68894a9e49c"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UINT32</span></span></span><a class="headerlink" href="#c.BT_SDP_UINT32" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UINT64">
+<span class="target" id="group__bt__sdp_1ga11261bf1c63a6d463ed41225c1e1a0c7"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UINT64</span></span></span><a class="headerlink" href="#c.BT_SDP_UINT64" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UINT128">
+<span class="target" id="group__bt__sdp_1ga9a815c6efe976f29e9f6f35a566245fd"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UINT128</span></span></span><a class="headerlink" href="#c.BT_SDP_UINT128" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_INT8">
+<span class="target" id="group__bt__sdp_1gaeed1818ca1bf762b23ab2bfcd18b8a66"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_INT8</span></span></span><a class="headerlink" href="#c.BT_SDP_INT8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_INT16">
+<span class="target" id="group__bt__sdp_1gaf6a3795d22cff4a522a2225339fb5a57"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_INT16</span></span></span><a class="headerlink" href="#c.BT_SDP_INT16" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_INT32">
+<span class="target" id="group__bt__sdp_1ga0ad987ebeac3dab3ef2196f4dfeca1ab"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_INT32</span></span></span><a class="headerlink" href="#c.BT_SDP_INT32" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_INT64">
+<span class="target" id="group__bt__sdp_1gaae793fef5690c6013e6e0e34ededb75f"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_INT64</span></span></span><a class="headerlink" href="#c.BT_SDP_INT64" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_INT128">
+<span class="target" id="group__bt__sdp_1gaf754bbfd9cdc0e6a2bf7d6c46fab3f29"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_INT128</span></span></span><a class="headerlink" href="#c.BT_SDP_INT128" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UUID_UNSPEC">
+<span class="target" id="group__bt__sdp_1ga4f829572cca9669a8a96a857874bb022"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UUID_UNSPEC</span></span></span><a class="headerlink" href="#c.BT_SDP_UUID_UNSPEC" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UUID16">
+<span class="target" id="group__bt__sdp_1ga45598f1c663acd3a3e5a409696cb3d2f"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UUID16</span></span></span><a class="headerlink" href="#c.BT_SDP_UUID16" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UUID32">
+<span class="target" id="group__bt__sdp_1ga78245bb059feb3ec039e05aba24746e7"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UUID32</span></span></span><a class="headerlink" href="#c.BT_SDP_UUID32" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_UUID128">
+<span class="target" id="group__bt__sdp_1gaadf48ba3e96687fff99ff58789d79a50"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_UUID128</span></span></span><a class="headerlink" href="#c.BT_SDP_UUID128" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_TEXT_STR_UNSPEC">
+<span class="target" id="group__bt__sdp_1gaca9942a42701cda835a5bf7b7aaf1d75"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_TEXT_STR_UNSPEC</span></span></span><a class="headerlink" href="#c.BT_SDP_TEXT_STR_UNSPEC" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_TEXT_STR8">
+<span class="target" id="group__bt__sdp_1ga885ace6b1def91f3fa4dd16cb391d2b8"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_TEXT_STR8</span></span></span><a class="headerlink" href="#c.BT_SDP_TEXT_STR8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_TEXT_STR16">
+<span class="target" id="group__bt__sdp_1gaa5301cdac5fc9299837f29b92aa3c10b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_TEXT_STR16</span></span></span><a class="headerlink" href="#c.BT_SDP_TEXT_STR16" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_TEXT_STR32">
+<span class="target" id="group__bt__sdp_1ga29657a21117a3fbe05942778a8d7637e"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_TEXT_STR32</span></span></span><a class="headerlink" href="#c.BT_SDP_TEXT_STR32" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_BOOL">
+<span class="target" id="group__bt__sdp_1gac48f198f6609fac95db69c09ac69efab"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_BOOL</span></span></span><a class="headerlink" href="#c.BT_SDP_BOOL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SEQ_UNSPEC">
+<span class="target" id="group__bt__sdp_1gaa884191d772bfa24484cb33c0f614334"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SEQ_UNSPEC</span></span></span><a class="headerlink" href="#c.BT_SDP_SEQ_UNSPEC" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SEQ8">
+<span class="target" id="group__bt__sdp_1ga5a64e3bec70b40114a3160dbfb1e484b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SEQ8</span></span></span><a class="headerlink" href="#c.BT_SDP_SEQ8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SEQ16">
+<span class="target" id="group__bt__sdp_1gadf5b15a0296a872ffefc24bbc90dc45b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SEQ16</span></span></span><a class="headerlink" href="#c.BT_SDP_SEQ16" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SEQ32">
+<span class="target" id="group__bt__sdp_1ga639e86b5103168917cb7202100e3124d"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SEQ32</span></span></span><a class="headerlink" href="#c.BT_SDP_SEQ32" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ALT_UNSPEC">
+<span class="target" id="group__bt__sdp_1gaee1bd735929cb2c4bca48cc7663407fd"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ALT_UNSPEC</span></span></span><a class="headerlink" href="#c.BT_SDP_ALT_UNSPEC" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ALT8">
+<span class="target" id="group__bt__sdp_1gab7460f41f05a418d58f4b6807d84cb40"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ALT8</span></span></span><a class="headerlink" href="#c.BT_SDP_ALT8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ALT16">
+<span class="target" id="group__bt__sdp_1gab976bc87f0dcba0e4bc61575ea04ccc7"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ALT16</span></span></span><a class="headerlink" href="#c.BT_SDP_ALT16" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ALT32">
+<span class="target" id="group__bt__sdp_1ga420936f672ae31ca701ae277b69d592a"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ALT32</span></span></span><a class="headerlink" href="#c.BT_SDP_ALT32" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_URL_STR_UNSPEC">
+<span class="target" id="group__bt__sdp_1ga32a7a79422f52b75c2eb2d2eb467dc00"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_URL_STR_UNSPEC</span></span></span><a class="headerlink" href="#c.BT_SDP_URL_STR_UNSPEC" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_URL_STR8">
+<span class="target" id="group__bt__sdp_1gafb2a77d6097c8c4cf9f01b7e16df26f1"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_URL_STR8</span></span></span><a class="headerlink" href="#c.BT_SDP_URL_STR8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_URL_STR16">
+<span class="target" id="group__bt__sdp_1gac1acc712468e5af1f54022ac3551882a"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_URL_STR16</span></span></span><a class="headerlink" href="#c.BT_SDP_URL_STR16" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_URL_STR32">
+<span class="target" id="group__bt__sdp_1ga37476681e9d4eee53b710c44e2da9a2f"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_URL_STR32</span></span></span><a class="headerlink" href="#c.BT_SDP_URL_STR32" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_TYPE_DESC_MASK">
+<span class="target" id="group__bt__sdp_1ga3eb2a5501341f6c5186a27219cf27cdf"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_TYPE_DESC_MASK</span></span></span><a class="headerlink" href="#c.BT_SDP_TYPE_DESC_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SIZE_DESC_MASK">
+<span class="target" id="group__bt__sdp_1ga2d1040ccd11d1dd4c697525ebc323243"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SIZE_DESC_MASK</span></span></span><a class="headerlink" href="#c.BT_SDP_SIZE_DESC_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SIZE_INDEX_OFFSET">
+<span class="target" id="group__bt__sdp_1ga6e8f843aeb2d325058214d2a1454737a"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SIZE_INDEX_OFFSET</span></span></span><a class="headerlink" href="#c.BT_SDP_SIZE_INDEX_OFFSET" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ARRAY_8">
+<span class="target" id="group__bt__sdp_1gaef264fa3621c3df7a164128bb95b30fc"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ARRAY_8</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_SDP_ARRAY_8" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare an array of 8-bit elements in an attribute. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ARRAY_16">
+<span class="target" id="group__bt__sdp_1gaa4bb67164ae1f16b26081668d00f45c7"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ARRAY_16</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_SDP_ARRAY_16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare an array of 16-bit elements in an attribute. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_ARRAY_32">
+<span class="target" id="group__bt__sdp_1ga7a17ee4872190a087cf2e5ea4db9e737"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_ARRAY_32</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_SDP_ARRAY_32" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare an array of 32-bit elements in an attribute. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_TYPE_SIZE">
+<span class="target" id="group__bt__sdp_1ga66778ac38fb5b82d3b514fe0da008393"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_TYPE_SIZE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_SDP_TYPE_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare a fixed-size data element header. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_type</span></code>: Data element header containing type and size descriptors. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_TYPE_SIZE_VAR">
+<span class="target" id="group__bt__sdp_1gabbb2bd6a8321513082851fe73dfa44bc"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_TYPE_SIZE_VAR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_type</span></span>, <span class="n"><span class="pre">_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_SDP_TYPE_SIZE_VAR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare a variable-size data element header. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_type</span></code>: Data element header containing type and size descriptors. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_size</span></code>: The actual size of the data. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_DATA_ELEM_LIST">
+<span class="target" id="group__bt__sdp_1gaa2954f3df4d0ee9684721cbc6182e37c"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_DATA_ELEM_LIST</span></span></span><span class="sig-paren">(</span><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_SDP_DATA_ELEM_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare a list of data elements. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_NEW_SERVICE">
+<span class="target" id="group__bt__sdp_1gaee13722587e4eb8c4beaaa0abad88fe5"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_NEW_SERVICE</span></span></span><a class="headerlink" href="#c.BT_SDP_NEW_SERVICE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>SDP New Service Record Declaration Macro. </p>
+<p>Helper macro to declare a new service record. Default attributes: Record Handle, Record State, Language Base, Root Browse Group </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_LIST">
+<span class="target" id="group__bt__sdp_1ga25b31454ee5b5fe23b617b5256ba00c4"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_LIST</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_att_id</span></span>, <span class="n"><span class="pre">_type_size</span></span>, <span class="n"><span class="pre">_data_elem_seq</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_SDP_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generic SDP List Attribute Declaration Macro. </p>
+<p>Helper macro to declare a list attribute.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_att_id</span></code>: List Attribute ID. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_data_elem_seq</span></code>: Data element sequence for the list. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_type_size</span></code>: SDP type and size descriptor. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SERVICE_ID">
+<span class="target" id="group__bt__sdp_1gaa57f3c9a52ae29c02d7577be99f91e7c"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SERVICE_ID</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_uuid</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_SDP_SERVICE_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>SDP Service ID Attribute Declaration Macro. </p>
+<p>Helper macro to declare a service ID attribute.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_uuid</span></code>: Service ID 16bit UUID. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SERVICE_NAME">
+<span class="target" id="group__bt__sdp_1ga83de8e62415d3e31b3b5434b9db633d0"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SERVICE_NAME</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_SDP_SERVICE_NAME" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>SDP Name Attribute Declaration Macro. </p>
+<p>Helper macro to declare a service name attribute.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Service name as a string (up to 256 chars). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_SUPPORTED_FEATURES">
+<span class="target" id="group__bt__sdp_1ga096c84414b429aa05bed45cf6175361e"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_SUPPORTED_FEATURES</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_features</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_SDP_SUPPORTED_FEATURES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>SDP Supported Features Attribute Declaration Macro. </p>
+<p>Helper macro to declare supported features of a profile/protocol.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_features</span></code>: Feature mask as 16bit unsigned integer. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_SDP_RECORD">
+<span class="target" id="group__bt__sdp_1ga555f10b8f3ae3710c6dda9f37e78547b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_RECORD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_attrs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_SDP_RECORD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>SDP Service Declaration Macro. </p>
+<p>Helper macro to declare a service.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_attrs</span></code>: List of attributes for the service record. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.bt_sdp_discover_func_t">
+<span class="target" id="group__bt__sdp_1ga743ba726affa3fb727d366a200b55086"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_discover_func_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">bt_conn</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">conn</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_sdp_client_result" title="bt_sdp_client_result"><span class="n"><span class="pre">bt_sdp_client_result</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_sdp_discover_func_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback type reporting to user that there is a resolved result on remote for given UUID and the result record buffer can be used by user for further inspection. </p>
+<p>A function of this type is given by the user to the <a class="reference internal" href="#structbt__sdp__discover__params"><span class="std std-ref">bt_sdp_discover_params</span></a> object. It’ll be called on each valid record discovery completion for given UUID. When UUID resolution gives back no records then NULL is passed to the user. Otherwise user can get valid record(s) and then the internal hint ‘next record’ is set to false saying the UUID resolution is complete or the hint can be set by caller to true meaning that next record is available for given UUID. The returned function value allows the user to control retrieving follow-up resolved records if any. If the user doesn’t want to read more resolved records for given UUID since current record data fulfills its requirements then should return BT_SDP_DISCOVER_UUID_STOP. Otherwise returned value means more subcall iterations are allowable.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>BT_SDP_DISCOVER_UUID_STOP in case of no more need to read next record data and continue discovery for given UUID. By returning BT_SDP_DISCOVER_UUID_CONTINUE user allows this discovery continuation. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">conn</span></code>: Connection object identifying connection to queried remote. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">result</span></code>: Object pointing to logical unparsed SDP record collected on base of response driven by given UUID.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.&#64;87">
+<span class="target" id="group__bt__sdp_1ga950bf8e3371138ceb9649d45e9a96340"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#c.@87" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper enum to be used as return value of bt_sdp_discover_func_t. The value informs the caller to perform further pending actions or stop them. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.&#64;87.BT_SDP_DISCOVER_UUID_STOP">
+<span class="target" id="group__bt__sdp_1gga950bf8e3371138ceb9649d45e9a96340a990fbea48866b2acb7ccd67391b19636"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_DISCOVER_UUID_STOP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.@87.BT_SDP_DISCOVER_UUID_STOP" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.&#64;87.BT_SDP_DISCOVER_UUID_CONTINUE">
+<span class="target" id="group__bt__sdp_1gga950bf8e3371138ceb9649d45e9a96340a94e15ea86b69d65ca9c1947d1e2157ef"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_DISCOVER_UUID_CONTINUE</span></span></span><a class="headerlink" href="#c.@87.BT_SDP_DISCOVER_UUID_CONTINUE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.bt_sdp_proto">
+<span class="target" id="group__bt__sdp_1gaf01cb8d69aee9e06ab944ceae4d7df7c"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_proto</span></span></span><a class="headerlink" href="#c.bt_sdp_proto" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Protocols to be asked about specific parameters. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_sdp_proto.BT_SDP_PROTO_RFCOMM">
+<span class="target" id="group__bt__sdp_1ggaf01cb8d69aee9e06ab944ceae4d7df7ca1ccc0f7ecd38ef83d6c1bb6afd72d71d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_PROTO_RFCOMM</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x0003</span></span><a class="headerlink" href="#c.bt_sdp_proto.BT_SDP_PROTO_RFCOMM" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_sdp_proto.BT_SDP_PROTO_L2CAP">
+<span class="target" id="group__bt__sdp_1ggaf01cb8d69aee9e06ab944ceae4d7df7ca197184aa86b3777edca7c58e3597e688"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_SDP_PROTO_L2CAP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x0100</span></span><a class="headerlink" href="#c.bt_sdp_proto.BT_SDP_PROTO_L2CAP" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_sdp_register_service">
+<span class="target" id="group__bt__sdp_1ga6006e3cd593ef793273fb291913790fa"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_register_service</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_sdp_record" title="bt_sdp_record"><span class="n"><span class="pre">bt_sdp_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">service</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_sdp_register_service" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Register a Service Record. </p>
+<p>Register a Service Record. Applications can make use of macros such as BT_SDP_DECLARE_SERVICE, BT_SDP_LIST, BT_SDP_SERVICE_ID, BT_SDP_SERVICE_NAME, etc. A service declaration must start with BT_SDP_NEW_SERVICE.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">service</span></code>: Service record declared using BT_SDP_DECLARE_SERVICE.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_sdp_discover">
+<span class="target" id="group__bt__sdp_1gaf49c299d269ee7b93d41e6ce71df9f77"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_discover</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">bt_conn</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">conn</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_sdp_discover_params" title="bt_sdp_discover_params"><span class="n"><span class="pre">bt_sdp_discover_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_sdp_discover" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows user to start SDP discovery session. </p>
+<p>The function performs SDP service discovery on remote server driven by user delivered discovery parameters. Discovery session is made as soon as no SDP transaction is ongoing between peers and if any then this one is queued to be processed at discovery completion of previous one. On the service discovery completion the callback function will be called to get feedback to user about findings.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">conn</span></code>: Object identifying connection to remote. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">params</span></code>: SDP discovery parameters.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_sdp_discover_cancel">
+<span class="target" id="group__bt__sdp_1ga4659915e85ac2f440d6ea6be71f856fa"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_discover_cancel</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">bt_conn</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">conn</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_sdp_discover_params" title="bt_sdp_discover_params"><span class="n"><span class="pre">bt_sdp_discover_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_sdp_discover_cancel" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Release waiting SDP discovery request. </p>
+<p>It can cancel valid waiting SDP client request identified by SDP discovery parameters object.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">conn</span></code>: Object identifying connection to remote. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">params</span></code>: SDP discovery parameters.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_sdp_get_proto_param">
+<span class="target" id="group__bt__sdp_1gaff14678f465af239ac79d1e34bdb9409"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_get_proto_param</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_sdp_proto" title="bt_sdp_proto"><span class="n"><span class="pre">bt_sdp_proto</span></span></a><span class="w"> </span><span class="n"><span class="pre">proto</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">param</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_sdp_get_proto_param" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Give to user parameter value related to given stacked protocol UUID. </p>
+<p>API extracts specific parameter associated with given protocol UUID available in Protocol Descriptor List attribute.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success when specific parameter associated with given protocol value is found, or negative if error occurred during processing. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Original buffered raw record data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">proto</span></code>: Known protocol to be checked like RFCOMM or L2CAP. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">param</span></code>: On success populated by found parameter value.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_sdp_get_addl_proto_param">
+<span class="target" id="group__bt__sdp_1gacfcec85582954a80ba94822175d61092"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_get_addl_proto_param</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_sdp_proto" title="bt_sdp_proto"><span class="n"><span class="pre">bt_sdp_proto</span></span></a><span class="w"> </span><span class="n"><span class="pre">proto</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">param_index</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">param</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_sdp_get_addl_proto_param" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get additional parameter value related to given stacked protocol UUID. </p>
+<p>API extracts specific parameter associated with given protocol UUID available in Additional Protocol Descriptor List attribute.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success when a specific parameter associated with a given protocol value is found, or negative if error occurred during processing. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Original buffered raw record data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">proto</span></code>: Known protocol to be checked like RFCOMM or L2CAP. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">param_index</span></code>: There may be more than one parameter realted to the given protocol UUID. This function returns the result that is indexed by this parameter. It’s value is from 0, 0 means the first matched result, 1 means the second matched result. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">param</span></code>: On success populated by found parameter value.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_sdp_get_profile_version">
+<span class="target" id="group__bt__sdp_1ga9e7d4bd0a407fe8254410f907db90f00"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_get_profile_version</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">profile</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">version</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_sdp_get_profile_version" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get profile version. </p>
+<p>Helper API extracting remote profile version number. To get it proper generic profile parameter needs to be selected usually listed in SDP Interoperability Requirements section for given profile specification.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative value if error occurred during processing. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Original buffered raw record data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">profile</span></code>: Profile family identifier the profile belongs. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">version</span></code>: On success populated by found version number.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_sdp_get_features">
+<span class="target" id="group__bt__sdp_1gae1c3110dfe24a939cc02d998c4699ca7"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_get_features</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">features</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_sdp_get_features" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get SupportedFeatures attribute value. </p>
+<p>Allows if exposed by remote retrieve SupportedFeature attribute.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success if feature found and valid, negative in case any error </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Buffer holding original raw record data from remote. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">features</span></code>: On success object to be populated with SupportedFeature mask.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_sdp_data_elem">
+<span class="target" id="structbt__sdp__data__elem"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_data_elem</span></span></span><a class="headerlink" href="#c.bt_sdp_data_elem" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;sdp.h&gt;</em><p>SDP Generic Data Element Value. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_sdp_attribute">
+<span class="target" id="structbt__sdp__attribute"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_attribute</span></span></span><a class="headerlink" href="#c.bt_sdp_attribute" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;sdp.h&gt;</em><p>SDP Attribute Value. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_sdp_record">
+<span class="target" id="structbt__sdp__record"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_record</span></span></span><a class="headerlink" href="#c.bt_sdp_record" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;sdp.h&gt;</em><p>SDP Service Record Value. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_sdp_client_result">
+<span class="target" id="structbt__sdp__client__result"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_client_result</span></span></span><a class="headerlink" href="#c.bt_sdp_client_result" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;sdp.h&gt;</em><p>Generic SDP Client Query Result data holder. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_sdp_discover_params">
+<span class="target" id="structbt__sdp__discover__params"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_sdp_discover_params</span></span></span><a class="headerlink" href="#c.bt_sdp_discover_params" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;sdp.h&gt;</em><p>Main user structure used in SDP discovery of remote. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_sdp_discover_params.uuid">
+<span class="target" id="structbt__sdp__discover__params_1a4c6073d7afda09be462902f5a95eaaed"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="uuid.html#c.bt_uuid" title="bt_uuid"><span class="n"><span class="pre">bt_uuid</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">uuid</span></span></span><a class="headerlink" href="#c.bt_sdp_discover_params.uuid" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>UUID (service) to be discovered on remote SDP entity </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_sdp_discover_params.func">
+<span class="target" id="structbt__sdp__discover__params_1a650143f0733958cf1186543c3469facc"></span><a class="reference internal" href="#c.bt_sdp_discover_func_t" title="bt_sdp_discover_func_t"><span class="n"><span class="pre">bt_sdp_discover_func_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">func</span></span></span><a class="headerlink" href="#c.bt_sdp_discover_params.func" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Discover callback to be called on resolved SDP record </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_sdp_discover_params.pool">
+<span class="target" id="structbt__sdp__discover__params_1a6f8728e5b74211852e2ce8872c21e5fb"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf_pool" title="net_buf_pool"><span class="n"><span class="pre">net_buf_pool</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pool</span></span></span><a class="headerlink" href="#c.bt_sdp_discover_params.pool" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Memory buffer enabled by user for SDP query results </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="uuid.html" class="btn btn-neutral float-right" title="Universal Unique Identifiers (UUIDs)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rfcomm.html" class="btn btn-neutral" title="Serial Port Emulation (RFCOMM)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

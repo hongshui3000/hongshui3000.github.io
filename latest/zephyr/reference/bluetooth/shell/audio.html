@@ -1,0 +1,965 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Bluetooth: Basic Audio Profile &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Controller Area Network (CAN)" href="../../canbus/index.html" />
+    <link rel="prev" title="Universal Unique Identifiers (UUIDs)" href="../uuid.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Bluetooth</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../connection_mgmt.html">Connection Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../controller.html">Bluetooth Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../crypto.html">Cryptography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data_buffer.html">Data Buffers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gap.html">Generic Access Profile (GAP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gatt.html">Generic Attribute Profile (GATT)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hci_drivers.html">HCI Drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hci_raw.html">HCI RAW channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hfp.html">Hands Free Profile (HFP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../l2cap.html">Logical Link Control and Adaptation Protocol (L2CAP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mesh.html">Bluetooth Mesh Profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rfcomm.html">Serial Port Emulation (RFCOMM)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sdp.html">Service Discovery Protocol (SDP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uuid.html">Universal Unique Identifiers (UUIDs)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Bluetooth: Basic Audio Profile</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#commands">Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-central">Example Central</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-peripheral">Example Peripheral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-broadcast-source">Example Broadcast Source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-broadcast-sink">Example Broadcast Sink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#init">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#discover-pac-s-and-ase-s">Discover PAC(s) and ASE(s)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#select-preset">Select preset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configure-codec">Configure Codec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configure-qos">Configure QoS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enable">Enable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#start-sink-only">Start [sink only]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#disable">Disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stop-sink-only">Stop [sink only]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#release">Release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list">List</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#select-unicast">Select Unicast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect">Connect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#send">Send</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Bluetooth</a> &raquo;</li>
+        
+      <li>Bluetooth: Basic Audio Profile</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/bluetooth/shell/audio.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bluetooth-basic-audio-profile">
+<span id="bluetooth-shell-audio"></span><h1>Bluetooth: Basic Audio Profile<a class="headerlink" href="#bluetooth-basic-audio-profile" title="Permalink to this headline">¶</a></h1>
+<p>This document describes how to run basic audio profile functionality which
+includes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Capabilities and Endpoint discovery</p></li>
+<li><p>Audio Stream Endpoint procedures</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">audio --help</span>
+<span class="go">Subcommands:</span>
+<span class="go">   init                 :</span>
+<span class="go">   discover             :[type: sink, source]</span>
+<span class="go">   preset               :[preset]</span>
+<span class="go">   config               :&lt;direction: sink, source&gt; &lt;index&gt; [codec] [preset]</span>
+<span class="go">   select_broadcast     :&lt;stream&gt;</span>
+<span class="go">   create_broadcast     :[codec] [preset]</span>
+<span class="go">   start_broadcast      :</span>
+<span class="go">   stop_broadcast       :</span>
+<span class="go">   delete_broadcast     :</span>
+<span class="go">   broadcast_scan       :&lt;on, off&gt;</span>
+<span class="go">   accept_broadcast     :0x&lt;broadcast_id&gt;</span>
+<span class="go">   sync_broadcast       :0x&lt;bis_bitfield&gt;</span>
+<span class="go">   stop_broadcast_sink  :Stops broadcast sink</span>
+<span class="go">   term_broadcast_sink  :</span>
+<span class="go">   qos                  :[preset] [interval] [framing] [latency] [pd] [sdu] [phy] [rtn]</span>
+<span class="go">   enable               :</span>
+<span class="go">   metadata             :[context]</span>
+<span class="go">   start                :</span>
+<span class="go">   disable              :</span>
+<span class="go">   stop                 :</span>
+<span class="go">   release              :</span>
+<span class="go">   list                 :</span>
+<span class="go">   select_unicast       :&lt;stream&gt;</span>
+<span class="go">   connect              :&lt;direction: sink, source&gt; &lt;index&gt;  [codec] [preset]</span>
+<span class="go">   send                 :Send to Audio Stream [data]</span>
+</pre></div>
+</div>
+<table class="colwidths-auto docutils align-default" id="id1">
+<caption><span class="caption-number">Table 8 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>init</p></td>
+<td><p>none</p></td>
+<td><p>any</p></td>
+<td><p>none</p></td>
+</tr>
+<tr class="row-odd"><td><p>discover</p></td>
+<td><p>init</p></td>
+<td><p>any</p></td>
+<td><p>any</p></td>
+</tr>
+<tr class="row-even"><td><p>config</p></td>
+<td><p>discover</p></td>
+<td><p>idle/codec-configured/qos-configured</p></td>
+<td><p>codec-configured</p></td>
+</tr>
+<tr class="row-odd"><td><p>qos</p></td>
+<td><p>config</p></td>
+<td><p>codec-configured/qos-configured</p></td>
+<td><p>qos-configured</p></td>
+</tr>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>qos</p></td>
+<td><p>qos-configured</p></td>
+<td><p>enabling</p></td>
+</tr>
+<tr class="row-odd"><td><p>[start]</p></td>
+<td><p>enable</p></td>
+<td><p>enabling</p></td>
+<td><p>streaming</p></td>
+</tr>
+<tr class="row-even"><td><p>disable</p></td>
+<td><p>enable</p></td>
+<td><p>enabling/streaming</p></td>
+<td><p>disabling</p></td>
+</tr>
+<tr class="row-odd"><td><p>[stop]</p></td>
+<td><p>disable</p></td>
+<td><p>disabling</p></td>
+<td><p>qos-configure/idle</p></td>
+</tr>
+<tr class="row-even"><td><p>release</p></td>
+<td><p>config</p></td>
+<td><p>any</p></td>
+<td><p>releasing/codec-configure/idle</p></td>
+</tr>
+<tr class="row-odd"><td><p>list</p></td>
+<td><p>none</p></td>
+<td><p>any</p></td>
+<td><p>none</p></td>
+</tr>
+<tr class="row-even"><td><p>select_unicast</p></td>
+<td><p>none</p></td>
+<td><p>any</p></td>
+<td><p>none</p></td>
+</tr>
+<tr class="row-odd"><td><p>connect</p></td>
+<td><p>discover</p></td>
+<td><p>idle/codec-configured/qos-configured</p></td>
+<td><p>codec-configured</p></td>
+</tr>
+<tr class="row-even"><td><p>send</p></td>
+<td><p>enable</p></td>
+<td><p>streaming</p></td>
+<td><p>none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="example-central">
+<h2>Example Central<a class="headerlink" href="#example-central" title="Permalink to this headline">¶</a></h2>
+<p>Connect and establish a stream:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>bt init
+<span class="gp">uart:~$ </span>audio init
+<span class="gp">uart:~$ </span>bt connect &lt;address&gt;
+<span class="gp">uart:~$ </span>gatt exchange-mtu
+<span class="gp">uart:~$ </span>audio discover sink
+<span class="gp">uart:~$ </span>audio config sink <span class="m">0</span>
+<span class="gp">uart:~$ </span>audio qos
+<span class="gp">uart:~$ </span>audio <span class="nb">enable</span>
+</pre></div>
+</div>
+<p>Or using connect command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>bt init
+<span class="gp">uart:~$ </span>audio init
+<span class="gp">uart:~$ </span>bt connect &lt;address&gt;
+<span class="gp">uart:~$ </span>gatt exchange-mtu
+<span class="gp">uart:~$ </span>audio discover sink
+<span class="gp">uart:~$ </span>audio connect sink <span class="m">0</span>
+</pre></div>
+</div>
+<p>Disconnect and release:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio disable
+<span class="gp">uart:~$ </span>audio release
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-peripheral">
+<h2>Example Peripheral<a class="headerlink" href="#example-peripheral" title="Permalink to this headline">¶</a></h2>
+<p>Listen:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>bt init
+<span class="gp">uart:~$ </span>audio init
+<span class="gp">uart:~$ </span>bt advertise on
+</pre></div>
+</div>
+<p>Server initiated disable and release:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio disable
+<span class="gp">uart:~$ </span>audio release
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-broadcast-source">
+<h2>Example Broadcast Source<a class="headerlink" href="#example-broadcast-source" title="Permalink to this headline">¶</a></h2>
+<p>Create and establish a broadcast source stream:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio init
+<span class="gp">uart:~$ </span>audio create_broadcast
+<span class="gp">uart:~$ </span>audio start_broadcast
+</pre></div>
+</div>
+<p>Stop and release a broadcast source stream:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio stop_broadcast
+<span class="gp">uart:~$ </span>audio delete_broadcast
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-broadcast-sink">
+<h2>Example Broadcast Sink<a class="headerlink" href="#example-broadcast-sink" title="Permalink to this headline">¶</a></h2>
+<p>Scan for and establish a broadcast sink stream:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio init
+<span class="gp">uart:~$ </span>audio broadcast_scan on
+<span class="go">Found broadcaster with ID 0xB91CD4</span>
+<span class="gp">uart:~$ </span>audio accept_broadcast 0xB91CD4
+<span class="go">PA syncing to broadcaster</span>
+<span class="go">Broadcast scan was terminated: 0</span>
+<span class="go">PA synced to broadcaster with ID 0xB91CD4 as sink 0x2000d09c</span>
+<span class="go">Sink 0x2000d09c is set as default</span>
+<span class="go">Sink 0x2000d09c is ready to sync without encryption</span>
+<span class="go">Received BASE from sink 0x2000d09c:</span>
+<span class="go">Subgroup[0]:</span>
+<span class="go">codec 0x06 cid 0x0000 vid 0x0000 count 4</span>
+<span class="go">data #0: type 0x01 len 1</span>
+<span class="go">data #1: type 0x02 len 1</span>
+<span class="go">data #2: type 0x03 len 4</span>
+<span class="go">00000000: 00 00 00                                         |...              |</span>
+<span class="go">data #3: type 0x04 len 2</span>
+<span class="go">00000000: 28                                               |(                |</span>
+<span class="go">meta #0: type 0x02 len 2</span>
+<span class="go">BIS[0] index 0x01</span>
+<span class="go">[0]: 0x01</span>
+<span class="go">Possible indexes: 0x01</span>
+<span class="go">audio sync_broadcast 0x01</span>
+</pre></div>
+</div>
+<p>Stop and release a broadcast sink stream:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio stop_broadcast_sink
+<span class="gp">uart:~$ </span>audio term_broadcast_sink
+</pre></div>
+</div>
+</div>
+<div class="section" id="init">
+<h2>Init<a class="headerlink" href="#init" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">init</span></code> command register local PAC records which are necessary to be
+able to configure stream and properly manage capabilities in use.</p>
+<table class="colwidths-auto docutils align-default" id="id2">
+<caption><span class="caption-number">Table 9 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>none</p></td>
+<td><p>any</p></td>
+<td><p>none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio init
+</pre></div>
+</div>
+</div>
+<div class="section" id="discover-pac-s-and-ase-s">
+<h2>Discover PAC(s) and ASE(s)<a class="headerlink" href="#discover-pac-s-and-ase-s" title="Permalink to this headline">¶</a></h2>
+<p>Once connected the <code class="code docutils literal notranslate"><span class="pre">discover</span></code> command discover PAC records and ASE
+characteristics representing remote endpoints.</p>
+<table class="colwidths-auto docutils align-default" id="id3">
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>init</p></td>
+<td><p>any</p></td>
+<td><p>any</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use command <code class="code docutils literal notranslate"><span class="pre">gatt</span> <span class="pre">exchange-mtu</span></code> to make sure the MTU is configured
+properly.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>gatt exchange-mtu
+<span class="go">Exchange pending</span>
+<span class="go">Exchange successful</span>
+<span class="gp">uart:~$ </span>audio discover <span class="o">[</span>type: sink, source<span class="o">]</span>
+<span class="gp">uart:~$ </span>audio discover sink
+<span class="go">cap 0x8175940 type 0x01</span>
+<span class="go">codec 0x06 cid 0x0000 vid 0x0000 count 4</span>
+<span class="go">data #0: type 0x01 len 1</span>
+<span class="go">00000000: 3f                                             |?                |</span>
+<span class="go">data #1: type 0x02 len 1</span>
+<span class="go">00000000: 03                                             |.                |</span>
+<span class="go">data #2: type 0x03 len 1</span>
+<span class="go">00000000: 03                                             |.                |</span>
+<span class="go">data #3: type 0x04 len 4</span>
+<span class="go">00000000: 1e 00 f0 00                                    |....             |</span>
+<span class="go">meta #0: type 0x01 len 2</span>
+<span class="go">00000000: 06 00                                          |..               |</span>
+<span class="go">meta #1: type 0x02 len 2</span>
+<span class="go">00000000: ff 03                                          |..               |</span>
+<span class="go">ep 0x81754e0</span>
+<span class="go">ep 0x81755d4</span>
+<span class="go">Discover complete: err 0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="select-preset">
+<h2>Select preset<a class="headerlink" href="#select-preset" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">preset</span></code> command can be used to either print the default preset
+configuration or set a different one, it is worth noting that it doesn’t change
+any stream previously configured.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio preset <span class="o">[</span>preset<span class="o">]</span>
+<span class="gp">uart:~$ </span>audio preset
+<span class="go">16_2_1</span>
+<span class="go">codec 0x06 cid 0x0000 vid 0x0000 count 3</span>
+<span class="go">data #0: type 0x01 len 1</span>
+<span class="go">00000000: 02                                             |.                |</span>
+<span class="go">data #1: type 0x02 len 1</span>
+<span class="go">00000000: 01                                             |.                |</span>
+<span class="go">data #2: type 0x04 len 2</span>
+<span class="go">00000000: 28 00                                          |(.               |</span>
+<span class="go">meta #0: type 0x02 len 2</span>
+<span class="go">00000000: 02 00                                          |..               |</span>
+<span class="go">QoS: dir 0x02 interval 10000 framing 0x00 phy 0x02 sdu 40 rtn 2 latency 10 pd 40000</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configure-codec">
+<h2>Configure Codec<a class="headerlink" href="#configure-codec" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">config</span></code> command attempts to configure a stream for the given
+direction using a preset codec configuration which can either be passed directly
+or in case it is omitted the default preset is used.</p>
+<table class="colwidths-auto docutils align-default" id="id4">
+<caption><span class="caption-number">Table 11 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>discover</p></td>
+<td><p>idle/codec-configured/qos-configured</p></td>
+<td><p>codec-configured</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio config &lt;direction: sink, source&gt; &lt;index&gt; <span class="o">[</span>codec<span class="o">]</span> <span class="o">[</span>preset<span class="o">]</span>
+<span class="gp">uart:~$ </span>audio config sink <span class="m">0</span>
+<span class="go">ASE Codec Config: conn 0x8173800 ep 0x81754e0 cap 0x816a360</span>
+<span class="go">codec 0x06 cid 0x0000 vid 0x0000 count 3</span>
+<span class="go">data #0: type 0x01 len 1</span>
+<span class="go">00000000: 02                                             |.                |</span>
+<span class="go">data #1: type 0x02 len 1</span>
+<span class="go">00000000: 01                                             |.                |</span>
+<span class="go">data #2: type 0x04 len 2</span>
+<span class="go">00000000: 28 00                                          |(.               |</span>
+<span class="go">meta #0: type 0x02 len 2</span>
+<span class="go">00000000: 02 00                                          |..               |</span>
+<span class="go">ASE Codec Config stream 0x8179e60</span>
+<span class="go">Default ase: 1</span>
+<span class="go">ASE config: preset 16_2_1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configure-qos">
+<h2>Configure QoS<a class="headerlink" href="#configure-qos" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">qos</span></code> command attempts to configure the stream QoS using the preset
+configuration, each individual QoS parameter can be set with use optional
+parameters.</p>
+<table class="colwidths-auto docutils align-default" id="id5">
+<caption><span class="caption-number">Table 12 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>config</p></td>
+<td><p>qos-configured/codec-configured</p></td>
+<td><p>qos-configured</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio qos <span class="o">[</span>preset<span class="o">]</span> <span class="o">[</span>interval<span class="o">]</span> <span class="o">[</span>framing<span class="o">]</span> <span class="o">[</span>latency<span class="o">]</span> <span class="o">[</span>pd<span class="o">]</span> <span class="o">[</span>sdu<span class="o">]</span> <span class="o">[</span>phy<span class="o">]</span> <span class="o">[</span>rtn<span class="o">]</span>
+<span class="gp">uart:~$ </span>audio qos
+<span class="go">ASE config: preset 16_2_1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enable">
+<h2>Enable<a class="headerlink" href="#enable" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">enable</span></code> command attempts to enable the stream previously configured,
+if the remote peer accepts then the ISO connection procedure is also initiated.</p>
+<table class="colwidths-auto docutils align-default" id="id6">
+<caption><span class="caption-number">Table 13 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>qos</p></td>
+<td><p>qos-configured</p></td>
+<td><p>enabling</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio <span class="nb">enable</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-sink-only">
+<h2>Start [sink only]<a class="headerlink" href="#start-sink-only" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">start</span></code> command is only necessary when acting as a sink as it
+indicates to the source the stack is ready to start receiving data.</p>
+<table class="colwidths-auto docutils align-default" id="id7">
+<caption><span class="caption-number">Table 14 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>enabling</p></td>
+<td><p>streaming</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio start
+</pre></div>
+</div>
+</div>
+<div class="section" id="disable">
+<h2>Disable<a class="headerlink" href="#disable" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">disable</span></code> command attempts to disable the stream previously enabled,
+if the remote peer accepts then the ISO disconnection procedure is also
+initiated.</p>
+<table class="colwidths-auto docutils align-default" id="id8">
+<caption><span class="caption-number">Table 15 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>enabling/streaming</p></td>
+<td><p>disabling</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio disable
+</pre></div>
+</div>
+</div>
+<div class="section" id="stop-sink-only">
+<h2>Stop [sink only]<a class="headerlink" href="#stop-sink-only" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">stop</span></code> command is only necessary when acting as a sink as it indicates
+to the source the stack is ready to stop receiving data.</p>
+<table class="colwidths-auto docutils align-default" id="id9">
+<caption><span class="caption-number">Table 16 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>disable</p></td>
+<td><p>disabling</p></td>
+<td><p>qos-configure/idle</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio stop
+</pre></div>
+</div>
+</div>
+<div class="section" id="release">
+<h2>Release<a class="headerlink" href="#release" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">release</span></code> command releases the current stream and its configuration.</p>
+<table class="colwidths-auto docutils align-default" id="id10">
+<caption><span class="caption-number">Table 17 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>config</p></td>
+<td><p>any</p></td>
+<td><p>releasing/codec-configure/idle</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio release
+</pre></div>
+</div>
+</div>
+<div class="section" id="list">
+<h2>List<a class="headerlink" href="#list" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">list</span></code> command list the available streams.</p>
+<table class="colwidths-auto docutils align-default" id="id11">
+<caption><span class="caption-number">Table 18 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>none</p></td>
+<td><p>any</p></td>
+<td><p>none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio list
+<span class="go">*0: ase 0x01 dir 0x01 state 0x01</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="select-unicast">
+<h2>Select Unicast<a class="headerlink" href="#select-unicast" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">select_unicast</span></code> command set a unicast stream as default.</p>
+<table class="colwidths-auto docutils align-default" id="id12">
+<caption><span class="caption-number">Table 19 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id12" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>none</p></td>
+<td><p>any</p></td>
+<td><p>none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio <span class="k">select</span> &lt;ase&gt;
+<span class="gp">uart:~$ </span>audio <span class="k">select</span> 0x01
+<span class="go">Default stream: 1</span>
+</pre></div>
+</div>
+<p>To select a broadcast stream:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio <span class="k">select</span> 0x01 broadcast
+<span class="go">Default stream: 1 (broadcast)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="connect">
+<h2>Connect<a class="headerlink" href="#connect" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">connect</span></code> command combines config, qos and enable commands in one so
+it can be used to quickly configure and enable a stream.</p>
+<table class="colwidths-auto docutils align-default" id="id13">
+<caption><span class="caption-number">Table 20 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id13" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>discover</p></td>
+<td><p>idle/codec-configured/qos-configured</p></td>
+<td><p>streaming</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio connect &lt;direction: sink, source&gt; &lt;index&gt; <span class="o">[</span>codec<span class="o">]</span> <span class="o">[</span>preset<span class="o">]</span>
+<span class="gp">uart:~$ </span>audio connect sink <span class="m">0</span>
+<span class="go">ASE Codec Config: conn 0x17ca40 ep 0x17f860 cap 0x19f6a0</span>
+<span class="go">codec 0x06 cid 0x0000 vid 0x0000 count 3</span>
+<span class="go">data #0: type 0x01 len 1</span>
+<span class="go">00000000: 02                                               |.                |</span>
+<span class="go">data #1: type 0x02 len 1</span>
+<span class="go">00000000: 01                                               |.                |</span>
+<span class="go">data #2: type 0x04 len 2</span>
+<span class="go">00000000: 28 00                                            |(.               |</span>
+<span class="go">meta #0: type 0x02 len 2</span>
+<span class="go">00000000: 02 00                                            |..               |</span>
+<span class="go">ASE Codec Config stream 0x1851c0</span>
+<span class="go">Default ase: 1</span>
+<span class="go">ASE config: preset 16_2_1</span>
+<span class="go">ASE Codec Reconfig: stream 0x1851c0 cap 0x19f6a0</span>
+<span class="go">codec 0x06 cid 0x0000 vid 0x0000 count 3</span>
+<span class="go">data #0: type 0x01 len 1</span>
+<span class="go">00000000: 02                                               |.                |</span>
+<span class="go">data #1: type 0x02 len 1</span>
+<span class="go">00000000: 01                                               |.                |</span>
+<span class="go">data #2: type 0x04 len 2</span>
+<span class="go">00000000: 28 00                                            |(.               |</span>
+<span class="go">meta #0: type 0x02 len 2</span>
+<span class="go">00000000: 02 00                                            |..               |</span>
+<span class="go">QoS: stream 0x1851c0</span>
+<span class="go">QoS: dir 0x02 interval 10000 framing 0x00 phy 0x02 sdu 40 rtn 2 latency 10 pd 40000</span>
+<span class="go">Start: stream 0x1851c0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="send">
+<h2>Send<a class="headerlink" href="#send" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal notranslate"><span class="pre">send</span></code> command sends data over Audio Stream.</p>
+<table class="colwidths-auto docutils align-default" id="id14">
+<caption><span class="caption-number">Table 21 </span><span class="caption-text">State Machine Transitions</span><a class="headerlink" href="#id14" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Depends</p></th>
+<th class="head"><p>Allowed States</p></th>
+<th class="head"><p>Next States</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>streaming</p></td>
+<td><p>none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">uart:~$ </span>audio send <span class="o">[</span>count<span class="o">]</span>
+<span class="gp">uart:~$ </span>audio send
+<span class="go">Audio sending...</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../canbus/index.html" class="btn btn-neutral float-right" title="Controller Area Network (CAN)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../uuid.html" class="btn btn-neutral" title="Universal Unique Identifiers (UUIDs)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

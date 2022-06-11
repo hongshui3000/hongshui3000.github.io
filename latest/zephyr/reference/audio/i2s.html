@@ -1,0 +1,916 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>I2S &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Asynchronous Notifications" href="../misc/notify.html" />
+    <link rel="prev" title="Audio DMIC" href="dmic.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Audio</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="codec.html">Audio Codec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dmic.html">Audio DMIC</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">I2S</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-options">Configuration Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Audio</a> &raquo;</li>
+        
+      <li>I2S</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/audio/i2s.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="i2s">
+<span id="i2s-api"></span><h1>I2S<a class="headerlink" href="#i2s" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The I2S (Inter-IC Sound) API provides support for the standard I2S interface
+as well as common non-standard extensions such as PCM Short/Long Frame Sync
+and Left/Right Justified Data Formats.</p>
+</div>
+<div class="section" id="configuration-options">
+<h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_I2S" title="CONFIG_I2S"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_I2S</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__i2s__interface"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">i2s_interface</span></span></dt>
+<dd><p>I2S (Inter-IC Sound) Interface. </p>
+<p>The I2S API provides support for the standard I2S interface standard as well as common non-standard extensions such as PCM Short/Long Frame Sync, Left/Right Justified Data Format. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_DATA_FORMAT_SHIFT">
+<span class="target" id="group__i2s__interface_1gaa3f67c47874141782fbb7ec5a671b566"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_DATA_FORMAT_SHIFT</span></span></span><a class="headerlink" href="#c.I2S_FMT_DATA_FORMAT_SHIFT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data Format bit field position. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_DATA_FORMAT_MASK">
+<span class="target" id="group__i2s__interface_1gaf3eb0116133dd3a041d9a80cb3397263"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_DATA_FORMAT_MASK</span></span></span><a class="headerlink" href="#c.I2S_FMT_DATA_FORMAT_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data Format bit field mask. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_DATA_FORMAT_I2S">
+<span class="target" id="group__i2s__interface_1gaa1adc5e3b722e89f20f258b0fd53a2c5"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_DATA_FORMAT_I2S</span></span></span><a class="headerlink" href="#c.I2S_FMT_DATA_FORMAT_I2S" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Standard I2S Data Format. </p>
+<p>Serial data is transmitted in two’s complement with the MSB first. Both Word Select (WS) and Serial Data (SD) signals are sampled on the rising edge of the clock signal (SCK). The MSB is always sent one clock period after the WS changes. Left channel data are sent first indicated by WS = 0, followed by right channel data indicated by WS = 1. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="o">-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span>
+<span class="n">SCK</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;-&#39;</span> <span class="s1">&#39;</span>
+   <span class="o">-.</span>                               <span class="o">.-------------------------------.</span>
+<span class="n">WS</span>  <span class="s1">&#39;-------------------------------&#39;</span>                               <span class="s1">&#39;----</span>
+   <span class="o">-.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.</span>
+<span class="n">SD</span>  <span class="o">|</span>   <span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span> <span class="n">x</span> <span class="o">|...|</span> <span class="n">x</span> <span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span> <span class="n">x</span> <span class="o">|...|</span> <span class="n">x</span> <span class="o">|</span>
+   <span class="o">-</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span>
+        <span class="o">|</span> <span class="n">Left</span> <span class="n">channel</span>                  <span class="o">|</span> <span class="n">Right</span> <span class="n">channel</span>                 <span class="o">|</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_DATA_FORMAT_PCM_SHORT">
+<span class="target" id="group__i2s__interface_1ga70c7a19078a6f72e078b9c0488018b11"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_DATA_FORMAT_PCM_SHORT</span></span></span><a class="headerlink" href="#c.I2S_FMT_DATA_FORMAT_PCM_SHORT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>PCM Short Frame Sync Data Format. </p>
+<p>Serial data is transmitted in two’s complement with the MSB first. Both Word Select (WS) and Serial Data (SD) signals are sampled on the falling edge of the clock signal (SCK). The falling edge of the frame sync signal (WS) indicates the start of the PCM word. The frame sync is one clock cycle long. An arbitrary number of data words can be sent in one frame. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span>
+<span class="n">SCK</span> <span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span>
+     <span class="o">.---.</span>                                                       <span class="o">.---.</span>
+<span class="n">WS</span>  <span class="o">-</span><span class="s1">&#39;   &#39;</span><span class="o">-</span>                                                     <span class="o">-</span><span class="s1">&#39;   &#39;</span><span class="o">-</span>
+    <span class="o">-.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---</span>
+<span class="n">SD</span>   <span class="o">|</span>   <span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span>
+    <span class="o">-</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---</span>
+         <span class="o">|</span> <span class="n">Word</span> <span class="mi">1</span>            <span class="o">|</span> <span class="n">Word</span> <span class="mi">2</span>            <span class="o">|</span> <span class="n">Word</span> <span class="mi">3</span>  <span class="o">|</span>  <span class="n">Word</span> <span class="n">n</span> <span class="o">|</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_DATA_FORMAT_PCM_LONG">
+<span class="target" id="group__i2s__interface_1ga7032b1894faded14a174593a3f10ca3c"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_DATA_FORMAT_PCM_LONG</span></span></span><a class="headerlink" href="#c.I2S_FMT_DATA_FORMAT_PCM_LONG" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>PCM Long Frame Sync Data Format. </p>
+<p>Serial data is transmitted in two’s complement with the MSB first. Both Word Select (WS) and Serial Data (SD) signals are sampled on the falling edge of the clock signal (SCK). The rising edge of the frame sync signal (WS) indicates the start of the PCM word. The frame sync has an arbitrary length, however it has to fall before the start of the next frame. An arbitrary number of data words can be sent in one frame. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span>
+<span class="n">SCK</span> <span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span>
+         <span class="o">.---</span> <span class="o">---.</span>    <span class="o">---.</span>        <span class="o">---.</span>                               <span class="o">.---</span>
+<span class="n">WS</span>      <span class="o">-</span><span class="s1">&#39;       &#39;</span><span class="o">-</span>      <span class="s1">&#39;-          &#39;</span><span class="o">-</span>                             <span class="o">-</span><span class="s1">&#39;</span>
+    <span class="o">-.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---</span>
+<span class="n">SD</span>   <span class="o">|</span>   <span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span>
+    <span class="o">-</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---</span>
+         <span class="o">|</span> <span class="n">Word</span> <span class="mi">1</span>            <span class="o">|</span> <span class="n">Word</span> <span class="mi">2</span>            <span class="o">|</span> <span class="n">Word</span> <span class="mi">3</span>  <span class="o">|</span>  <span class="n">Word</span> <span class="n">n</span> <span class="o">|</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_DATA_FORMAT_LEFT_JUSTIFIED">
+<span class="target" id="group__i2s__interface_1gaabc5e62ed922b8c5834ed40c6af78022"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_DATA_FORMAT_LEFT_JUSTIFIED</span></span></span><a class="headerlink" href="#c.I2S_FMT_DATA_FORMAT_LEFT_JUSTIFIED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Left Justified Data Format. </p>
+<p>Serial data is transmitted in two’s complement with the MSB first. Both Word Select (WS) and Serial Data (SD) signals are sampled on the rising edge of the clock signal (SCK). The bits within the data word are left justified such that the MSB is always sent in the clock period following the WS transition. Left channel data are sent first indicated by WS = 1, followed by right channel data indicated by WS = 0. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span>
+<span class="n">SCK</span> <span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span>
+       <span class="o">.-------------------------------.</span>                               <span class="o">.-</span>
+<span class="n">WS</span>  <span class="o">---</span><span class="s1">&#39;                               &#39;</span><span class="o">-------------------------------</span><span class="s1">&#39;</span>
+    <span class="o">---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.-</span>
+<span class="n">SD</span>     <span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span> <span class="n">x</span> <span class="o">|...|</span> <span class="n">x</span> <span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span> <span class="n">x</span> <span class="o">|...|</span> <span class="n">x</span> <span class="o">|</span>
+    <span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;-</span>
+       <span class="o">|</span> <span class="n">Left</span> <span class="n">channel</span>                  <span class="o">|</span> <span class="n">Right</span> <span class="n">channel</span>                 <span class="o">|</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_DATA_FORMAT_RIGHT_JUSTIFIED">
+<span class="target" id="group__i2s__interface_1ga8ad25375c2f7344b2959bed2eec4be72"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_DATA_FORMAT_RIGHT_JUSTIFIED</span></span></span><a class="headerlink" href="#c.I2S_FMT_DATA_FORMAT_RIGHT_JUSTIFIED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Right Justified Data Format. </p>
+<p>Serial data is transmitted in two’s complement with the MSB first. Both Word Select (WS) and Serial Data (SD) signals are sampled on the rising edge of the clock signal (SCK). The bits within the data word are right justified such that the LSB is always sent in the clock period preceding the WS transition. Left channel data are sent first indicated by WS = 1, followed by right channel data indicated by WS = 0. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span> <span class="o">.-.</span>
+<span class="n">SCK</span> <span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span><span class="s1">&#39; &#39;</span><span class="o">-</span>
+       <span class="o">.-------------------------------.</span>                               <span class="o">.-</span>
+<span class="n">WS</span>  <span class="o">---</span><span class="s1">&#39;                               &#39;</span><span class="o">-------------------------------</span><span class="s1">&#39;</span>
+    <span class="o">---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.---.-</span>
+<span class="n">SD</span>     <span class="o">|</span> <span class="n">x</span> <span class="o">|...|</span> <span class="n">x</span> <span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span> <span class="n">x</span> <span class="o">|...|</span> <span class="n">x</span> <span class="o">|</span><span class="n">MSB</span><span class="o">|</span>   <span class="o">|...|</span>   <span class="o">|</span><span class="n">LSB</span><span class="o">|</span>
+    <span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;---&#39;</span><span class="o">---</span><span class="s1">&#39;-</span>
+       <span class="o">|</span> <span class="n">Left</span> <span class="n">channel</span>                  <span class="o">|</span> <span class="n">Right</span> <span class="n">channel</span>                 <span class="o">|</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_DATA_ORDER_MSB">
+<span class="target" id="group__i2s__interface_1ga6a6c18e170333a56086f5bcf96e552a1"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_DATA_ORDER_MSB</span></span></span><a class="headerlink" href="#c.I2S_FMT_DATA_ORDER_MSB" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send MSB first </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_DATA_ORDER_LSB">
+<span class="target" id="group__i2s__interface_1gacc2d0662903b2300b0e1009a8223ed7d"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_DATA_ORDER_LSB</span></span></span><a class="headerlink" href="#c.I2S_FMT_DATA_ORDER_LSB" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send LSB first </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_DATA_ORDER_INV">
+<span class="target" id="group__i2s__interface_1ga052fa04f51ab96d90cdaf0d35f19a166"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_DATA_ORDER_INV</span></span></span><a class="headerlink" href="#c.I2S_FMT_DATA_ORDER_INV" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Invert bit ordering, send LSB first </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_CLK_FORMAT_SHIFT">
+<span class="target" id="group__i2s__interface_1ga713fe1eb042953a315d1cb606a28d5ca"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_CLK_FORMAT_SHIFT</span></span></span><a class="headerlink" href="#c.I2S_FMT_CLK_FORMAT_SHIFT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data Format bit field position. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_CLK_FORMAT_MASK">
+<span class="target" id="group__i2s__interface_1ga16e4b44cf7f4b2d11bbd2d50522d086d"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_CLK_FORMAT_MASK</span></span></span><a class="headerlink" href="#c.I2S_FMT_CLK_FORMAT_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data Format bit field mask. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_BIT_CLK_INV">
+<span class="target" id="group__i2s__interface_1ga1bbc3f0600b406691ce016bf7bf96a5f"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_BIT_CLK_INV</span></span></span><a class="headerlink" href="#c.I2S_FMT_BIT_CLK_INV" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Invert bit clock </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_FRAME_CLK_INV">
+<span class="target" id="group__i2s__interface_1ga1cd356cbe68f622d0b3f5aee027d1f57"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_FRAME_CLK_INV</span></span></span><a class="headerlink" href="#c.I2S_FMT_FRAME_CLK_INV" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Invert frame clock </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_CLK_NF_NB">
+<span class="target" id="group__i2s__interface_1gad555437f250801cbc8970cd02d7b7cde"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_CLK_NF_NB</span></span></span><a class="headerlink" href="#c.I2S_FMT_CLK_NF_NB" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>NF represents “Normal Frame” whereas IF represents “Inverted Frame” NB represents “Normal Bit Clk” whereas IB represents “Inverted Bit clk” </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_CLK_NF_IB">
+<span class="target" id="group__i2s__interface_1ga85714d803548509c6b41c2579b7f2a7f"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_CLK_NF_IB</span></span></span><a class="headerlink" href="#c.I2S_FMT_CLK_NF_IB" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_CLK_IF_NB">
+<span class="target" id="group__i2s__interface_1ga5686ac4f8e3327d36f3f1293168330cd"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_CLK_IF_NB</span></span></span><a class="headerlink" href="#c.I2S_FMT_CLK_IF_NB" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_FMT_CLK_IF_IB">
+<span class="target" id="group__i2s__interface_1gaaaf186e3265d2fea6c8dc43a8030272c"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_FMT_CLK_IF_IB</span></span></span><a class="headerlink" href="#c.I2S_FMT_CLK_IF_IB" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_OPT_BIT_CLK_CONT">
+<span class="target" id="group__i2s__interface_1ga039e7e244f7f1452dcd197c0a689d6e6"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_OPT_BIT_CLK_CONT</span></span></span><a class="headerlink" href="#c.I2S_OPT_BIT_CLK_CONT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Run bit clock continuously </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_OPT_BIT_CLK_GATED">
+<span class="target" id="group__i2s__interface_1ga4a68f73ee794684f68a02066ce1d632c"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_OPT_BIT_CLK_GATED</span></span></span><a class="headerlink" href="#c.I2S_OPT_BIT_CLK_GATED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Run bit clock when sending data only </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_OPT_BIT_CLK_MASTER">
+<span class="target" id="group__i2s__interface_1ga54aaaa7f0403e4f03574ffcc6141a67f"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_OPT_BIT_CLK_MASTER</span></span></span><a class="headerlink" href="#c.I2S_OPT_BIT_CLK_MASTER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>I2S driver is bit clock master </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_OPT_BIT_CLK_SLAVE">
+<span class="target" id="group__i2s__interface_1gaa76784ed4a645cb751b2c683bfa4be40"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_OPT_BIT_CLK_SLAVE</span></span></span><a class="headerlink" href="#c.I2S_OPT_BIT_CLK_SLAVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>I2S driver is bit clock slave </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_OPT_FRAME_CLK_MASTER">
+<span class="target" id="group__i2s__interface_1gaedfc35128aae5058a17ef5601bdc73d2"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_OPT_FRAME_CLK_MASTER</span></span></span><a class="headerlink" href="#c.I2S_OPT_FRAME_CLK_MASTER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>I2S driver is frame clock master </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_OPT_FRAME_CLK_SLAVE">
+<span class="target" id="group__i2s__interface_1ga138640dfb430fe0565840078a7b23ace"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_OPT_FRAME_CLK_SLAVE</span></span></span><a class="headerlink" href="#c.I2S_OPT_FRAME_CLK_SLAVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>I2S driver is frame clock slave </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_OPT_LOOPBACK">
+<span class="target" id="group__i2s__interface_1ga093ed00a6081da8b4d958f80744fa09f"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_OPT_LOOPBACK</span></span></span><a class="headerlink" href="#c.I2S_OPT_LOOPBACK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Loop back mode. </p>
+<p>In loop back mode RX input will be connected internally to TX output. This is used primarily for testing. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2S_OPT_PINGPONG">
+<span class="target" id="group__i2s__interface_1gadcb20e201a0fef1fe10f4cf916ff4b72"></span><span class="sig-name descname"><span class="n"><span class="pre">I2S_OPT_PINGPONG</span></span></span><a class="headerlink" href="#c.I2S_OPT_PINGPONG" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Ping pong mode. </p>
+<p>In ping pong mode TX output will keep alternating between a ping buffer and a pong buffer. This is normally used in audio streams when one buffer is being populated while the other is being played (DMAed) and vice versa. So, in this mode, 2 sets of buffers fixed in size are used. Static Arrays are used to achieve this and hence they are never freed. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.i2s_fmt_t">
+<span class="target" id="group__i2s__interface_1ga0939a3ba04a233d9d637fba8a42b0bbb"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_fmt_t</span></span></span><a class="headerlink" href="#c.i2s_fmt_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.i2s_opt_t">
+<span class="target" id="group__i2s__interface_1gad0ca475f9bf5edeecc7de65b4f56c119"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_opt_t</span></span></span><a class="headerlink" href="#c.i2s_opt_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.i2s_dir">
+<span class="target" id="group__i2s__interface_1ga975a0f0901cadc789075078aa79f723f"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_dir</span></span></span><a class="headerlink" href="#c.i2s_dir" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>I2C Direction. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_dir.I2S_DIR_RX">
+<span class="target" id="group__i2s__interface_1gga975a0f0901cadc789075078aa79f723fac9f71d312c5d5ad7ef64af4217091aca"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_DIR_RX</span></span></span><a class="headerlink" href="#c.i2s_dir.I2S_DIR_RX" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Receive data </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_dir.I2S_DIR_TX">
+<span class="target" id="group__i2s__interface_1gga975a0f0901cadc789075078aa79f723fab005c2cfee6206c2b5b596638e6c8443"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_DIR_TX</span></span></span><a class="headerlink" href="#c.i2s_dir.I2S_DIR_TX" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Transmit data </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_dir.I2S_DIR_BOTH">
+<span class="target" id="group__i2s__interface_1gga975a0f0901cadc789075078aa79f723fa3cca349476d0dbe214111b9ef5d8b272"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_DIR_BOTH</span></span></span><a class="headerlink" href="#c.i2s_dir.I2S_DIR_BOTH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Both receive and transmit data </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.i2s_state">
+<span class="target" id="group__i2s__interface_1ga975d09fe35ddf7942968155b62abc531"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_state</span></span></span><a class="headerlink" href="#c.i2s_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Interface state </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_state.I2S_STATE_NOT_READY">
+<span class="target" id="group__i2s__interface_1gga975d09fe35ddf7942968155b62abc531a7151755b31bbb614e7b668141a7ef43a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_STATE_NOT_READY</span></span></span><a class="headerlink" href="#c.i2s_state.I2S_STATE_NOT_READY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The interface is not ready. </p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">The</span> <span class="n">interface</span> <span class="n">was</span> <span class="n">initialized</span> <span class="n">but</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">yet</span> <span class="n">ready</span> <span class="n">to</span> <span class="n">receive</span> <span class="o">/</span>
+   <span class="n">transmit</span> <span class="n">data</span><span class="o">.</span> <span class="n">Call</span> <span class="n">i2s_configure</span><span class="p">()</span> <span class="n">to</span> <span class="n">configure</span> <span class="n">interface</span> <span class="ow">and</span> <span class="n">change</span>
+   <span class="n">its</span> <span class="n">state</span> <span class="n">to</span> <span class="n">READY</span><span class="o">.</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_state.I2S_STATE_READY">
+<span class="target" id="group__i2s__interface_1gga975d09fe35ddf7942968155b62abc531af6babeef999bfb034ea55366e9c59b13"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_STATE_READY</span></span></span><a class="headerlink" href="#c.i2s_state.I2S_STATE_READY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The interface is ready to receive / transmit data. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_state.I2S_STATE_RUNNING">
+<span class="target" id="group__i2s__interface_1gga975d09fe35ddf7942968155b62abc531aa3d21ba793efa7d8f557774e8b330a42"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_STATE_RUNNING</span></span></span><a class="headerlink" href="#c.i2s_state.I2S_STATE_RUNNING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The interface is receiving / transmitting data. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_state.I2S_STATE_STOPPING">
+<span class="target" id="group__i2s__interface_1gga975d09fe35ddf7942968155b62abc531a972fd7e9da207b36e07731b996620a33"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_STATE_STOPPING</span></span></span><a class="headerlink" href="#c.i2s_state.I2S_STATE_STOPPING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The interface is draining its transmit queue. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_state.I2S_STATE_ERROR">
+<span class="target" id="group__i2s__interface_1gga975d09fe35ddf7942968155b62abc531a68c0a46589ae00045900a8f79675641a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_STATE_ERROR</span></span></span><a class="headerlink" href="#c.i2s_state.I2S_STATE_ERROR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>TX buffer underrun or RX buffer overrun has occurred. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.i2s_trigger_cmd">
+<span class="target" id="group__i2s__interface_1gac994676a89f1ea676475712a84003de6"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_trigger_cmd</span></span></span><a class="headerlink" href="#c.i2s_trigger_cmd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Trigger command </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_trigger_cmd.I2S_TRIGGER_START">
+<span class="target" id="group__i2s__interface_1ggac994676a89f1ea676475712a84003de6a6f4cacef6ee84256e6223a4bab3bc3ac"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_TRIGGER_START</span></span></span><a class="headerlink" href="#c.i2s_trigger_cmd.I2S_TRIGGER_START" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Start the transmission / reception of data. </p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">If</span> <span class="n">I2S_DIR_TX</span> <span class="ow">is</span> <span class="nb">set</span> <span class="n">some</span> <span class="n">data</span> <span class="n">has</span> <span class="n">to</span> <span class="n">be</span> <span class="n">queued</span> <span class="k">for</span> <span class="n">transmission</span> <span class="n">by</span>
+   <span class="n">the</span> <span class="n">i2s_write</span><span class="p">()</span> <span class="n">function</span><span class="o">.</span> <span class="n">This</span> <span class="n">trigger</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="ow">in</span> <span class="n">READY</span> <span class="n">state</span>
+   <span class="n">only</span> <span class="ow">and</span> <span class="n">changes</span> <span class="n">the</span> <span class="n">interface</span> <span class="n">state</span> <span class="n">to</span> <span class="n">RUNNING</span><span class="o">.</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_trigger_cmd.I2S_TRIGGER_STOP">
+<span class="target" id="group__i2s__interface_1ggac994676a89f1ea676475712a84003de6a37caf001d6ee6a263f3487f27952688b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_TRIGGER_STOP</span></span></span><a class="headerlink" href="#c.i2s_trigger_cmd.I2S_TRIGGER_STOP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Stop the transmission / reception of data. </p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">Stop</span> <span class="n">the</span> <span class="n">transmission</span> <span class="o">/</span> <span class="n">reception</span> <span class="n">of</span> <span class="n">data</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">the</span> <span class="n">current</span>
+   <span class="n">memory</span> <span class="n">block</span><span class="o">.</span> <span class="n">This</span> <span class="n">trigger</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="ow">in</span> <span class="n">RUNNING</span> <span class="n">state</span> <span class="n">only</span> <span class="ow">and</span> <span class="n">at</span>
+   <span class="n">first</span> <span class="n">changes</span> <span class="n">the</span> <span class="n">interface</span> <span class="n">state</span> <span class="n">to</span> <span class="n">STOPPING</span><span class="o">.</span> <span class="n">When</span> <span class="n">the</span> <span class="n">current</span> <span class="n">TX</span> <span class="o">/</span>
+   <span class="n">RX</span> <span class="n">block</span> <span class="ow">is</span> <span class="n">transmitted</span> <span class="o">/</span> <span class="n">received</span> <span class="n">the</span> <span class="n">state</span> <span class="ow">is</span> <span class="n">changed</span> <span class="n">to</span> <span class="n">READY</span><span class="o">.</span>
+   <span class="n">Subsequent</span> <span class="n">START</span> <span class="n">trigger</span> <span class="n">will</span> <span class="n">resume</span> <span class="n">transmission</span> <span class="o">/</span> <span class="n">reception</span> <span class="n">where</span>
+   <span class="n">it</span> <span class="n">stopped</span><span class="o">.</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_trigger_cmd.I2S_TRIGGER_DRAIN">
+<span class="target" id="group__i2s__interface_1ggac994676a89f1ea676475712a84003de6a7bdbdf37c5a6481faa1866be323bb9de"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_TRIGGER_DRAIN</span></span></span><a class="headerlink" href="#c.i2s_trigger_cmd.I2S_TRIGGER_DRAIN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Empty the transmit queue. </p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">Send</span> <span class="nb">all</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">transmit</span> <span class="n">queue</span> <span class="ow">and</span> <span class="n">stop</span> <span class="n">the</span> <span class="n">transmission</span><span class="o">.</span>
+   <span class="n">If</span> <span class="n">the</span> <span class="n">trigger</span> <span class="ow">is</span> <span class="n">applied</span> <span class="n">to</span> <span class="n">the</span> <span class="n">RX</span> <span class="n">queue</span> <span class="n">it</span> <span class="n">has</span> <span class="n">the</span> <span class="n">same</span> <span class="n">effect</span> <span class="k">as</span>
+   <span class="n">I2S_TRIGGER_STOP</span><span class="o">.</span> <span class="n">This</span> <span class="n">trigger</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="ow">in</span> <span class="n">RUNNING</span> <span class="n">state</span> <span class="n">only</span> <span class="ow">and</span>
+   <span class="n">at</span> <span class="n">first</span> <span class="n">changes</span> <span class="n">the</span> <span class="n">interface</span> <span class="n">state</span> <span class="n">to</span> <span class="n">STOPPING</span><span class="o">.</span> <span class="n">When</span> <span class="nb">all</span> <span class="n">TX</span> <span class="n">blocks</span>
+   <span class="n">are</span> <span class="n">transmitted</span> <span class="n">the</span> <span class="n">state</span> <span class="ow">is</span> <span class="n">changed</span> <span class="n">to</span> <span class="n">READY</span><span class="o">.</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_trigger_cmd.I2S_TRIGGER_DROP">
+<span class="target" id="group__i2s__interface_1ggac994676a89f1ea676475712a84003de6ae8155a4d72875bd885dc987765d7628d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_TRIGGER_DROP</span></span></span><a class="headerlink" href="#c.i2s_trigger_cmd.I2S_TRIGGER_DROP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Discard the transmit / receive queue. </p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">Stop</span> <span class="n">the</span> <span class="n">transmission</span> <span class="o">/</span> <span class="n">reception</span> <span class="n">immediately</span> <span class="ow">and</span> <span class="n">discard</span> <span class="n">the</span>
+   <span class="n">contents</span> <span class="n">of</span> <span class="n">the</span> <span class="n">respective</span> <span class="n">queue</span><span class="o">.</span> <span class="n">This</span> <span class="n">trigger</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="ow">in</span> <span class="nb">any</span>
+   <span class="n">state</span> <span class="n">other</span> <span class="n">than</span> <span class="n">NOT_READY</span> <span class="ow">and</span> <span class="n">changes</span> <span class="n">the</span> <span class="n">interface</span> <span class="n">state</span> <span class="n">to</span> <span class="n">READY</span><span class="o">.</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.i2s_trigger_cmd.I2S_TRIGGER_PREPARE">
+<span class="target" id="group__i2s__interface_1ggac994676a89f1ea676475712a84003de6a61943bd287840e33bffd74bbc4a59e88"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2S_TRIGGER_PREPARE</span></span></span><a class="headerlink" href="#c.i2s_trigger_cmd.I2S_TRIGGER_PREPARE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Prepare the queues after underrun/overrun error has occurred. </p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">This</span> <span class="n">trigger</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="ow">in</span> <span class="n">ERROR</span> <span class="n">state</span> <span class="n">only</span> <span class="ow">and</span> <span class="n">changes</span> <span class="n">the</span>
+   <span class="n">interface</span> <span class="n">state</span> <span class="n">to</span> <span class="n">READY</span><span class="o">.</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2s_configure">
+<span class="target" id="group__i2s__interface_1ga299003d72146c127f88d7c12c08889cc"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_configure</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.i2s_dir" title="i2s_dir"><span class="n"><span class="pre">i2s_dir</span></span></a><span class="w"> </span><span class="n"><span class="pre">dir</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2s_config" title="i2s_config"><span class="n"><span class="pre">i2s_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2s_configure" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Configure operation of a host I2S controller. </p>
+<p>The dir parameter specifies if Transmit (TX) or Receive (RX) direction will be configured by data provided via cfg parameter.</p>
+<p>The function can be called in NOT_READY or READY state only. If executed successfully the function will change the interface state to READY.</p>
+<p>If the function is called with the parameter cfg-&gt;frame_clk_freq set to 0 the interface state will be changed to NOT_READY.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dir</span></code>: Stream direction: RX, TX, or both, as defined by I2S_DIR_*. The I2S_DIR_BOTH value may not be supported by some drivers. For those, the RX and TX streams need to be configured separately. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cfg</span></code>: Pointer to the structure containing configuration parameters.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: Invalid argument. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: I2S_DIR_BOTH value is not supported. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2s_config_get">
+<span class="target" id="group__i2s__interface_1ga55ab4d56875e789d5cbcf5b52a609966"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2s_config" title="i2s_config"><span class="n"><span class="pre">i2s_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">i2s_config_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.i2s_dir" title="i2s_dir"><span class="n"><span class="pre">i2s_dir</span></span></a><span class="w"> </span><span class="n"><span class="pre">dir</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2s_config_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Fetch configuration information of a host I2S controller. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dir</span></code>: Stream direction: RX or TX as defined by I2S_DIR_* </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Pointer</span></code>: to the structure containing configuration parameters, or NULL if un-configured </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2s_read">
+<span class="target" id="group__i2s__interface_1ga7f23b7959280e1c4075a4305c3edd655"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_read</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mem_block</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2s_read" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read data from the RX queue. </p>
+<p>Data received by the I2S interface is stored in the RX queue consisting of memory blocks preallocated by this function from rx_mem_slab (as defined by i2s_configure). Ownership of the RX memory block is passed on to the user application which has to release it.</p>
+<p>The data is read in chunks equal to the size of the memory block. If the interface is in READY state the number of bytes read can be smaller.</p>
+<p>If there is no data in the RX queue the function will block waiting for the next RX memory block to fill in. This operation can timeout as defined by i2s_configure. If the timeout value is set to K_NO_WAIT the function is non-blocking.</p>
+<p>Reading from the RX queue is possible in any state other than NOT_READY. If the interface is in the ERROR state it is still possible to read all the valid data stored in RX queue. Afterwards the function will return -EIO error.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mem_block</span></code>: Pointer to the RX memory block containing received data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Pointer to the variable storing the number of bytes read.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: The interface is in NOT_READY or ERROR state and there are no more data blocks in the RX queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: Returned without waiting. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Waiting period timed out. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2s_buf_read">
+<span class="target" id="group__i2s__interface_1ga5c8ca0bf6b394170ffbe031de8e37c28"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_buf_read</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2s_buf_read" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read data from the RX queue into a provided buffer. </p>
+<p>Data received by the I2S interface is stored in the RX queue consisting of memory blocks preallocated by this function from rx_mem_slab (as defined by i2s_configure). Calling this function removes one block from the queue which is copied into the provided buffer and then freed.</p>
+<p>The provided buffer must be large enough to contain a full memory block of data, which is parameterized for the channel via <a class="reference internal" href="#group__i2s__interface_1ga299003d72146c127f88d7c12c08889cc"><span class="std std-ref">i2s_configure()</span></a>.</p>
+<p>This function is otherwise equivalent to <a class="reference internal" href="#group__i2s__interface_1ga7f23b7959280e1c4075a4305c3edd655"><span class="std std-ref">i2s_read()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Destination buffer for read data, which must be at least the as large as the configured memory block size for the RX channel. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Pointer to the variable storing the number of bytes read.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: The interface is in NOT_READY or ERROR state and there are no more data blocks in the RX queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: Returned without waiting. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Waiting period timed out. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2s_write">
+<span class="target" id="group__i2s__interface_1ga01edf23acc6c16bbaf718dab8061a7a0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_write</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mem_block</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2s_write" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write data to the TX queue. </p>
+<p>Data to be sent by the I2S interface is stored first in the TX queue. TX queue consists of memory blocks preallocated by the user from tx_mem_slab (as defined by i2s_configure). This function takes ownership of the memory block and will release it when all data are transmitted.</p>
+<p>If there are no free slots in the TX queue the function will block waiting for the next TX memory block to be send and removed from the queue. This operation can timeout as defined by i2s_configure. If the timeout value is set to K_NO_WAIT the function is non-blocking.</p>
+<p>Writing to the TX queue is only possible if the interface is in READY or RUNNING state.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mem_block</span></code>: Pointer to the TX memory block containing data to be sent. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of bytes to write. This value has to be equal or smaller than the size of the memory block.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: The interface is not in READY or RUNNING state. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: Returned without waiting. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Waiting period timed out. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2s_buf_write">
+<span class="target" id="group__i2s__interface_1ga98cbfe351a8dd5db361f4667959d0b58"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_buf_write</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2s_buf_write" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write data to the TX queue from a provided buffer. </p>
+<p>This function acquires a memory block from the I2S channel TX queue and copies the provided data buffer into it. It is otherwise equivalent to <a class="reference internal" href="#group__i2s__interface_1ga01edf23acc6c16bbaf718dab8061a7a0"><span class="std std-ref">i2s_write()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Pointer to a buffer containing the data to transmit. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of bytes to write. This value has to be equal or smaller than the size of the channel’s TX memory block configuration.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: The interface is not in READY or RUNNING state. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: Returned without waiting. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Waiting period timed out. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOMEM</span></code>: No memory in TX slab queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: Size parameter larger than TX queue memory block. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2s_trigger">
+<span class="target" id="group__i2s__interface_1gaaa153e6c325f8f34f2fd5d550e4d3297"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_trigger</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.i2s_dir" title="i2s_dir"><span class="n"><span class="pre">i2s_dir</span></span></a><span class="w"> </span><span class="n"><span class="pre">dir</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.i2s_trigger_cmd" title="i2s_trigger_cmd"><span class="n"><span class="pre">i2s_trigger_cmd</span></span></a><span class="w"> </span><span class="n"><span class="pre">cmd</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2s_trigger" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send a trigger command. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dir</span></code>: Stream direction: RX, TX, or both, as defined by I2S_DIR_*. The I2S_DIR_BOTH value may not be supported by some drivers. For those, triggering need to be done separately for the RX and TX streams. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmd</span></code>: Trigger command.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: Invalid argument. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: The trigger cannot be executed in the current state or a DMA channel cannot be allocated. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOMEM</span></code>: RX/TX memory block not available. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: I2S_DIR_BOTH value is not supported. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.i2s_config">
+<span class="target" id="structi2s__config"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2s_config</span></span></span><a class="headerlink" href="#c.i2s_config" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;i2s.h&gt;</em><p>Interface configuration options. </p>
+<p>Memory slab pointed to by the mem_slab field has to be defined and initialized by the user. For I2S driver to function correctly number of memory blocks in a slab has to be at least 2 per queue. Size of the memory block should be multiple of frame_size where frame_size = (channels * word_size_bytes). As an example 16 bit word will occupy 2 bytes, 24 or 32 bit word will occupy 4 bytes.</p>
+<p>Please check Zephyr Kernel Primer for more information on memory slabs.</p>
+<p><dl class="simple">
+<dt><strong>Remark</strong></dt><dd><p>When I2S data format is selected parameter channels is ignored, number of words in a frame is always 2.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">word_size</span></code>: Number of bits representing one data word. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">channels</span></code>: Number of words per frame. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code>: Data stream format as defined by I2S_FMT_* constants. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">options</span></code>: Configuration options as defined by I2S_OPT_* constants. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frame_clk_freq</span></code>: Frame clock (WS) frequency, this is sampling rate. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mem_slab</span></code>: memory slab to store RX/TX data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">block_size</span></code>: Size of one RX/TX memory block (buffer) in bytes. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Read/Write timeout. Number of milliseconds to wait in case TX queue is full or RX queue is empty, or 0, or SYS_FOREVER_MS. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../misc/notify.html" class="btn btn-neutral float-right" title="Asynchronous Notifications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dmic.html" class="btn btn-neutral" title="Audio DMIC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

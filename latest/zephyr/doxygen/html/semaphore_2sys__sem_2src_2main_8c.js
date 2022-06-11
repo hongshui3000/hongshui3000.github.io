@@ -1,0 +1,27 @@
+var semaphore_2sys__sem_2src_2main_8c =
+[
+    [ "HIGH_PRIO", "semaphore_2sys__sem_2src_2main_8c.html#ad2e008021d5a59d821e746c199603843", null ],
+    [ "LOW_PRIO", "semaphore_2sys__sem_2src_2main_8c.html#a408d2e9ada5737e616c7d4d5bad1cd37", null ],
+    [ "PRIO", "semaphore_2sys__sem_2src_2main_8c.html#aef8f07401842218539bdd0f689991002", null ],
+    [ "SEM_INIT_VAL", "semaphore_2sys__sem_2src_2main_8c.html#a1921ee8629c4482331e5a78d5dfc21d3", null ],
+    [ "SEM_MAX_VAL", "semaphore_2sys__sem_2src_2main_8c.html#a40245d4b511683879535bdf5d95e855e", null ],
+    [ "STACK_NUMS", "semaphore_2sys__sem_2src_2main_8c.html#a24969235571380b7abee2737b1b18060", null ],
+    [ "STACK_SIZE", "semaphore_2sys__sem_2src_2main_8c.html#a6423a880df59733d2d9b509c7718d3a9", null ],
+    [ "TOTAL_MAX", "semaphore_2sys__sem_2src_2main_8c.html#ae4a339cbebf39d35c68cb6b1ae254ee3", null ],
+    [ "K_THREAD_STACK_ARRAY_DEFINE", "semaphore_2sys__sem_2src_2main_8c.html#a658f40d03fdb4b0e7a8f231b6a5c74c7", null ],
+    [ "K_THREAD_STACK_ARRAY_DEFINE", "semaphore_2sys__sem_2src_2main_8c.html#ab65592c10862ac7be67b70b1b582e342", null ],
+    [ "multi_thread_sem_give", "semaphore_2sys__sem_2src_2main_8c.html#a9cbb1e74dd4a4d81ed2dd2c0a66f8dd7", null ],
+    [ "multi_thread_sem_take", "semaphore_2sys__sem_2src_2main_8c.html#adb2fda8c64ce0d62324eecc1f2ee3dd5", null ],
+    [ "sem_thread_give", "semaphore_2sys__sem_2src_2main_8c.html#ae0311ac4e0ba315b0a1b1044ea0c3263", null ],
+    [ "sem_thread_give_uninit", "semaphore_2sys__sem_2src_2main_8c.html#a0965aa1a6c1d4b181b824c77df66a039", null ],
+    [ "test_main", "semaphore_2sys__sem_2src_2main_8c.html#a8a4533f287d99bb2d7c24c0e29c9a449", null ],
+    [ "test_multi_thread_sem_limit", "group__kernel__sys__sem__tests.html#ga07fff76623ee8b330ae165c598138fac", null ],
+    [ "test_multiple_thread_sem_usage", "group__kernel__sys__sem__tests.html#ga22efe7f2f96f1854c1a96ea272de835c", null ],
+    [ "thread_high_prio_sem_take", "semaphore_2sys__sem_2src_2main_8c.html#a77c1af971d228fc4d590b9166c92ee37", null ],
+    [ "thread_low_prio_sem_take", "semaphore_2sys__sem_2src_2main_8c.html#a35cf067532634632258820ee2f660cb1", null ],
+    [ "count", "semaphore_2sys__sem_2src_2main_8c.html#a7624b580dc5672d7564cdc73212de784", null ],
+    [ "flag", "semaphore_2sys__sem_2src_2main_8c.html#a194186a621980a6095d787bf06099591", null ],
+    [ "multi_tid_give", "semaphore_2sys__sem_2src_2main_8c.html#a939c906e68be3d5da53d490eee0b28aa", null ],
+    [ "multi_tid_take", "semaphore_2sys__sem_2src_2main_8c.html#a8bbb671f462d9b2f87762a840f3e8c87", null ],
+    [ "uninit_sem", "semaphore_2sys__sem_2src_2main_8c.html#ae8d5c70c6e5bc3653b4563bc1aef9706", null ]
+];

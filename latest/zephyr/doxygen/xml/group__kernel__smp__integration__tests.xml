@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__kernel__smp__integration__tests" kind="group">
+    <compoundname>kernel_smp_integration_tests</compoundname>
+    <title>SMP Tests</title>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__kernel__smp__integration__tests_1ga985f61374b573f460882c305eacf86af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void test_smp_ipi</definition>
+        <argsstring>(void)</argsstring>
+        <name>test_smp_ipi</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Test interprocessor interrupt. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Test Objective:<itemizedlist>
+<listitem><para>To verify architecture layer provides a mechanism to issue an interprocessor interrupt to all other CPUs in the system that calls the scheduler IPI. We simply add a hook in z_sched_ipi(), in order to check if it has been called once in another CPU except the caller, when <ref refid="group__arch-smp_1gadd3d6c84e3c57babc859314718e0f231" kindref="member">arch_sched_ipi()</ref> is called.</para>
+</listitem></itemizedlist>
+</para>
+<para>Testing techniques:<itemizedlist>
+<listitem><para>Interface testing, function and block box testing, dynamic analysis and testing</para>
+</listitem></itemizedlist>
+</para>
+<para>Prerequisite Conditions:<itemizedlist>
+<listitem><para>CONFIG_SMP=y, and the HW platform must support SMP.</para>
+</listitem><listitem><para>CONFIG_TRACE_SCHED_IPI=y was set.</para>
+</listitem></itemizedlist>
+</para>
+<para>Input Specifications:<itemizedlist>
+<listitem><para>N/A</para>
+</listitem></itemizedlist>
+</para>
+<para>Test Procedure:<orderedlist>
+<listitem><para>In main thread, given a global variable sched_ipi_has_called equaled zero.</para>
+</listitem><listitem><para>Call <ref refid="group__arch-smp_1gadd3d6c84e3c57babc859314718e0f231" kindref="member">arch_sched_ipi()</ref> then sleep for 100ms.</para>
+</listitem><listitem><para>In z_sched_ipi() handler, increment the sched_ipi_has_called.</para>
+</listitem><listitem><para>In main thread, check the sched_ipi_has_called is not equaled to zero.</para>
+</listitem><listitem><para>Repeat step 1 to 4 for 3 times.</para>
+</listitem></orderedlist>
+</para>
+<para>Expected Test Result:<itemizedlist>
+<listitem><para>The pointer of current cpu data that we got from function call is correct.</para>
+</listitem></itemizedlist>
+</para>
+<para>Pass/Fail Criteria:<itemizedlist>
+<listitem><para>Successful if the check of step 4 are all passed.</para>
+</listitem><listitem><para>Failure if one of the check of step 4 is failed.</para>
+</listitem></itemizedlist>
+</para>
+<para>Assumptions and Constraints:<itemizedlist>
+<listitem><para>This test using for the platform that support SMP, in our current scenario , only x86_64 and arc supported.</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="see"><para><ref refid="group__arch-smp_1gadd3d6c84e3c57babc859314718e0f231" kindref="member">arch_sched_ipi()</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>TESTPOINT: check if enter our IPI interrupt handler</para>
+        </inbodydescription>
+        <location file="tests/kernel/smp/src/main.c" line="611" column="6" bodyfile="tests/kernel/smp/src/main.c" bodystart="611" bodyend="635"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

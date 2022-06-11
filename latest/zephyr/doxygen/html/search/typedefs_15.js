@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['vaddr_5ft_34935',['vaddr_t',['../addr__types_8h.html#a96329c9b2410bdd79046e2529238a30f',1,'addr_types.h']]],
+  ['vcpu_5finfo_5ft_34936',['vcpu_info_t',['../xen_8h.html#a5d85cc76b763cb919c5c7d0e91d66d9f',1,'xen.h']]],
+  ['vcpu_5ftime_5finfo_5ft_34937',['vcpu_time_info_t',['../xen_8h.html#a46b8329725a49204352d786ce96d8b85',1,'xen.h']]],
+  ['video_5fapi_5fdequeue_5ft_34938',['video_api_dequeue_t',['../group__video__interface.html#gaa51265cb53a7fd67f4d0fcaf37e72145',1,'video.h']]],
+  ['video_5fapi_5fenqueue_5ft_34939',['video_api_enqueue_t',['../group__video__interface.html#ga11186fd10ade53fa17238dc0be634df0',1,'video.h']]],
+  ['video_5fapi_5fflush_5ft_34940',['video_api_flush_t',['../group__video__interface.html#ga92acfc12d5cf3a070f31faa9e9933bbf',1,'video.h']]],
+  ['video_5fapi_5fget_5fcaps_5ft_34941',['video_api_get_caps_t',['../group__video__interface.html#ga93f92a3bb87b1a124a51b49b7154d9cb',1,'video.h']]],
+  ['video_5fapi_5fget_5fctrl_5ft_34942',['video_api_get_ctrl_t',['../group__video__interface.html#gada5c8458841e608fb60370a275ab8d87',1,'video.h']]],
+  ['video_5fapi_5fget_5fformat_5ft_34943',['video_api_get_format_t',['../group__video__interface.html#ga4442f391f6d0281d323fb15ab47ced1e',1,'video.h']]],
+  ['video_5fapi_5fset_5fctrl_5ft_34944',['video_api_set_ctrl_t',['../group__video__interface.html#gafb7b5f44634269333834264aa4116267',1,'video.h']]],
+  ['video_5fapi_5fset_5fformat_5ft_34945',['video_api_set_format_t',['../group__video__interface.html#ga0cc17cc7532305e6c1c826387745d653',1,'video.h']]],
+  ['video_5fapi_5fset_5fsignal_5ft_34946',['video_api_set_signal_t',['../group__video__interface.html#ga2e65c8d29be2b80514b1f9a7688f0978',1,'video.h']]],
+  ['video_5fapi_5fstream_5fstart_5ft_34947',['video_api_stream_start_t',['../group__video__interface.html#ga030f31941d35bc86fb54fb3cbbaf3dd0',1,'video.h']]],
+  ['video_5fapi_5fstream_5fstop_5ft_34948',['video_api_stream_stop_t',['../group__video__interface.html#ga33b8ca01b23aae7b1a90351730f039f0',1,'video.h']]],
+  ['vtd_5falloc_5fentries_5ff_34949',['vtd_alloc_entries_f',['../drivers_2interrupt__controller_2intel__vtd_8h.html#a3bded96a42bec41476ff6bc9f75676b4',1,'intel_vtd.h']]],
+  ['vtd_5fget_5firte_5fby_5firq_5ff_34950',['vtd_get_irte_by_irq_f',['../drivers_2interrupt__controller_2intel__vtd_8h.html#a0a2e483fe9159a46d6265b257841f43a',1,'intel_vtd.h']]],
+  ['vtd_5fget_5firte_5fby_5fvector_5ff_34951',['vtd_get_irte_by_vector_f',['../drivers_2interrupt__controller_2intel__vtd_8h.html#a944bfa2dc643fd3ff182eee12d836ae5',1,'intel_vtd.h']]],
+  ['vtd_5fget_5firte_5fvector_5ff_34952',['vtd_get_irte_vector_f',['../drivers_2interrupt__controller_2intel__vtd_8h.html#af3ddf5e22fcb4956e4887e1982fae28e',1,'intel_vtd.h']]],
+  ['vtd_5firte_5fis_5fmsi_5ff_34953',['vtd_irte_is_msi_f',['../drivers_2interrupt__controller_2intel__vtd_8h.html#a622083e8841c3899ca7b7156f526581f',1,'intel_vtd.h']]],
+  ['vtd_5fremap_5ff_34954',['vtd_remap_f',['../drivers_2interrupt__controller_2intel__vtd_8h.html#afefa59b2064053d90445127da9b64bfb',1,'intel_vtd.h']]],
+  ['vtd_5fremap_5fmsi_5ff_34955',['vtd_remap_msi_f',['../drivers_2interrupt__controller_2intel__vtd_8h.html#aadb69e257884026693109510e20dc2b4',1,'intel_vtd.h']]],
+  ['vtd_5fset_5firte_5firq_5ff_34956',['vtd_set_irte_irq_f',['../drivers_2interrupt__controller_2intel__vtd_8h.html#a63733309814847ba4204776e8ace9a85',1,'intel_vtd.h']]],
+  ['vtd_5fset_5firte_5fmsi_5ff_34957',['vtd_set_irte_msi_f',['../drivers_2interrupt__controller_2intel__vtd_8h.html#a0118f224100f721a508ce00c3ae99698',1,'intel_vtd.h']]],
+  ['vtd_5fset_5firte_5fvector_5ff_34958',['vtd_set_irte_vector_f',['../drivers_2interrupt__controller_2intel__vtd_8h.html#a06190d6273d0adeb92e9e4e4fa79d9b4',1,'intel_vtd.h']]]
+];

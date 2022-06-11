@@ -1,0 +1,802 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Time Domain Fixed Beamformer (TDFB) &mdash; SOF Project 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/sof.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Developer Guides" href="../../developer_guides/index.html" />
+    <link rel="prev" title="Multiplexer/Demultiplexer" href="../demux/demux.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SOF Project
+          
+
+          
+            
+            <img src="../../_static/logo_sof_white_200w.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://sofproject.org">SOF project website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction to the SOF Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architectures/index.html">Supported Architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/index.html">Platforms</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Algorithms</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#supplied-processing-algorithms">Supplied Processing Algorithms</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#algorithm-specific-information">Algorithm Specific Information</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../src/sample_rate_conversion.html">Sample Rate Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../demux/demux.html">Multiplexer/Demultiplexer</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Time Domain Fixed Beamformer (TDFB)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#beamformer-types">Beamformer types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#microphone-array-geometries">Microphone array geometries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filter-bank-design-procedure">Filter bank design procedure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#design-examples">Design examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#simulation">Simulation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guides/index.html">Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release.html">Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contributing to the Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tsc/index.html">Technical Steering Committee (TSC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maintainers/index.html">SOF admin, maintainers and code owners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../presentations/index.html">Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SOF Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Algorithms</a> &raquo;</li>
+        
+      <li>Time Domain Fixed Beamformer (TDFB)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/algos/tdfb/time_domain_fixed_beamformer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="time-domain-fixed-beamformer-tdfb">
+<span id="time-domain-fixed-beamformer"></span><h1><a class="toc-backref" href="#id15">Time Domain Fixed Beamformer (TDFB)</a><a class="headerlink" href="#time-domain-fixed-beamformer-tdfb" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#time-domain-fixed-beamformer-tdfb" id="id15">Time Domain Fixed Beamformer (TDFB)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#introduction" id="id16">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#beamformer-types" id="id17">Beamformer types</a></p></li>
+<li><p><a class="reference internal" href="#microphone-array-geometries" id="id18">Microphone array geometries</a></p>
+<ul>
+<li><p><a class="reference internal" href="#line" id="id19">Line</a></p></li>
+<li><p><a class="reference internal" href="#circular" id="id20">Circular</a></p></li>
+<li><p><a class="reference internal" href="#rectangular" id="id21">Rectangular</a></p></li>
+<li><p><a class="reference internal" href="#l-shape" id="id22">L-shape</a></p></li>
+<li><p><a class="reference internal" href="#arbitrary-xyz" id="id23">Arbitrary XYZ</a></p></li>
+<li><p><a class="reference internal" href="#rotation-of-the-array" id="id24">Rotation of the array</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#filter-bank-design-procedure" id="id25">Filter bank design procedure</a></p></li>
+<li><p><a class="reference internal" href="#design-examples" id="id26">Design examples</a></p>
+<ul>
+<li><p><a class="reference internal" href="#circular-array" id="id27">Circular array</a></p></li>
+<li><p><a class="reference internal" href="#line-array" id="id28">Line array</a></p></li>
+<li><p><a class="reference internal" href="#limitations" id="id29">Limitations</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#simulation" id="id30">Simulation</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id16">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The beamformer is a pre-processing component for microphones. It
+improves microphone signal-to-noise capturing by providing spatial
+noise suppression for ambient noise. The non-correlated self-noise of the
+microphones and electronics can be mitigated by summing two or
+more microphones into an output channel stream.</p>
+<p>The beamformer’s operation is easiest to understand with a delay-and-sum
+beamformer type for a line array shape. The microphones are assumed to
+be in far-field of the sound source. At a sufficient distance, the
+spherical waves such as from a person’s mouth appears as planar. The waves
+propagate at a slightly temperature-dependent speed of 340 m/s. The
+beamformer can sum the microphones outputs in-phase for the look
+direction. The direction is called the azimuth angle.</p>
+<p>The beamformer can also, if desired, be set up to do the opposite to
+null the signal from a specified angle by delaying the signal for an
+opposite phase sum.</p>
+<div class="figure align-default" id="id1">
+<img alt="../../_images/beamformer_delay_and_sum.png" src="../../_images/beamformer_delay_and_sum.png" />
+<p class="caption"><span class="caption-number">Figure 22 </span><span class="caption-text">Example delay-and-sum beamformer with two microphones at a 50 mm
+distance. The sound waves arrive at an 18 degree azimuth angle.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>In the above example, the plane waves arrive from source at an 18 degrees
+azimuth angle versus the normal line array axis. The task is to
+determine the needed delay values for delay elements D<sub>1</sub> and
+D<sub>2</sub>. Since the first microphone receives the wave before the
+second microphone, the signal from the first microphone must be delayed
+by D<sub>1</sub> before the summing operation. The Delay value of D<sub>2</sub> is set to zero.</p>
+<p>The needed delay value is the sound propagation time equivalent length
+of edge <strong>a</strong> in the formed right triangle with edges <strong>a</strong>, <strong>b</strong>, and <strong>c</strong>.
+The lengths of the edges are time values that are computed from the
+microphone’s known distance, speed of sound, and azimuth angle.</p>
+<p>The length of edge <strong>c</strong> is</p>
+<p><span class="math notranslate nohighlight">\(t_c = \frac{d}{v} = \frac{50~mm}{340~m/s} \approx 147~us\)</span></p>
+<p>The angle between edges <strong>a</strong> and <strong>c</strong> is 90 - az. Therefore, the arrival
+time difference t<sub>a</sub> to apply for D<sub>1</sub> with an 18 degree steer
+angle (az) is</p>
+<p><span class="math notranslate nohighlight">\(t_a = t_c \cos (90 - azimuth) \approx 45~us\)</span></p>
+<p>The different az angles shows that the delay to apply varies
+between 0 (az = 0) and 147 us (az = 90). For negative azimuth angles,
+the applied delays for D<sub>1</sub> and D<sub>2</sub> are swapped.</p>
+<p>Such a delay is typically applied by an all-pass digital filter. The beam
+patterns for line shape one-dimensional arrays have a rotational
+symmetrical beam pattern. In the above example with D<sub>1</sub> and
+D<sub>2</sub> set, the array would also pass the waveform from an 180 - az
+direction. The beam shape resembles a bent ellipse for broadside. A
+3D cone-like beam pattern is possible only for end-fire angles of +90
+or -90 degrees. A 2D array like a circular shape can provide a 360
+degree steerable cone in an azimuth plane.</p>
+<p>Analog directional microphones, such as a 3D cardioid shape for an
+end-fire angle, are actually single or dual diaphragm microphones with
+tuned acoustical ports or analog all-pass electronics that achieve
+similar additional delays for delay-and-sum. Due to their large mechanical
+size, they are common only in studio equipment. Consumer electronics
+such as notebooks form factors can fortunately provide various-shaped
+microphone arrays while the studio microphone-like approach is
+impossible.</p>
+</div>
+<div class="section" id="beamformer-types">
+<h2><a class="toc-backref" href="#id17">Beamformer types</a><a class="headerlink" href="#beamformer-types" title="Permalink to this headline">¶</a></h2>
+<p>Main beamformer types are fixed and adaptive. The implementations
+can be in time or frequency domain.</p>
+<p>The fixed beamformer has a simple time domain with a pre-defined look angle
+(azimuth, elevation). The audio source is not tracked automatically. Audio
+waveforms from other angles are attenuated. The beam shape is not
+particularly narrow (with a low microphone count such as 2 -4) so there’s no
+need to track the subject; we automatically know the approximate angle for
+the use case.</p>
+<p>Adaptive beamformers usually seek to minimize the output signal
+while unblocking the configured pass direction. This differs from the fixed
+beamformer, where the assumed or theoretical noise characteristic is
+pre-programmed. There is no delay to adapt (same performance from the
+beginning) or risk for mis-adaptation (desired signal corrupts), but
+the practical performance is somewhat limited in a theoretical noise field.
+The time domain implementation is low-latency with no added delay for signal
+framing for the transform domain. It can compute nearly any number of stream
+frames due to no block size constraints. The filter bank adds a small delay,
+such as 2 -10 ms, that depends on the configuration.</p>
+<p>The fixed beamformer must be configured for every type of
+microphone array geometry. The beam can be steered by applying a new
+programming filter (with presets in a later version of TDFB) if the
+capture subject angle has changed based on camera face recognition or
+acoustical direction of the arrival estimation. Also, quick beam direction
+switching for some array geometries is also possible by rotating the input channels at the algorithm input.</p>
+</div>
+<div class="section" id="microphone-array-geometries">
+<h2><a class="toc-backref" href="#id18">Microphone array geometries</a><a class="headerlink" href="#microphone-array-geometries" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="line">
+<h3><a class="toc-backref" href="#id19">Line</a><a class="headerlink" href="#line" title="Permalink to this headline">¶</a></h3>
+<p>In the line array, microphone locations form a straight line. As shown in the
+figure below, microphone numbers correspond to audio channels at the
+beamformer input. In stereo, audio channel 1 is the left channel.</p>
+<p>The array size is described by microphones count and the space between
+two neighboring microphones. In the example below, the spacing of the four
+microphones is 30 mm. The steer azimuth angle is 90 degrees. The beam
+direction for positive angles (0 to 90) travels towards microphone 1. The
+beam direction towards the last microphone has a negative angle
+(0 to -90).</p>
+<div class="figure align-default" id="id2">
+<a class="reference internal image-reference" href="../../_images/line_array.png"><img alt="../../_images/line_array.png" src="../../_images/line_array.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 23 </span><span class="caption-text">Line array with four microphones.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>The code to create the above design is below. The Octave GUI must
+be started from the TDFB <code class="docutils literal notranslate"><span class="pre">tune</span></code> directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="nv">$SOF_WORKSPACE</span>/sof/tools/tune/tdfb
+octave --gui <span class="p">&amp;</span>
+</pre></div>
+</div>
+<p>In the Octave shell, enter the following commands or create a short script
+(such as <code class="docutils literal notranslate"><span class="pre">ex_line.m</span></code>) and run it. Remember to end each line with a
+semicolon to avoid long prints of internal data structures.</p>
+<div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="n">bf</span> <span class="p">=</span> <span class="n">bf_defaults</span><span class="p">();</span> <span class="c">% Get defaults</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">array</span> <span class="p">=</span> <span class="s">&#39;line&#39;</span><span class="p">;</span>  <span class="c">% Calculate xyz coordinates for line array</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_n</span> <span class="p">=</span> <span class="mi">4</span><span class="p">;</span>       <span class="c">% four microphones</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_d</span> <span class="p">=</span> <span class="mf">30e-3</span><span class="p">;</span>   <span class="c">% 30 mm spacing</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">steer_az</span> <span class="p">=</span> <span class="mi">90</span><span class="p">;</span>   <span class="c">% Azimuth angle 90 deg</span>
+<span class="n">bf</span> <span class="p">=</span> <span class="n">bf_design</span><span class="p">(</span><span class="n">bf</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The above design is simplified and lacks the output files definition; it
+assumes a default of four microphones to one output channel configuration
+but it creates the plots for geometry and theoretical characteristics.</p>
+</div>
+<div class="section" id="circular">
+<h3><a class="toc-backref" href="#id20">Circular</a><a class="headerlink" href="#circular" title="Permalink to this headline">¶</a></h3>
+<p>In the circular array, microphones are at an equal radius with equal
+angular spacing. The microphones are numbered counterclockwise when
+viewing the array from above (positive z-axis).</p>
+<p>The azimuth angle (-180 to +180) is at 90 degrees in our example. A 0
+degree angle points exactly towards microphone 1. The circular array is
+two-dimensional. If the elevation angle (-90 to 90 degrees) is set to a
+non-zero value, the look direction can be tilted up or down. A positive
+elevation angle tilts the beam upwards.</p>
+<div class="figure align-default" id="id3">
+<a class="reference internal image-reference" href="../../_images/circular_array.png"><img alt="../../_images/circular_array.png" src="../../_images/circular_array.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 24 </span><span class="caption-text">Circular array with six microphones.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>This design was created using commands, as shown below. The plot_box is
+optional; it only zooms the plot axis to a 150 mm wide cube.</p>
+<div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="n">bf</span> <span class="p">=</span> <span class="n">bf_defaults</span><span class="p">();</span>    <span class="c">% Get defaults</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">array</span> <span class="p">=</span> <span class="s">&#39;circular&#39;</span><span class="p">;</span> <span class="c">% Calculate xyz coordinates for line array</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_n</span> <span class="p">=</span> <span class="mi">6</span><span class="p">;</span>          <span class="c">% six microphones</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_r</span> <span class="p">=</span> <span class="mf">30e-3</span><span class="p">;</span>      <span class="c">% 30 mm radius</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">steer_az</span> <span class="p">=</span> <span class="mi">90</span><span class="p">;</span>      <span class="c">% Azimuth angle 90 deg</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">plot_box</span> <span class="p">=</span> <span class="mf">150e-3</span><span class="p">;</span>
+<span class="n">bf</span> <span class="p">=</span> <span class="n">bf_design</span><span class="p">(</span><span class="n">bf</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The view can be rotated as a normal 3D plot. In Matlab, mouse rotation is
+available. In Octave, the command view() can be used to view the array from
+another angle.</p>
+<div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">v</span> <span class="p">=</span> <span class="nb">view</span><span class="p">()</span>
+<span class="nb">view</span><span class="p">(</span><span class="mi">130</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The azimuth view was rotated by 180 degrees (-50 to +130). The view has
+no impact on the beamformer design.</p>
+</div>
+<div class="section" id="rectangular">
+<h3><a class="toc-backref" href="#id21">Rectangular</a><a class="headerlink" href="#rectangular" title="Permalink to this headline">¶</a></h3>
+<p>A rectangular array is shown below. The numbering of microphones for
+the first row is the same as for the line array. The number continues from
+the left-most microphone of the next row.</p>
+<div class="figure align-default" id="id4">
+<a class="reference internal image-reference" href="../../_images/rectangular_array.png"><img alt="../../_images/rectangular_array.png" src="../../_images/rectangular_array.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 25 </span><span class="caption-text">Rectangular array with six microphones.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<p>The code for the design is as follows:</p>
+<div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="n">bf</span> <span class="p">=</span> <span class="n">bf_defaults</span><span class="p">();</span>         <span class="c">% Get defaults</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">array</span> <span class="p">=</span> <span class="s">&#39;rectangle&#39;</span><span class="p">;</span>     <span class="c">% Calculate xyz coordinates for rectangular array</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_nxy</span> <span class="p">=</span> <span class="p">[</span><span class="mi">3</span> <span class="mi">2</span><span class="p">];</span>         <span class="c">% of 3 x 2</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_dxy</span> <span class="p">=</span> <span class="p">[</span><span class="mf">30e-3</span> <span class="mf">30e-3</span><span class="p">];</span> <span class="c">% Same x and y spacing</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">plot_box</span> <span class="p">=</span> <span class="mf">150e-3</span><span class="p">;</span>
+<span class="n">bf</span> <span class="p">=</span> <span class="n">bf_design</span><span class="p">(</span><span class="n">bf</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="l-shape">
+<h3><a class="toc-backref" href="#id22">L-shape</a><a class="headerlink" href="#l-shape" title="Permalink to this headline">¶</a></h3>
+<p>The L-shape array is much like the rectangular array but only the left and
+bottom edge of the microphones rectangle is populated.</p>
+<div class="figure align-default" id="id5">
+<a class="reference internal image-reference" href="../../_images/lshape_array.png"><img alt="../../_images/lshape_array.png" src="../../_images/lshape_array.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 26 </span><span class="caption-text">L-shape array with four microphones.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+<p>It is produced by the following:</p>
+<div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="n">bf</span> <span class="p">=</span> <span class="n">bf_defaults</span><span class="p">();</span>         <span class="c">% Get defaults</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">array</span> <span class="p">=</span> <span class="s">&#39;lshape&#39;</span><span class="p">;</span>        <span class="c">% Calculate xyz coordinates for rectangular array</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_nxy</span> <span class="p">=</span> <span class="p">[</span><span class="mi">3</span> <span class="mi">2</span><span class="p">];</span>         <span class="c">% of 3 x 2</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_dxy</span> <span class="p">=</span> <span class="p">[</span><span class="mf">30e-3</span> <span class="mf">30e-3</span><span class="p">];</span> <span class="c">% Same x and y spacing</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">steer_az</span> <span class="p">=</span> <span class="mi">90</span><span class="p">;</span>           <span class="c">% Azimuth angle 90 deg</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">plot_box</span> <span class="p">=</span> <span class="mf">150e-3</span><span class="p">;</span>
+<span class="n">bf</span> <span class="p">=</span> <span class="n">bf_design</span><span class="p">(</span><span class="n">bf</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="arbitrary-xyz">
+<h3><a class="toc-backref" href="#id23">Arbitrary XYZ</a><a class="headerlink" href="#arbitrary-xyz" title="Permalink to this headline">¶</a></h3>
+<p>All microphone coordinates can be defined manually. The following
+example shows a tetrahedron shape with four microphones. The microphones
+order is as they are presented in the design script.</p>
+<div class="figure align-default" id="id6">
+<a class="reference internal image-reference" href="../../_images/xyz_array.png"><img alt="../../_images/xyz_array.png" src="../../_images/xyz_array.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 27 </span><span class="caption-text">XYZ array with four microphones.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+<p>The tetrahedron shape is made with the following script:</p>
+<div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="n">bf</span> <span class="p">=</span> <span class="n">bf_defaults</span><span class="p">();</span>   <span class="c">% Get defaults</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">array</span> <span class="p">=</span> <span class="s">&#39;xyz&#39;</span><span class="p">;</span>     <span class="c">% Enter xyz directly, note that script centers it</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">plot_box</span> <span class="p">=</span> <span class="mf">100e-3</span><span class="p">;</span> <span class="c">% Small 100 mm plot box</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">steer_az</span> <span class="p">=</span> <span class="mi">90</span><span class="p">;</span>     <span class="c">% Steer array to 90 deg azimuth</span>
+
+<span class="c">% Coordinates from https://en.wikipedia.org/wiki/Tetrahedron</span>
+<span class="n">s</span> <span class="p">=</span> <span class="mf">30e-3</span><span class="o">/</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">8</span><span class="o">/</span><span class="mi">3</span><span class="p">);</span> <span class="c">% Scale to 30 mm</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_x</span> <span class="p">=</span> <span class="p">[</span> <span class="nb">sqrt</span><span class="p">(</span><span class="mi">8</span><span class="o">/</span><span class="mi">9</span><span class="p">)</span> <span class="o">-</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">9</span><span class="p">)</span> <span class="o">-</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">9</span><span class="p">)</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">s</span><span class="p">;</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_y</span> <span class="p">=</span> <span class="p">[</span> <span class="mi">0</span>          <span class="nb">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">s</span><span class="p">;</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_z</span> <span class="p">=</span> <span class="p">[</span><span class="o">-</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">s</span><span class="p">;</span>
+
+<span class="n">bf</span> <span class="p">=</span> <span class="n">bf_design</span><span class="p">(</span><span class="n">bf</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that the beamformer design is totally unaware of the surface effects
+of the object. The design equations assume that the microphones “float” in
+free space. Particularly, a 3D array will be impacted by device mechanics
+so custom design equations may be needed.</p>
+</div>
+<div class="section" id="rotation-of-the-array">
+<h3><a class="toc-backref" href="#id24">Rotation of the array</a><a class="headerlink" href="#rotation-of-the-array" title="Permalink to this headline">¶</a></h3>
+<p>Change the array orientation by changing the  X, Y, and Z axis rotation
+angle in the <code class="docutils literal notranslate"><span class="pre">array_angle</span></code>. The following example rotates the array like
+it would be on a notebook display lid corner at a 60 degree angle. The steer
+azimuth is set to 0 degrees towards the notebook user. The plot view angle
+is changed also.</p>
+<div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="n">bf</span> <span class="p">=</span> <span class="n">bf_defaults</span><span class="p">();</span>          <span class="c">% Get defaults</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">array</span> <span class="p">=</span> <span class="s">&#39;lshape&#39;</span><span class="p">;</span>         <span class="c">% Calculate xyz coordinates for rectangular array</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_nxy</span> <span class="p">=</span> <span class="p">[</span><span class="mi">3</span> <span class="mi">2</span><span class="p">];</span>          <span class="c">% of 3 x 2</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_dxy</span> <span class="p">=</span> <span class="p">[</span><span class="mf">30e-3</span> <span class="mf">30e-3</span><span class="p">];</span>  <span class="c">% Same x and y spacing</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">steer_az</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span>             <span class="c">% Azimuth angle 90 deg</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">array_angle</span> <span class="p">=</span> <span class="p">[</span><span class="mi">180</span> <span class="mi">60</span> <span class="mi">0</span><span class="p">];</span> <span class="c">% Array rotation angles for xyz</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">plot_box</span> <span class="p">=</span> <span class="mf">150e-3</span><span class="p">;</span>
+<span class="n">bf</span> <span class="p">=</span> <span class="n">bf_design</span><span class="p">(</span><span class="n">bf</span><span class="p">);</span>
+<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">view</span><span class="p">(</span><span class="mi">140</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-default" id="id7">
+<a class="reference internal image-reference" href="../../_images/lshape_array_rot.png"><img alt="../../_images/lshape_array_rot.png" src="../../_images/lshape_array_rot.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 28 </span><span class="caption-text">Rotated L-shape array.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="filter-bank-design-procedure">
+<h2><a class="toc-backref" href="#id25">Filter bank design procedure</a><a class="headerlink" href="#filter-bank-design-procedure" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The following procedure is based on equations published in “Superdirective Microphone Arrays” by Joerg Bitzer and K. Uwe Simmer. It is available in book “Microphone Arrays” by Michael Brandstein and Darren Ward (Springer 2001).</p>
+</div>
+<p>The filter bank design procedure is located in the <code class="docutils literal notranslate"><span class="pre">bf_design.m</span></code> file.
+Briefly, the design is done entirely in the FFT frequency domain with a
+default of 512 bins. The conversion to a time domain FIR filter bank for the
+desired filter length is done with an IFFT and kaiser window. The longer
+the filters, the less they deviate from the super-directive frequency domain
+design.</p>
+<p>The procedure starts with computing the x, y, z coordinates of the
+virtual sound source at the specified azimuth (<code class="docutils literal notranslate"><span class="pre">steer_az</span></code>) and elevation
+(<code class="docutils literal notranslate"><span class="pre">steer_el</span></code>) angles. The point is by default 5m radius away which is
+enough for far-field with planar sound waves that have typical array
+dimensions but can be altered (<code class="docutils literal notranslate"><span class="pre">steer_r</span></code>). Near-field (less than
+1m) design may suffer from a lack of sound level compensation for
+microphone channels.</p>
+<p>The noise field is assumed to be a theoretical homogeneous type; a
+coherence matrix is formed with knowledge of the microphone’s
+geometry. The super-directive design is a set of coefficients that
+minimize the noise power spectral density of filtered and summed
+microphone signals but provides a distortion-less response towards the
+look direction. The used design equations compute a Minimum Variance
+Distortion-less Response (MVDR) beamformer. The details are found in the
+<code class="docutils literal notranslate"><span class="pre">bf_design.m</span></code> script and the above-mentioned book.</p>
+<p>The elegance of the frequency domain design is that the equations can
+be solved per each single frequency bin in the FFT domain. Since the
+process is potentially numerically unstable, a diagonal loading factor is
+added to the coherence matrix prior to inversion. The parameters is <code class="docutils literal notranslate"><span class="pre">mu_db</span></code>. It defaults to -50 dB but smaller or larger values can be tested for best
+results. Smaller than default values need to be used with care. The self
+noise of the microphones, via white noise gain (WNG), could even get boosted
+with near zero diagonal load designs. Large diagonal load improves the
+robustness of the design but may compromise other characteristic-like beam
+patterns or diffuse noise field suppression.</p>
+<p>After solving the equation for all frequencies, the filters for each
+microphone channel are converted to a time domain with IFFT and window
+function. The window function shortens the impulse responses to the
+desired length. The windowing naturally changes the characteristics so
+different filter lengths (fir_beta) should be tested.</p>
+</div>
+<div class="section" id="design-examples">
+<h2><a class="toc-backref" href="#id26">Design examples</a><a class="headerlink" href="#design-examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="circular-array">
+<h3><a class="toc-backref" href="#id27">Circular array</a><a class="headerlink" href="#circular-array" title="Permalink to this headline">¶</a></h3>
+<p>In reference to the earlier circular array design example, note that the
+design creates several plot windows in addition to the geometry and steer
+direction plot. The following examples below show the beam pattern
+characteristics. The polar plot shows only frequencies 1, 2, 3, and 4 kHz.
+The colorful frequency vs. angle shows a more detailed view for the same but
+with all frequencies up to Nyquist Fs/2.</p>
+<p>Notice that the beam patterns are different for different frequencies. A
+beamformer type exists for constant directivity but the performance against
+diffuse noise is not as good. The narrower beam towards higher frequencies
+in super-directive achieves the higher ambient noise suppression.</p>
+<p>At frequencies above 5 kHz, side lobes pass the signal as well as the main
+beam. Those are caused by spatial aliasing. The wave length of audio gets
+smaller than the array microphones distance. The array dimensions must be
+decreased if spatial aliasing needs to be avoided. In most cases, some of it
+can be tolerated.</p>
+<p>In the look direction beam, some attenuation exists at lowest and highest
+frequencies. The response can be made more flat by increasing the filter
+length from the default 64 (<code class="docutils literal notranslate"><span class="pre">fir_length</span></code>).</p>
+<div class="figure align-default" id="id8">
+<a class="reference internal image-reference" href="../../_images/circular_polar.png"><img alt="../../_images/circular_polar.png" src="../../_images/circular_polar.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 29 </span><span class="caption-text">Polar response of the circular array.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id9">
+<a class="reference internal image-reference" href="../../_images/circular_spatial.png"><img alt="../../_images/circular_spatial.png" src="../../_images/circular_spatial.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 30 </span><span class="caption-text">Frequency vs. angle response of the circular array.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
+<p>The performance of the array and beamformer can also be characterized
+with White Noise Gain (WNG) and Directivity Index (DI) plots. The WNG
+plot shows the amount of attenuation the design provides for uncorrelated
+noise. For example, self-noise of the microphones is an uncorrelated noise
+type. The directivity index shows the attenuation of noise that arrives from
+other directions than the steer direction. The noise that arrives from
+surrounding noise sources and reflects from walls and other surfaces and is
+correlated is called <em>diffuse field noise</em>.</p>
+<p>The impact of diagonal load <code class="docutils literal notranslate"><span class="pre">mu_db</span></code> in an example range of -100 to -20 can
+be tried and seen best in these plots. A near zero diagonal load with a
+-200 dB value makes the directivity even negative at some frequencies. Such
+beamformer design would boost noise at those frequencies!</p>
+<div class="figure align-default" id="id10">
+<a class="reference internal image-reference" href="../../_images/circular_wng.png"><img alt="../../_images/circular_wng.png" src="../../_images/circular_wng.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 31 </span><span class="caption-text">White noise gain of the circular array.</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id11">
+<a class="reference internal image-reference" href="../../_images/circular_di.png"><img alt="../../_images/circular_di.png" src="../../_images/circular_di.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 32 </span><span class="caption-text">Directivity index of the circular array.</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+<p>Finally, the FIR coefficients plot can be checked for a sane-looking result.
+The plot below shows a typical symmetrical FIR impulse response.</p>
+<div class="figure align-default" id="id12">
+<a class="reference internal image-reference" href="../../_images/circular_filters.png"><img alt="../../_images/circular_filters.png" src="../../_images/circular_filters.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 33 </span><span class="caption-text">Filter coefficients for the circular array.</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="line-array">
+<h3><a class="toc-backref" href="#id28">Line array</a><a class="headerlink" href="#line-array" title="Permalink to this headline">¶</a></h3>
+<p>The circular arrays have nearly identical beam patterns in any direction. As
+an exercise, compare the beam patterns of a 4 mic line array to a 0 degrees
+azimuth steer vs. 90 or -90 degrees.</p>
+</div>
+<div class="section" id="limitations">
+<h3><a class="toc-backref" href="#id29">Limitations</a><a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h3>
+<p>The above examples defaulted to N microphones to a single channel output.
+However, due to a current limitation in the SOF pipeline, the PCM and DAI
+must have the same word length. This limitation will be addressed in a future
+SOF release.</p>
+<p>As a workaround, the beamformer can duplicate its output channel to
+the needed number of channels; there can also be several beams in the
+design for different output channels. The latter is actually preferred
+for the generic stereo capture PCM in typical notebooks. The typical array
+dimensions do not provide much subjective stereo sensation.</p>
+<div class="section" id="dual-mono-example">
+<h4>Dual mono example<a class="headerlink" href="#dual-mono-example" title="Permalink to this headline">¶</a></h4>
+<p>A complete dual mono 0 degree azimuth beamformer can be designed and
+exported with a script. The beam characteristic is a 50 mm spaced pair but
+the <code class="docutils literal notranslate"><span class="pre">num_output_channels</span></code> and <code class="docutils literal notranslate"><span class="pre">output_channel_mix</span></code> settings alter the
+TDFB output mixer configuration.</p>
+<div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="n">bf</span> <span class="p">=</span> <span class="n">bf_defaults</span><span class="p">();</span> <span class="c">% Get defaults</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">array</span> <span class="p">=</span> <span class="s">&#39;line&#39;</span><span class="p">;</span>  <span class="c">% Calculate xyz coordinates for line array</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_n</span> <span class="p">=</span> <span class="mi">2</span><span class="p">;</span>       <span class="c">% two microphones</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">mic_d</span> <span class="p">=</span> <span class="mf">50e-3</span><span class="p">;</span>   <span class="c">% 50 mm spacing</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">fs</span> <span class="p">=</span> <span class="mf">16e3</span><span class="p">;</span>       <span class="c">% 16 kHz rate</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">steer_az</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span>    <span class="c">% 0 degree azimuth</span>
+
+<span class="c">% Two output channels</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">num_output_channels</span> <span class="p">=</span> <span class="mi">2</span><span class="p">;</span>
+
+<span class="c">% Mix filter 1 output to channels 0 and 1 (2^0 + 2^1 = 3)</span>
+<span class="c">% Mix filter 2 output to channels 0 and 1 (2^0 + 2^1 = 3)</span>
+<span class="n">bf</span><span class="p">.</span><span class="n">output_channel_mix</span> <span class="p">=</span> <span class="p">[</span><span class="mi">3</span> <span class="mi">3</span><span class="p">];</span>
+
+<span class="n">bf</span> <span class="p">=</span> <span class="n">bf_filenames_helper</span><span class="p">(</span><span class="n">bf</span><span class="p">);</span>
+<span class="n">bf</span> <span class="p">=</span> <span class="n">bf_design</span><span class="p">(</span><span class="n">bf</span><span class="p">);</span>
+<span class="n">bf_export</span><span class="p">(</span><span class="n">bf</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-with-two-beams">
+<h4>Example with two beams<a class="headerlink" href="#example-with-two-beams" title="Permalink to this headline">¶</a></h4>
+<p>The following example creates a -10 degree beam for the left channel and a
++10 degree azimuth beam for the right channel. It’s quite suitable for notebooks with an emphasis on user direction (and opposite due to rotational
+symmetry of line array) and still have a noticeable channel separation.</p>
+<p>The procedure uses <code class="docutils literal notranslate"><span class="pre">bf_merge()</span></code> to combine bf1 and bf2 designs. The
+different <code class="docutils literal notranslate"><span class="pre">out_channel_mix</span></code> vectors sum the filters to the proper
+channels. The filenames are redefined to avoid overwriting the single beam
+files.</p>
+<div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="c">% Get defaults</span>
+<span class="n">bf1</span> <span class="p">=</span> <span class="n">bf_defaults</span><span class="p">();</span>
+<span class="n">bf1</span><span class="p">.</span><span class="n">fs</span> <span class="p">=</span> <span class="mf">48e3</span><span class="p">;</span>
+
+<span class="c">% Setup array</span>
+<span class="n">bf1</span><span class="p">.</span><span class="n">array</span><span class="p">=</span><span class="s">&#39;line&#39;</span><span class="p">;</span>
+<span class="n">bf1</span><span class="p">.</span><span class="n">mic_n</span> <span class="p">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="n">bf1</span><span class="p">.</span><span class="n">mic_d</span> <span class="p">=</span> <span class="mf">50e-3</span><span class="p">;</span>
+
+<span class="c">% Copy settings for bf2</span>
+<span class="n">bf2</span> <span class="p">=</span> <span class="n">bf1</span><span class="p">;</span>
+
+<span class="c">% Design beamformer 1 (left)</span>
+<span class="n">bf1</span><span class="p">.</span><span class="n">steer_az</span> <span class="p">=</span> <span class="o">-</span><span class="mi">10</span><span class="p">;</span>
+<span class="n">bf1</span><span class="p">.</span><span class="n">input_channel_select</span> <span class="p">=</span> <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span><span class="p">];</span>  <span class="c">% Input two channels</span>
+<span class="n">bf1</span><span class="p">.</span><span class="n">output_channel_mix</span>   <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span><span class="p">];</span>  <span class="c">% Mix both filters to channel 2^0</span>
+<span class="n">bf1</span><span class="p">.</span><span class="n">fn</span> <span class="p">=</span> <span class="mi">10</span><span class="p">;</span>                       <span class="c">% Figs 10....</span>
+<span class="n">bf1</span> <span class="p">=</span> <span class="n">bf_filenames_helper</span><span class="p">(</span><span class="n">bf1</span><span class="p">);</span>
+<span class="n">bf1</span> <span class="p">=</span> <span class="n">bf_design</span><span class="p">(</span><span class="n">bf1</span><span class="p">);</span>
+
+<span class="c">% Design beamformer 2 (right)</span>
+<span class="n">bf2</span><span class="p">.</span><span class="n">steer_az</span> <span class="p">=</span> <span class="o">+</span><span class="mi">10</span><span class="p">;</span>
+<span class="n">bf2</span><span class="p">.</span><span class="n">input_channel_select</span> <span class="p">=</span> <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span><span class="p">];</span>  <span class="c">% Input two channels</span>
+<span class="n">bf2</span><span class="p">.</span><span class="n">output_channel_mix</span>   <span class="p">=</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">2</span><span class="p">];</span>  <span class="c">% Mix both filters to channel 2^1</span>
+<span class="n">bf2</span><span class="p">.</span><span class="n">fn</span> <span class="p">=</span> <span class="mi">20</span><span class="p">;</span>                       <span class="c">% Figs 20....</span>
+<span class="n">bf2</span> <span class="p">=</span> <span class="n">bf_filenames_helper</span><span class="p">(</span><span class="n">bf2</span><span class="p">);</span>
+<span class="n">bf2</span> <span class="p">=</span> <span class="n">bf_design</span><span class="p">(</span><span class="n">bf2</span><span class="p">);</span>
+
+<span class="c">% Merge two beamformers into single description, set file names</span>
+<span class="n">bfm</span> <span class="p">=</span> <span class="n">bf_merge</span><span class="p">(</span><span class="n">bf1</span><span class="p">,</span> <span class="n">bf2</span><span class="p">);</span>
+<span class="n">bfm</span><span class="p">.</span><span class="n">sofctl_fn</span> <span class="p">=</span> <span class="nb">fullfile</span><span class="p">(</span><span class="n">bfm</span><span class="p">.</span><span class="n">sofctl_path</span><span class="p">,</span> <span class="s">&#39;coef_line2_50mm_pm10deg_48khz.txt&#39;</span><span class="p">);</span>
+<span class="n">bfm</span><span class="p">.</span><span class="n">tplg_fn</span> <span class="p">=</span> <span class="nb">fullfile</span><span class="p">(</span><span class="n">bfm</span><span class="p">.</span><span class="n">tplg_path</span><span class="p">,</span> <span class="s">&#39;coef_line2_50mm_pm10deg_48khz.txt&#39;</span><span class="p">);</span>
+
+<span class="c">% Export files for topology and sof-ctl</span>
+<span class="n">bf_export</span><span class="p">(</span><span class="n">bfm</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="figure align-default" id="id13">
+<a class="reference internal image-reference" href="../../_images/two_beams_left.png"><img alt="../../_images/two_beams_left.png" src="../../_images/two_beams_left.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 34 </span><span class="caption-text">Beam pattern for the left channel.</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id14">
+<a class="reference internal image-reference" href="../../_images/two_beams_right.png"><img alt="../../_images/two_beams_right.png" src="../../_images/two_beams_right.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Figure 35 </span><span class="caption-text">Beam pattern for the right channel.</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="simulation">
+<h2><a class="toc-backref" href="#id30">Simulation</a><a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h2>
+<p>Measurement in an anechoic chamber is recommended for validation. A quick
+check, however, is available to validate the configuration blob and C code
+version TDFB operation.</p>
+<p>The script <code class="docutils literal notranslate"><span class="pre">tdbf_test.m</span></code> performs a beam patten test. To test your own beamformer design, the proper file name must be edited to <code class="docutils literal notranslate"><span class="pre">test-placback.m</span></code>
+(currently it is <code class="docutils literal notranslate"><span class="pre">coef_line2_50mm_pm90deg_48khz.m4</span></code>) and the test
+topologies must be regenerated.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="nv">$SOF_WORKSPACE</span>/sof/
+scripts/build-tools.sh -t
+scripts/rebuild-testbench.sh
+<span class="nb">cd</span> <span class="nb">cd</span> tools/test/audio
+octave --gui <span class="p">&amp;</span>
+tdfb_test
+</pre></div>
+</div>
+<p>This simulation is empirical and executed with testbench. The previous
+<code class="docutils literal notranslate"><span class="pre">bf_design()</span></code> call for the array created the sine rotation, diffuse
+field, and random field waveform data files that the simulation run
+used. The theoretical and simulated beam patterns should match.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../developer_guides/index.html" class="btn btn-neutral float-right" title="Developer Guides" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../demux/demux.html" class="btn btn-neutral" title="Multiplexer/Demultiplexer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; Copyright 2021, SOF Project..
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> SOF Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version zephyr">
+        <a href="../../../zephyr/index.html">Zephyr Project</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

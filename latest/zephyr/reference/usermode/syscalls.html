@@ -1,0 +1,894 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>System Calls &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="MPU Stack Objects" href="mpu_stack_objects.html" />
+    <link rel="prev" title="Kernel Objects" href="kernelobjects.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">User Mode</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="memory_domain.html">Memory Protection Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kernelobjects.html">Kernel Objects</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">System Calls</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#components">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c-prototype">C Prototype</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation-function">Implementation Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#verification-function">Verification Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-options">Configuration Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apis">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mpu_stack_objects.html">MPU Stack Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpu_userspace.html">MPU Backed Userspace</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">User Mode</a> &raquo;</li>
+        
+      <li>System Calls</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/usermode/syscalls.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="system-calls">
+<span id="syscalls"></span><h1>System Calls<a class="headerlink" href="#system-calls" title="Permalink to this headline">¶</a></h1>
+<p>User threads run with a reduced set of privileges than supervisor threads:
+certain CPU instructions may not be used, and they have access to only a
+limited part of the memory map. System calls (may) allow user threads to
+perform operations not directly available to them.</p>
+<p>When defining system calls, it is very important to ensure that access to the
+API’s private data is done exclusively through system call interfaces.
+Private kernel data should never be made available to user mode threads
+directly. For example, the <code class="docutils literal notranslate"><span class="pre">k_queue</span></code> APIs were intentionally not made
+available as they store bookkeeping information about the queue directly
+in the queue buffers which are visible from user mode.</p>
+<p>APIs that allow the user to register callback functions that run in
+supervisor mode should never be exposed as system calls. Reserve these
+for supervisor-mode access only.</p>
+<p>This section describes how to declare new system calls and discusses a few
+implementation details relevant to them.</p>
+<div class="section" id="components">
+<h2>Components<a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h2>
+<p>All system calls have the following components:</p>
+<ul class="simple">
+<li><p>A <strong>C prototype</strong> prefixed with <code class="xref c c-macro docutils literal notranslate"><span class="pre">__syscall</span></code> for the API. It
+will be declared in some header under <code class="docutils literal notranslate"><span class="pre">include/</span></code> or in another
+<code class="docutils literal notranslate"><span class="pre">SYSCALL_INCLUDE_DIRS</span></code> directory. This prototype is never implemented
+manually, instead it gets created by the <a class="reference internal" href="../../guides/build/index.html#gen-syscalls-py"><span class="std std-ref">scripts/gen_syscalls.py</span></a> script.
+What gets generated is an inline function which either calls the
+implementation function directly (if called from supervisor mode) or goes
+through privilege elevation and validation steps (if called from user
+mode).</p></li>
+<li><p>An <strong>implementation function</strong>, which is the real implementation of the
+system call. The implementation function may assume that all parameters
+passed in have been validated if it was invoked from user mode.</p></li>
+<li><p>A <strong>verification function</strong>, which wraps the implementation function
+and does validation of all the arguments passed in.</p></li>
+<li><p>An <strong>unmarshalling function</strong>, which is an automatically generated
+handler that must be included by user source code.</p></li>
+</ul>
+</div>
+<div class="section" id="c-prototype">
+<h2>C Prototype<a class="headerlink" href="#c-prototype" title="Permalink to this headline">¶</a></h2>
+<p>The C prototype represents how the API is invoked from either user or
+supervisor mode. For example, to initialize a semaphore:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">__syscall</span> <span class="kt">void</span> <span class="n">k_sem_init</span><span class="p">(</span><span class="k">struct</span> <span class="nc">k_sem</span> <span class="o">*</span><span class="n">sem</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">initial_count</span><span class="p">,</span>
+                          <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">limit</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <code class="xref c c-macro docutils literal notranslate"><span class="pre">__syscall</span></code> attribute is very special. To the C compiler, it
+simply expands to ‘static inline’. However to the post-build
+<a class="reference internal" href="../../guides/build/index.html#parse-syscalls-py"><span class="std std-ref">scripts/parse_syscalls.py</span></a> script, it indicates that this API is a system call.
+The <a class="reference internal" href="../../guides/build/index.html#parse-syscalls-py"><span class="std std-ref">scripts/parse_syscalls.py</span></a> script does some parsing of the function prototype,
+to determine the data types of its return value and arguments, and has some
+limitations:</p>
+<ul class="simple">
+<li><p>Array arguments must be passed in as pointers, not arrays. For example,
+<code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">foo[]</span></code> or <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">foo[12]</span></code> is not allowed, but should instead be
+expressed as <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*foo</span></code>.</p></li>
+<li><p>Function pointers horribly confuse the limited parser. The workaround is
+to typedef them first, and then express in the argument list in terms
+of that typedef.</p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">__syscall</span></code> must be the first thing in the prototype.</p></li>
+</ul>
+<p>The preprocessor is intentionally not used when determining the set of system
+calls to generate. However, any generated system calls that don’t actually have
+a verification function defined (because the related feature is not enabled in
+the kernel configuration) will instead point to a special verification for
+unimplemented system calls. Data type definitions for APIs should not have
+conditional visibility to the compiler.</p>
+<p>Any header file that declares system calls must include a special generated
+header at the very bottom of the header file. This header follows the
+naming convention <code class="docutils literal notranslate"><span class="pre">syscalls/&lt;name</span> <span class="pre">of</span> <span class="pre">header</span> <span class="pre">file&gt;</span></code>. For example, at the
+bottom of <code class="docutils literal notranslate"><span class="pre">include/sensor.h</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;syscalls/sensor.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p>C prototype functions must be declared in one of the directories
+listed in the CMake variable <code class="docutils literal notranslate"><span class="pre">SYSCALL_INCLUDE_DIRS</span></code>. This list
+always contains <code class="docutils literal notranslate"><span class="pre">${ZEPHYR_BASE}/include</span></code>, but will also contain
+<code class="docutils literal notranslate"><span class="pre">APPLICATION_SOURCE_DIR</span></code> when <code class="docutils literal notranslate"><span class="pre">CONFIG_APPLICATION_DEFINED_SYSCALL</span></code>
+is set, or <code class="docutils literal notranslate"><span class="pre">${ZEPHYR_BASE}/subsys/testsuite/ztest/include</span></code> when
+<code class="docutils literal notranslate"><span class="pre">CONFIG_ZTEST</span></code> is set. Additional paths can be added to the list
+through the CMake command line or in CMake code that is run before
+<code class="docutils literal notranslate"><span class="pre">${ZEPHYR_BASE}/cmake/app/boilerplate.cmake</span></code> is run.</p>
+<div class="section" id="invocation-context">
+<h3>Invocation Context<a class="headerlink" href="#invocation-context" title="Permalink to this headline">¶</a></h3>
+<p>Source code that uses system call APIs can be made more efficient if it is
+known that all the code inside a particular C file runs exclusively in
+user mode, or exclusively in supervisor mode. The system will look for
+the definition of macros <code class="xref c c-macro docutils literal notranslate"><span class="pre">__ZEPHYR_SUPERVISOR__</span></code> or
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">__ZEPHYR_USER__</span></code>, typically these will be added to the compiler
+flags in the build system for the related files.</p>
+<ul class="simple">
+<li><p>If <a class="reference internal" href="../../kconfig.html#CONFIG_USERSPACE" title="CONFIG_USERSPACE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code></a> is not enabled, all APIs just directly call
+the implementation function.</p></li>
+<li><p>Otherwise, the default case is to make a runtime check to see if the
+processor is currently running in user mode, and either make the system call
+or directly call the implementation function as appropriate.</p></li>
+<li><p>If <code class="xref c c-macro docutils literal notranslate"><span class="pre">__ZEPHYR_SUPERVISOR__</span></code> is defined, then it is assumed that
+all the code runs in supervisor mode and all APIs just directly call the
+implementation function. If the code was actually running in user mode,
+there will be a CPU exception as soon as it tries to do something it isn’t
+allowed to do.</p></li>
+<li><p>If <code class="xref c c-macro docutils literal notranslate"><span class="pre">__ZEPHYR_USER__</span></code> is defined, then it is assumed that all the
+code runs in user mode and system calls are unconditionally made.</p></li>
+</ul>
+</div>
+<div class="section" id="implementation-details">
+<h3>Implementation Details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h3>
+<p>Declaring an API with <code class="xref c c-macro docutils literal notranslate"><span class="pre">__syscall</span></code> causes some code to be generated in
+C and header files by the <a class="reference internal" href="../../guides/build/index.html#gen-syscalls-py"><span class="std std-ref">scripts/gen_syscalls.py</span></a> script, all of which can be found in
+the project out directory under <code class="docutils literal notranslate"><span class="pre">include/generated/</span></code>:</p>
+<ul class="simple">
+<li><p>The system call is added to the enumerated type of system call IDs,
+which is expressed in <code class="docutils literal notranslate"><span class="pre">include/generated/syscall_list.h</span></code>. It is the name
+of the API in uppercase, prefixed with <code class="docutils literal notranslate"><span class="pre">K_SYSCALL_</span></code>.</p></li>
+<li><p>An entry for the system call is created in the dispatch table
+<code class="docutils literal notranslate"><span class="pre">_k_syscall_table</span></code>, expressed in <code class="docutils literal notranslate"><span class="pre">include/generated/syscall_dispatch.c</span></code></p></li>
+<li><p>A weak verification function is declared, which is just an alias of the
+‘unimplemented system call’ verifier. This is necessary since the real
+verification function may or may not be built depending on the kernel
+configuration. For example, if a user thread makes a sensor subsystem
+API call, but the sensor subsystem is not enabled, the weak verifier
+will be invoked instead.</p></li>
+<li><p>An unmarshalling function is defined in <code class="docutils literal notranslate"><span class="pre">include/generated/&lt;name&gt;_mrsh.c</span></code></p></li>
+</ul>
+<p>The body of the API is created in the generated system header. Using the
+example of <a class="reference internal" href="../kernel/synchronization/semaphores.html#c.k_sem_init" title="k_sem_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_sem_init()</span></code></a>, this API is declared in
+<code class="docutils literal notranslate"><span class="pre">include/kernel.h</span></code>. At the bottom of <code class="docutils literal notranslate"><span class="pre">include/kernel.h</span></code> is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;syscalls/kernel.h&gt;</span>
+</pre></div>
+</div>
+<p>Inside this header is the body of <a class="reference internal" href="../kernel/synchronization/semaphores.html#c.k_sem_init" title="k_sem_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_sem_init()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">k_sem_init</span><span class="p">(</span><span class="n">struct</span> <span class="n">k_sem</span> <span class="o">*</span> <span class="n">sem</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">initial_count</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">limit</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="c1">#ifdef CONFIG_USERSPACE</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">z_syscall_trap</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">arch_syscall_invoke3</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">uintptr_t</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">sem</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">uintptr_t</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">initial_count</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">uintptr_t</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">limit</span><span class="p">,</span> <span class="n">K_SYSCALL_K_SEM_INIT</span><span class="p">);</span>
+                <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">compiler_barrier</span><span class="p">();</span>
+<span class="c1">#endif</span>
+        <span class="n">z_impl_k_sem_init</span><span class="p">(</span><span class="n">sem</span><span class="p">,</span> <span class="n">initial_count</span><span class="p">,</span> <span class="n">limit</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This generates an inline function that takes three arguments with void
+return value. Depending on context it will either directly call the
+implementation function or go through a system call elevation. A
+prototype for the implementation function is also automatically generated.</p>
+<p>The final layer is the invocation of the system call itself. All architectures
+implementing system calls must implement the seven inline functions
+<code class="xref c c-func docutils literal notranslate"><span class="pre">_arch_syscall_invoke0()</span></code> through <code class="xref c c-func docutils literal notranslate"><span class="pre">_arch_syscall_invoke6()</span></code>. These
+functions marshal arguments into designated CPU registers and perform the
+necessary privilege elevation. Parameters of API inline function, before being
+passed as arguments to system call, are C casted to <code class="docutils literal notranslate"><span class="pre">uintptr_t</span></code> which matches
+size of register.
+Exception to above is passing 64-bit parameters on 32-bit systems, in which case
+64-bit parameters are split into lower and higher part and passed as two consecutive
+arguments.
+There is always a <code class="docutils literal notranslate"><span class="pre">uintptr_t</span></code> type return value, which may be neglected if
+not needed.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../../_images/syscall_flow.png"><img alt="System Call execution flow" src="../../_images/syscall_flow.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">System Call execution flow</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>Some system calls may have more than six arguments, but number of arguments
+passed via registers is limited to six for all architectures.
+Additional arguments will need to be passed in an array in the source memory
+space, which needs to be treated as untrusted memory in the verification
+function. This code (packing, unpacking and validation) is generated
+automatically as needed in the stub above and in the unmarshalling function.</p>
+<p>System calls return <code class="docutils literal notranslate"><span class="pre">uintptr_t</span></code> type value that is C casted, by wrapper, to
+a return type of API prototype declaration. This means that 64-bit value may
+not be directly returned, from a system call to its wrapper, on 32-bit systems.
+To solve the problem the automatically generated wrapper function defines 64-bit
+intermediate variable, which is considered <strong>untrusted</strong> buffer, on its stack
+and passes pointer to that variable to the system call, as a final argument.
+Upon return from the system call the value written to that buffer will be
+returned by the wrapper function.
+The problem does not exist on 64-bit systems which are able to return 64-bit
+values directly.</p>
+</div>
+</div>
+<div class="section" id="implementation-function">
+<h2>Implementation Function<a class="headerlink" href="#implementation-function" title="Permalink to this headline">¶</a></h2>
+<p>The implementation function is what actually does the work for the API.
+Zephyr normally does little to no error checking of arguments, or does this
+kind of checking with assertions. When writing the implementation function,
+validation of any parameters is optional and should be done with assertions.</p>
+<p>All implementation functions must follow the naming convention, which is the
+name of the API prefixed with <code class="docutils literal notranslate"><span class="pre">z_impl_</span></code>. Implementation functions may be
+declared in the same header as the API as a static inline function or
+declared in some C file. There is no prototype needed for implementation
+functions, these are automatically generated.</p>
+</div>
+<div class="section" id="verification-function">
+<h2>Verification Function<a class="headerlink" href="#verification-function" title="Permalink to this headline">¶</a></h2>
+<p>The verification function runs on the kernel side when a user thread makes
+a system call. When the user thread makes a software interrupt to elevate to
+supervisor mode, the common system call entry point uses the system call ID
+provided by the user to look up the appropriate unmarshalling function for that
+system call and jump into it. This in turn calls the verification function.</p>
+<p>Verification and unmarshalling functions only run when system call APIs are
+invoked from user mode. If an API is invoked from supervisor mode, the
+implementation is simply called and there is no software trap.</p>
+<p>The purpose of the verification function is to validate all the arguments
+passed in.  This includes:</p>
+<ul class="simple">
+<li><p>Any kernel object pointers provided. For example, the semaphore APIs must
+ensure that the semaphore object passed in is a valid semaphore and that
+the calling thread has permission on it.</p></li>
+<li><p>Any memory buffers passed in from user mode. Checks must be made that the
+calling thread has read or write permissions on the provided buffer.</p></li>
+<li><p>Any other arguments that have a limited range of valid values.</p></li>
+</ul>
+<p>Verification functions involve a great deal of boilerplate code which has been
+made simpler by some macros in <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/syscall_handler.h">include/syscall_handler.h</a>.
+Verification functions should be declared using these macros.</p>
+<div class="section" id="argument-validation">
+<h3>Argument Validation<a class="headerlink" href="#argument-validation" title="Permalink to this headline">¶</a></h3>
+<p>Several macros exist to validate arguments:</p>
+<ul class="simple">
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_OBJ()</span></code> Checks a memory address to assert that it is
+a valid kernel object of the expected type, that the calling thread
+has permissions on it, and that the object is initialized.</p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_OBJ_INIT()</span></code> is the same as
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_OBJ()</span></code>, except that the provided object may be
+uninitialized. This is useful for verifiers of object init functions.</p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_OBJ_NEVER_INIT()</span></code> is the same as
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_OBJ()</span></code>, except that the provided object must be
+uninitialized. This is not used very often, currently only for
+<a class="reference internal" href="../kernel/threads/index.html#c.k_thread_create" title="k_thread_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_create()</span></code></a>.</p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY_READ()</span></code> validates a memory buffer of a particular
+size. The calling thread must have read permissions on the entire buffer.</p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY_WRITE()</span></code> is the same as
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY_READ()</span></code> but the calling thread must additionally
+have write permissions.</p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY_ARRAY_READ()</span></code> validates an array whose total size
+is expressed as separate arguments for the number of elements and the
+element size. This macro correctly accounts for multiplication overflow
+when computing the total size. The calling thread must have read permissions
+on the total size.</p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY_ARRAY_WRITE()</span></code> is the same as
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY_ARRAY_READ()</span></code> but the calling thread must
+additionally have write permissions.</p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_VERIFY_MSG()</span></code> does a runtime check of some boolean
+expression which must evaluate to true otherwise the check will fail.
+A variant <code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_VERIFY</span></code> exists which does not take
+a message parameter, instead printing the expression tested if it
+fails. The latter should only be used for the most obvious of tests.</p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_DRIVER_OP()</span></code> checks at runtime if a driver
+instance is capable of performing a particular operation.  While this
+macro can be used by itself, it’s mostly a building block for macros
+that are automatically generated for every driver subsystem.  For
+instance, to validate the GPIO driver, one could use the
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_DRIVER_GPIO()</span></code> macro.</p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_SPECIFIC_DRIVER()</span></code> is a runtime check to verify that
+a provided pointer is a valid instance of a specific device driver, that
+the calling thread has permissions on it, and that the driver has been
+initialized. It does this by checking the API structure pointer that
+is stored within the driver instance and ensuring that it matches the
+provided value, which should be the address of the specific driver’s
+API structure.</p></li>
+</ul>
+<p>If any check fails, the macros will return a nonzero value. The macro
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_OOPS()</span></code> can be used to induce a kernel oops which will kill the
+calling thread. This is done instead of returning some error condition to
+keep the APIs the same when calling from supervisor mode.</p>
+</div>
+<div class="section" id="verifier-definition">
+<h3>Verifier Definition<a class="headerlink" href="#verifier-definition" title="Permalink to this headline">¶</a></h3>
+<p>All system calls are dispatched to a verifier function with a prefixed
+<code class="docutils literal notranslate"><span class="pre">z_vrfy_</span></code> name based on the system call.  They have exactly the same
+return type and argument types as the wrapped system call.  Their job
+is to execute the system call (generally by calling the implementation
+function) after having validated all arguments.</p>
+<p>The verifier is itself invoked by an automatically generated
+unmarshaller function which takes care of unpacking the register
+arguments from the architecture layer and casting them to the correct
+type.  This is defined in a header file that must be included from
+user code, generally somewhere after the definition of the verifier in
+a translation unit (so that it can be inlined).</p>
+<p>For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">z_vrfy_k_sem_take</span><span class="p">(</span><span class="k">struct</span> <span class="nc">k_sem</span> <span class="o">*</span><span class="n">sem</span><span class="p">,</span> <span class="kt">int32_t</span> <span class="n">timeout</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Z_OOPS</span><span class="p">(</span><span class="n">Z_SYSCALL_OBJ</span><span class="p">(</span><span class="n">sem</span><span class="p">,</span> <span class="n">K_OBJ_SEM</span><span class="p">));</span>
+    <span class="k">return</span> <span class="n">z_impl_k_sem_take</span><span class="p">(</span><span class="n">sem</span><span class="p">,</span> <span class="n">timeout</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cp">#include</span> <span class="cpf">&lt;syscalls/k_sem_take_mrsh.c&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="verification-memory-access-policies">
+<h3>Verification Memory Access Policies<a class="headerlink" href="#verification-memory-access-policies" title="Permalink to this headline">¶</a></h3>
+<p>Parameters passed to system calls by reference require special handling,
+because the value of these parameters can be changed at any time by any
+user thread that has access to the memory that parameter points to. If the
+kernel makes any logical decisions based on the contents of this memory, this
+can open up the kernel to attacks even if checking is done. This is a class
+of exploits known as TOCTOU (Time Of Check to Time Of Use).</p>
+<p>The proper procedure to mitigate these attacks is to make a copies in the
+verification function, and only perform parameter checks on the copies, which
+user threads will never have access to. The implementation functions get passed
+the copy and not the original data sent by the user. The
+<code class="xref c c-func docutils literal notranslate"><span class="pre">z_user_to_copy()</span></code> and <code class="xref c c-func docutils literal notranslate"><span class="pre">z_user_from_copy()</span></code> APIs exist for
+this purpose.</p>
+<p>There is one exception in place, with respect to large data buffers which are
+only used to provide a memory area that is either only written to, or whose
+contents are never used for any validation or control flow. Further
+discussion of this later in this section.</p>
+<p>As a first example, consider a parameter which is used as an output parameter
+for some integral value:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">z_vrfy_some_syscall</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">out_param</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">local_out_param</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">z_impl_some_syscall</span><span class="p">(</span><span class="o">&amp;</span><span class="n">local_out_param</span><span class="p">);</span>
+    <span class="n">Z_OOPS</span><span class="p">(</span><span class="n">z_user_to_copy</span><span class="p">(</span><span class="n">out_param</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">local_out_param</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">out_param</span><span class="p">)));</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here we have allocated <code class="docutils literal notranslate"><span class="pre">local_out_param</span></code> on the stack, passed its address to
+the implementation function, and then used <code class="xref c c-func docutils literal notranslate"><span class="pre">z_user_to_copy()</span></code> to fill
+in the memory passed in by the caller.</p>
+<p>It might be tempting to do something more concise:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">z_vrfy_some_syscall</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">out_param</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Z_OOPS</span><span class="p">(</span><span class="n">Z_SYSCALL_MEMORY_WRITE</span><span class="p">(</span><span class="n">out_param</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">out_param</span><span class="p">)));</span>
+    <span class="k">return</span> <span class="n">z_impl_some_syscall</span><span class="p">(</span><span class="n">out_param</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>However, this is unsafe if the implementation ever does any reads to this
+memory as part of its logic. For example, it could be used to store some
+counter value, and this could be meddled with by user threads that have access
+to its memory. It is by far safest for small integral values to do the copying
+as shown in the first example.</p>
+<p>Some parameters may be input/output. For instance, it’s not uncommon to see APIs
+which pass in a pointer to some <code class="docutils literal notranslate"><span class="pre">size_t</span></code> which is a maximum allowable size,
+which is then updated by the implementation to reflect the actual number of
+bytes processed. This too should use a stack copy:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">z_vrfy_in_out_syscall</span><span class="p">(</span><span class="kt">size_t</span> <span class="o">*</span><span class="n">size_ptr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">size_t</span> <span class="n">size</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="n">Z_OOPS</span><span class="p">(</span><span class="n">z_user_from_copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">size</span><span class="p">,</span> <span class="n">size_ptr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">size</span><span class="p">));</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">z_impl_in_out_syscall</span><span class="p">(</span><span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+    <span class="o">*</span><span class="n">size_ptr</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Many system calls pass in structures or even linked data structures. All should
+be copied. Typically this is done by allocating copies on the stack:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">bar</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">foo</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="k">struct</span> <span class="nc">bar</span> <span class="o">*</span><span class="n">bar_left</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nc">bar</span> <span class="o">*</span><span class="n">bar_right</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">z_vrfy_must_alloc</span><span class="p">(</span><span class="k">struct</span> <span class="nc">foo</span> <span class="o">*</span><span class="n">foo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nc">foo</span> <span class="n">foo_copy</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nc">bar</span> <span class="n">bar_right_copy</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nc">bar</span> <span class="n">bar_left_copy</span><span class="p">;</span>
+
+    <span class="n">Z_OOPS</span><span class="p">(</span><span class="n">z_user_from_copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo_copy</span><span class="p">,</span> <span class="n">foo</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">foo</span><span class="p">)));</span>
+    <span class="n">Z_OOPS</span><span class="p">(</span><span class="n">z_user_from_copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bar_right_copy</span><span class="p">,</span> <span class="n">foo_copy</span><span class="p">.</span><span class="n">bar_right</span><span class="p">,</span>
+                            <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="nc">bar</span><span class="p">)));</span>
+    <span class="n">foo_copy</span><span class="p">.</span><span class="n">bar_right</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">bar_right_copy</span><span class="p">;</span>
+    <span class="n">Z_OOPS</span><span class="p">(</span><span class="n">z_user_from_copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bar_left_copy</span><span class="p">,</span> <span class="n">foo_copy</span><span class="p">.</span><span class="n">bar_left</span><span class="p">,</span>
+                            <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="nc">bar</span><span class="p">)));</span>
+    <span class="n">foo_copy</span><span class="p">.</span><span class="n">bar_left</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">bar_left_copy</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">z_impl_must_alloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo_copy</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In some cases the amount of data isn’t known at compile time or may be too
+large to allocate on the stack. In this scenario, it may be necessary to draw
+memory from the caller’s resource pool via <code class="xref c c-func docutils literal notranslate"><span class="pre">z_thread_malloc()</span></code>. This
+should always be considered last resort. Functional safety programming
+guidelines heavily discourage usage of heap and the fact that a resource pool is
+used must be clearly documented. Any issues with allocation must be
+reported, to a caller, with returning the <code class="docutils literal notranslate"><span class="pre">-ENOMEM</span></code> . The <code class="docutils literal notranslate"><span class="pre">Z_OOPS()</span></code>
+should never be used to verify if resource allocation has been successful.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">bar</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">foo</span> <span class="p">{</span>
+    <span class="kt">size_t</span> <span class="n">count</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nc">bar</span> <span class="o">*</span><span class="n">bar_list</span><span class="p">;</span> <span class="cm">/* array of struct bar of size count */</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">z_vrfy_must_alloc</span><span class="p">(</span><span class="k">struct</span> <span class="nc">foo</span> <span class="o">*</span><span class="n">foo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nc">foo</span> <span class="n">foo_copy</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nc">bar</span> <span class="o">*</span><span class="n">bar_list_copy</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">bar_list_bytes</span><span class="p">;</span>
+
+    <span class="cm">/* Safely copy foo into foo_copy */</span>
+    <span class="n">Z_OOPS</span><span class="p">(</span><span class="n">z_user_from_copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo_copy</span><span class="p">,</span> <span class="n">foo</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">foo</span><span class="p">)));</span>
+
+    <span class="cm">/* Bounds check the count member, in the copy we made */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">foo_copy</span><span class="p">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">32</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">EINVAL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Allocate RAM for the bar_list, replace the pointer in</span>
+<span class="cm">     * foo_copy */</span>
+    <span class="n">bar_list_bytes</span> <span class="o">=</span> <span class="n">foo_copy</span><span class="p">.</span><span class="n">count</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">struct_bar</span><span class="p">);</span>
+    <span class="n">bar_list_copy</span> <span class="o">=</span> <span class="n">z_thread_malloc</span><span class="p">(</span><span class="n">bar_list_bytes</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">bar_list_copy</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Z_OOPS</span><span class="p">(</span><span class="n">z_user_from_copy</span><span class="p">(</span><span class="n">bar_list_copy</span><span class="p">,</span> <span class="n">foo_copy</span><span class="p">.</span><span class="n">bar_list</span><span class="p">,</span>
+                            <span class="n">bar_list_bytes</span><span class="p">));</span>
+    <span class="n">foo_copy</span><span class="p">.</span><span class="n">bar_list</span> <span class="o">=</span> <span class="n">bar_list_copy</span><span class="p">;</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">z_impl_must_alloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo_copy</span><span class="p">);</span>
+
+    <span class="cm">/* All done with the memory, free it and return */</span>
+    <span class="n">k_free</span><span class="p">(</span><span class="n">foo_copy</span><span class="p">.</span><span class="n">bar_list_copy</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Finally, we must consider large data buffers. These represent areas of user
+memory which either have data copied out of, or copied into. It is permitted
+to pass these pointers to the implementation function directly. The caller’s
+access to the buffer still must be validated with <code class="docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY</span></code> APIs.
+The following constraints need to be met:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If the buffer is used by the implementation function to write data, such
+as data captured from some MMIO region, the implementation function must
+only write this data, and never read it.</p></li>
+<li><p>If the buffer is used by the implementation function to read data, such
+as a block of memory to write to some hardware destination, this data
+must be read without any processing. No conditional logic can be implemented
+due to the data buffer’s contents. If such logic is required a copy must be
+made.</p></li>
+<li><p>The buffer must only be used synchronously with the call. The implementation
+must not ever save the buffer address and use it asynchronously, such as
+when an interrupt fires.</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">z_vrfy_get_data_from_kernel</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Z_OOPS</span><span class="p">(</span><span class="n">Z_SYSCALL_MEMORY_WRITE</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">size</span><span class="p">));</span>
+    <span class="k">return</span> <span class="n">z_impl_get_data_from_kernel</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="verification-return-value-policies">
+<h3>Verification Return Value Policies<a class="headerlink" href="#verification-return-value-policies" title="Permalink to this headline">¶</a></h3>
+<p>When verifying system calls, it’s important to note which kinds of verification
+failures should propagate a return value to the caller, and which should
+simply invoke <code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_OOPS()</span></code> which kills the calling thread. The current
+conventions are as follows:</p>
+<ol class="arabic simple">
+<li><p>For system calls that are defined but not compiled, invocations of these
+missing system calls are routed to <code class="xref c c-func docutils literal notranslate"><span class="pre">handler_no_syscall()</span></code> which
+invokes <code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_OOPS()</span></code>.</p></li>
+<li><p>Any invalid access to memory found by the set of <code class="docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY</span></code> APIs,
+<code class="xref c c-func docutils literal notranslate"><span class="pre">z_user_from_copy()</span></code>, <code class="xref c c-func docutils literal notranslate"><span class="pre">z_user_to_copy()</span></code>
+should trigger a <code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_OOPS</span></code>. This happens when the caller doesn’t have
+appropriate permissions on the memory buffer or some size calculation
+overflowed.</p></li>
+<li><p>Most system calls take kernel object pointers as an argument, checked either
+with one of the <code class="docutils literal notranslate"><span class="pre">Z_SYSCALL_OBJ</span></code> functions,  <code class="docutils literal notranslate"><span class="pre">Z_SYSCALL_DRIVER_nnnnn</span></code>, or
+manually using <code class="xref c c-func docutils literal notranslate"><span class="pre">z_object_validate()</span></code>. These can fail for a variety
+of reasons: missing driver API, bad kernel object pointer, wrong kernel
+object type, or improper initialization state. These issues should always
+invoke <code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_OOPS()</span></code>.</p></li>
+<li><p>Any error resulting from a failed memory heap allocation, often from
+invoking <code class="xref c c-func docutils literal notranslate"><span class="pre">z_thread_malloc()</span></code>, should propagate <code class="docutils literal notranslate"><span class="pre">-ENOMEM</span></code> to the
+caller.</p></li>
+<li><p>General parameter checks should be done in the implementation function,
+in most cases using <code class="docutils literal notranslate"><span class="pre">CHECKIF()</span></code>.</p>
+<ul class="simple">
+<li><p>The behavior of <code class="docutils literal notranslate"><span class="pre">CHECKIF()</span></code> depends on the kernel configuration, but if
+user mode is enabled, <a class="reference internal" href="../../kconfig.html#CONFIG_RUNTIME_ERROR_CHECKS" title="CONFIG_RUNTIME_ERROR_CHECKS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_RUNTIME_ERROR_CHECKS</span></code></a> is enforced,
+which guarantees that these checks will be made and a return value
+propagated.</p></li>
+</ul>
+</li>
+<li><p>It is totally forbidden for any kind of kernel mode callback function to
+be registered from user mode. APIs which simply install callbacks shall not
+be exposed as system calls. Some driver subsystem APIs may take optional
+function callback pointers. User mode verification functions for these APIs
+must enforce that these are NULL and should invoke <code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_OOPS()</span></code> if
+not.</p></li>
+<li><p>Some parameter checks are enforced only from user mode. These should be
+checked in the verification function and propagate a return value to the
+caller if possible.</p></li>
+</ol>
+<p>There are some known exceptions to these policies currently in Zephyr:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../kernel/threads/index.html#c.k_thread_join" title="k_thread_join"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_join()</span></code></a> and <a class="reference internal" href="../kernel/threads/index.html#c.k_thread_abort" title="k_thread_abort"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_abort()</span></code></a> are no-ops if
+the thread object isn’t initialized. This is because for threads, the
+initialization bit pulls double-duty to indicate whether a thread is
+running, cleared upon exit. See #23030.</p></li>
+<li><p><a class="reference internal" href="../kernel/threads/index.html#c.k_thread_create" title="k_thread_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_create()</span></code></a> invokes <code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_OOPS()</span></code> for parameter
+checks, due to a great deal of existing code ignoring the return value.
+This will also be addressed by #23030.</p></li>
+<li><p><a class="reference internal" href="../kernel/threads/index.html#c.k_thread_abort" title="k_thread_abort"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_abort()</span></code></a> invokes <code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_OOPS()</span></code> if an essential
+thread is aborted, as the function has no return value.</p></li>
+<li><p>Various system calls related to logging invoke <code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_OOPS()</span></code>
+when bad parameters are passed in as they do not propagate errors.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="configuration-options">
+<h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_USERSPACE" title="CONFIG_USERSPACE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Permalink to this headline">¶</a></h2>
+<p>Helper macros for creating system call verification functions are provided in
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/syscall_handler.h">include/syscall_handler.h</a>:</p>
+<ul class="simple">
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_OBJ()</span></code></p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_OBJ_INIT()</span></code></p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_OBJ_NEVER_INIT()</span></code></p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_OOPS()</span></code></p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY_READ()</span></code></p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY_WRITE()</span></code></p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY_ARRAY_READ()</span></code></p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_MEMORY_ARRAY_WRITE()</span></code></p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_VERIFY_MSG()</span></code></p></li>
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">Z_SYSCALL_VERIFY</span></code></p></li>
+</ul>
+<p>Functions for invoking system calls are defined in
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/syscall.h">include/syscall.h</a>:</p>
+<ul class="simple">
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">_arch_syscall_invoke0()</span></code></p></li>
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">_arch_syscall_invoke1()</span></code></p></li>
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">_arch_syscall_invoke2()</span></code></p></li>
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">_arch_syscall_invoke3()</span></code></p></li>
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">_arch_syscall_invoke4()</span></code></p></li>
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">_arch_syscall_invoke5()</span></code></p></li>
+<li><p><code class="xref c c-func docutils literal notranslate"><span class="pre">_arch_syscall_invoke6()</span></code></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mpu_stack_objects.html" class="btn btn-neutral float-right" title="MPU Stack Objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="kernelobjects.html" class="btn btn-neutral" title="Kernel Objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1511 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>BSD Sockets &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="IPv4/IPv6 Primitives and Helpers" href="ip_4_6.html" />
+    <link rel="prev" title="Network APIs" href="apis.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="apis.html">Network APIs</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">BSD Sockets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ip_4_6.html">IPv4/IPv6 Primitives and Helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dns_resolve.html">DNS Resolve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_mgmt.html">Network Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_stats.html">Network Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_timeout.html">Network Timeout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_context.html">Networking Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="promiscuous.html">Promiscuous Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sntp.html">Simple Network Time Protocol Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="socks5.html">SOCKS5 Proxy Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="trickle.html">Trickle Timer Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.html">Websocket Client API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="capture.html">Network Packet Capture</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="buf_mgmt.html">Network Buffer Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="net_tech.html">Networking Technologies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="protocols.html">Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system_mgmt.html">Network System Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsn.html">Time Sensitive Networking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsm_modem.html">Generic GSM Modem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="apis.html">Network APIs</a> &raquo;</li>
+        
+      <li>BSD Sockets</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/networking/sockets.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bsd-sockets">
+<span id="bsd-sockets-interface"></span><h1>BSD Sockets<a class="headerlink" href="#bsd-sockets" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
+<li><p><a class="reference internal" href="#secure-sockets" id="id3">Secure Sockets</a></p>
+<ul>
+<li><p><a class="reference internal" href="#tls-credentials-subsystem" id="id4">TLS credentials subsystem</a></p></li>
+<li><p><a class="reference internal" href="#secure-socket-creation" id="id5">Secure Socket Creation</a></p></li>
+<li><p><a class="reference internal" href="#secure-sockets-options" id="id6">Secure Sockets options</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#api-reference" id="id7">API Reference</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id8">BSD Sockets</a></p></li>
+<li><p><a class="reference internal" href="#tls-credentials" id="id9">TLS Credentials</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Zephyr offers an implementation of a subset of the BSD Sockets API (a part
+of the POSIX standard). This API allows to reuse existing programming experience
+and port existing simple networking applications to Zephyr.</p>
+<p>Here are the key requirements and concepts which governed BSD Sockets
+compatible API implementation for Zephyr:</p>
+<ul class="simple">
+<li><p>Has minimal overhead, similar to the requirement for other
+Zephyr subsystems.</p></li>
+<li><p>Is namespaced by default, to avoid name conflicts with well-known
+names like <code class="docutils literal notranslate"><span class="pre">close()</span></code>, which may be part of libc or other POSIX
+compatibility libraries.
+If enabled by <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a>, it will also
+expose native POSIX names.</p></li>
+</ul>
+<p>BSD Sockets compatible API is enabled using <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS" title="CONFIG_NET_SOCKETS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS</span></code></a>
+config option and implements the following operations: <code class="docutils literal notranslate"><span class="pre">socket()</span></code>, <code class="docutils literal notranslate"><span class="pre">close()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">recv()</span></code>, <code class="docutils literal notranslate"><span class="pre">recvfrom()</span></code>, <code class="docutils literal notranslate"><span class="pre">send()</span></code>, <code class="docutils literal notranslate"><span class="pre">sendto()</span></code>, <code class="docutils literal notranslate"><span class="pre">connect()</span></code>, <code class="docutils literal notranslate"><span class="pre">bind()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">listen()</span></code>, <code class="docutils literal notranslate"><span class="pre">accept()</span></code>, <code class="docutils literal notranslate"><span class="pre">fcntl()</span></code> (to set non-blocking mode),
+<code class="docutils literal notranslate"><span class="pre">getsockopt()</span></code>, <code class="docutils literal notranslate"><span class="pre">setsockopt()</span></code>, <code class="docutils literal notranslate"><span class="pre">poll()</span></code>, <code class="docutils literal notranslate"><span class="pre">select()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">getaddrinfo()</span></code>, <code class="docutils literal notranslate"><span class="pre">getnameinfo()</span></code>.</p>
+<p>Based on the namespacing requirements above, these operations are by
+default exposed as functions with <code class="docutils literal notranslate"><span class="pre">zsock_</span></code> prefix, e.g.
+<a class="reference internal" href="#c.zsock_socket" title="zsock_socket"><code class="xref c c-func docutils literal notranslate"><span class="pre">zsock_socket()</span></code></a> and <a class="reference internal" href="#c.zsock_close" title="zsock_close"><code class="xref c c-func docutils literal notranslate"><span class="pre">zsock_close()</span></code></a>. If the config option
+<a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined, all the functions
+will be also exposed as aliases without the prefix. This includes the
+functions like <code class="docutils literal notranslate"><span class="pre">close()</span></code> and <code class="docutils literal notranslate"><span class="pre">fcntl()</span></code> (which may conflict with
+functions in libc or other libraries, for example, with the filesystem
+libraries).</p>
+<p>Another entailment of the design requirements above is that the Zephyr
+API aggressively employs the short-read/short-write property of the POSIX API
+whenever possible (to minimize complexity and overheads). POSIX allows
+for calls like <code class="docutils literal notranslate"><span class="pre">recv()</span></code> and <code class="docutils literal notranslate"><span class="pre">send()</span></code> to actually process (receive
+or send) less data than requested by the user (on <code class="docutils literal notranslate"><span class="pre">SOCK_STREAM</span></code> type
+sockets). For example, a call <code class="docutils literal notranslate"><span class="pre">recv(sock,</span> <span class="pre">1000,</span> <span class="pre">0)</span></code> may return 100,
+meaning that only 100 bytes were read (short read), and the application
+needs to retry call(s) to receive the remaining 900 bytes.</p>
+<p>The BSD Sockets API uses file descriptors to represent sockets. File
+descriptors are small integers, consecutively assigned from zero, shared
+among sockets, files, special devices (like stdin/stdout), etc. Internally,
+there is a table mapping file descriptors to internal object pointers.
+The file descriptor table is used by the BSD Sockets API even if the rest
+of the POSIX subsystem (filesystem, stdin/stdout) is not enabled.</p>
+</div>
+<div class="section" id="secure-sockets">
+<span id="secure-sockets-interface"></span><h2><a class="toc-backref" href="#id3">Secure Sockets</a><a class="headerlink" href="#secure-sockets" title="Permalink to this headline">¶</a></h2>
+<p>Zephyr provides an extension of standard POSIX socket API, allowing to create
+and configure sockets with TLS protocol types, facilitating secure
+communication. Secure functions for the implementation are provided by
+mbedTLS library. Secure sockets implementation allows use of both TLS and DTLS
+protocols with standard socket calls. See <a class="reference internal" href="ip_4_6.html#c.net_ip_protocol_secure" title="net_ip_protocol_secure"><code class="xref c c-enum docutils literal notranslate"><span class="pre">net_ip_protocol_secure</span></code></a> type
+for supported secure protocol versions.</p>
+<p>To enable secure sockets, set the <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_SOCKOPT_TLS" title="CONFIG_NET_SOCKETS_SOCKOPT_TLS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_SOCKOPT_TLS</span></code></a>
+option. To enable DTLS support, use <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_ENABLE_DTLS" title="CONFIG_NET_SOCKETS_ENABLE_DTLS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_ENABLE_DTLS</span></code></a>
+option.</p>
+<div class="section" id="tls-credentials-subsystem">
+<h3><a class="toc-backref" href="#id4">TLS credentials subsystem</a><a class="headerlink" href="#tls-credentials-subsystem" title="Permalink to this headline">¶</a></h3>
+<p>TLS credentials must be registered in the system before they can be used with
+secure sockets. See <a class="reference internal" href="#c.tls_credential_add" title="tls_credential_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">tls_credential_add()</span></code></a> for more information.</p>
+<p>When a specific TLS credential is registered in the system, it is assigned with
+numeric value of type <a class="reference internal" href="#c.sec_tag_t" title="sec_tag_t"><code class="xref c c-type docutils literal notranslate"><span class="pre">sec_tag_t</span></code></a>, called a tag. This value can be used
+later on to reference the credential during secure socket configuration with
+socket options.</p>
+<p>The following TLS credential types can be registered in the system:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TLS_CREDENTIAL_CA_CERTIFICATE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TLS_CREDENTIAL_SERVER_CERTIFICATE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TLS_CREDENTIAL_PRIVATE_KEY</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TLS_CREDENTIAL_PSK</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TLS_CREDENTIAL_PSK_ID</span></code></p></li>
+</ul>
+<p>An example registration of CA certificate (provided in <code class="docutils literal notranslate"><span class="pre">ca_certificate</span></code>
+array) looks like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">tls_credential_add</span><span class="p">(</span><span class="n">CA_CERTIFICATE_TAG</span><span class="p">,</span> <span class="n">TLS_CREDENTIAL_CA_CERTIFICATE</span><span class="p">,</span>
+                         <span class="n">ca_certificate</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ca_certificate</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>By default certificates in DER format are supported. PEM support can be enabled
+in mbedTLS settings.</p>
+</div>
+<div class="section" id="secure-socket-creation">
+<h3><a class="toc-backref" href="#id5">Secure Socket Creation</a><a class="headerlink" href="#secure-socket-creation" title="Permalink to this headline">¶</a></h3>
+<p>A secure socket can be created by specifying secure protocol type, for instance:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="n">IPPROTO_TLS_1_2</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Once created, it can be configured with socket options. For instance, the
+CA certificate and hostname can be set:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">sec_tag_t</span> <span class="n">sec_tag_opt</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">CA_CERTIFICATE_TAG</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">setsockopt</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">SOL_TLS</span><span class="p">,</span> <span class="n">TLS_SEC_TAG_LIST</span><span class="p">,</span>
+                 <span class="n">sec_tag_opt</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">sec_tag_opt</span><span class="p">));</span>
+</pre></div>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">host</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;google.com&quot;</span><span class="p">;</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">setsockopt</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">SOL_TLS</span><span class="p">,</span> <span class="n">TLS_HOSTNAME</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">host</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Once configured, socket can be used just like a regular TCP socket.</p>
+<p>Several samples in Zephyr use secure sockets for communication. For a sample use
+see e.g. <a class="reference internal" href="../../samples/net/sockets/echo_server/README.html#sockets-echo-server-sample"><span class="std std-ref">echo-server sample application</span></a> or
+<a class="reference internal" href="../../samples/net/sockets/http_get/README.html#sockets-http-get"><span class="std std-ref">HTTP GET sample application</span></a>.</p>
+</div>
+<div class="section" id="secure-sockets-options">
+<h3><a class="toc-backref" href="#id6">Secure Sockets options</a><a class="headerlink" href="#secure-sockets-options" title="Permalink to this headline">¶</a></h3>
+<p>Secure sockets offer the following options for socket management:</p>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__secure__sockets__options"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">secure_sockets_options</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_SEC_TAG_LIST">
+<span class="target" id="group__secure__sockets__options_1gaf68fe84e352514c102d33ddd321231e0"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_SEC_TAG_LIST</span></span></span><a class="headerlink" href="#c.TLS_SEC_TAG_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Socket option to select TLS credentials to use. It accepts and returns an array of sec_tag_t that indicate which TLS credentials should be used with specific socket. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_HOSTNAME">
+<span class="target" id="group__secure__sockets__options_1ga01776938993883308c713c9e9ac19786"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_HOSTNAME</span></span></span><a class="headerlink" href="#c.TLS_HOSTNAME" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write-only socket option to set hostname. It accepts a string containing the hostname (may be NULL to disable hostname verification). By default, hostname check is enforced for TLS clients. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_CIPHERSUITE_LIST">
+<span class="target" id="group__secure__sockets__options_1gaf62ff88a51178604287ab31a645adf05"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_CIPHERSUITE_LIST</span></span></span><a class="headerlink" href="#c.TLS_CIPHERSUITE_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Socket option to select ciphersuites to use. It accepts and returns an array of integers with IANA assigned ciphersuite identifiers. If not set, socket will allow all ciphersuites available in the system (mebdTLS default behavior). </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_CIPHERSUITE_USED">
+<span class="target" id="group__secure__sockets__options_1ga9d3c1d985a983a102803c5828f924d26"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_CIPHERSUITE_USED</span></span></span><a class="headerlink" href="#c.TLS_CIPHERSUITE_USED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read-only socket option to read a ciphersuite chosen during TLS handshake. It returns an integer containing an IANA assigned ciphersuite identifier of chosen ciphersuite. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_PEER_VERIFY">
+<span class="target" id="group__secure__sockets__options_1gace333e12f9d74f1ff7c5ac71f7facd16"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_PEER_VERIFY</span></span></span><a class="headerlink" href="#c.TLS_PEER_VERIFY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write-only socket option to set peer verification level for TLS connection. This option accepts an integer with a peer verification level, compatible with mbedTLS values:<ul class="simple">
+<li><p>0 - none</p></li>
+<li><p>1 - optional</p></li>
+<li><p>2 - required</p></li>
+</ul>
+</p>
+<p>If not set, socket will use mbedTLS defaults (none for servers, required for clients). </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_DTLS_ROLE">
+<span class="target" id="group__secure__sockets__options_1ga2e80b638e21708d9b743fe00ec68038a"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_DTLS_ROLE</span></span></span><a class="headerlink" href="#c.TLS_DTLS_ROLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write-only socket option to set role for DTLS connection. This option is irrelevant for TLS connections, as for them role is selected based on connect()/listen() usage. By default, DTLS will assume client role. This option accepts an integer with a TLS role, compatible with mbedTLS values:<ul class="simple">
+<li><p>0 - client</p></li>
+<li><p>1 - server </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_ALPN_LIST">
+<span class="target" id="group__secure__sockets__options_1ga52c56752e5951af8c37a472dbd704aac"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_ALPN_LIST</span></span></span><a class="headerlink" href="#c.TLS_ALPN_LIST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Socket option for setting the supported Application Layer Protocols. It accepts and returns a const char array of NULL terminated strings representing the supported application layer protocols listed during the TLS handshake. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_DTLS_HANDSHAKE_TIMEOUT_MIN">
+<span class="target" id="group__secure__sockets__options_1ga29b47e8798b71f5444f1899343ceefd8"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_DTLS_HANDSHAKE_TIMEOUT_MIN</span></span></span><a class="headerlink" href="#c.TLS_DTLS_HANDSHAKE_TIMEOUT_MIN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Socket option to set DTLS handshake timeout. The timeout starts at min, and upon retransmission the timeout is doubled util max is reached. Min and max arguments are separate options. The time unit is ms. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_DTLS_HANDSHAKE_TIMEOUT_MAX">
+<span class="target" id="group__secure__sockets__options_1ga91ab7d4f0753af71380b6d69b0cd0804"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_DTLS_HANDSHAKE_TIMEOUT_MAX</span></span></span><a class="headerlink" href="#c.TLS_DTLS_HANDSHAKE_TIMEOUT_MAX" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_CERT_NOCOPY">
+<span class="target" id="group__secure__sockets__options_1gaedd12839fd17dbfb981937a102022cc0"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_CERT_NOCOPY</span></span></span><a class="headerlink" href="#c.TLS_CERT_NOCOPY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Socket option for preventing certificates from being copied to the mbedTLS heap if possible. The option is only effective for DER certificates and is ignored for PEM certificates. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id7">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3><a class="toc-backref" href="#id8">BSD Sockets</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__bsd__sockets"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">bsd_sockets</span></span></dt>
+<dd><p>BSD Sockets compatible API. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_POLLIN">
+<span class="target" id="group__bsd__sockets_1ga6ade0deb4952e1ea23b368d9eceee9ed"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_POLLIN</span></span></span><a class="headerlink" href="#c.ZSOCK_POLLIN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_poll: Poll for readability </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_POLLPRI">
+<span class="target" id="group__bsd__sockets_1ga1c96c16d5000db0fa4b69055ebb97839"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_POLLPRI</span></span></span><a class="headerlink" href="#c.ZSOCK_POLLPRI" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_poll: Compatibility value, ignored </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_POLLOUT">
+<span class="target" id="group__bsd__sockets_1ga9ca302c64dfb676798ce03100894ca3e"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_POLLOUT</span></span></span><a class="headerlink" href="#c.ZSOCK_POLLOUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_poll: Poll for writability </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_POLLERR">
+<span class="target" id="group__bsd__sockets_1gad44368a112fbf91436a2439e7b767641"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_POLLERR</span></span></span><a class="headerlink" href="#c.ZSOCK_POLLERR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_poll: Poll results in error condition (output value only) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_POLLHUP">
+<span class="target" id="group__bsd__sockets_1gadd341cd5c1f6d7deeaedc5c58dc56fe7"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_POLLHUP</span></span></span><a class="headerlink" href="#c.ZSOCK_POLLHUP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_poll: Poll detected closed connection (output value only) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_POLLNVAL">
+<span class="target" id="group__bsd__sockets_1ga45c5b0efca6e09e4f7db78d1d007bf67"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_POLLNVAL</span></span></span><a class="headerlink" href="#c.ZSOCK_POLLNVAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_poll: Invalid socket (output value only) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_MSG_PEEK">
+<span class="target" id="group__bsd__sockets_1gae7da123a40584192b65af77e918080b9"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_MSG_PEEK</span></span></span><a class="headerlink" href="#c.ZSOCK_MSG_PEEK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_recv: Read data without removing it from socket input queue </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_MSG_TRUNC">
+<span class="target" id="group__bsd__sockets_1gae594c5e74cd473df8e3328a4cd935ce1"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_MSG_TRUNC</span></span></span><a class="headerlink" href="#c.ZSOCK_MSG_TRUNC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_recv: return the real length of the datagram, even when it was longer than the passed buffer </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_MSG_DONTWAIT">
+<span class="target" id="group__bsd__sockets_1ga92cf4460e23f376bf130d885ea64ed6b"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_MSG_DONTWAIT</span></span></span><a class="headerlink" href="#c.ZSOCK_MSG_DONTWAIT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_recv/zsock_send: Override operation to non-blocking </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_MSG_WAITALL">
+<span class="target" id="group__bsd__sockets_1ga00b950f50302d97c27111da49f5289fb"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_MSG_WAITALL</span></span></span><a class="headerlink" href="#c.ZSOCK_MSG_WAITALL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_recv: block until the full amount of data can be returned </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_SHUT_RD">
+<span class="target" id="group__bsd__sockets_1ga2a58cbc62db1e559898ea979454d74d4"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_SHUT_RD</span></span></span><a class="headerlink" href="#c.ZSOCK_SHUT_RD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_shutdown: Shut down for reading </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_SHUT_WR">
+<span class="target" id="group__bsd__sockets_1ga87630f1abe81c4e33a24cb1f1ebb3571"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_SHUT_WR</span></span></span><a class="headerlink" href="#c.ZSOCK_SHUT_WR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_shutdown: Shut down for writing </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_SHUT_RDWR">
+<span class="target" id="group__bsd__sockets_1ga788dcff81663a9fb01e32b53bca13e2d"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_SHUT_RDWR</span></span></span><a class="headerlink" href="#c.ZSOCK_SHUT_RDWR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>zsock_shutdown: Shut down for both reading and writing </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SOL_TLS">
+<span class="target" id="group__bsd__sockets_1ga127b71b334ca280b88f4f62c73afce0a"></span><span class="sig-name descname"><span class="n"><span class="pre">SOL_TLS</span></span></span><a class="headerlink" href="#c.SOL_TLS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Protocol level for TLS. Here, the same socket protocol level for TLS as in Linux was used. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_PEER_VERIFY_NONE">
+<span class="target" id="group__bsd__sockets_1ga09cb746907891d86a8d69ca49717c068"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_PEER_VERIFY_NONE</span></span></span><a class="headerlink" href="#c.TLS_PEER_VERIFY_NONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Peer verification disabled. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_PEER_VERIFY_OPTIONAL">
+<span class="target" id="group__bsd__sockets_1gae5a7102c2964ad0c30f5f2ed74a43488"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_PEER_VERIFY_OPTIONAL</span></span></span><a class="headerlink" href="#c.TLS_PEER_VERIFY_OPTIONAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Peer verification optional. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_PEER_VERIFY_REQUIRED">
+<span class="target" id="group__bsd__sockets_1ga65fa7a032e6526c5a645c2f946c2ead6"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_PEER_VERIFY_REQUIRED</span></span></span><a class="headerlink" href="#c.TLS_PEER_VERIFY_REQUIRED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Peer verification required. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_DTLS_ROLE_CLIENT">
+<span class="target" id="group__bsd__sockets_1ga7e878bd4a8d53fc63aa6a2f5046179c4"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_DTLS_ROLE_CLIENT</span></span></span><a class="headerlink" href="#c.TLS_DTLS_ROLE_CLIENT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Client role in a DTLS session. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_DTLS_ROLE_SERVER">
+<span class="target" id="group__bsd__sockets_1ga9ec523afe0dbb4ee3dc6fd120ff72601"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_DTLS_ROLE_SERVER</span></span></span><a class="headerlink" href="#c.TLS_DTLS_ROLE_SERVER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Server role in a DTLS session. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_CERT_NOCOPY_NONE">
+<span class="target" id="group__bsd__sockets_1ga623654b94057e04a34480b9b4a44d8eb"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_CERT_NOCOPY_NONE</span></span></span><a class="headerlink" href="#c.TLS_CERT_NOCOPY_NONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Cert duplicated in heap </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TLS_CERT_NOCOPY_OPTIONAL">
+<span class="target" id="group__bsd__sockets_1ga658887b060924d9797040569250b419a"></span><span class="sig-name descname"><span class="n"><span class="pre">TLS_CERT_NOCOPY_OPTIONAL</span></span></span><a class="headerlink" href="#c.TLS_CERT_NOCOPY_OPTIONAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Cert not copied in heap if DER </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AI_PASSIVE">
+<span class="target" id="group__bsd__sockets_1gaec9e92ed53442d64cbc9b68d92ad970b"></span><span class="sig-name descname"><span class="n"><span class="pre">AI_PASSIVE</span></span></span><a class="headerlink" href="#c.AI_PASSIVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Address for bind() (vs for connect()) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AI_CANONNAME">
+<span class="target" id="group__bsd__sockets_1gab2912e6cffeb2353df550f10bbe64cf4"></span><span class="sig-name descname"><span class="n"><span class="pre">AI_CANONNAME</span></span></span><a class="headerlink" href="#c.AI_CANONNAME" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Fill in ai_canonname </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AI_NUMERICHOST">
+<span class="target" id="group__bsd__sockets_1ga2a7070b38894743c536630b2ab25dcef"></span><span class="sig-name descname"><span class="n"><span class="pre">AI_NUMERICHOST</span></span></span><a class="headerlink" href="#c.AI_NUMERICHOST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Assume host address is in numeric notation, don’t DNS lookup </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AI_V4MAPPED">
+<span class="target" id="group__bsd__sockets_1gabbc1e064042dab1058c40d9cd1fc63f0"></span><span class="sig-name descname"><span class="n"><span class="pre">AI_V4MAPPED</span></span></span><a class="headerlink" href="#c.AI_V4MAPPED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>May return IPv4 mapped address for IPv6 </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AI_ALL">
+<span class="target" id="group__bsd__sockets_1ga1813fe6d7b10af5ea92ec03bd65ca39d"></span><span class="sig-name descname"><span class="n"><span class="pre">AI_ALL</span></span></span><a class="headerlink" href="#c.AI_ALL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>May return both native IPv6 and mapped IPv4 address for IPv6 </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AI_ADDRCONFIG">
+<span class="target" id="group__bsd__sockets_1gabe581892df09df05b21fee09e1584659"></span><span class="sig-name descname"><span class="n"><span class="pre">AI_ADDRCONFIG</span></span></span><a class="headerlink" href="#c.AI_ADDRCONFIG" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IPv4/IPv6 support depends on local system config </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.AI_NUMERICSERV">
+<span class="target" id="group__bsd__sockets_1ga8739abe7bcb9470bcdb021e869b2a76f"></span><span class="sig-name descname"><span class="n"><span class="pre">AI_NUMERICSERV</span></span></span><a class="headerlink" href="#c.AI_NUMERICSERV" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Assume service (port) is numeric </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NI_NUMERICHOST">
+<span class="target" id="group__bsd__sockets_1ga62f12304e7a43038f40cd579ad57829f"></span><span class="sig-name descname"><span class="n"><span class="pre">NI_NUMERICHOST</span></span></span><a class="headerlink" href="#c.NI_NUMERICHOST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505"><span class="std std-ref">zsock_getnameinfo()</span></a>: Resolve to numeric address. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NI_NUMERICSERV">
+<span class="target" id="group__bsd__sockets_1gaf6d346aae7109d19b9ccab7c510a3cad"></span><span class="sig-name descname"><span class="n"><span class="pre">NI_NUMERICSERV</span></span></span><a class="headerlink" href="#c.NI_NUMERICSERV" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505"><span class="std std-ref">zsock_getnameinfo()</span></a>: Resolve to numeric port number. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NI_NOFQDN">
+<span class="target" id="group__bsd__sockets_1gae58777c663bd21ceafae51b23ba493ca"></span><span class="sig-name descname"><span class="n"><span class="pre">NI_NOFQDN</span></span></span><a class="headerlink" href="#c.NI_NOFQDN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505"><span class="std std-ref">zsock_getnameinfo()</span></a>: Return only hostname instead of FQDN </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NI_NAMEREQD">
+<span class="target" id="group__bsd__sockets_1ga21bd81bf080250b73395a02e70a4212e"></span><span class="sig-name descname"><span class="n"><span class="pre">NI_NAMEREQD</span></span></span><a class="headerlink" href="#c.NI_NAMEREQD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505"><span class="std std-ref">zsock_getnameinfo()</span></a>: Dummy option for compatibility </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NI_DGRAM">
+<span class="target" id="group__bsd__sockets_1gac8270b4222f6d9ebf05cba519b48be49"></span><span class="sig-name descname"><span class="n"><span class="pre">NI_DGRAM</span></span></span><a class="headerlink" href="#c.NI_DGRAM" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505"><span class="std std-ref">zsock_getnameinfo()</span></a>: Dummy option for compatibility </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NI_MAXHOST">
+<span class="target" id="group__bsd__sockets_1gaebc53e498b2434654a1d44070d9ccd40"></span><span class="sig-name descname"><span class="n"><span class="pre">NI_MAXHOST</span></span></span><a class="headerlink" href="#c.NI_MAXHOST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505"><span class="std std-ref">zsock_getnameinfo()</span></a>: Max supported hostname length </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.IFNAMSIZ">
+<span class="target" id="group__bsd__sockets_1gacd06da230a96d3b7e6f193c5b3142002"></span><span class="sig-name descname"><span class="n"><span class="pre">IFNAMSIZ</span></span></span><a class="headerlink" href="#c.IFNAMSIZ" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SOL_SOCKET">
+<span class="target" id="group__bsd__sockets_1ga92d045f6ee2f343d6b28830a9fec082e"></span><span class="sig-name descname"><span class="n"><span class="pre">SOL_SOCKET</span></span></span><a class="headerlink" href="#c.SOL_SOCKET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Socket-level option </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_DEBUG">
+<span class="target" id="group__bsd__sockets_1ga9dbc641eb342d3ad19f1162305d268d6"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_DEBUG</span></span></span><a class="headerlink" href="#c.SO_DEBUG" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Recording debugging information (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_REUSEADDR">
+<span class="target" id="group__bsd__sockets_1ga5589f74fada0d0cd47bd6ea8741a58ee"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_REUSEADDR</span></span></span><a class="headerlink" href="#c.SO_REUSEADDR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: address reuse (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_TYPE">
+<span class="target" id="group__bsd__sockets_1ga8ab1e00e94a92737d3a4b407f7fa90f1"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_TYPE</span></span></span><a class="headerlink" href="#c.SO_TYPE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Type of the socket </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_ERROR">
+<span class="target" id="group__bsd__sockets_1ga040d4fd00495232970a03425bc00e77a"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_ERROR</span></span></span><a class="headerlink" href="#c.SO_ERROR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Async error (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_DONTROUTE">
+<span class="target" id="group__bsd__sockets_1ga4a6d9f7ea4bf046c50102c17ba1faf37"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_DONTROUTE</span></span></span><a class="headerlink" href="#c.SO_DONTROUTE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Bypass normal routing and send directly to host (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_BROADCAST">
+<span class="target" id="group__bsd__sockets_1gad05e5d66b4608d73747c4a10b802a737"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_BROADCAST</span></span></span><a class="headerlink" href="#c.SO_BROADCAST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Transmission of broadcast messages is supported (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_SNDBUF">
+<span class="target" id="group__bsd__sockets_1gaf618cbb85161ff3196d3bcdf7565ba64"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_SNDBUF</span></span></span><a class="headerlink" href="#c.SO_SNDBUF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Size of socket socket send buffer (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_KEEPALIVE">
+<span class="target" id="group__bsd__sockets_1ga0691781c519eed3f9a634f8eb55cd258"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_KEEPALIVE</span></span></span><a class="headerlink" href="#c.SO_KEEPALIVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Enable sending keep-alive messages on connections (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_OOBINLINE">
+<span class="target" id="group__bsd__sockets_1ga1ab39f351679dd0e32436f0e6c9890d4"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_OOBINLINE</span></span></span><a class="headerlink" href="#c.SO_OOBINLINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Place out-of-band data into receive stream (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_REUSEPORT">
+<span class="target" id="group__bsd__sockets_1ga36151618368affd148255e77785e365e"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_REUSEPORT</span></span></span><a class="headerlink" href="#c.SO_REUSEPORT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Allow multiple sockets to reuse a single port (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_RCVTIMEO">
+<span class="target" id="group__bsd__sockets_1gaf2d1ed6a34336a6f3df80fb518325846"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_RCVTIMEO</span></span></span><a class="headerlink" href="#c.SO_RCVTIMEO" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Receive timeout Applies to receive functions like recv(), but not to connect() </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_SNDTIMEO">
+<span class="target" id="group__bsd__sockets_1gab9d2f7ca5c94bd51cdab3e1913b66e2d"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_SNDTIMEO</span></span></span><a class="headerlink" href="#c.SO_SNDTIMEO" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Send timeout </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_BINDTODEVICE">
+<span class="target" id="group__bsd__sockets_1gae0339480fb8088046e6038ee1baf3a61"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_BINDTODEVICE</span></span></span><a class="headerlink" href="#c.SO_BINDTODEVICE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Bind a socket to an interface </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_ACCEPTCONN">
+<span class="target" id="group__bsd__sockets_1ga4a86a7abccf8140410bf8a64c571bd6d"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_ACCEPTCONN</span></span></span><a class="headerlink" href="#c.SO_ACCEPTCONN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Socket accepts incoming connections (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_TIMESTAMPING">
+<span class="target" id="group__bsd__sockets_1ga049469e17deb5a458698ef5b85568649"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_TIMESTAMPING</span></span></span><a class="headerlink" href="#c.SO_TIMESTAMPING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Timestamp TX packets </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_PROTOCOL">
+<span class="target" id="group__bsd__sockets_1ga8968d9591bf83026610314ce1c8736dc"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_PROTOCOL</span></span></span><a class="headerlink" href="#c.SO_PROTOCOL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Protocol used with the socket </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_DOMAIN">
+<span class="target" id="group__bsd__sockets_1gaf320236b2f835cdbee921bb51638ff04"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_DOMAIN</span></span></span><a class="headerlink" href="#c.SO_DOMAIN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Domain used with SOCKET (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.TCP_NODELAY">
+<span class="target" id="group__bsd__sockets_1ga8f02455d581f55196a37a12377ecfc0e"></span><span class="sig-name descname"><span class="n"><span class="pre">TCP_NODELAY</span></span></span><a class="headerlink" href="#c.TCP_NODELAY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>End Socket options for SOL_SOCKET level sockopt: Disable TCP buffering (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.IPV6_V6ONLY">
+<span class="target" id="group__bsd__sockets_1ga48fb8bf5da186346125c2750265b0c65"></span><span class="sig-name descname"><span class="n"><span class="pre">IPV6_V6ONLY</span></span></span><a class="headerlink" href="#c.IPV6_V6ONLY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Don’t support IPv4 access (ignored, for compatibility) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_PRIORITY">
+<span class="target" id="group__bsd__sockets_1gafa6d8ec55f4abb9f6141325ff8229a16"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_PRIORITY</span></span></span><a class="headerlink" href="#c.SO_PRIORITY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Socket priority </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_TXTIME">
+<span class="target" id="group__bsd__sockets_1gaa0075588796abf8427bce7d2ca2562f2"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_TXTIME</span></span></span><a class="headerlink" href="#c.SO_TXTIME" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Socket TX time (when the data should be sent) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SCM_TXTIME">
+<span class="target" id="group__bsd__sockets_1ga0cf286971517642dd26b6683bdd91727"></span><span class="sig-name descname"><span class="n"><span class="pre">SCM_TXTIME</span></span></span><a class="headerlink" href="#c.SCM_TXTIME" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SO_SOCKS5">
+<span class="target" id="group__bsd__sockets_1ga2725cefd9638789146faf5288a751855"></span><span class="sig-name descname"><span class="n"><span class="pre">SO_SOCKS5</span></span></span><a class="headerlink" href="#c.SO_SOCKS5" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sockopt: Enable SOCKS5 for Socket </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ZSOCK_FD_SETSIZE">
+<span class="target" id="group__bsd__sockets_1ga5c88da69b8d9401d3ae02495056f7e23"></span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_FD_SETSIZE</span></span></span><a class="headerlink" href="#c.ZSOCK_FD_SETSIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of file descriptors which can be added to <a class="reference internal" href="#structzsock__fd__set"><span class="std std-ref">zsock_fd_set</span></a> </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.zsock_timeval">
+<span class="target" id="group__bsd__sockets_1ga0fa9dd4796261813b164fed42303e4ee"></span><span class="sig-name descname"><span class="n"><span class="pre">zsock_timeval</span></span></span><a class="headerlink" href="#c.zsock_timeval" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.zsock_fd_set">
+<span class="target" id="group__bsd__sockets_1ga1fcb157f9f7dece784f5d2c0cb2efb77"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zsock_fd_set" title="zsock_fd_set"><span class="n"><span class="pre">zsock_fd_set</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_fd_set</span></span></span><a class="headerlink" href="#c.zsock_fd_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_get_context_object">
+<span class="target" id="group__bsd__sockets_1ga5f569be406929ee89b6e42de7cef2882"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">zsock_get_context_object</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_get_context_object" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain a file descriptor’s associated net context. </p>
+<p>With CONFIG_USERSPACE enabled, the kernel’s object permission system must apply to socket file descriptors. When a socket is opened, by default only the caller has permission, access by other threads will fail unless they have been specifically granted permission.</p>
+<p>This is achieved by tagging data structure definitions that implement the underlying object associated with a network socket file descriptor with ‘__net_socket`. All pointers to instances of these will be known to the kernel as kernel objects with type K_OBJ_NET_SOCKET.</p>
+<p>This API is intended for threads that need to grant access to the object associated with a particular file descriptor to another thread. The returned pointer represents the underlying K_OBJ_NET_SOCKET and may be passed to APIs like <a class="reference internal" href="../usermode/kernelobjects.html#group__usermode__apis_1ga94087bedf96fe2a2bea437d3d585ca22"><span class="std std-ref">k_object_access_grant()</span></a>.</p>
+<p>In a system like Linux which has the notion of threads running in processes in a shared virtual address space, this sort of management is unnecessary as the scope of file descriptors is implemented at the process level.</p>
+<p>However in Zephyr the file descriptor scope is global, and MPU-based systems are not able to implement a process-like model due to the lack of memory virtualization hardware. They use discrete object permissions and memory domains instead to define thread access scope.</p>
+<p>User threads will have no direct access to the returned object and will fault if they try to access its memory; the pointer can only be used to make permission assignment calls, which follow exactly the rules for other kernel objects like device drivers and IPC.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>pointer to associated network socket object, or NULL if the file descriptor wasn’t valid or the caller had no access permission </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sock</span></code>: file descriptor </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_socket">
+<span class="target" id="group__bsd__sockets_1ga5693d19a0bdff45a5cb09227683d8631"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_socket</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">family</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">proto</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_socket" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a network socket. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/socket.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">socket()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+</p>
+<p>If CONFIG_USERSPACE is enabled, the caller will be granted access to the context object associated with the returned file descriptor. <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__bsd__sockets_1ga5f569be406929ee89b6e42de7cef2882"><span class="std std-ref">zsock_get_context_object()</span></a> </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_socketpair">
+<span class="target" id="group__bsd__sockets_1ga1f5e089c9fb39d3a8884502a11e389b3"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_socketpair</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">family</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">proto</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_socketpair" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create an unnamed pair of connected sockets. </p>
+<p><p><p>See <a class="reference external" href="https://pubs.opengroup.org/onlinepubs/009695399/functions/socketpair.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">socketpair()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_close">
+<span class="target" id="group__bsd__sockets_1gae60d7ca486955dd79a2821d1f646c349"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_close</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_close" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Close a network socket. </p>
+<p><p><p>Close a network socket.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">close()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined (in which case it
+may conflict with generic POSIX <code class="docutils literal notranslate"><span class="pre">close()</span></code> function).</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_shutdown">
+<span class="target" id="group__bsd__sockets_1gac56432bf901efaf8ef782430ac143f03"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_shutdown</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">how</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_shutdown" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Shutdown socket send/receive operations. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/shutdown.html">POSIX.1-2017 article</a>
+for normative description, but currently this function has no effect in
+Zephyr and provided solely for compatibility with existing code.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">shutdown()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_bind">
+<span class="target" id="group__bsd__sockets_1ga3d3258fc59ab566eab03e0f51da1556a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_bind</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.sockaddr" title="sockaddr"><span class="n"><span class="pre">sockaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <a class="reference internal" href="ip_4_6.html#c.socklen_t" title="socklen_t"><span class="n"><span class="pre">socklen_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">addrlen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_bind" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Bind a socket to a local network address. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/bind.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">bind()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_connect">
+<span class="target" id="group__bsd__sockets_1ga1a70b1d3616341a86977835cc853d81d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_connect</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.sockaddr" title="sockaddr"><span class="n"><span class="pre">sockaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <a class="reference internal" href="ip_4_6.html#c.socklen_t" title="socklen_t"><span class="n"><span class="pre">socklen_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">addrlen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_connect" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Connect a socket to a peer network address. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/connect.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">connect()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_listen">
+<span class="target" id="group__bsd__sockets_1gae8ea59ea82063aa28a9b72da2f08c9fd"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_listen</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">backlog</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_listen" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set up a STREAM socket to accept peer connections. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/listen.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">listen()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_accept">
+<span class="target" id="group__bsd__sockets_1ga25c993772f26b872e7ed16c4ae2349fb"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_accept</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.sockaddr" title="sockaddr"><span class="n"><span class="pre">sockaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <a class="reference internal" href="ip_4_6.html#c.socklen_t" title="socklen_t"><span class="n"><span class="pre">socklen_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addrlen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_accept" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Accept a connection on listening socket. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/accept.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">accept()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_sendto">
+<span class="target" id="group__bsd__sockets_1ga17a68983c5fc16cef968b3e7cecff089"></span><span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_sendto</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">flags</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.sockaddr" title="sockaddr"><span class="n"><span class="pre">sockaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest_addr</span></span>, <a class="reference internal" href="ip_4_6.html#c.socklen_t" title="socklen_t"><span class="n"><span class="pre">socklen_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">addrlen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_sendto" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send data to an arbitrary network address. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/sendto.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">sendto()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_send">
+<span class="target" id="group__bsd__sockets_1ga2d8c2173986f67dde6dc5721bf690855"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_send</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">flags</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_send" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send data to a connected peer. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/send.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">send()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_sendmsg">
+<span class="target" id="group__bsd__sockets_1gadb708a068afed401e1354aac885c787e"></span><span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_sendmsg</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.msghdr" title="msghdr"><span class="n"><span class="pre">msghdr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">msg</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">flags</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_sendmsg" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send data to an arbitrary network address. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/sendmsg.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">sendmsg()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_recvfrom">
+<span class="target" id="group__bsd__sockets_1gaca71732c883880c6fdcc7eb8e1c28932"></span><span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_recvfrom</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">max_len</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">flags</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.sockaddr" title="sockaddr"><span class="n"><span class="pre">sockaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src_addr</span></span>, <a class="reference internal" href="ip_4_6.html#c.socklen_t" title="socklen_t"><span class="n"><span class="pre">socklen_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addrlen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_recvfrom" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Receive data from an arbitrary network address. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/recvfrom.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">recvfrom()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_recv">
+<span class="target" id="group__bsd__sockets_1ga8a7d82cfb02a45de59ccd05614eb78d6"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_recv</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">max_len</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">flags</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_recv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Receive data from a connected peer. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/recv.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">recv()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_fcntl">
+<span class="target" id="group__bsd__sockets_1ga13471854ca4279a157fe43ec030ea34d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_fcntl</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">cmd</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">flags</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_fcntl" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Control blocking/non-blocking mode of a socket. </p>
+<p><p><p>This functions allow to (only) configure a socket for blocking or
+non-blocking operation (O_NONBLOCK).
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">fcntl()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined (in which case
+it may conflict with generic POSIX <code class="docutils literal notranslate"><span class="pre">fcntl()</span></code> function).</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_poll">
+<span class="target" id="group__bsd__sockets_1gaa946975d9892a0ad730b6bf7090267cf"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_poll</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zsock_pollfd" title="zsock_pollfd"><span class="n"><span class="pre">zsock_pollfd</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fds</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nfds</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_poll" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Efficiently poll multiple sockets for events. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/poll.html">POSIX.1-2017 article</a>
+for normative description. (In Zephyr this function works only with
+sockets, not arbitrary file descriptors.)
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">poll()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined (in which case
+it may conflict with generic POSIX <code class="docutils literal notranslate"><span class="pre">poll()</span></code> function).</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_getsockopt">
+<span class="target" id="group__bsd__sockets_1ga56cb8d34d4b9599c3d2965c97da80a30"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_getsockopt</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">level</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">optname</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">optval</span></span>, <a class="reference internal" href="ip_4_6.html#c.socklen_t" title="socklen_t"><span class="n"><span class="pre">socklen_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">optlen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_getsockopt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get various socket options. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockopt.html">POSIX.1-2017 article</a>
+for normative description. In Zephyr this function supports a subset of
+socket options described by POSIX, but also some additional options
+available in Linux (some options are dummy and provided to ease porting
+of existing code).
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">getsockopt()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_setsockopt">
+<span class="target" id="group__bsd__sockets_1gad123f59d8c86bf187054c80ff743b4eb"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_setsockopt</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">level</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">optname</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">optval</span></span>, <a class="reference internal" href="ip_4_6.html#c.socklen_t" title="socklen_t"><span class="n"><span class="pre">socklen_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">optlen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_setsockopt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set various socket options. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/setsockopt.html">POSIX.1-2017 article</a>
+for normative description. In Zephyr this function supports a subset of
+socket options described by POSIX, but also some additional options
+available in Linux (some options are dummy and provided to ease porting
+of existing code).
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">setsockopt()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_getsockname">
+<span class="target" id="group__bsd__sockets_1gaa0270d771e51dbf2a91bea5b24bf26c1"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_getsockname</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">sock</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.sockaddr" title="sockaddr"><span class="n"><span class="pre">sockaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <a class="reference internal" href="ip_4_6.html#c.socklen_t" title="socklen_t"><span class="n"><span class="pre">socklen_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addrlen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_getsockname" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get socket name. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockname.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">getsockname()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_gethostname">
+<span class="target" id="group__bsd__sockets_1ga8b348d886f1bc4f4cdf6e2260844f6e1"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_gethostname</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_gethostname" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get local host name. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/gethostname.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">gethostname()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_inet_ntop">
+<span class="target" id="group__bsd__sockets_1gad013048eb79ebde2a826e2409be1c535"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">zsock_inet_ntop</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="ip_4_6.html#c.sa_family_t" title="sa_family_t"><span class="n"><span class="pre">sa_family_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">family</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dst</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_inet_ntop" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert network address from internal to numeric ASCII form. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/inet_ntop.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">inet_ntop()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_inet_pton">
+<span class="target" id="group__bsd__sockets_1gae4cf68b3752057b4b0818394487a2dbb"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_inet_pton</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="ip_4_6.html#c.sa_family_t" title="sa_family_t"><span class="n"><span class="pre">sa_family_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">family</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dst</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_inet_pton" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert network address from numeric ASCII form to internal representation. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/inet_pton.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">inet_pton()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_getaddrinfo">
+<span class="target" id="group__bsd__sockets_1gaf59c97c9bd07f188e3f06b2372ac1856"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_getaddrinfo</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">host</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">service</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zsock_addrinfo" title="zsock_addrinfo"><span class="n"><span class="pre">zsock_addrinfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">hints</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zsock_addrinfo" title="zsock_addrinfo"><span class="n"><span class="pre">zsock_addrinfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">res</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_getaddrinfo" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resolve a domain name to one or more network addresses. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/getaddrinfo.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">getaddrinfo()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_freeaddrinfo">
+<span class="target" id="group__bsd__sockets_1ga7953da2e52bcfad51b877de6d7fd6cc9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_freeaddrinfo</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zsock_addrinfo" title="zsock_addrinfo"><span class="n"><span class="pre">zsock_addrinfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ai</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_freeaddrinfo" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Free results returned by <a class="reference internal" href="#group__bsd__sockets_1gaf59c97c9bd07f188e3f06b2372ac1856"><span class="std std-ref">zsock_getaddrinfo()</span></a> </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/freeaddrinfo.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">freeaddrinfo()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_gai_strerror">
+<span class="target" id="group__bsd__sockets_1gaa30584e6eb91297f34dda65ca48a319f"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">zsock_gai_strerror</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">errcode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_gai_strerror" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert <a class="reference internal" href="#group__bsd__sockets_1gaf59c97c9bd07f188e3f06b2372ac1856"><span class="std std-ref">zsock_getaddrinfo()</span></a> error code to textual message. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/gai_strerror.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">gai_strerror()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_getnameinfo">
+<span class="target" id="group__bsd__sockets_1gae9375bc6a1e945e5486f40c0198e3505"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_getnameinfo</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.sockaddr" title="sockaddr"><span class="n"><span class="pre">sockaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <a class="reference internal" href="ip_4_6.html#c.socklen_t" title="socklen_t"><span class="n"><span class="pre">socklen_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">addrlen</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">host</span></span>, <a class="reference internal" href="ip_4_6.html#c.socklen_t" title="socklen_t"><span class="n"><span class="pre">socklen_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">hostlen</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">serv</span></span>, <a class="reference internal" href="ip_4_6.html#c.socklen_t" title="socklen_t"><span class="n"><span class="pre">socklen_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">servlen</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">flags</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_getnameinfo" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resolve a network address to a domain name or ASCII address. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/getnameinfo.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">getnameinfo()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.zsock_select">
+<span class="target" id="group__bsd__sockets_1ga265b8fc197a7a79102bdce4875bbb045"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_select</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nfds</span></span>, <a class="reference internal" href="#c.zsock_fd_set" title="zsock_fd_set"><span class="n"><span class="pre">zsock_fd_set</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">readfds</span></span>, <a class="reference internal" href="#c.zsock_fd_set" title="zsock_fd_set"><span class="n"><span class="pre">zsock_fd_set</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">writefds</span></span>, <a class="reference internal" href="#c.zsock_fd_set" title="zsock_fd_set"><span class="n"><span class="pre">zsock_fd_set</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">exceptfds</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zsock_timeval" title="zsock_timeval"><span class="n"><span class="pre">zsock_timeval</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.zsock_select" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Legacy function to poll multiple sockets for events. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/select.html">POSIX.1-2017 article</a>
+for normative description. This function is provided to ease porting of
+existing code and not recommended for usage due to its inefficiency,
+use <a class="reference internal" href="#c.zsock_poll" title="zsock_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">zsock_poll()</span></code></a> instead. In Zephyr this function works only with
+sockets, not arbitrary file descriptors.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">select()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined (in which case
+it may conflict with generic POSIX <code class="docutils literal notranslate"><span class="pre">select()</span></code> function).</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ZSOCK_FD_ZERO">
+<span class="target" id="group__bsd__sockets_1gae9c3555c2fc74b8a88ea5909a2d02afb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_FD_ZERO</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.zsock_fd_set" title="zsock_fd_set"><span class="n"><span class="pre">zsock_fd_set</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">set</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ZSOCK_FD_ZERO" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize (clear) fd_set. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/select.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">FD_ZERO()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ZSOCK_FD_ISSET">
+<span class="target" id="group__bsd__sockets_1ga24808b7adec4970eb0981b24e9313aab"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_FD_ISSET</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">fd</span></span>, <a class="reference internal" href="#c.zsock_fd_set" title="zsock_fd_set"><span class="n"><span class="pre">zsock_fd_set</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">set</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ZSOCK_FD_ISSET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check whether socket is a member of fd_set. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/select.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">FD_ISSET()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ZSOCK_FD_CLR">
+<span class="target" id="group__bsd__sockets_1gadcc17ac3947722e684a543e055b8c1e5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_FD_CLR</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">fd</span></span>, <a class="reference internal" href="#c.zsock_fd_set" title="zsock_fd_set"><span class="n"><span class="pre">zsock_fd_set</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">set</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ZSOCK_FD_CLR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remove socket from fd_set. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/select.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">FD_CLR()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ZSOCK_FD_SET">
+<span class="target" id="group__bsd__sockets_1ga9a6044b408c0ef80336e957cd47d5f25"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ZSOCK_FD_SET</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">fd</span></span>, <a class="reference internal" href="#c.zsock_fd_set" title="zsock_fd_set"><span class="n"><span class="pre">zsock_fd_set</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">set</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ZSOCK_FD_SET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add socket to fd_set. </p>
+<p><p><p>See <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/select.html">POSIX.1-2017 article</a>
+for normative description.
+This function is also exposed as <code class="docutils literal notranslate"><span class="pre">FD_SET()</span></code>
+if <a class="reference internal" href="../../kconfig.html#CONFIG_NET_SOCKETS_POSIX_NAMES" title="CONFIG_NET_SOCKETS_POSIX_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_SOCKETS_POSIX_NAMES</span></code></a> is defined.</p>
+</p>
+ </p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.zsock_pollfd">
+<span class="target" id="structzsock__pollfd"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_pollfd</span></span></span><a class="headerlink" href="#c.zsock_pollfd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;socket.h&gt;</em></dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.zsock_addrinfo">
+<span class="target" id="structzsock__addrinfo"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_addrinfo</span></span></span><a class="headerlink" href="#c.zsock_addrinfo" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;socket.h&gt;</em></dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.ifreq">
+<span class="target" id="structifreq"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ifreq</span></span></span><a class="headerlink" href="#c.ifreq" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;socket.h&gt;</em><p>Interface description structure </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c">
+<span class="target" id="structzsock__fd__set"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zsock_fd_set</span></span></span><br /></dt>
+<dd><em>#include &lt;socket_select.h&gt;</em></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tls-credentials">
+<h3><a class="toc-backref" href="#id9">TLS Credentials</a><a class="headerlink" href="#tls-credentials" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__tls__credentials"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">tls_credentials</span></span></dt>
+<dd><p>TLS credentials management. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.sec_tag_t">
+<span class="target" id="group__tls__credentials_1gaadfe9694309e473f7be74ed98dfb36d3"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sec_tag_t</span></span></span><a class="headerlink" href="#c.sec_tag_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Secure tag, a reference to TLS credential</p>
+<p>Secure tag can be used to reference credential after it was registered in the system.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Some TLS credentials come in pairs:<ul class="simple">
+<li><p>TLS_CREDENTIAL_SERVER_CERTIFICATE with TLS_CREDENTIAL_PRIVATE_KEY,</p></li>
+<li><p>TLS_CREDENTIAL_PSK with TLS_CREDENTIAL_PSK_ID. Such pairs of credentials must be assigned the same secure tag to be correctly handled in the system. </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.tls_credential_type">
+<span class="target" id="group__tls__credentials_1ga3a754894d0162634b59d60e319f37cd5"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tls_credential_type</span></span></span><a class="headerlink" href="#c.tls_credential_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>TLS credential types </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.tls_credential_type.TLS_CREDENTIAL_NONE">
+<span class="target" id="group__tls__credentials_1gga3a754894d0162634b59d60e319f37cd5a7009a9f266011529e64ec4e4c6692315"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TLS_CREDENTIAL_NONE</span></span></span><a class="headerlink" href="#c.tls_credential_type.TLS_CREDENTIAL_NONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unspecified credential. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.tls_credential_type.TLS_CREDENTIAL_CA_CERTIFICATE">
+<span class="target" id="group__tls__credentials_1gga3a754894d0162634b59d60e319f37cd5adcf949c1422f4d3b38795ae40d2321d5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TLS_CREDENTIAL_CA_CERTIFICATE</span></span></span><a class="headerlink" href="#c.tls_credential_type.TLS_CREDENTIAL_CA_CERTIFICATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A trusted CA certificate. Use this to authenticate remote servers. Used with certificate-based ciphersuites. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.tls_credential_type.TLS_CREDENTIAL_SERVER_CERTIFICATE">
+<span class="target" id="group__tls__credentials_1gga3a754894d0162634b59d60e319f37cd5a541cc34b6fd5af911e633154e54f52f4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TLS_CREDENTIAL_SERVER_CERTIFICATE</span></span></span><a class="headerlink" href="#c.tls_credential_type.TLS_CREDENTIAL_SERVER_CERTIFICATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A public server certificate. Use this to register your own server certificate. Should be registered together with a corresponding private key. Used with certificate-based ciphersuites. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.tls_credential_type.TLS_CREDENTIAL_PRIVATE_KEY">
+<span class="target" id="group__tls__credentials_1gga3a754894d0162634b59d60e319f37cd5a406e8bb1f992af5a72921f47b140840e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TLS_CREDENTIAL_PRIVATE_KEY</span></span></span><a class="headerlink" href="#c.tls_credential_type.TLS_CREDENTIAL_PRIVATE_KEY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Private key. Should be registered together with a corresponding public certificate. Used with certificate-based ciphersuites. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.tls_credential_type.TLS_CREDENTIAL_PSK">
+<span class="target" id="group__tls__credentials_1gga3a754894d0162634b59d60e319f37cd5accc6ad916ee6c6badafcc4c23e2a47df"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TLS_CREDENTIAL_PSK</span></span></span><a class="headerlink" href="#c.tls_credential_type.TLS_CREDENTIAL_PSK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pre-shared key. Should be registered together with a corresponding PSK identity. Used with PSK-based ciphersuites. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.tls_credential_type.TLS_CREDENTIAL_PSK_ID">
+<span class="target" id="group__tls__credentials_1gga3a754894d0162634b59d60e319f37cd5a1edcd43ba510558e4b1315e1bb86560d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TLS_CREDENTIAL_PSK_ID</span></span></span><a class="headerlink" href="#c.tls_credential_type.TLS_CREDENTIAL_PSK_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pre-shared key identity. Should be registered together with a corresponding PSK. Used with PSK-based ciphersuites. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.tls_credential_add">
+<span class="target" id="group__tls__credentials_1ga640ff6dd3eb4d5017feaab6fab2bb2f7"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tls_credential_add</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.sec_tag_t" title="sec_tag_t"><span class="n"><span class="pre">sec_tag_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">tag</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.tls_credential_type" title="tls_credential_type"><span class="n"><span class="pre">tls_credential_type</span></span></a><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cred</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">credlen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.tls_credential_add" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add a TLS credential. </p>
+<p>This function adds a TLS credential, that can be used by TLS/DTLS for authentication.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code>: A security tag that credential will be referenced with. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: A TLS/DTLS credential type. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cred</span></code>: A TLS/DTLS credential. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">credlen</span></code>: A TLS/DTLS credential length.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: TLS credential successfully added. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EACCES</span></code>: Access to the TLS credential subsystem was denied. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOMEM</span></code>: Not enough memory to add new TLS credential. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EEXIST</span></code>: TLS credential of specific tag and type already exists. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.tls_credential_get">
+<span class="target" id="group__tls__credentials_1gac3ac4ca887faf6c1f2ae60c6a08f8795"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tls_credential_get</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.sec_tag_t" title="sec_tag_t"><span class="n"><span class="pre">sec_tag_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">tag</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.tls_credential_type" title="tls_credential_type"><span class="n"><span class="pre">tls_credential_type</span></span></a><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cred</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">credlen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.tls_credential_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a TLS credential. </p>
+<p>This function gets an already registered TLS credential, referenced by <code class="docutils literal notranslate"><span class="pre">tag</span></code> secure tag of <code class="docutils literal notranslate"><span class="pre">type</span></code>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code>: A security tag of requested credential. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: A TLS/DTLS credential type of requested credential. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cred</span></code>: A buffer for TLS/DTLS credential. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">credlen</span></code>: A buffer size on input. TLS/DTLS credential length on output.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: TLS credential successfully obtained. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EACCES</span></code>: Access to the TLS credential subsystem was denied. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOENT</span></code>: Requested TLS credential was not found. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EFBIG</span></code>: Requested TLS credential does not fit in the buffer provided. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.tls_credential_delete">
+<span class="target" id="group__tls__credentials_1ga9d8b47a7a2675fb3b3c6ee346e925aca"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tls_credential_delete</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.sec_tag_t" title="sec_tag_t"><span class="n"><span class="pre">sec_tag_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">tag</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.tls_credential_type" title="tls_credential_type"><span class="n"><span class="pre">tls_credential_type</span></span></a><span class="w"> </span><span class="n"><span class="pre">type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.tls_credential_delete" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Delete a TLS credential. </p>
+<p>This function removes a TLS credential, referenced by <code class="docutils literal notranslate"><span class="pre">tag</span></code> secure tag of <code class="docutils literal notranslate"><span class="pre">type</span></code>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code>: A security tag corresponding to removed credential. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: A TLS/DTLS credential type of removed credential.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: TLS credential successfully deleted. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EACCES</span></code>: Access to the TLS credential subsystem was denied. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOENT</span></code>: Requested TLS credential was not found. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ip_4_6.html" class="btn btn-neutral float-right" title="IPv4/IPv6 Primitives and Helpers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="apis.html" class="btn btn-neutral" title="Network APIs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

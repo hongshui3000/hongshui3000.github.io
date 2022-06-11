@@ -1,0 +1,638 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Non-Volatile Storage (NVS) &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Disk Access" href="../disk/access.html" />
+    <link rel="prev" title="Storage" href="../index.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Storage</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Non-Volatile Storage (NVS)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#flash-wear">Flash wear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flash-write-block-size-migration">Flash write block size migration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sample">Sample</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../disk/access.html">Disk Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../flash_map/flash_map.html">Flash map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fcb/fcb.html">Flash Circular Buffer (FCB)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stream/stream_flash.html">Stream Flash</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Storage</a> &raquo;</li>
+        
+      <li>Non-Volatile Storage (NVS)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/storage/nvs/nvs.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="non-volatile-storage-nvs">
+<span id="nvs-api"></span><h1>Non-Volatile Storage (NVS)<a class="headerlink" href="#non-volatile-storage-nvs" title="Permalink to this headline">¶</a></h1>
+<p>Elements, represented as id-data pairs, are stored in flash using a
+FIFO-managed circular buffer. The flash area is divided into sectors. Elements
+are appended to a sector until storage space in the sector is exhausted. Then a
+new sector in the flash area is prepared for use (erased). Before erasing the
+sector it is checked that identifier - data pairs exist in the sectors in use,
+if not the id-data pair is copied.</p>
+<p>The id is a 16-bit unsigned number. NVS ensures that for each used id there is
+at least one id-data pair stored in flash at all time.</p>
+<p>NVS allows storage of binary blobs, strings, integers, longs, and any
+combination of these.</p>
+<p>Each element is stored in flash as metadata (8 byte) and data. The metadata is
+written in a table starting from the end of a nvs sector, the data is
+written one after the other from the start of the sector. The metadata consists
+of: id, data offset in sector, data length, part (unused) and a crc.</p>
+<p>A write of data to nvs always starts with writing the data, followed by a write
+of the metadata. Data that is written in flash without metadata is ignored
+during initialization.</p>
+<p>During initialization NVS will verify the data stored in flash, if it
+encounters an error it will ignore any data with missing/incorrect metadata.</p>
+<p>NVS checks the id-data pair before writing data to flash. If the id-data pair
+is unchanged no write to flash is performed.</p>
+<p>To protect the flash area against frequent erases it is important that there is
+sufficient free space. NVS has a protection mechanism to avoid getting in a
+endless loop of flash page erases when there is limited free space. When such
+a loop is detected NVS returns that there is no more space available.</p>
+<p>For NVS the file system is declared as:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="nc">nvs_fs</span> <span class="n">fs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="p">.</span><span class="n">flash_device</span> <span class="o">=</span> <span class="n">NVS_FLASH_DEVICE</span><span class="p">,</span>
+<span class="p">.</span><span class="n">sector_size</span> <span class="o">=</span> <span class="n">NVS_SECTOR_SIZE</span><span class="p">,</span>
+<span class="p">.</span><span class="n">sector_count</span> <span class="o">=</span> <span class="n">NVS_SECTOR_COUNT</span><span class="p">,</span>
+<span class="p">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">NVS_STORAGE_OFFSET</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>where</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NVS_FLASH_DEVICE</span></code> is a reference to the flash device that will be used. The
+device needs to be operational.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NVS_SECTOR_SIZE</span></code> is the sector size, it has to be a multiple of
+the flash erase page size and a power of 2.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NVS_SECTOR_COUNT</span></code> is the number of sectors, it is at least 2, one
+sector is always kept empty to allow copying of existing data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NVS_STORAGE_OFFSET</span></code> is the offset of the storage area in flash.</p></li>
+</ul>
+<div class="section" id="flash-wear">
+<h2>Flash wear<a class="headerlink" href="#flash-wear" title="Permalink to this headline">¶</a></h2>
+<p>When writing data to flash a study of the flash wear is important. Flash has a
+limited life which is determined by the number of times flash can be erased.
+Flash is erased one page at a time and the pagesize is determined by the
+hardware. As an example a nRF51822 device has a pagesize of 1024 bytes and each
+page can be erased about 20,000 times.</p>
+<div class="section" id="calculating-expected-device-lifetime">
+<h3>Calculating expected device lifetime<a class="headerlink" href="#calculating-expected-device-lifetime" title="Permalink to this headline">¶</a></h3>
+<p>Suppose we use a 4 bytes state variable that is changed every minute and
+needs to be restored after reboot. NVS has been defined with a sector_size
+equal to the pagesize (1024 bytes) and 2 sectors have been defined.</p>
+<p>Each write of the state variable requires 12 bytes of flash storage: 8 bytes
+for the metadata and 4 bytes for the data. When storing the data the
+first sector will be full after 1024/12 = 85.33 minutes. After another 85.33
+minutes, the second sector is full.  When this happens, because we’re using
+only two sectors, the first sector will be used for storage and will be erased
+after 171 minutes of system time.  With the expected device life of 20,000
+writes, with two sectors writing every 171 minutes, the device should last
+about 171 * 20,000 minutes, or about 6.5 years.</p>
+<p>More generally then, with</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NS</span></code> as the number of storage requests per minute,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DS</span></code> as the data size in bytes,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SECTOR_SIZE</span></code> in bytes, and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PAGE_ERASES</span></code> as the number of times the page can be erased,</p></li>
+</ul>
+<p>the expected device life (in minutes) can be calculated as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SECTOR_COUNT</span> <span class="o">*</span> <span class="n">SECTOR_SIZE</span> <span class="o">*</span> <span class="n">PAGE_ERASES</span> <span class="o">/</span> <span class="p">(</span><span class="n">NS</span> <span class="o">*</span> <span class="p">(</span><span class="n">DS</span><span class="o">+</span><span class="mi">8</span><span class="p">))</span> <span class="n">minutes</span>
+</pre></div>
+</div>
+<p>From this formula it is also clear what to do in case the expected life is too
+short: increase <code class="docutils literal notranslate"><span class="pre">SECTOR_COUNT</span></code> or <code class="docutils literal notranslate"><span class="pre">SECTOR_SIZE</span></code>.</p>
+</div>
+</div>
+<div class="section" id="flash-write-block-size-migration">
+<h2>Flash write block size migration<a class="headerlink" href="#flash-write-block-size-migration" title="Permalink to this headline">¶</a></h2>
+<p>It is possible that during a DFU process, the flash driver used by the NVS
+changes the supported minimal write block size.
+The NVS in-flash image will stay compatible unless the
+physical ATE size changes.
+Especially, migration between 1,2,4,8-bytes write block sizes is allowed.</p>
+</div>
+<div class="section" id="sample">
+<h2>Sample<a class="headerlink" href="#sample" title="Permalink to this headline">¶</a></h2>
+<p>A sample of how NVS can be used is supplied in <code class="docutils literal notranslate"><span class="pre">samples/subsys/nvs</span></code>.</p>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>MPU fault while using NVS, or <code class="docutils literal notranslate"><span class="pre">-ETIMEDOUT</span></code> error returned</dt><dd><p>NVS can use the internal flash of the SoC.  While the MPU is enabled,
+the flash driver requires MPU RWX access to flash memory, configured
+using <a class="reference internal" href="../../../kconfig.html#CONFIG_MPU_ALLOW_FLASH_WRITE" title="CONFIG_MPU_ALLOW_FLASH_WRITE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MPU_ALLOW_FLASH_WRITE</span></code></a>.  If this option is
+disabled, the NVS application will get an MPU fault if it references
+the internal SoC flash and it’s the only thread running.  In a
+multi-threaded application, another thread might intercept the fault
+and the NVS API will return an <code class="docutils literal notranslate"><span class="pre">-ETIMEDOUT</span></code> error.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<p>The NVS subsystem APIs are provided by <code class="docutils literal notranslate"><span class="pre">nvs.h</span></code>:</p>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__nvs__data__structures"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">nvs_data_structures</span></span></dt>
+<dd><p>Non-volatile Storage Data Structures. </p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.nvs_fs">
+<span class="target" id="structnvs__fs"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvs_fs</span></span></span><a class="headerlink" href="#c.nvs_fs" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;nvs.h&gt;</em><p>Non-volatile Storage File system structure. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">offset</span></code>: File system offset in flash </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ate_wra</span></code>: Allocation table entry write address. Addresses are stored as uint32_t: high 2 bytes correspond to the sector, low 2 bytes are the offset in the sector </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_wra</span></code>: Data write address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sector_size</span></code>: File system is split into sectors, each sector must be multiple of pagesize </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sector_count</span></code>: Number of sectors in the file systems </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ready</span></code>: Flag indicating if the filesystem is initialized </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvs_lock</span></code>: Mutex </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flash_device</span></code>: Flash Device runtime structure </p></li>
+<li><p><code class="docutils literal notranslate"><a class="reference internal" href="../../peripherals/flash.html#structflash__parameters"><span class="std std-ref"><span class="pre">flash_parameters</span></span></a></code>: Flash memory parameters structure </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__nvs__high__level__api"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">nvs_high_level_api</span></span></dt>
+<dd><p>Non-volatile Storage APIs. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.nvs_mount">
+<span class="target" id="group__nvs__high__level__api_1gab932ea2d6e933825c2378bef8c30b065"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvs_mount</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.nvs_fs" title="nvs_fs"><span class="n"><span class="pre">nvs_fs</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.nvs_mount" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>nvs_mount </p>
+<p>Mount a NVS file system onto the flash device specified in <code class="docutils literal notranslate"><span class="pre">fs</span></code>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fs</span></code>: Pointer to file system </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ERRNO</span></code>: errno code if error </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.nvs_clear">
+<span class="target" id="group__nvs__high__level__api_1ga42ee9fd0d98f89dcabc5888f8b4600f0"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvs_clear</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.nvs_fs" title="nvs_fs"><span class="n"><span class="pre">nvs_fs</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.nvs_clear" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>nvs_clear </p>
+<p>Clears the NVS file system from flash. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fs</span></code>: Pointer to file system </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ERRNO</span></code>: errno code if error </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.nvs_write">
+<span class="target" id="group__nvs__high__level__api_1ga34d40e9f63ba514d7915b72c4fef0b82"></span><span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvs_write</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.nvs_fs" title="nvs_fs"><span class="n"><span class="pre">nvs_fs</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fs</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.nvs_write" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>nvs_write </p>
+<p>Write an entry to the file system.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Number of bytes written. On success, it will be equal to the number of bytes requested to be written. When a rewrite of the same data already stored is attempted, nothing is written to flash, thus 0 is returned. On error, returns negative value of errno.h defined error codes. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fs</span></code>: Pointer to file system </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: Id of the entry to be written </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Pointer to the data to be written </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Number of bytes to be written</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.nvs_delete">
+<span class="target" id="group__nvs__high__level__api_1ga5fd4175a4976e6d3ee8621ed95e0ee9e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvs_delete</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.nvs_fs" title="nvs_fs"><span class="n"><span class="pre">nvs_fs</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fs</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.nvs_delete" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>nvs_delete </p>
+<p>Delete an entry from the file system</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fs</span></code>: Pointer to file system </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: Id of the entry to be deleted </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ERRNO</span></code>: errno code if error </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.nvs_read">
+<span class="target" id="group__nvs__high__level__api_1ga341fd2ad029709cbb6eafde1ae88603f"></span><span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvs_read</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.nvs_fs" title="nvs_fs"><span class="n"><span class="pre">nvs_fs</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fs</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.nvs_read" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>nvs_read </p>
+<p>Read an entry from the file system.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Number of bytes read. On success, it will be equal to the number of bytes requested to be read. When the return value is larger than the number of bytes requested to read this indicates not all bytes were read, and more data is available. On error, returns negative value of errno.h defined error codes. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fs</span></code>: Pointer to file system </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: Id of the entry to be read </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Pointer to data buffer </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Number of bytes to be read</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.nvs_read_hist">
+<span class="target" id="group__nvs__high__level__api_1ga8e525038e353045ad6cd90607e887b0d"></span><span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvs_read_hist</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.nvs_fs" title="nvs_fs"><span class="n"><span class="pre">nvs_fs</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fs</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">cnt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.nvs_read_hist" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>nvs_read_hist </p>
+<p>Read a history entry from the file system.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Number of bytes read. On success, it will be equal to the number of bytes requested to be read. When the return value is larger than the number of bytes requested to read this indicates not all bytes were read, and more data is available. On error, returns negative value of errno.h defined error codes. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fs</span></code>: Pointer to file system </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: Id of the entry to be read </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Pointer to data buffer </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Number of bytes to be read </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cnt</span></code>: History counter: 0: latest entry, 1: one before latest …</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.nvs_calc_free_space">
+<span class="target" id="group__nvs__high__level__api_1ga37e5a55f0b9209c7c0c95db9e1e84715"></span><span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvs_calc_free_space</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.nvs_fs" title="nvs_fs"><span class="n"><span class="pre">nvs_fs</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.nvs_calc_free_space" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>nvs_calc_free_space </p>
+<p>Calculate the available free space in the file system.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Number of bytes free. On success, it will be equal to the number of bytes that can still be written to the file system. Calculating the free space is a time consuming operation, especially on spi flash. On error, returns negative value of errno.h defined error codes. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fs</span></code>: Pointer to file system</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.nvs_init">
+<span class="target" id="group__nvs__high__level__api_1ga7f17dc517f55d39ba1ef07d38cf4879b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nvs_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.nvs_fs" title="nvs_fs"><span class="n"><span class="pre">nvs_fs</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev_name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.nvs_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>nvs_init </p>
+<p>Initializes a NVS file system in flash.</p>
+<p><dl>
+<dt class="sig sig-object">
+<em><span class="pre">Deprecated:</span></em></dt>
+<dd><p>Use <a class="reference internal" href="#group__nvs__high__level__api_1gab932ea2d6e933825c2378bef8c30b065"><span class="std std-ref">nvs_mount()</span></a> instead.</p>
+</dd></dl>
+
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fs</span></code>: Pointer to file system </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_name</span></code>: Pointer to flash device name </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ERRNO</span></code>: errno code if error </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../disk/access.html" class="btn btn-neutral float-right" title="Disk Access" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="Storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

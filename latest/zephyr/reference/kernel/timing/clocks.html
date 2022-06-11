@@ -1,0 +1,979 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Kernel Timing &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Timers" href="timers.html" />
+    <link rel="prev" title="Memory Slabs" href="../memory/slabs.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Kernel Services</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#scheduling-interrupts-and-synchronization">Scheduling, Interrupts, and Synchronization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data-passing">Data Passing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#memory-management">Memory Management</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#timing">Timing</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Kernel Timing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timers.html">Timers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Kernel Services</a> &raquo;</li>
+        
+      <li>Kernel Timing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/kernel/timing/clocks.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kernel-timing">
+<span id="id1"></span><h1>Kernel Timing<a class="headerlink" href="#kernel-timing" title="Permalink to this headline">¶</a></h1>
+<p>Zephyr provides a robust and scalable timing framework to enable
+reporting and tracking of timed events from hardware timing sources of
+arbitrary precision.</p>
+<div class="section" id="time-units">
+<h2>Time Units<a class="headerlink" href="#time-units" title="Permalink to this headline">¶</a></h2>
+<p>Kernel time is tracked in several units which are used for different
+purposes.</p>
+<p>Real time values, typically specified in milliseconds or microseconds,
+are the default presentation of time to application code.  They have
+the advantages of being universally portable and pervasively
+understood, though they may not match the precision of the underlying
+hardware perfectly.</p>
+<p>The kernel presents a “cycle” count via the <a class="reference internal" href="#c.k_cycle_get_32" title="k_cycle_get_32"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_cycle_get_32()</span></code></a>
+and <a class="reference internal" href="#c.k_cycle_get_64" title="k_cycle_get_64"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_cycle_get_64()</span></code></a> APIs.  The intent is that this counter
+represents the fastest cycle counter that the operating system is able
+to present to the user (for example, a CPU cycle counter) and that the
+read operation is very fast.  The expectation is that very sensitive
+application code might use this in a polling manner to achieve maximal
+precision.  The frequency of this counter is required to be steady
+over time, and is available from
+<code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_hw_cycles_per_sec()</span></code> (which on almost all
+platforms is a runtime constant that evaluates to
+CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC).</p>
+<p>For asynchronous timekeeping, the kernel defines a “ticks” concept.  A
+“tick” is the internal count in which the kernel does all its internal
+uptime and timeout bookkeeping.  Interrupts are expected to be
+delivered on tick boundaries to the extent practical, and no
+fractional ticks are tracked.  The choice of tick rate is configurable
+via <a class="reference internal" href="../../../kconfig.html#CONFIG_SYS_CLOCK_TICKS_PER_SEC" title="CONFIG_SYS_CLOCK_TICKS_PER_SEC"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SYS_CLOCK_TICKS_PER_SEC</span></code></a>.  Defaults on most
+hardware platforms (ones that support setting arbitrary interrupt
+timeouts) are expected to be in the range of 10 kHz, with software
+emulation platforms and legacy drivers using a more traditional 100 Hz
+value.</p>
+<div class="section" id="conversion">
+<h3>Conversion<a class="headerlink" href="#conversion" title="Permalink to this headline">¶</a></h3>
+<p>Zephyr provides an extensively enumerated conversion library with
+rounding control for all time units.  Any unit of “ms” (milliseconds),
+“us” (microseconds), “tick”, or “cyc” can be converted to any other.
+Control of rounding is provided, and each conversion is available in
+“floor” (round down to nearest output unit), “ceil” (round up) and
+“near” (round to nearest).  Finally the output precision can be
+specified as either 32 or 64 bits.</p>
+<p>For example: <code class="xref c c-func docutils literal notranslate"><span class="pre">k_ms_to_ticks_ceil32()</span></code> will convert a
+millisecond input value to the next higher number of ticks, returning
+a result truncated to 32 bits of precision; and
+<code class="xref c c-func docutils literal notranslate"><span class="pre">k_cyc_to_us_floor64()</span></code> will convert a measured cycle count
+to an elapsed number of microseconds in a full 64 bits of precision.
+See the reference documentation for the full enumeration of conversion
+routines.</p>
+<p>On most platforms, where the various counter rates are integral
+multiples of each other and where the output fits within a single
+word, these conversions expand to a 2-4 operation sequence, requiring
+full precision only where actually required and requested.</p>
+</div>
+</div>
+<div class="section" id="uptime">
+<span id="kernel-timing-uptime"></span><h2>Uptime<a class="headerlink" href="#uptime" title="Permalink to this headline">¶</a></h2>
+<p>The kernel tracks a system uptime count on behalf of the application.
+This is available at all times via <a class="reference internal" href="#c.k_uptime_get" title="k_uptime_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_uptime_get()</span></code></a>, which
+provides an uptime value in milliseconds since system boot.  This is
+expected to be the utility used by most portable application code.</p>
+<p>The internal tracking, however, is as a 64 bit integer count of ticks.
+Apps with precise timing requirements (that are willing to do their
+own conversions to portable real time units) may access this with
+<a class="reference internal" href="#c.k_uptime_ticks" title="k_uptime_ticks"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_uptime_ticks()</span></code></a>.</p>
+</div>
+<div class="section" id="timeouts">
+<h2>Timeouts<a class="headerlink" href="#timeouts" title="Permalink to this headline">¶</a></h2>
+<p>The Zephyr kernel provides many APIs with a “timeout” parameter.
+Conceptually, this indicates the time at which an event will occur.
+For example:</p>
+<ul class="simple">
+<li><p>Kernel blocking operations like <a class="reference internal" href="../synchronization/semaphores.html#c.k_sem_take" title="k_sem_take"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_sem_take()</span></code></a> or
+<a class="reference internal" href="../data_passing/queues.html#c.k_queue_get" title="k_queue_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_queue_get()</span></code></a> may provide a timeout after which the
+routine will return with an error code if no data is available.</p></li>
+<li><p>Kernel <code class="xref c c-struct docutils literal notranslate"><span class="pre">k_timer</span></code> objects must specify delays for
+their duration and period.</p></li>
+<li><p>The kernel <a class="reference internal" href="../threads/workqueue.html#c.k_work_delayable" title="k_work_delayable"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_work_delayable</span></code></a> API provides a timeout parameter
+indicating when a work queue item will be added to the system queue.</p></li>
+</ul>
+<p>All these values are specified using a <a class="reference internal" href="#c.k_timeout_t" title="k_timeout_t"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_timeout_t</span></code></a> value.  This is
+an opaque struct type that must be initialized using one of a family
+of kernel timeout macros.  The most common, <a class="reference internal" href="#c.K_MSEC" title="K_MSEC"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_MSEC</span></code></a> , defines
+a time in milliseconds after the current time (strictly: the time at
+which the kernel receives the timeout value).</p>
+<p>Other options for timeout initialization follow the unit conventions
+described above: <a class="reference internal" href="#c.K_NSEC" title="K_NSEC"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_NSEC()</span></code></a>, <a class="reference internal" href="#c.K_USEC" title="K_USEC"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_USEC</span></code></a>, <a class="reference internal" href="#c.K_TICKS" title="K_TICKS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_TICKS</span></code></a> and
+<a class="reference internal" href="#c.K_CYC" title="K_CYC"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_CYC()</span></code></a> specify timeout values that will expire after specified
+numbers of nanoseconds, microseconds, ticks and cycles, respectively.</p>
+<p>Precision of <a class="reference internal" href="#c.k_timeout_t" title="k_timeout_t"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_timeout_t</span></code></a> values is configurable, with the default
+being 32 bits.  Large uptime counts in non-tick units will experience
+complicated rollover semantics, so it is expected that
+timing-sensitive applications with long uptimes will be configured to
+use a 64 bit timeout type.</p>
+<p>Finally, it is possible to specify timeouts as absolute times since
+system boot.  A timeout initialized with <code class="xref c c-macro docutils literal notranslate"><span class="pre">K_TIMEOUT_ABS_MS</span></code>
+indicates a timeout that will expire after the system uptime reaches
+the specified value.  There are likewise nanosecond, microsecond,
+cycles and ticks variants of this API.</p>
+</div>
+<div class="section" id="timing-internals">
+<h2>Timing Internals<a class="headerlink" href="#timing-internals" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="timeout-queue">
+<h3>Timeout Queue<a class="headerlink" href="#timeout-queue" title="Permalink to this headline">¶</a></h3>
+<p>All Zephyr <a class="reference internal" href="#c.k_timeout_t" title="k_timeout_t"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_timeout_t</span></code></a> events specified using the API above are
+managed in a single, global queue of events.  Each event is stored in
+a double-linked list, with an attendant delta count in ticks from the
+previous event.  The action to take on an event is specified as a
+callback function pointer provided by the subsystem requesting the
+event, along with a <code class="xref c c-struct docutils literal notranslate"><span class="pre">_timeout</span></code> tracking struct that is
+expected to be embedded within subsystem-defined data structures (for
+example: a <code class="xref c c-struct docutils literal notranslate"><span class="pre">wait_q</span></code> struct, or a <code class="xref c c-struct docutils literal notranslate"><span class="pre">k_tid_t</span></code> thread struct).</p>
+<p>Note that all variant units passed via a <a class="reference internal" href="#c.k_timeout_t" title="k_timeout_t"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_timeout_t</span></code></a> are converted
+to ticks once on insertion into the list.  There no
+multiple-conversion steps internal to the kernel, so precision is
+guaranteed at the tick level no matter how many events exist or how
+long a timeout might be.</p>
+<p>Note that the list structure means that the CPU work involved in
+managing large numbers of timeouts is quadratic in the number of
+active timeouts.  The API design of the timeout queue was intended to
+permit a more scalable backend data structure, but no such
+implementation exists currently.</p>
+</div>
+<div class="section" id="timer-drivers">
+<h3>Timer Drivers<a class="headerlink" href="#timer-drivers" title="Permalink to this headline">¶</a></h3>
+<p>Kernel timing at the tick level is driven by a timer driver with a
+comparatively simple API.</p>
+<ul class="simple">
+<li><p>The driver is expected to be able to “announce” new ticks to the
+kernel via the <a class="reference internal" href="#c.sys_clock_announce" title="sys_clock_announce"><code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_announce()</span></code></a> call, which passes an integer
+number of ticks that have elapsed since the last announce call (or
+system boot).  These calls can occur at any time, but the driver is
+expected to attempt to ensure (to the extent practical given
+interrupt latency interactions) that they occur near tick boundaries
+(i.e. not “halfway through” a tick), and most importantly that they
+be correct over time and subject to minimal skew vs. other counters
+and real world time.</p></li>
+<li><p>The driver is expected to provide a <a class="reference internal" href="#c.sys_clock_set_timeout" title="sys_clock_set_timeout"><code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_set_timeout()</span></code></a> call
+to the kernel which indicates how many ticks may elapse before the
+kernel must receive an announce call to trigger registered timeouts.
+It is legal to announce new ticks before that moment (though they
+must be correct) but delay after that will cause events to be
+missed.  Note that the timeout value passed here is in a delta from
+current time, but that does not absolve the driver of the
+requirement to provide ticks at a steady rate over time.  Naive
+implementations of this function are subject to bugs where the
+fractional tick gets “reset” incorrectly and causes clock skew.</p></li>
+<li><p>The driver is expected to provide a <a class="reference internal" href="#c.sys_clock_elapsed" title="sys_clock_elapsed"><code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_elapsed()</span></code></a> call which
+provides a current indication of how many ticks have elapsed (as
+compared to a real world clock) since the last call to
+<a class="reference internal" href="#c.sys_clock_announce" title="sys_clock_announce"><code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_announce()</span></code></a>, which the kernel needs to test newly
+arriving timeouts for expiration.</p></li>
+</ul>
+<p>Note that a natural implementation of this API results in a “tickless”
+kernel, which receives and processes timer interrupts only for
+registered events, relying on programmable hardware counters to
+provide irregular interrupts.  But a traditional, “ticked” or “dumb”
+counter driver can be trivially implemented also:</p>
+<ul class="simple">
+<li><p>The driver can receive interrupts at a regular rate corresponding to
+the OS tick rate, calling <a class="reference internal" href="#c.sys_clock_announce" title="sys_clock_announce"><code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_announce()</span></code></a> with an argument of one
+each time.</p></li>
+<li><p>The driver can ignore calls to <a class="reference internal" href="#c.sys_clock_set_timeout" title="sys_clock_set_timeout"><code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_set_timeout()</span></code></a>, as every
+tick will be announced regardless of timeout status.</p></li>
+<li><p>The driver can return zero for every call to <a class="reference internal" href="#c.sys_clock_elapsed" title="sys_clock_elapsed"><code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_elapsed()</span></code></a>
+as no more than one tick can be detected as having elapsed (because
+otherwise an interrupt would have been received).</p></li>
+</ul>
+</div>
+<div class="section" id="smp-details">
+<h3>SMP Details<a class="headerlink" href="#smp-details" title="Permalink to this headline">¶</a></h3>
+<p>In general, the timer API described above does not change when run in
+a multiprocessor context.  The kernel will internally synchronize all
+access appropriately, and ensure that all critical sections are small
+and minimal.  But some notes are important to detail:</p>
+<ul class="simple">
+<li><p>Zephyr is agnostic about which CPU services timer interrupts.  It is
+not illegal (though probably undesirable in some circumstances) to
+have every timer interrupt handled on a single processor.  Existing
+SMP architectures implement symmetric timer drivers.</p></li>
+<li><p>The <a class="reference internal" href="#c.sys_clock_announce" title="sys_clock_announce"><code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_announce()</span></code></a> call is expected to be globally
+synchronized at the driver level.  The kernel does not do any
+per-CPU tracking, and expects that if two timer interrupts fire near
+simultaneously, that only one will provide the current tick count to
+the timing subsystem.  The other may legally provide a tick count of
+zero if no ticks have elapsed.  It should not “skip” the announce
+call because of timeslicing requirements (see below).</p></li>
+<li><p>Some SMP hardware uses a single, global timer device, others use a
+per-CPU counter.  The complexity here (for example: ensuring counter
+synchronization between CPUs) is expected to be managed by the
+driver, not the kernel.</p></li>
+<li><p>The next timeout value passed back to the driver via
+<a class="reference internal" href="#c.sys_clock_set_timeout" title="sys_clock_set_timeout"><code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_set_timeout()</span></code></a> is done identically for every CPU.
+So by default, every CPU will see simultaneous timer interrupts for
+every event, even though by definition only one of them should see a
+non-zero ticks argument to <a class="reference internal" href="#c.sys_clock_announce" title="sys_clock_announce"><code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_announce()</span></code></a>.  This is probably
+a correct default for timing sensitive applications (because it
+minimizes the chance that an errant ISR or interrupt lock will delay
+a timeout), but may be a performance problem in some cases.  The
+current design expects that any such optimization is the
+responsibility of the timer driver.</p></li>
+</ul>
+</div>
+<div class="section" id="time-slicing">
+<h3>Time Slicing<a class="headerlink" href="#time-slicing" title="Permalink to this headline">¶</a></h3>
+<p>An auxiliary job of the timing subsystem is to provide tick counters
+to the scheduler that allow implementation of time slicing of threads.
+A thread time-slice cannot be a timeout value, as it does not reflect
+a global expiration but instead a per-CPU value that needs to be
+tracked independently on each CPU in an SMP context.</p>
+<p>Because there may be no other hardware available to drive timeslicing,
+Zephyr multiplexes the existing timer driver.  This means that the
+value passed to <a class="reference internal" href="#c.sys_clock_set_timeout" title="sys_clock_set_timeout"><code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_set_timeout()</span></code></a> may be clamped to a
+smaller value than the current next timeout when a time sliced thread
+is currently scheduled.</p>
+</div>
+<div class="section" id="subsystems-that-keep-millisecond-apis">
+<h3>Subsystems that keep millisecond APIs<a class="headerlink" href="#subsystems-that-keep-millisecond-apis" title="Permalink to this headline">¶</a></h3>
+<p>In general, code like this will port just like applications code will.
+Millisecond values from the user may be treated any way the subsystem
+likes, and then converted into kernel timeouts using
+<a class="reference internal" href="#c.K_MSEC" title="K_MSEC"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_MSEC()</span></code></a> at the point where they are presented to the
+kernel.</p>
+<p>Obviously this comes at the cost of not being able to use new
+features, like the higher precision timeout constructors or absolute
+timeouts.  But for many subsystems with simple needs, this may be
+acceptable.</p>
+<p>One complexity is <a class="reference internal" href="#c.K_FOREVER" title="K_FOREVER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_FOREVER</span></code></a>.  Subsystems that might have
+been able to accept this value to their millisecond API in the past no
+longer can, because it is no longer an intergral type.  Such code
+will need to use a different, integer-valued token to represent
+“forever”.  <a class="reference internal" href="#c.K_NO_WAIT" title="K_NO_WAIT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_NO_WAIT</span></code></a> has the same typesafety concern too,
+of course, but as it is (and has always been) simply a numerical zero,
+it has a natural porting path.</p>
+</div>
+<div class="section" id="subsystems-using-k-timeout-t">
+<h3>Subsystems using <code class="docutils literal notranslate"><span class="pre">k_timeout_t</span></code><a class="headerlink" href="#subsystems-using-k-timeout-t" title="Permalink to this headline">¶</a></h3>
+<p>Ideally, code that takes a “timeout” parameter specifying a time to
+wait should be using the kernel native abstraction where possible.
+But <a class="reference internal" href="#c.k_timeout_t" title="k_timeout_t"><code class="xref c c-type docutils literal notranslate"><span class="pre">k_timeout_t</span></code></a> is opaque, and needs to be converted before
+it can be inspected by an application.</p>
+<p>Some conversions are simple.  Code that needs to test for
+<a class="reference internal" href="#c.K_FOREVER" title="K_FOREVER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_FOREVER</span></code></a> can simply use the <a class="reference internal" href="#c.K_TIMEOUT_EQ" title="K_TIMEOUT_EQ"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_TIMEOUT_EQ()</span></code></a>
+macro to test the opaque struct for equality and take special action.</p>
+<p>The more complicated case is when the subsystem needs to take a
+timeout and loop, waiting for it to finish while doing some processing
+that may require multiple blocking operations on underlying kernel
+code.  For example, consider this design:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">my_wait_for_event</span><span class="p">(</span><span class="k">struct</span> <span class="nc">my_subsys</span> <span class="o">*</span><span class="n">obj</span><span class="p">,</span> <span class="kt">int32_t</span> <span class="n">timeout_in_ms</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">uint32_t</span> <span class="n">start</span> <span class="o">=</span> <span class="n">k_uptime_get_32</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">is_event_complete</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* Wait for notification of state change */</span>
+        <span class="n">k_sem_take</span><span class="p">(</span><span class="n">obj</span><span class="o">-&gt;</span><span class="n">sem</span><span class="p">,</span> <span class="n">timeout_in_ms</span><span class="p">);</span>
+
+        <span class="cm">/* Subtract elapsed time */</span>
+        <span class="n">timeout_in_ms</span> <span class="o">-=</span> <span class="p">(</span><span class="n">k_uptime_get_32</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This code requires that the timeout value be inspected, which is no
+longer possible.  For situations like this, the new API provides an
+internal <code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_timeout_end_calc()</span></code> routine that converts an
+arbitrary timeout to the uptime value in ticks at which it will
+expire.  So such a loop might look like:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">my_wait_for_event</span><span class="p">(</span><span class="k">struct</span> <span class="nc">my_subsys</span> <span class="o">*</span><span class="n">obj</span><span class="p">,</span> <span class="n">k_timeout_t</span> <span class="n">timeout_in_ms</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/* Compute the end time from the timeout */</span>
+    <span class="kt">uint64_t</span> <span class="n">end</span> <span class="o">=</span> <span class="n">sys_clock_timeout_end_calc</span><span class="p">(</span><span class="n">timeout_in_ms</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">end</span> <span class="o">&gt;</span> <span class="n">k_uptime_ticks</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">is_event_complete</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* Wait for notification of state change */</span>
+        <span class="n">k_sem_take</span><span class="p">(</span><span class="n">obj</span><span class="o">-&gt;</span><span class="n">sem</span><span class="p">,</span> <span class="n">timeout_in_ms</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that <code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_timeout_end_calc()</span></code> returns values in units of
+ticks, to prevent conversion aliasing, is always presented at 64 bit
+uptime precision to prevent rollover bugs, handles special
+<a class="reference internal" href="#c.K_FOREVER" title="K_FOREVER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_FOREVER</span></code></a> naturally (as <code class="docutils literal notranslate"><span class="pre">UINT64_MAX</span></code>), and works
+identically for absolute timeouts as well as conventional ones.</p>
+<p>But some care is still required for subsystems that use it.  Note that
+delta timeouts need to be interpreted relative to a “current time”,
+and obviously that time is the time of the call to
+<code class="xref c c-func docutils literal notranslate"><span class="pre">sys_clock_timeout_end_calc()</span></code>.  But the user expects that the time is
+the time they passed the timeout to you.  Care must be taken to call
+this function just once, as synchronously as possible to the timeout
+creation in user code.  It should not be used on a “stored” timeout
+value, and should never be called iteratively in a loop.</p>
+<div class="section" id="api-reference">
+<h4>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h4>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__clock__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">clock_apis</span></span></dt>
+<dd><p>Clock APIs. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_NO_WAIT">
+<span class="target" id="group__clock__apis_1ga3d9541cfe2e8395af66d186efa77362f"></span><span class="sig-name descname"><span class="n"><span class="pre">K_NO_WAIT</span></span></span><a class="headerlink" href="#c.K_NO_WAIT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate null timeout delay. </p>
+<p>This macro generates a timeout delay that instructs a kernel API not to wait if the requested operation cannot be performed immediately.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Timeout delay value. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_NSEC">
+<span class="target" id="group__clock__apis_1gae2f3a80170afc5fbce0337cdf5a4ce4c"></span><span class="sig-name descname"><span class="n"><span class="pre">K_NSEC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_NSEC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate timeout delay from nanoseconds. </p>
+<p>This macro generates a timeout delay that instructs a kernel API to wait up to <em>t</em> nanoseconds to perform the requested operation. Note that timer precision is limited to the tick rate, not the requested value.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Timeout delay value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: Duration in nanoseconds.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_USEC">
+<span class="target" id="group__clock__apis_1ga91198e325210ec052a8308e642058c0b"></span><span class="sig-name descname"><span class="n"><span class="pre">K_USEC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_USEC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate timeout delay from microseconds. </p>
+<p>This macro generates a timeout delay that instructs a kernel API to wait up to <em>t</em> microseconds to perform the requested operation. Note that timer precision is limited to the tick rate, not the requested value.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Timeout delay value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: Duration in microseconds.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_CYC">
+<span class="target" id="group__clock__apis_1gab41f59fd2b724cb1279e4f6821154b33"></span><span class="sig-name descname"><span class="n"><span class="pre">K_CYC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_CYC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate timeout delay from cycles. </p>
+<p>This macro generates a timeout delay that instructs a kernel API to wait up to <em>t</em> cycles to perform the requested operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Timeout delay value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: Duration in cycles.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_TICKS">
+<span class="target" id="group__clock__apis_1gaeda983960bd25f1dba7a386ad720e395"></span><span class="sig-name descname"><span class="n"><span class="pre">K_TICKS</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_TICKS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate timeout delay from system ticks. </p>
+<p>This macro generates a timeout delay that instructs a kernel API to wait up to <em>t</em> ticks to perform the requested operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Timeout delay value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: Duration in system ticks.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_MSEC">
+<span class="target" id="group__clock__apis_1ga302af954e87b10a9b731f1ad07775e9f"></span><span class="sig-name descname"><span class="n"><span class="pre">K_MSEC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ms</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_MSEC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate timeout delay from milliseconds. </p>
+<p>This macro generates a timeout delay that instructs a kernel API to wait up to <em>ms</em> milliseconds to perform the requested operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Timeout delay value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ms</span></code>: Duration in milliseconds.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_SECONDS">
+<span class="target" id="group__clock__apis_1gadc361472aea59267f6ea38f5e7c7ca2a"></span><span class="sig-name descname"><span class="n"><span class="pre">K_SECONDS</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_SECONDS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate timeout delay from seconds. </p>
+<p>This macro generates a timeout delay that instructs a kernel API to wait up to <em>s</em> seconds to perform the requested operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Timeout delay value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">s</span></code>: Duration in seconds.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_MINUTES">
+<span class="target" id="group__clock__apis_1gaef02f20d4d2ebfc9aa29acae01bd3698"></span><span class="sig-name descname"><span class="n"><span class="pre">K_MINUTES</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">m</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_MINUTES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate timeout delay from minutes. </p>
+<p>This macro generates a timeout delay that instructs a kernel API to wait up to <em>m</em> minutes to perform the requested operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Timeout delay value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code>: Duration in minutes.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_HOURS">
+<span class="target" id="group__clock__apis_1gaa9e0cd890db28965b66d4bc5d719a91f"></span><span class="sig-name descname"><span class="n"><span class="pre">K_HOURS</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_HOURS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate timeout delay from hours. </p>
+<p>This macro generates a timeout delay that instructs a kernel API to wait up to <em>h</em> hours to perform the requested operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Timeout delay value. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">h</span></code>: Duration in hours.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_FOREVER">
+<span class="target" id="group__clock__apis_1ga0bb4b83f0222193b21a8910311bab0ca"></span><span class="sig-name descname"><span class="n"><span class="pre">K_FOREVER</span></span></span><a class="headerlink" href="#c.K_FOREVER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate infinite timeout delay. </p>
+<p>This macro generates a timeout delay that instructs a kernel API to wait as long as necessary to perform the requested operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Timeout delay value. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_TICKS_FOREVER">
+<span class="target" id="group__clock__apis_1ga66e180b3d8940c30786a1d972cbd6d8d"></span><span class="sig-name descname"><span class="n"><span class="pre">K_TICKS_FOREVER</span></span></span><a class="headerlink" href="#c.K_TICKS_FOREVER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_TIMEOUT_EQ">
+<span class="target" id="group__clock__apis_1ga9abf00b34e16ab7ad0883603b6778b1b"></span><span class="sig-name descname"><span class="n"><span class="pre">K_TIMEOUT_EQ</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">a</span></span>, <span class="n"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_TIMEOUT_EQ" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compare timeouts for equality. </p>
+<p>The <a class="reference internal" href="#structk__timeout__t"><span class="std std-ref">k_timeout_t</span></a> object is an opaque struct that should not be inspected by application code. This macro exists so that users can test timeout objects for equality with known constants (e.g. K_NO_WAIT and K_FOREVER) when implementing their own APIs in terms of Zephyr timeout constants.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the timeout objects are identical </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.k_ticks_t">
+<span class="target" id="group__clock__apis_1ga9832cb0adc2d1866420e5c370a0863e2"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_ticks_t</span></span></span><a class="headerlink" href="#c.k_ticks_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Tick precision used in timeout APIs. </p>
+<p>This type defines the word size of the timeout values used in <a class="reference internal" href="#structk__timeout__t"><span class="std std-ref">k_timeout_t</span></a> objects, and thus defines an upper bound on maximum timeout length (or equivalently minimum tick duration). Note that this does not affect the size of the system uptime counter, which is always a 64 bit count of ticks. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_clock_set_timeout">
+<span class="target" id="group__clock__apis_1ga747c1f4a99a3bc48e7ec65d7bc5e4767"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_clock_set_timeout</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">ticks</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">idle</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_clock_set_timeout" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set system clock timeout. </p>
+<p>Informs the system clock driver that the next needed call to <a class="reference internal" href="#group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5"><span class="std std-ref">sys_clock_announce()</span></a> will not be until the specified number of ticks from the the current time have elapsed. Note that spurious calls to <a class="reference internal" href="#group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5"><span class="std std-ref">sys_clock_announce()</span></a><p> are allowed (i.e. it’s legal to announce every tick and implement this function as a noop), the requirement is that one tick announcement should occur within one tick BEFORE the specified expiration (that is, passing ticks==1 means “announce</p>
+<p>the next tick”, this convention was chosen to match legacy usage). Similarly a ticks value of zero (or even negative) is legal and treated identically: it simply indicates the kernel would like the next tick announcement as soon as possible.</p>
+</p>
+<p>Note that ticks can also be passed the special value K_TICKS_FOREVER, indicating that no future timer interrupts are expected or required and that the system is permitted to enter an indefinite sleep even if this could cause rollover of the internal counter (i.e. the system uptime counter is allowed to be wrong</p>
+<p>Note also that it is conventional for the kernel to pass INT_MAX for ticks if it wants to preserve the uptime tick count but doesn’t have a specific event to await. The intent here is that the driver will schedule any needed timeout as far into the future as possible. For the specific case of INT_MAX, the next call to <a class="reference internal" href="#group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5"><span class="std std-ref">sys_clock_announce()</span></a> may occur at any point in the future, not just at INT_MAX ticks. But the correspondence between the announced ticks and real-world time must be correct.</p>
+<p>A final note about SMP: note that the call to <a class="reference internal" href="#group__clock__apis_1ga747c1f4a99a3bc48e7ec65d7bc5e4767"><span class="std std-ref">sys_clock_set_timeout()</span></a> is made on any CPU, and reflects the next timeout desired globally. The resulting calls(s) to <a class="reference internal" href="#group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5"><span class="std std-ref">sys_clock_announce()</span></a> must be properly serialized by the driver such that a given tick is announced exactly once across the system. The kernel does not (cannot, really) attempt to serialize things by “assigning” timeouts to specific CPUs.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ticks</span></code>: Timeout in tick units </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">idle</span></code>: Hint to the driver that the system is about to enter the idle state immediately after setting the timeout </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_clock_idle_exit">
+<span class="target" id="group__clock__apis_1ga6ca2139000b8c75b1ed2c6c1f672ff79"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_clock_idle_exit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_clock_idle_exit" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Timer idle exit notification. </p>
+<p>This notifies the timer driver that the system is exiting the idle and allows it to do whatever bookkeeping is needed to restore timer operation and compute elapsed ticks.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Legacy timer drivers also use this opportunity to call back into <a class="reference internal" href="#group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5"><span class="std std-ref">sys_clock_announce()</span></a> to notify the kernel of expired ticks. This is allowed for compatibility, but not recommended. The kernel will figure that out on its own. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_clock_announce">
+<span class="target" id="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_clock_announce</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">ticks</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_clock_announce" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Announce time progress to the kernel. </p>
+<p>Informs the kernel that the specified number of ticks have elapsed since the last call to <a class="reference internal" href="#group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5"><span class="std std-ref">sys_clock_announce()</span></a> (or system startup for the first call). The timer driver is expected to delivery these announcements as close as practical (subject to hardware and latency limitations) to tick boundaries.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ticks</span></code>: Elapsed time, in ticks </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_clock_elapsed">
+<span class="target" id="group__clock__apis_1gaa9b6d8eebc69d2808beb0580d974bb84"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_clock_elapsed</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_clock_elapsed" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Ticks elapsed since last <a class="reference internal" href="#group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5"><span class="std std-ref">sys_clock_announce()</span></a> call. </p>
+<p>Queries the clock driver for the current time elapsed since the last call to <a class="reference internal" href="#group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5"><span class="std std-ref">sys_clock_announce()</span></a> was made. The kernel will call this with appropriate locking, the driver needs only provide an instantaneous answer. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_clock_disable">
+<span class="target" id="group__clock__apis_1ga49c900ab49a72c347d0aefb14aecb550"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_clock_disable</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_clock_disable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Disable system timer. </p>
+<p>This function is a no-op if the system timer does not have the capability of being disabled. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_uptime_ticks">
+<span class="target" id="group__clock__apis_1ga8f143af2ee4ad42d9f7817ef161cbd13"></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_uptime_ticks</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_uptime_ticks" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get system uptime, in system ticks. </p>
+<p>This routine returns the elapsed time since the system booted, in ticks (c.f.<span> <a class="reference internal" href="../../../kconfig.html#CONFIG_SYS_CLOCK_TICKS_PER_SEC" title="CONFIG_SYS_CLOCK_TICKS_PER_SEC"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SYS_CLOCK_TICKS_PER_SEC</span></code></a> </span>), which is the fundamental unit of resolution of kernel timekeeping.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Current uptime in ticks. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_uptime_get">
+<span class="target" id="group__clock__apis_1gae3e992cd3257c23d5b26d765fcbb2b69"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_uptime_get</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_uptime_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get system uptime. </p>
+<p>This routine returns the elapsed time since the system booted, in milliseconds.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>While this function returns time in milliseconds, it does not mean it has millisecond resolution. The actual resolution depends on <span> <a class="reference internal" href="../../../kconfig.html#CONFIG_SYS_CLOCK_TICKS_PER_SEC" title="CONFIG_SYS_CLOCK_TICKS_PER_SEC"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SYS_CLOCK_TICKS_PER_SEC</span></code></a> </span> config option.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Current uptime in milliseconds. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_uptime_get_32">
+<span class="target" id="group__clock__apis_1ga9253cfb7b46af4d8994349323ce9872b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_uptime_get_32</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_uptime_get_32" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get system uptime (32-bit version). </p>
+<p>This routine returns the lower 32 bits of the system uptime in milliseconds.</p>
+<p>Because correct conversion requires full precision of the system clock there is no benefit to using this over <a class="reference internal" href="#group__clock__apis_1gae3e992cd3257c23d5b26d765fcbb2b69"><span class="std std-ref">k_uptime_get()</span></a> unless you know the application will never run long enough for the system clock to approach 2^32 ticks. Calls to this function may involve interrupt blocking and 64-bit math.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>While this function returns time in milliseconds, it does not mean it has millisecond resolution. The actual resolution depends on <span> <a class="reference internal" href="../../../kconfig.html#CONFIG_SYS_CLOCK_TICKS_PER_SEC" title="CONFIG_SYS_CLOCK_TICKS_PER_SEC"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SYS_CLOCK_TICKS_PER_SEC</span></code></a> </span> config option</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>The low 32 bits of the current uptime, in milliseconds. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_uptime_delta">
+<span class="target" id="group__clock__apis_1gad748b2fe83b36884dc087b4af367de80"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_uptime_delta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">reftime</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_uptime_delta" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get elapsed time. </p>
+<p>This routine computes the elapsed time between the current system uptime and an earlier reference time, in milliseconds.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Elapsed time. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reftime</span></code>: Pointer to a reference time, which is updated to the current uptime upon return.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_cycle_get_32">
+<span class="target" id="group__clock__apis_1ga208687de625e0036558343b4e66143d3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_cycle_get_32</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_cycle_get_32" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read the hardware clock. </p>
+<p>This routine returns the current time, as measured by the system’s hardware clock.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Current hardware clock up-counter (in cycles). </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_cycle_get_64">
+<span class="target" id="group__clock__apis_1gae09f509d02bf75a7b45d2800d823bb3a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_cycle_get_64</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_cycle_get_64" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read the 64-bit hardware clock. </p>
+<p>This routine returns the current time in 64-bits, as measured by the system’s hardware clock, if available.</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p>CONFIG_TIMER_HAS_64BIT_CYCLE_COUNTER</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Current hardware clock up-counter (in cycles). </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.k_timeout_t">
+<span class="target" id="structk__timeout__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_timeout_t</span></span></span><a class="headerlink" href="#c.k_timeout_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;sys_clock.h&gt;</em><p>Kernel timeout type. </p>
+<p>Timeout arguments presented to kernel APIs are stored in this opaque type, which is capable of representing times in various formats and units. It should be constructed from application data using one of the macros defined for this purpose (e.g. <code class="docutils literal notranslate"><a class="reference internal" href="#group__clock__apis_1ga302af954e87b10a9b731f1ad07775e9f"><span class="std std-ref"><span class="pre">K_MSEC()</span></span></a></code>, <code class="docutils literal notranslate"><span class="pre">K_TIMEOUT_ABS_TICKS()</span></code>, etc…), or be one of the two constants K_NO_WAIT or K_FOREVER. Applications should not inspect the internal data once constructed. Timeout values may be compared for equality with the <code class="docutils literal notranslate"><a class="reference internal" href="#group__clock__apis_1ga9abf00b34e16ab7ad0883603b6778b1b"><span class="std std-ref"><span class="pre">K_TIMEOUT_EQ()</span></span></a></code> macro. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="timers.html" class="btn btn-neutral float-right" title="Timers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../memory/slabs.html" class="btn btn-neutral" title="Memory Slabs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

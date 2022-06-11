@@ -1,0 +1,664 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Pin Control &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Power Management" href="../pm/index.html" />
+    <link rel="prev" title="eSPI" href="../peripherals/espi.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Pin Control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dynamic-pin-control">Dynamic pin control</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+      <li>Pin Control</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/pinctrl/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pin-control">
+<span id="pinctrl-api"></span><h1>Pin Control<a class="headerlink" href="#pin-control" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__pinctrl__interface"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">pinctrl_interface</span></span></dt>
+<dd><p>Pin Controller Interface. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-pin-control-states">Pin control states</p>
+<p><span class="target" id="group__pinctrl__interface_1PINCTRL_STATES"></span></p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PINCTRL_STATE_DEFAULT">
+<span class="target" id="group__pinctrl__interface_1ga9bc564353cb9b1a7238c9fe8796023e6"></span><span class="sig-name descname"><span class="n"><span class="pre">PINCTRL_STATE_DEFAULT</span></span></span><a class="headerlink" href="#c.PINCTRL_STATE_DEFAULT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Default state (state used when the device is in operational state). </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PINCTRL_STATE_SLEEP">
+<span class="target" id="group__pinctrl__interface_1ga2ea5ac271930e0e2e9f77952b2dbea1b"></span><span class="sig-name descname"><span class="n"><span class="pre">PINCTRL_STATE_SLEEP</span></span></span><a class="headerlink" href="#c.PINCTRL_STATE_SLEEP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sleep state (state used when the device is in low power mode). </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PINCTRL_STATE_PRIV_START">
+<span class="target" id="group__pinctrl__interface_1ga25989d7b48b2d7aa4f8ca6a30d9c9077"></span><span class="sig-name descname"><span class="n"><span class="pre">PINCTRL_STATE_PRIV_START</span></span></span><a class="headerlink" href="#c.PINCTRL_STATE_PRIV_START" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This and higher values refer to custom private states. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PINCTRL_REG_NONE">
+<span class="target" id="group__pinctrl__interface_1ga6e283a1a1b040323b96227b2ea8f731e"></span><span class="sig-name descname"><span class="n"><span class="pre">PINCTRL_REG_NONE</span></span></span><a class="headerlink" href="#c.PINCTRL_REG_NONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Utility macro to indicate no register is used. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PINCTRL_DT_DEV_CONFIG_DECLARE">
+<span class="target" id="group__pinctrl__interface_1ga636656676e81c65e1133607c972d65f4"></span><span class="sig-name descname"><span class="n"><span class="pre">PINCTRL_DT_DEV_CONFIG_DECLARE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PINCTRL_DT_DEV_CONFIG_DECLARE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare pin control configuration for a given node identifier. </p>
+<p>This macro should be used by tests or applications using runtime pin control to declare the pin control configuration for a device. <a class="reference internal" href="#group__pinctrl__interface_1ga502c3b6faec140188dd5d614f4777918"><span class="std std-ref">PINCTRL_DT_DEV_CONFIG_GET</span></a> can later be used to obtain a reference to such configuration.</p>
+<p>Only available if<span> <a class="reference internal" href="../../kconfig.html#CONFIG_PINCTRL_NON_STATIC" title="CONFIG_PINCTRL_NON_STATIC"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PINCTRL_NON_STATIC</span></code></a> </span> is selected.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: Node identifier. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PINCTRL_DT_DEFINE">
+<span class="target" id="group__pinctrl__interface_1gace422fcd4b28e6e6e6fdbbc64b99468f"></span><span class="sig-name descname"><span class="n"><span class="pre">PINCTRL_DT_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PINCTRL_DT_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define all pin control information for the given node identifier. </p>
+<p>This helper macro should be called together with device definition. It defines and initializes the pin control configuration for the device represented by node_id. Each pin control state (pinctrl-0, …, pinctrl-N) is also defined and initialized. Note that states marked to be skipped will not be defined (refer to Z_PINCTRL_SKIP_STATE for more details).</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: Node identifier. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PINCTRL_DT_INST_DEFINE">
+<span class="target" id="group__pinctrl__interface_1ga8e984a57fd3c7a04cc921131ce79ac28"></span><span class="sig-name descname"><span class="n"><span class="pre">PINCTRL_DT_INST_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">inst</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PINCTRL_DT_INST_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define all pin control information for the given compatible index. </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__pinctrl__interface_1gace422fcd4b28e6e6e6fdbbc64b99468f"><span class="std std-ref">PINCTRL_DT_DEFINE</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">inst</span></code>: Instance number.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PINCTRL_DT_DEV_CONFIG_GET">
+<span class="target" id="group__pinctrl__interface_1ga502c3b6faec140188dd5d614f4777918"></span><span class="sig-name descname"><span class="n"><span class="pre">PINCTRL_DT_DEV_CONFIG_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PINCTRL_DT_DEV_CONFIG_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain a reference to the pin control configuration given a node identifier. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: Node identifier. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PINCTRL_DT_INST_DEV_CONFIG_GET">
+<span class="target" id="group__pinctrl__interface_1ga32748ffc5be4710707c7f1d9380cf93c"></span><span class="sig-name descname"><span class="n"><span class="pre">PINCTRL_DT_INST_DEV_CONFIG_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">inst</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PINCTRL_DT_INST_DEV_CONFIG_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain a reference to the pin control configuration given current compatible instance number. </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__pinctrl__interface_1ga502c3b6faec140188dd5d614f4777918"><span class="std std-ref">PINCTRL_DT_DEV_CONFIG_GET</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">inst</span></code>: Instance number.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pinctrl_lookup_state">
+<span class="target" id="group__pinctrl__interface_1ga46d7997af7e9231b431c79af34288d50"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pinctrl_lookup_state</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pinctrl_dev_config" title="pinctrl_dev_config"><span class="n"><span class="pre">pinctrl_dev_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pinctrl_state" title="pinctrl_state"><span class="n"><span class="pre">pinctrl_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pinctrl_lookup_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Find the state configuration for the given state id. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: Pin controller configuration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: Pin controller state id (see <a class="reference internal" href="#group__pinctrl__interface_1PINCTRL_STATES"><span class="std std-ref">PINCTRL_STATES</span></a>). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state</span></code>: Found state.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If state has been found. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOENT</span></code>: If the state has not been found. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pinctrl_configure_pins">
+<span class="target" id="group__pinctrl__interface_1ga3397507e30eb10e814b793615f80455b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pinctrl_configure_pins</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">pinctrl_soc_pin_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pins</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">pin_cnt</span></span>, <span class="n"><span class="pre">uintptr_t</span></span><span class="w"> </span><span class="n"><span class="pre">reg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pinctrl_configure_pins" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Configure a set of pins. </p>
+<p>This function will configure the necessary hardware blocks to make the configuration immediately effective.</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>This function must never be used to configure pins used by an instantiated device driver.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pins</span></code>: List of pins to be configured. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pin_cnt</span></code>: Number of pins. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reg</span></code>: Device register (optional, use <a class="reference internal" href="#group__pinctrl__interface_1ga6e283a1a1b040323b96227b2ea8f731e"><span class="std std-ref">PINCTRL_REG_NONE</span></a> if not used).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If succeeded </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Negative errno for other failures. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pinctrl_apply_state_direct">
+<span class="target" id="group__pinctrl__interface_1ga3549075e60ccdb743b269d590600d41b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pinctrl_apply_state_direct</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pinctrl_dev_config" title="pinctrl_dev_config"><span class="n"><span class="pre">pinctrl_dev_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pinctrl_state" title="pinctrl_state"><span class="n"><span class="pre">pinctrl_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pinctrl_apply_state_direct" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Apply a state directly from the provided state configuration. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: Pin control configuration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state</span></code>: State.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If succeeded </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Negative errno for other failures. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pinctrl_apply_state">
+<span class="target" id="group__pinctrl__interface_1ga16a9391222345d00dbc5c39c45f429f9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pinctrl_apply_state</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pinctrl_dev_config" title="pinctrl_dev_config"><span class="n"><span class="pre">pinctrl_dev_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pinctrl_apply_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Apply a state from the given device configuration. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: Pin control configuration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: Id of the state to be applied (see <a class="reference internal" href="#group__pinctrl__interface_1PINCTRL_STATES"><span class="std std-ref">PINCTRL_STATES</span></a>).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If succeeded. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOENT</span></code>: If given state id does not exist. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Negative errno for other failures. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.pinctrl_state">
+<span class="target" id="structpinctrl__state"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pinctrl_state</span></span></span><a class="headerlink" href="#c.pinctrl_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;pinctrl.h&gt;</em><p>Pin control state configuration. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.pinctrl_state.pins">
+<span class="target" id="structpinctrl__state_1a99ceb5bff2b8e50109e5915140eebe76"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">pinctrl_soc_pin_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pins</span></span></span><a class="headerlink" href="#c.pinctrl_state.pins" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pin configurations. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.pinctrl_state.pin_cnt">
+<span class="target" id="structpinctrl__state_1aa015854e6eae7b86fffb282b07652573"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pin_cnt</span></span></span><a class="headerlink" href="#c.pinctrl_state.pin_cnt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of pin configurations. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.pinctrl_state.id">
+<span class="target" id="structpinctrl__state_1acae4c7cfc06471533f6d977e1f2ba623"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.pinctrl_state.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>State identifier (see <a class="reference internal" href="#group__pinctrl__interface_1PINCTRL_STATES"><span class="std std-ref">PINCTRL_STATES</span></a>). </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.pinctrl_dev_config">
+<span class="target" id="structpinctrl__dev__config"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pinctrl_dev_config</span></span></span><a class="headerlink" href="#c.pinctrl_dev_config" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;pinctrl.h&gt;</em><p>Pin controller configuration for a given device. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.pinctrl_dev_config.reg">
+<span class="target" id="structpinctrl__dev__config_1a69db43c310985f38f0802a3e9f82fd62"></span><span class="n"><span class="pre">uintptr_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reg</span></span></span><a class="headerlink" href="#c.pinctrl_dev_config.reg" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Device address (only available if<span> <a class="reference internal" href="../../kconfig.html#CONFIG_PINCTRL_STORE_REG" title="CONFIG_PINCTRL_STORE_REG"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PINCTRL_STORE_REG</span></code></a> </span> is enabled). </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.pinctrl_dev_config.states">
+<span class="target" id="structpinctrl__dev__config_1a57dcdf2f712de95f8e8568e2be4b52e6"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pinctrl_state" title="pinctrl_state"><span class="n"><span class="pre">pinctrl_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">states</span></span></span><a class="headerlink" href="#c.pinctrl_dev_config.states" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>List of state configurations. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.pinctrl_dev_config.state_cnt">
+<span class="target" id="structpinctrl__dev__config_1a0af0d0115eaa9729c1fe782666ad0e66"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">state_cnt</span></span></span><a class="headerlink" href="#c.pinctrl_dev_config.state_cnt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of state configurations. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="dynamic-pin-control">
+<h2>Dynamic pin control<a class="headerlink" href="#dynamic-pin-control" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__pinctrl__interface__dynamic"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">pinctrl_interface_dynamic</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PINCTRL_DT_STATE_PINS_DEFINE">
+<span class="target" id="group__pinctrl__interface__dynamic_1ga202dbcf2bcde364733996673dbdf2922"></span><span class="sig-name descname"><span class="n"><span class="pre">PINCTRL_DT_STATE_PINS_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span>, <span class="n"><span class="pre">prop</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PINCTRL_DT_STATE_PINS_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper macro to define the pins of a pin control state from Devicetree. </p>
+<p>The name of the defined state pins variable is the same used by <code class="docutils literal notranslate"><span class="pre">prop</span></code>. This macro is expected to be used in conjunction with <a class="reference internal" href="#group__pinctrl__interface__dynamic_1ga6331121c706ba721e5bd43491dcc14d2"><span class="std std-ref">PINCTRL_DT_STATE_INIT</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__pinctrl__interface__dynamic_1ga6331121c706ba721e5bd43491dcc14d2"><span class="std std-ref">PINCTRL_DT_STATE_INIT</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: Node identifier containing <code class="docutils literal notranslate"><span class="pre">prop</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prop</span></code>: Property within <code class="docutils literal notranslate"><span class="pre">node_id</span></code> containing state configuration.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PINCTRL_DT_STATE_INIT">
+<span class="target" id="group__pinctrl__interface__dynamic_1ga6331121c706ba721e5bd43491dcc14d2"></span><span class="sig-name descname"><span class="n"><span class="pre">PINCTRL_DT_STATE_INIT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">prop</span></span>, <span class="n"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PINCTRL_DT_STATE_INIT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Utility macro to initialize a pin control state. </p>
+<p>This macro should be used in conjunction with <a class="reference internal" href="#group__pinctrl__interface__dynamic_1ga202dbcf2bcde364733996673dbdf2922"><span class="std std-ref">PINCTRL_DT_STATE_PINS_DEFINE</span></a> when using dynamic pin control to define an alternative state configuration stored in Devicetree.</p>
+<p>Example:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">board</span><span class="o">.</span><span class="n">dts</span>
+
+<span class="o">/</span><span class="p">{</span>
+     <span class="n">zephyr</span><span class="p">,</span><span class="n">user</span> <span class="p">{</span>
+             <span class="o">//</span> <span class="n">uart0_alt_default</span> <span class="n">node</span> <span class="n">contains</span> <span class="n">alternative</span> <span class="n">pin</span> <span class="n">config</span>
+             <span class="n">uart0_alt_default</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">uart0_alt_default</span><span class="o">&gt;</span><span class="p">;</span>
+     <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">application</span>
+
+<span class="n">PINCTRL_DT_STATE_PINS_DEFINE</span><span class="p">(</span><span class="n">DT_PATH</span><span class="p">(</span><span class="n">zephyr_user</span><span class="p">),</span> <span class="n">uart0_alt_default</span><span class="p">);</span>
+
+<span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">pinctrl_state</span> <span class="n">uart0_alt</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">PINCTRL_DT_STATE_INIT</span><span class="p">(</span><span class="n">uart0_alt_default</span><span class="p">,</span> <span class="n">PINCTRL_STATE_DEFAULT</span><span class="p">)</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__pinctrl__interface__dynamic_1ga202dbcf2bcde364733996673dbdf2922"><span class="std std-ref">PINCTRL_DT_STATE_PINS_DEFINE</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">prop</span></code>: Property name in Devicetree containing state configuration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state</span></code>: State represented by <code class="docutils literal notranslate"><span class="pre">prop</span></code> (see <a class="reference internal" href="#group__pinctrl__interface_1PINCTRL_STATES"><span class="std std-ref">PINCTRL_STATES</span></a>).</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pinctrl_update_states">
+<span class="target" id="group__pinctrl__interface__dynamic_1ga647115208cbed7534a98c56d93a517b8"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pinctrl_update_states</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pinctrl_dev_config" title="pinctrl_dev_config"><span class="n"><span class="pre">pinctrl_dev_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pinctrl_state" title="pinctrl_state"><span class="n"><span class="pre">pinctrl_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">states</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">state_cnt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pinctrl_update_states" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Update states with a new set. </p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>In order to guarantee device drivers correct operation the same states have to be provided. For example, if <code class="docutils literal notranslate"><span class="pre">default</span></code> and <code class="docutils literal notranslate"><span class="pre">sleep</span></code> are in the current list of states, it is expected that the new array of states also contains both.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: Pin control configuration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">states</span></code>: New states to be set. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state_cnt</span></code>: Number of new states to be set.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: If the new configuration does not contain the same states as the current active configuration. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If the functionality is not available. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: On success. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../pm/index.html" class="btn btn-neutral float-right" title="Power Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../peripherals/espi.html" class="btn btn-neutral" title="eSPI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

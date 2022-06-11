@@ -1,0 +1,976 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="espi__saf_8h" kind="file" language="C++">
+    <compoundname>espi_saf.h</compoundname>
+    <includes refid="____assert_8h" local="no">sys/__assert.h</includes>
+    <includes refid="include_2zephyr_2types_8h" local="no">zephyr/types.h</includes>
+    <includes local="no">device.h</includes>
+    <includes local="no">syscalls/espi_saf.h</includes>
+    <incdepgraph>
+      <node id="7">
+        <label>stdarg.h</label>
+      </node>
+      <node id="11">
+        <label>device.h</label>
+      </node>
+      <node id="10">
+        <label>zephyr/types.h</label>
+        <link refid="include_2zephyr_2types_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>sys/__assert.h</label>
+        <link refid="____assert_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>sys/printk.h</label>
+        <link refid="printk_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>stdbool.h</label>
+        <link refid="stdbool_8h"/>
+      </node>
+      <node id="6">
+        <label>stddef.h</label>
+      </node>
+      <node id="1">
+        <label>include/drivers/espi_saf.h</label>
+        <link refid="espi__saf_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>stdint.h</label>
+        <link refid="stdint_8h"/>
+      </node>
+      <node id="5">
+        <label>toolchain.h</label>
+        <link refid="toolchain_8h"/>
+      </node>
+      <node id="12">
+        <label>syscalls/espi_saf.h</label>
+      </node>
+      <node id="8">
+        <label>inttypes.h</label>
+        <link refid="inttypes_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <innerclass refid="structespi__saf__cfg" prot="public">espi_saf_cfg</innerclass>
+    <innerclass refid="structespi__saf__packet" prot="public">espi_saf_packet</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__espi__interface_1ga34b0f6336aec45016d97528767b09434" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int espi_saf_config</definition>
+        <argsstring>(const struct device *dev, const struct espi_saf_cfg *cfg)</argsstring>
+        <name>espi_saf_config</name>
+        <param>
+          <type>const struct <ref refid="structdevice" kindref="compound">device</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>const struct <ref refid="structespi__saf__cfg" kindref="compound">espi_saf_cfg</ref> *</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+<para>Configure operation of a eSPI controller. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine provides a generic interface to override eSPI controller capabilities.</para>
+<para>If this eSPI controller is acting as slave, the values set here will be discovered as part through the GET_CONFIGURATION command issued by the eSPI master during initialization.</para>
+<para>If this eSPI controller is acting as master, the values set here will be used by eSPI master to determine minimum common capabilities with eSPI slave then send via SET_CONFIGURATION command.</para>
+<para>+-----<mdash/>+ +------<mdash/>+ +---<mdash/>+ +------<mdash/>+ +------<mdash/>+ | eSPI | | eSPI | | eSPI | | eSPI | | eSPI | | slave | | driver | | bus | | driver | | host | +-----<mdash/>+ +------<mdash/>+ +---<mdash/>+ +------<mdash/>+ +------<mdash/>+ | | | | | | espi_config | Set eSPI | Set eSPI | espi_config | +-----------<mdash/>+ ctrl regs | cap ctrl reg| +--------<mdash/>+ | +----<mdash/>+ | +-----<mdash/>+ | <table rows="3" cols="4"><row>
+<entry thead="yes"><para></para>
+</entry><entry thead="yes"><para>&lt;---<mdash/>+   </para>
+</entry><entry thead="yes"><para>+----<mdash/>&gt;   </para>
+</entry><entry thead="yes"><para></para>
+</entry></row>
+<row>
+<entry thead="no"><para></para>
+</entry><entry thead="no"><para></para>
+</entry><entry thead="no"><para></para>
+</entry><entry thead="no"><para></para>
+</entry></row>
+<row>
+<entry thead="no"><para></para>
+</entry><entry thead="no"><para></para>
+</entry><entry thead="no"><para>GET_CONFIGURATION   </para>
+</entry><entry thead="no"><para></para>
+</entry></row>
+</table>
+| | +&lt;---------------<mdash/>+ | | |&lt;--------<mdash/>| | | | | eSPI caps | | | | |--------<mdash/>&gt;+ response | | | | |---------------<mdash/>&gt;+ | | | | | | | | | SET_CONFIGURATION | | | | +&lt;---------------<mdash/>+ | | | | accept | | | | +---------------<mdash/>&gt;+ |<itemizedlist>
+<listitem><para>+ + + +</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the device structure for the driver instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cfg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the device runtime configuration for the eSPI controller.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If successful. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EIO</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>General input / output error, failed to configure device. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EINVAL</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>invalid capabilities, failed to configure device. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-ENOTSUP</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>capability not supported by eSPI slave. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/espi_saf.h" line="212" column="6" declfile="include/drivers/espi_saf.h" declline="212" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__espi__interface_1ga273a9707f3ca501ed2dd3019cdeaa363" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int espi_saf_set_protection_regions</definition>
+        <argsstring>(const struct device *dev, const struct espi_saf_protection *pr)</argsstring>
+        <name>espi_saf_set_protection_regions</name>
+        <param>
+          <type>const struct <ref refid="structdevice" kindref="compound">device</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>const struct espi_saf_protection *</type>
+          <declname>pr</declname>
+        </param>
+        <briefdescription>
+<para>Set one or more SAF protection regions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine provides an interface to override the default flash protection regions of the SAF controller.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the device structure for the driver instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the SAF protection region structure.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If successful. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EIO</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>General input / output error, failed to configure device. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EINVAL</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>invalid capabilities, failed to configure device. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-ENOTSUP</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>capability not supported by eSPI slave. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/espi_saf.h" line="238" column="6" declfile="include/drivers/espi_saf.h" declline="238" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__espi__interface_1gaafe30738c18a16b056ed8dcf8638eb84" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int espi_saf_activate</definition>
+        <argsstring>(const struct device *dev)</argsstring>
+        <name>espi_saf_activate</name>
+        <param>
+          <type>const struct <ref refid="structdevice" kindref="compound">device</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+<para>Activate SAF block. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine activates the SAF block and should only be called after SAF has been configured and the eSPI Master has enabled the Flash Channel.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the device structure for the driver instance.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If successful </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EINVAL</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if failed to activate SAF. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/espi_saf.h" line="264" column="6" declfile="include/drivers/espi_saf.h" declline="264" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__espi__interface_1ga8b53a93559f0c67953e283f59107aa22" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="stdbool_8h_1abb452686968e48b67397da5f97445f5b" kindref="member">bool</ref></type>
+        <definition>bool espi_saf_get_channel_status</definition>
+        <argsstring>(const struct device *dev)</argsstring>
+        <name>espi_saf_get_channel_status</name>
+        <param>
+          <type>const struct <ref refid="structdevice" kindref="compound">device</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+<para>Query to see if SAF is ready. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine allows to check if SAF is ready before use.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the device structure for the driver instance.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If eSPI SAF is ready. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>otherwise. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/espi_saf.h" line="284" column="7" declfile="include/drivers/espi_saf.h" declline="284" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__espi__interface_1ga0f5017eac05f928e635fec8e5f877c7d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int espi_saf_flash_read</definition>
+        <argsstring>(const struct device *dev, struct espi_saf_packet *pckt)</argsstring>
+        <name>espi_saf_flash_read</name>
+        <param>
+          <type>const struct <ref refid="structdevice" kindref="compound">device</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>struct <ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref> *</type>
+          <declname>pckt</declname>
+        </param>
+        <briefdescription>
+<para>Sends a read request packet for slave attached flash. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routines provides an interface to send a request to read the flash component shared between the eSPI master and eSPI slaves.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the device structure for the driver instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pckt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Adddress of the representation of read flash transaction.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>-ENOTSUP</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>eSPI flash logical channel transactions not supported. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EBUSY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>eSPI flash channel is not ready or disabled by master. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EIO</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>General input / output error, failed request to master. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/espi_saf.h" line="308" column="6" declfile="include/drivers/espi_saf.h" declline="308" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__espi__interface_1ga104175f74019e58b8b7901f3dae245db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int espi_saf_flash_write</definition>
+        <argsstring>(const struct device *dev, struct espi_saf_packet *pckt)</argsstring>
+        <name>espi_saf_flash_write</name>
+        <param>
+          <type>const struct <ref refid="structdevice" kindref="compound">device</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>struct <ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref> *</type>
+          <declname>pckt</declname>
+        </param>
+        <briefdescription>
+<para>Sends a write request packet for slave attached flash. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routines provides an interface to send a request to write to the flash components shared between the eSPI master and eSPI slaves.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the device structure for the driver instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pckt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the representation of write flash transaction.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>-ENOTSUP</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>eSPI flash logical channel transactions not supported. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EBUSY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>eSPI flash channel is not ready or disabled by master. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EIO</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>General input / output error, failed request to master. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/espi_saf.h" line="337" column="6" declfile="include/drivers/espi_saf.h" declline="337" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__espi__interface_1ga15855a2ac593b97dc1a3e83ac9eda300" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int espi_saf_flash_erase</definition>
+        <argsstring>(const struct device *dev, struct espi_saf_packet *pckt)</argsstring>
+        <name>espi_saf_flash_erase</name>
+        <param>
+          <type>const struct <ref refid="structdevice" kindref="compound">device</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>struct <ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref> *</type>
+          <declname>pckt</declname>
+        </param>
+        <briefdescription>
+<para>Sends a write request packet for slave attached flash. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routines provides an interface to send a request to write to the flash components shared between the eSPI master and eSPI slaves.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the device structure for the driver instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pckt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the representation of erase flash transaction.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>-ENOTSUP</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>eSPI flash logical channel transactions not supported. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EBUSY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>eSPI flash channel is not ready or disabled by master. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EIO</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>General input / output error, failed request to master. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/espi_saf.h" line="366" column="6" declfile="include/drivers/espi_saf.h" declline="366" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__espi__interface_1ga324283c28e6a33be112571621d1568e8" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void espi_saf_init_callback</definition>
+        <argsstring>(struct espi_callback *callback, espi_callback_handler_t handler, enum espi_bus_event evt_type)</argsstring>
+        <name>espi_saf_init_callback</name>
+        <param>
+          <type>struct espi_callback *</type>
+          <declname>callback</declname>
+        </param>
+        <param>
+          <type><ref refid="group__espi__interface_1ga30c892463e0da5c58e7e7a3f7e7145a8" kindref="member">espi_callback_handler_t</ref></type>
+          <declname>handler</declname>
+        </param>
+        <param>
+          <type>enum <ref refid="group__espi__interface_1ga36ac3fbf9813f78bad90f047e1eb1128" kindref="member">espi_bus_event</ref></type>
+          <declname>evt_type</declname>
+        </param>
+        <briefdescription>
+<para>Helper to initialize a struct espi_callback properly. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Callback model</para>
+<para>+----<mdash/>+ +----------<mdash/>+ +---<mdash/>+ +------<mdash/>+ | App | | eSPI driver | | HW | |eSPI Host| +<mdash/>+<mdash/>+ +----<mdash/>+--<mdash/>+ +<mdash/>+<ndash/>+ +-<mdash/>+-<mdash/>+ | | | | | espi_init_callback | | | +-------------------------<mdash/>&gt; | | | | espi_add_callback | | +--------------------------<mdash/>&gt;+ | | | | eSPI reset | eSPI host | | IRQ +&lt;---------<mdash/>+ resets the <table rows="5" cols="3"><row>
+<entry thead="yes"><para></para>
+</entry><entry thead="yes"><para>&lt;--------<mdash/>+   </para>
+</entry><entry thead="yes"><para>bus    </para>
+</entry></row>
+<row>
+<entry thead="no"><para></para>
+</entry><entry thead="no"><para>Processed   </para>
+</entry><entry thead="no"><para></para>
+</entry></row>
+<row>
+<entry thead="no"><para></para>
+</entry><entry thead="no"><para>within the   </para>
+</entry><entry thead="no"><para></para>
+</entry></row>
+<row>
+<entry thead="no"><para></para>
+</entry><entry thead="no"><para>driver   </para>
+</entry><entry thead="no"><para></para>
+</entry></row>
+<row>
+<entry thead="no"><para></para>
+</entry><entry thead="no"><para></para>
+</entry><entry thead="no"><para></para>
+</entry></row>
+</table>
+</para>
+<para>| | | VW CH ready| eSPI host | | IRQ +&lt;---------<mdash/>+ enables VW <table rows="5" cols="3"><row>
+<entry thead="yes"><para></para>
+</entry><entry thead="yes"><para>&lt;--------<mdash/>+   </para>
+</entry><entry thead="yes"><para>channel    </para>
+</entry></row>
+<row>
+<entry thead="no"><para></para>
+</entry><entry thead="no"><para>Processed   </para>
+</entry><entry thead="no"><para></para>
+</entry></row>
+<row>
+<entry thead="no"><para></para>
+</entry><entry thead="no"><para>within the   </para>
+</entry><entry thead="no"><para></para>
+</entry></row>
+<row>
+<entry thead="no"><para></para>
+</entry><entry thead="no"><para>driver   </para>
+</entry><entry thead="no"><para></para>
+</entry></row>
+<row>
+<entry thead="no"><para></para>
+</entry><entry thead="no"><para></para>
+</entry><entry thead="no"><para></para>
+</entry></row>
+</table>
+| | | Memory I/O | Peripheral | | &lt;----------<mdash/>+ event | +&lt;---------<mdash/>+ | +&lt;--------------------------<mdash/>+ callback | | | Report peripheral event | | | | and data for the event | | | | | | | | | | SLP_S5 | eSPI host | | &lt;----------<mdash/>+ send VWire | +&lt;---------<mdash/>+ | +&lt;--------------------------<mdash/>+ callback | | | App enables/configures | | | <table rows="2" cols="3"><row>
+<entry thead="yes"><para>discrete regulator   </para>
+</entry><entry thead="yes"><para></para>
+</entry><entry thead="yes"><para></para>
+</entry></row>
+<row>
+<entry thead="no"><para>espi_send_vwire_signal   </para>
+</entry><entry thead="no"><para></para>
+</entry><entry thead="no"><para></para>
+</entry></row>
+</table>
++---------------------------<mdash/>&gt;---------<mdash/>&gt;|---------<mdash/>&gt;| | | | | | | | HOST_RST | eSPI host | | &lt;----------<mdash/>+ send VWire | +&lt;---------<mdash/>+ | +&lt;--------------------------<mdash/>+ callback | | | App reset host-related | | | | data structures | | | | | | | | | | C10 | eSPI host | | +&lt;---------<mdash/>+ send VWire | &lt;----------<mdash/>+ | &lt;---------------------------<mdash/>+ | | | App executes | | |<itemizedlist>
+<listitem><para>power mgmt policy | | |</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>callback</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A valid Application&apos;s callback structure pointer. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>handler</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A valid handler function pointer. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>evt_type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>indicates the eSPI event relevant for the handler. for VWIRE_RECEIVED event the data will indicate the new level asserted </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/espi_saf.h" line="450" column="20" bodyfile="include/drivers/espi_saf.h" bodystart="450" bodyend="459"/>
+      </memberdef>
+      <memberdef kind="function" id="group__espi__interface_1gadb881f847082f713bb0159d1e474980a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int espi_saf_add_callback</definition>
+        <argsstring>(const struct device *dev, struct espi_callback *callback)</argsstring>
+        <name>espi_saf_add_callback</name>
+        <param>
+          <type>const struct <ref refid="structdevice" kindref="compound">device</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>struct espi_callback *</type>
+          <declname>callback</declname>
+        </param>
+        <briefdescription>
+<para>Add an application callback. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the device structure for the driver instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>callback</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A valid Application&apos;s callback structure pointer. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>0 if successful, negative errno code on failure.</para>
+</simplesect>
+<simplesect kind="note"><para>Callbacks may be added to the device from within a callback handler invocation, but whether they are invoked for the current eSPI event is not specified.</para>
+</simplesect>
+Note: enables to add as many callback as needed on the same device. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/espi_saf.h" line="473" column="19" bodyfile="include/drivers/espi_saf.h" bodystart="473" bodyend="484"/>
+      </memberdef>
+      <memberdef kind="function" id="group__espi__interface_1gaf987842bc7dad310c7270aed50086af9" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int espi_saf_remove_callback</definition>
+        <argsstring>(const struct device *dev, struct espi_callback *callback)</argsstring>
+        <name>espi_saf_remove_callback</name>
+        <param>
+          <type>const struct <ref refid="structdevice" kindref="compound">device</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>struct espi_callback *</type>
+          <declname>callback</declname>
+        </param>
+        <briefdescription>
+<para>Remove an application callback. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the device structure for the driver instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>callback</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A valid application&apos;s callback structure pointer. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>0 if successful, negative errno code on failure.</para>
+</simplesect>
+<simplesect kind="warning"><para>It is explicitly permitted, within a callback handler, to remove the registration for the callback that is running, i.e. <computeroutput>callback</computeroutput>. Attempts to remove other registrations on the same device may result in undefined behavior, including failure to invoke callbacks that remain registered and unintended invocation of removed callbacks.</para>
+</simplesect>
+Note: enables to remove as many callbacks as added through <ref refid="group__espi__interface_1gabf5f0ea01ec8ed5345b2e119181c2313" kindref="member">espi_add_callback()</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/espi_saf.h" line="502" column="19" bodyfile="include/drivers/espi_saf.h" bodystart="502" bodyend="513"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Public APIs for eSPI driver. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2019<sp/>Intel<sp/>Corporation.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>SPDX-License-Identifier:<sp/>Apache-2.0</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ZEPHYR_INCLUDE_ESPI_SAF_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ZEPHYR_INCLUDE_ESPI_SAF_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="____assert_8h" kindref="compound">sys/__assert.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="include_2zephyr_2types_8h" kindref="compound">zephyr/types.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;device.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_hw_cfg;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_flash_cfg;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_pr;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="structespi__saf__cfg" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structespi__saf__cfg" kindref="compound">espi_saf_cfg</ref><sp/>{</highlight></codeline>
+<codeline lineno="102" refid="structespi__saf__cfg_1a20da4ce3549c53adb038dab7a5bed8a8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="stdint_8h_1a3cb4a16b0e8d6af0af86d4fd6ba5fd9d" kindref="member">uint8_t</ref><sp/><ref refid="structespi__saf__cfg_1ab07ab3b33980f6865cbadbbcb5e203c0" kindref="member">nflash_devices</ref>;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_hw_cfg<sp/><ref refid="structespi__saf__cfg_1a20da4ce3549c53adb038dab7a5bed8a8" kindref="member">hwcfg</ref>;</highlight></codeline>
+<codeline lineno="104" refid="structespi__saf__cfg_1a99d90bcf04f3f09ac5fb739b390a42c8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_flash_cfg<sp/>*<ref refid="structespi__saf__cfg_1a99d90bcf04f3f09ac5fb739b390a42c8" kindref="member">flash_cfgs</ref>;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110" refid="structespi__saf__packet" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref><sp/>{</highlight></codeline>
+<codeline lineno="111" refid="structespi__saf__packet_1a8ee8a45b3490746f893f6b17fb96b815" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref><sp/><ref refid="structespi__saf__packet_1a8ee8a45b3490746f893f6b17fb96b815" kindref="member">flash_addr</ref>;</highlight></codeline>
+<codeline lineno="112" refid="structespi__saf__packet_1a00bfcab9fe2b928be3ea3485c5e91401" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="stdint_8h_1a3cb4a16b0e8d6af0af86d4fd6ba5fd9d" kindref="member">uint8_t</ref><sp/>*<ref refid="structespi__saf__packet_1a00bfcab9fe2b928be3ea3485c5e91401" kindref="member">buf</ref>;</highlight></codeline>
+<codeline lineno="113" refid="structespi__saf__packet_1af88017b76b64b77c95d9684981f48482" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref><sp/><ref refid="structespi__saf__packet_1af88017b76b64b77c95d9684981f48482" kindref="member">len</ref>;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/>*defined<sp/>in<sp/>espi.h</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/>*<sp/>struct<sp/>espi_callback</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/>*<sp/>typedef<sp/>void<sp/>(*espi_callback_handler_t)()</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>int<sp/>(*espi_saf_api_config)(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structespi__saf__cfg" kindref="compound">espi_saf_cfg</ref><sp/>*cfg);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>int<sp/>(*espi_saf_api_set_protection_regions)(</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_protection<sp/>*pr);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>int<sp/>(*espi_saf_api_activate)(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/><ref refid="stdbool_8h_1abb452686968e48b67397da5f97445f5b" kindref="member">bool</ref><sp/>(*espi_saf_api_get_channel_status)(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>int<sp/>(*espi_saf_api_flash_read)(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref><sp/>*pckt);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>int<sp/>(*espi_saf_api_flash_write)(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref><sp/>*pckt);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>int<sp/>(*espi_saf_api_flash_erase)(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref><sp/>*pckt);</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Callbacks<sp/>and<sp/>traffic<sp/>intercept<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>int<sp/>(*espi_saf_api_manage_callback)(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_callback<sp/>*callback,</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>set);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal">__subsystem<sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>espi_saf_api_config<sp/>config;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>espi_saf_api_set_protection_regions<sp/>set_protection_regions;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>espi_saf_api_activate<sp/>activate;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>espi_saf_api_get_channel_status<sp/>get_channel_status;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>espi_saf_api_flash_read<sp/><ref refid="group__flash__interface_1gaa7c9382796aad64da0da683f54600b5f" kindref="member">flash_read</ref>;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>espi_saf_api_flash_write<sp/><ref refid="group__flash__interface_1ga76d7880cc5e18ca40237736d3bd94324" kindref="member">flash_write</ref>;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>espi_saf_api_flash_erase<sp/><ref refid="group__flash__interface_1ga05f9c8b0c1ff7273f71797e7ff799c95" kindref="member">flash_erase</ref>;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>espi_saf_api_manage_callback<sp/>manage_callback;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="212" refid="group__espi__interface_1ga34b0f6336aec45016d97528767b09434" refkind="member"><highlight class="normal">__syscall<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="group__espi__interface_1ga34b0f6336aec45016d97528767b09434" kindref="member">espi_saf_config</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structespi__saf__cfg" kindref="compound">espi_saf_cfg</ref><sp/>*cfg);</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>z_impl_espi_saf_config(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structespi__saf__cfg" kindref="compound">espi_saf_cfg</ref><sp/>*cfg)</highlight></codeline>
+<codeline lineno="217"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*api<sp/>=</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*)dev-&gt;<ref refid="structdevice_1a4a2e6a2cfeb6efed7d5383c33458f46d" kindref="member">api</ref>;</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>api-&gt;config(dev,<sp/>cfg);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238" refid="group__espi__interface_1ga273a9707f3ca501ed2dd3019cdeaa363" refkind="member"><highlight class="normal">__syscall<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="group__espi__interface_1ga273a9707f3ca501ed2dd3019cdeaa363" kindref="member">espi_saf_set_protection_regions</ref>(</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/>espi_saf_protection<sp/>*pr);</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"></highlight></codeline>
+<codeline lineno="242"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>z_impl_espi_saf_set_protection_regions(</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/>espi_saf_protection<sp/>*pr)</highlight></codeline>
+<codeline lineno="245"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*api<sp/>=</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*)dev-&gt;<ref refid="structdevice_1a4a2e6a2cfeb6efed7d5383c33458f46d" kindref="member">api</ref>;</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>api-&gt;set_protection_regions(dev,<sp/>pr);</highlight></codeline>
+<codeline lineno="250"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight></codeline>
+<codeline lineno="264" refid="group__espi__interface_1gaafe30738c18a16b056ed8dcf8638eb84" refkind="member"><highlight class="normal">__syscall<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="group__espi__interface_1gaafe30738c18a16b056ed8dcf8638eb84" kindref="member">espi_saf_activate</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev);</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>z_impl_espi_saf_activate(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev)</highlight></codeline>
+<codeline lineno="267"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*api<sp/>=</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*)dev-&gt;<ref refid="structdevice_1a4a2e6a2cfeb6efed7d5383c33458f46d" kindref="member">api</ref>;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>api-&gt;activate(dev);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284" refid="group__espi__interface_1ga8b53a93559f0c67953e283f59107aa22" refkind="member"><highlight class="normal">__syscall<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="group__espi__interface_1ga8b53a93559f0c67953e283f59107aa22" kindref="member">espi_saf_get_channel_status</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev);</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>z_impl_espi_saf_get_channel_status(</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev)</highlight></codeline>
+<codeline lineno="288"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*api<sp/>=</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*)dev-&gt;<ref refid="structdevice_1a4a2e6a2cfeb6efed7d5383c33458f46d" kindref="member">api</ref>;</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>api-&gt;get_channel_status(dev);</highlight></codeline>
+<codeline lineno="293"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"></highlight></codeline>
+<codeline lineno="308" refid="group__espi__interface_1ga0f5017eac05f928e635fec8e5f877c7d" refkind="member"><highlight class="normal">__syscall<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="group__espi__interface_1ga0f5017eac05f928e635fec8e5f877c7d" kindref="member">espi_saf_flash_read</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref><sp/>*pckt);</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"></highlight></codeline>
+<codeline lineno="311"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>z_impl_espi_saf_flash_read(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref><sp/>*pckt)</highlight></codeline>
+<codeline lineno="313"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*api<sp/>=</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*)dev-&gt;<ref refid="structdevice_1a4a2e6a2cfeb6efed7d5383c33458f46d" kindref="member">api</ref>;</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"></highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(!api-&gt;flash_read)<sp/>{</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-<ref refid="group__system__errno_1ga91457bbf35f0f1085619a99423bb1f33" kindref="member">ENOTSUP</ref>;</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"></highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>api-&gt;flash_read(dev,<sp/>pckt);</highlight></codeline>
+<codeline lineno="322"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"></highlight></codeline>
+<codeline lineno="337" refid="group__espi__interface_1ga104175f74019e58b8b7901f3dae245db" refkind="member"><highlight class="normal">__syscall<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="group__espi__interface_1ga104175f74019e58b8b7901f3dae245db" kindref="member">espi_saf_flash_write</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref><sp/>*pckt);</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>z_impl_espi_saf_flash_write(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref><sp/>*pckt)</highlight></codeline>
+<codeline lineno="342"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*api<sp/>=</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*)dev-&gt;<ref refid="structdevice_1a4a2e6a2cfeb6efed7d5383c33458f46d" kindref="member">api</ref>;</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"></highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(!api-&gt;flash_write)<sp/>{</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-<ref refid="group__system__errno_1ga91457bbf35f0f1085619a99423bb1f33" kindref="member">ENOTSUP</ref>;</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"></highlight></codeline>
+<codeline lineno="350"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>api-&gt;flash_write(dev,<sp/>pckt);</highlight></codeline>
+<codeline lineno="351"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"></highlight></codeline>
+<codeline lineno="366" refid="group__espi__interface_1ga15855a2ac593b97dc1a3e83ac9eda300" refkind="member"><highlight class="normal">__syscall<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="group__espi__interface_1ga15855a2ac593b97dc1a3e83ac9eda300" kindref="member">espi_saf_flash_erase</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref><sp/>*pckt);</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"></highlight></codeline>
+<codeline lineno="369"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>z_impl_espi_saf_flash_erase(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structespi__saf__packet" kindref="compound">espi_saf_packet</ref><sp/>*pckt)</highlight></codeline>
+<codeline lineno="371"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="372"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*api<sp/>=</highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*)dev-&gt;<ref refid="structdevice_1a4a2e6a2cfeb6efed7d5383c33458f46d" kindref="member">api</ref>;</highlight></codeline>
+<codeline lineno="374"><highlight class="normal"></highlight></codeline>
+<codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(!api-&gt;flash_erase)<sp/>{</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-<ref refid="group__system__errno_1ga91457bbf35f0f1085619a99423bb1f33" kindref="member">ENOTSUP</ref>;</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="378"><highlight class="normal"></highlight></codeline>
+<codeline lineno="379"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>api-&gt;flash_erase(dev,<sp/>pckt);</highlight></codeline>
+<codeline lineno="380"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"></highlight></codeline>
+<codeline lineno="450" refid="group__espi__interface_1ga324283c28e6a33be112571621d1568e8" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__espi__interface_1ga324283c28e6a33be112571621d1568e8" kindref="member">espi_saf_init_callback</ref>(</highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/>espi_callback<sp/>*callback,</highlight></codeline>
+<codeline lineno="451"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="group__espi__interface_1ga30c892463e0da5c58e7e7a3f7e7145a8" kindref="member">espi_callback_handler_t</ref><sp/><ref refid="timer_2starve_2src_2main_8c_1ab28ee8b6412d992f77f819e17b664869" kindref="member">handler</ref>,</highlight></codeline>
+<codeline lineno="452"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="group__espi__interface_1ga36ac3fbf9813f78bad90f047e1eb1128" kindref="member">espi_bus_event</ref><sp/>evt_type)</highlight></codeline>
+<codeline lineno="453"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="454"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>__ASSERT(callback,<sp/></highlight><highlight class="stringliteral">&quot;Callback<sp/>pointer<sp/>should<sp/>not<sp/>be<sp/>NULL&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="455"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>__ASSERT(<ref refid="timer_2starve_2src_2main_8c_1ab28ee8b6412d992f77f819e17b664869" kindref="member">handler</ref>,<sp/></highlight><highlight class="stringliteral">&quot;Callback<sp/>handler<sp/>pointer<sp/>should<sp/>not<sp/>be<sp/>NULL&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="456"><highlight class="normal"></highlight></codeline>
+<codeline lineno="457"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>callback-&gt;handler<sp/>=<sp/><ref refid="timer_2starve_2src_2main_8c_1ab28ee8b6412d992f77f819e17b664869" kindref="member">handler</ref>;</highlight></codeline>
+<codeline lineno="458"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>callback-&gt;evt_type<sp/>=<sp/>evt_type;</highlight></codeline>
+<codeline lineno="459"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="460"><highlight class="normal"></highlight></codeline>
+<codeline lineno="473" refid="group__espi__interface_1gadb881f847082f713bb0159d1e474980a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="group__espi__interface_1gadb881f847082f713bb0159d1e474980a" kindref="member">espi_saf_add_callback</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="474"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/>espi_callback<sp/>*callback)</highlight></codeline>
+<codeline lineno="475"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="476"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*api<sp/>=</highlight></codeline>
+<codeline lineno="477"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*)dev-&gt;<ref refid="structdevice_1a4a2e6a2cfeb6efed7d5383c33458f46d" kindref="member">api</ref>;</highlight></codeline>
+<codeline lineno="478"><highlight class="normal"></highlight></codeline>
+<codeline lineno="479"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(!api-&gt;manage_callback)<sp/>{</highlight></codeline>
+<codeline lineno="480"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-<ref refid="group__system__errno_1ga91457bbf35f0f1085619a99423bb1f33" kindref="member">ENOTSUP</ref>;</highlight></codeline>
+<codeline lineno="481"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="482"><highlight class="normal"></highlight></codeline>
+<codeline lineno="483"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>api-&gt;manage_callback(dev,<sp/>callback,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="484"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="485"><highlight class="normal"></highlight></codeline>
+<codeline lineno="502" refid="group__espi__interface_1gaf987842bc7dad310c7270aed50086af9" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="group__espi__interface_1gaf987842bc7dad310c7270aed50086af9" kindref="member">espi_saf_remove_callback</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structdevice" kindref="compound">device</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="503"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/>espi_callback<sp/>*callback)</highlight></codeline>
+<codeline lineno="504"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="505"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*api<sp/>=</highlight></codeline>
+<codeline lineno="506"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">espi_saf_driver_api<sp/>*)dev-&gt;<ref refid="structdevice_1a4a2e6a2cfeb6efed7d5383c33458f46d" kindref="member">api</ref>;</highlight></codeline>
+<codeline lineno="507"><highlight class="normal"></highlight></codeline>
+<codeline lineno="508"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(!api-&gt;manage_callback)<sp/>{</highlight></codeline>
+<codeline lineno="509"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-<ref refid="group__system__errno_1ga91457bbf35f0f1085619a99423bb1f33" kindref="member">ENOTSUP</ref>;</highlight></codeline>
+<codeline lineno="510"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="511"><highlight class="normal"></highlight></codeline>
+<codeline lineno="512"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>api-&gt;manage_callback(dev,<sp/>callback,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="513"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="514"><highlight class="normal"></highlight></codeline>
+<codeline lineno="515"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="516"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="517"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="518"><highlight class="normal"></highlight></codeline>
+<codeline lineno="522"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;syscalls/espi_saf.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="523"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ZEPHYR_INCLUDE_ESPI_SAF_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="include/drivers/espi_saf.h"/>
+  </compounddef>
+</doxygen>

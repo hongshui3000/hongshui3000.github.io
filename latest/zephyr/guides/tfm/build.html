@@ -1,0 +1,491 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>TF-M Build System &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Trusted Firmware-M Integration" href="integration.html" />
+    <link rel="prev" title="TF-M Requirements" href="requirements.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Trusted Firmware-M</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Trusted Firmware-M Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="requirements.html">TF-M Requirements</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">TF-M Build System</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#images-created-by-the-tf-m-build">Images Created by the TF-M Build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#signing-images">Signing Images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#footprint-and-memory-usage">Footprint and Memory Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="integration.html">Trusted Firmware-M Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testsuites.html">Test Suites</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Trusted Firmware-M</a> &raquo;</li>
+        
+      <li>TF-M Build System</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/tfm/build.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tf-m-build-system">
+<span id="tfm-build-system"></span><h1>TF-M Build System<a class="headerlink" href="#tf-m-build-system" title="Permalink to this headline">¶</a></h1>
+<p>When building a valid <code class="docutils literal notranslate"><span class="pre">_ns</span></code> board target, TF-M will be built in the
+background, and linked with the Zephyr non-secure application. No knowledge
+of TF-M’s build system is required in most cases, and the following will
+build a TF-M and Zephyr image pair, and run it in qemu with no additional
+steps required:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ west build -p auto -t mps2_an521_ns samples/tfm_integration/psa_crypto/ -t run
+</pre></div>
+</div>
+</div></blockquote>
+<p>The outputs and certain key steps in this build process are described here,
+however, since you will need to understand and interact with the outputs, and
+deal with signing the secure and non-secure images before deploying them.</p>
+<div class="section" id="images-created-by-the-tf-m-build">
+<h2>Images Created by the TF-M Build<a class="headerlink" href="#images-created-by-the-tf-m-build" title="Permalink to this headline">¶</a></h2>
+<p>The TF-M build system creates the following executable files:</p>
+<ul class="simple">
+<li><p>tfm_s - TF-M secure firmware</p></li>
+<li><p>tfm_ns - TF-M non-secure app (only used by regression tests).</p></li>
+<li><p>bl2 - TF-M MCUboot, if enabled</p></li>
+</ul>
+<p>For each of these, it creates .bin, .hex, .elf, and .axf files.</p>
+<p>The TF-M build system also creates signed variants of tfm_s and tfm_ns, and a
+file which combines them:</p>
+<ul class="simple">
+<li><p>tfm_s_signed</p></li>
+<li><p>tfm_ns_signed</p></li>
+<li><p>tfm_s_ns_signed</p></li>
+</ul>
+<p>For each of these, only .bin files are created.</p>
+<p>The TF-M non-secure app is discarded in favor of Zephyr non-secure app except
+when running the TF-M regression test suite.</p>
+<p>The Zephyr build system usually signs both tfm_s and the Zephyr non-secure app itself.
+See below for details.</p>
+<p>The ‘tfm’ target contains properties for all these paths.
+For example, the following will resolve to <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;/tfm_s.hex</span></code>:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$&lt;TARGET_PROPERTY:tfm,TFM_S_HEX_FILE&gt;
+</pre></div>
+</div>
+</div></blockquote>
+<p>See the top level CMakeLists.txt file in the tfm module for an overview of all
+the properties.</p>
+</div>
+<div class="section" id="signing-images">
+<h2>Signing Images<a class="headerlink" href="#signing-images" title="Permalink to this headline">¶</a></h2>
+<p>When <a class="reference internal" href="../../kconfig.html#CONFIG_TFM_BL2" title="CONFIG_TFM_BL2"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TFM_BL2</span></code></a> is set to <code class="docutils literal notranslate"><span class="pre">y</span></code>, TF-M uses a secure bootloader
+(BL2) and firmware images must be signed with a private key. The firmware image
+is validated by the bootloader during updates using the corresponding public
+key, which is stored inside the secure bootloader firmware image.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">&lt;tfm-dir&gt;/bl2/ext/mcuboot/root-rsa-3072.pem</span></code> is used to sign secure
+images, and <code class="docutils literal notranslate"><span class="pre">&lt;tfm-dir&gt;/bl2/ext/mcuboot/root-rsa-3072_1.pem</span></code> is used to sign
+non-secure images. Theses default .pem keys can (and <strong>should</strong>) be overridden
+using the <a class="reference internal" href="../../kconfig.html#CONFIG_TFM_KEY_FILE_S" title="CONFIG_TFM_KEY_FILE_S"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TFM_KEY_FILE_S</span></code></a> and
+<a class="reference internal" href="../../kconfig.html#CONFIG_TFM_KEY_FILE_NS" title="CONFIG_TFM_KEY_FILE_NS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TFM_KEY_FILE_NS</span></code></a> config flags.</p>
+<p>To satisfy <a class="reference external" href="https://www.psacertified.org/security-certification/psa-certified-level-1/">PSA Certified Level 1</a> requirements, <strong>You MUST replace
+the default .pem file with a new key pair!</strong></p>
+<p>To generate a new public/private key pair, run the following commands:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ imgtool keygen -k root-rsa-3072_s.pem -t rsa-3072
+$ imgtool keygen -k root-rsa-3072_ns.pem -t rsa-3072
+</pre></div>
+</div>
+</div></blockquote>
+<p>You can then place the new .pem files in an alternate location, such as your
+Zephyr application folder, and reference them in the <code class="docutils literal notranslate"><span class="pre">prj.conf</span></code> file via the
+<a class="reference internal" href="../../kconfig.html#CONFIG_TFM_KEY_FILE_S" title="CONFIG_TFM_KEY_FILE_S"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TFM_KEY_FILE_S</span></code></a> and <a class="reference internal" href="../../kconfig.html#CONFIG_TFM_KEY_FILE_NS" title="CONFIG_TFM_KEY_FILE_NS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TFM_KEY_FILE_NS</span></code></a> config
+flags.</p>
+<blockquote>
+<div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Be sure to keep your private key file in a safe, reliable location! If you
+lose this key file, you will be unable to sign any future firmware images,
+and it will no longer be possible to update your devices in the field!</p>
+</div>
+</div></blockquote>
+<p>After the built-in signing script has run, it creates a <code class="docutils literal notranslate"><span class="pre">tfm_merged.hex</span></code>
+file that contains all three binaries: bl2, tfm_s, and the zephyr app. This
+hex file can then be flashed to your development board or run in QEMU.</p>
+<div class="section" id="custom-cmake-arguments">
+<h3>Custom CMake arguments<a class="headerlink" href="#custom-cmake-arguments" title="Permalink to this headline">¶</a></h3>
+<p>When building a Zephyr application with TF-M it might be necessary to control
+the CMake arguments passed to the TF-M build.</p>
+<p>Zephyr TF-M build offers several Kconfig options for controlling the build, but
+doesn’t cover every CMake argument supported by the TF-M build system.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">TFM_CMAKE_OPTIONS</span></code> property on the <code class="docutils literal notranslate"><span class="pre">zephyr_property_target</span></code> can be used
+to pass custom CMake arguments to the TF-M build system.</p>
+<p>To pass the CMake argument <code class="docutils literal notranslate"><span class="pre">-DFOO=bar</span></code> to the TF-M build system, place the
+following CMake snippet in your CMakeLists.txt file.</p>
+<blockquote>
+<div><div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set_property</span><span class="p">(</span><span class="s">TARGET</span> <span class="s">zephyr_property_target</span>
+             <span class="s">APPEND</span> <span class="s">PROPERTY</span> <span class="s">TFM_CMAKE_OPTIONS</span>
+             <span class="s">-DFOO=bar</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">TFM_CMAKE_OPTIONS</span></code> is a list so it is possible to append multiple
+options. Also CMake generator expressions are supported, such as
+<code class="docutils literal notranslate"><span class="pre">$&lt;1:-DFOO=bar&gt;</span></code></p>
+</div>
+</div>
+</div>
+<div class="section" id="footprint-and-memory-usage">
+<h2>Footprint and Memory Usage<a class="headerlink" href="#footprint-and-memory-usage" title="Permalink to this headline">¶</a></h2>
+<p>The build system offers targets to view and analyse RAM and ROM usage in generated images.
+The tools run on the final images and give information about size of symbols and code being used in both RAM and ROM.
+For more information on these tools look here: <a class="reference internal" href="../optimizations/tools.html#footprint-tools"><span class="std std-ref">Footprint and Memory Usage</span></a></p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">tfm_ram_report</span></code> to get the RAM report for TF-M secure firmware (tfm_s).</p>
+<p>Using west:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b mps2_an521_ns samples/hello_world</span>
+<span class="go">west build -t tfm_ram_report</span>
+</pre></div>
+</div>
+<p>Using CMake and ninja:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Use cmake to configure a Ninja-based buildsystem:
+<span class="go">cmake -B build -GNinja -DBOARD=mps2_an521_ns samples/hello_world</span>
+
+<span class="gp"># </span>Now run ninja on the generated build system:
+<span class="go">ninja -C build tfm_ram_report</span>
+</pre></div>
+</div>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">tfm_rom_report</span></code> to get the ROM report for TF-M secure firmware (tfm_s).</p>
+<p>Using west:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b mps2_an521_ns samples/hello_world</span>
+<span class="go">west build -t tfm_rom_report</span>
+</pre></div>
+</div>
+<p>Using CMake and ninja:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Use cmake to configure a Ninja-based buildsystem:
+<span class="go">cmake -B build -GNinja -DBOARD=mps2_an521_ns samples/hello_world</span>
+
+<span class="gp"># </span>Now run ninja on the generated build system:
+<span class="go">ninja -C build tfm_rom_report</span>
+</pre></div>
+</div>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">bl2_ram_report</span></code> to get the RAM report for TF-M MCUboot, if enabled.</p>
+<p>Using west:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b mps2_an521_ns samples/hello_world</span>
+<span class="go">west build -t bl2_ram_report</span>
+</pre></div>
+</div>
+<p>Using CMake and ninja:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Use cmake to configure a Ninja-based buildsystem:
+<span class="go">cmake -B build -GNinja -DBOARD=mps2_an521_ns samples/hello_world</span>
+
+<span class="gp"># </span>Now run ninja on the generated build system:
+<span class="go">ninja -C build bl2_ram_report</span>
+</pre></div>
+</div>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">bl2_rom_report</span></code> to get the ROM report for TF-M MCUboot, if enabled.</p>
+<p>Using west:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b mps2_an521_ns samples/hello_world</span>
+<span class="go">west build -t bl2_rom_report</span>
+</pre></div>
+</div>
+<p>Using CMake and ninja:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Use cmake to configure a Ninja-based buildsystem:
+<span class="go">cmake -B build -GNinja -DBOARD=mps2_an521_ns samples/hello_world</span>
+
+<span class="gp"># </span>Now run ninja on the generated build system:
+<span class="go">ninja -C build bl2_rom_report</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="integration.html" class="btn btn-neutral float-right" title="Trusted Firmware-M Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="requirements.html" class="btn btn-neutral" title="TF-M Requirements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

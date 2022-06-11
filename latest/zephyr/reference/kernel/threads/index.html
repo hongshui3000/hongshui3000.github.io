@@ -1,0 +1,1926 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Threads &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Scheduling" href="../scheduling/index.html" />
+    <link rel="prev" title="Kernel Services" href="../index.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Kernel Services</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#scheduling-interrupts-and-synchronization">Scheduling, Interrupts, and Synchronization</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../scheduling/index.html">Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system_threads.html">System Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="workqueue.html">Workqueue Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nothread.html">Zephyr Without Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../other/interrupts.html">Interrupts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../other/polling.html">Polling API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/semaphores.html">Semaphores</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/mutexes.html">Mutexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/condvar.html">Condition Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/events.html">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../smp/smp.html">Symmetric Multiprocessing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data-passing">Data Passing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#memory-management">Memory Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#timing">Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Kernel Services</a> &raquo;</li>
+        
+      <li>Threads</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/kernel/threads/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="threads">
+<span id="threads-v2"></span><h1>Threads<a class="headerlink" href="#threads" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is also limited support for using <a class="reference internal" href="nothread.html#nothread"><span class="std std-ref">Zephyr Without Threads</span></a>.</p>
+</div>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#lifecycle" id="id3">Lifecycle</a></p>
+<ul>
+<li><p><a class="reference internal" href="#thread-creation" id="id4">Thread Creation</a></p></li>
+<li><p><a class="reference internal" href="#thread-termination" id="id5">Thread Termination</a></p></li>
+<li><p><a class="reference internal" href="#thread-aborting" id="id6">Thread Aborting</a></p></li>
+<li><p><a class="reference internal" href="#thread-suspension" id="id7">Thread Suspension</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#thread-states" id="id8">Thread States</a></p></li>
+<li><p><a class="reference internal" href="#thread-stack-objects" id="id9">Thread Stack objects</a></p>
+<ul>
+<li><p><a class="reference internal" href="#kernel-only-stacks" id="id10">Kernel-only Stacks</a></p></li>
+<li><p><a class="reference internal" href="#thread-stacks" id="id11">Thread stacks</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#thread-priorities" id="id12">Thread Priorities</a></p>
+<ul>
+<li><p><a class="reference internal" href="#meta-irq-priorities" id="id13">Meta-IRQ Priorities</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#thread-options" id="id14">Thread Options</a></p></li>
+<li><p><a class="reference internal" href="#thread-custom-data" id="id15">Thread Custom Data</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id16">Implementation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#spawning-a-thread" id="id17">Spawning a Thread</a></p></li>
+<li><p><a class="reference internal" href="#dropping-permissions" id="id18">Dropping Permissions</a></p></li>
+<li><p><a class="reference internal" href="#terminating-a-thread" id="id19">Terminating a Thread</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#runtime-statistics" id="id20">Runtime Statistics</a></p></li>
+<li><p><a class="reference internal" href="#suggested-uses" id="id21">Suggested Uses</a></p></li>
+<li><p><a class="reference internal" href="#configuration-options" id="id22">Configuration Options</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id23">API Reference</a></p></li>
+</ul>
+</div>
+<p>This section describes kernel services for creating, scheduling, and deleting
+independently executable threads of instructions.</p>
+<p>A <em class="dfn">thread</em> is a kernel object that is used for application processing
+that is too lengthy or too complex to be performed by an ISR.</p>
+<p>Any number of threads can be defined by an application (limited only by
+available RAM). Each thread is referenced by a <em class="dfn">thread id</em> that is assigned
+when the thread is spawned.</p>
+<p>A thread has the following key properties:</p>
+<ul class="simple">
+<li><p>A <strong>stack area</strong>, which is a region of memory used for the thread’s stack.
+The <strong>size</strong> of the stack area can be tailored to conform to the actual needs
+of the thread’s processing. Special macros exist to create and work with
+stack memory regions.</p></li>
+<li><p>A <strong>thread control block</strong> for private kernel bookkeeping of the thread’s
+metadata. This is an instance of type <a class="reference internal" href="#c.k_thread" title="k_thread"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_thread</span></code></a>.</p></li>
+<li><p>An <strong>entry point function</strong>, which is invoked when the thread is started.
+Up to 3 <strong>argument values</strong> can be passed to this function.</p></li>
+<li><p>A <strong>scheduling priority</strong>, which instructs the kernel’s scheduler how to
+allocate CPU time to the thread. (See <a class="reference internal" href="../scheduling/index.html#scheduling-v2"><span class="std std-ref">Scheduling</span></a>.)</p></li>
+<li><p>A set of <strong>thread options</strong>, which allow the thread to receive special
+treatment by the kernel under specific circumstances.
+(See <a class="reference internal" href="#thread-options-v2"><span class="std std-ref">Thread Options</span></a>.)</p></li>
+<li><p>A <strong>start delay</strong>, which specifies how long the kernel should wait before
+starting the thread.</p></li>
+<li><p>An <strong>execution mode</strong>, which can either be supervisor or user mode.
+By default, threads run in supervisor mode and allow access to
+privileged CPU instructions, the entire memory address space, and
+peripherals. User mode threads have a reduced set of privileges.
+This depends on the <a class="reference internal" href="../../../kconfig.html#CONFIG_USERSPACE" title="CONFIG_USERSPACE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code></a> option. See <a class="reference internal" href="../../usermode/index.html#usermode-api"><span class="std std-ref">User Mode</span></a>.</p></li>
+</ul>
+<div class="section" id="lifecycle">
+<span id="lifecycle-v2"></span><h2><a class="toc-backref" href="#id3">Lifecycle</a><a class="headerlink" href="#lifecycle" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="thread-creation">
+<span id="spawning-thread"></span><h3><a class="toc-backref" href="#id4">Thread Creation</a><a class="headerlink" href="#thread-creation" title="Permalink to this headline">¶</a></h3>
+<p>A thread must be created before it can be used. The kernel initializes
+the thread control block as well as one end of the stack portion. The remainder
+of the thread’s stack is typically left uninitialized.</p>
+<p>Specifying a start delay of <a class="reference internal" href="../timing/clocks.html#c.K_NO_WAIT" title="K_NO_WAIT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_NO_WAIT</span></code></a> instructs the kernel
+to start thread execution immediately. Alternatively, the kernel can be
+instructed to delay execution of the thread by specifying a timeout
+value – for example, to allow device hardware used by the thread
+to become available.</p>
+<p>The kernel allows a delayed start to be canceled before the thread begins
+executing. A cancellation request has no effect if the thread has already
+started. A thread whose delayed start was successfully canceled must be
+re-spawned before it can be used.</p>
+</div>
+<div class="section" id="thread-termination">
+<h3><a class="toc-backref" href="#id5">Thread Termination</a><a class="headerlink" href="#thread-termination" title="Permalink to this headline">¶</a></h3>
+<p>Once a thread is started it typically executes forever. However, a thread may
+synchronously end its execution by returning from its entry point function.
+This is known as <strong>termination</strong>.</p>
+<p>A thread that terminates is responsible for releasing any shared resources
+it may own (such as mutexes and dynamically allocated memory)
+prior to returning, since the kernel does <em>not</em> reclaim them automatically.</p>
+<p>In some cases a thread may want to sleep until another thread terminates.
+This can be accomplished with the <a class="reference internal" href="#c.k_thread_join" title="k_thread_join"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_join()</span></code></a> API. This
+will block the calling thread until either the timeout expires, the target
+thread self-exits, or the target thread aborts (either due to a
+<a class="reference internal" href="#c.k_thread_abort" title="k_thread_abort"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_abort()</span></code></a> call or triggering a fatal error).</p>
+<p>Once a thread has terminated, the kernel guarantees that no use will
+be made of the thread struct.  The memory of such a struct can then be
+re-used for any purpose, including spawning a new thread.  Note that
+the thread must be fully terminated, which presents race conditions
+where a thread’s own logic signals completion which is seen by another
+thread before the kernel processing is complete.  Under normal
+circumstances, application code should use <a class="reference internal" href="#c.k_thread_join" title="k_thread_join"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_join()</span></code></a> or
+<a class="reference internal" href="#c.k_thread_abort" title="k_thread_abort"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_abort()</span></code></a> to synchronize on thread termination state
+and not rely on signaling from within application logic.</p>
+</div>
+<div class="section" id="thread-aborting">
+<h3><a class="toc-backref" href="#id6">Thread Aborting</a><a class="headerlink" href="#thread-aborting" title="Permalink to this headline">¶</a></h3>
+<p>A thread may asynchronously end its execution by <strong>aborting</strong>. The kernel
+automatically aborts a thread if the thread triggers a fatal error condition,
+such as dereferencing a null pointer.</p>
+<p>A thread can also be aborted by another thread (or by itself)
+by calling <a class="reference internal" href="#c.k_thread_abort" title="k_thread_abort"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_abort()</span></code></a>. However, it is typically preferable
+to signal a thread to terminate itself gracefully, rather than aborting it.</p>
+<p>As with thread termination, the kernel does not reclaim shared resources
+owned by an aborted thread.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The kernel does not currently make any claims regarding an application’s
+ability to respawn a thread that aborts.</p>
+</div>
+</div>
+<div class="section" id="thread-suspension">
+<h3><a class="toc-backref" href="#id7">Thread Suspension</a><a class="headerlink" href="#thread-suspension" title="Permalink to this headline">¶</a></h3>
+<p>A thread can be prevented from executing for an indefinite period of time
+if it becomes <strong>suspended</strong>. The function <a class="reference internal" href="#c.k_thread_suspend" title="k_thread_suspend"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_suspend()</span></code></a>
+can be used to suspend any thread, including the calling thread.
+Suspending a thread that is already suspended has no additional effect.</p>
+<p>Once suspended, a thread cannot be scheduled until another thread calls
+<a class="reference internal" href="#c.k_thread_resume" title="k_thread_resume"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_resume()</span></code></a> to remove the suspension.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A thread can prevent itself from executing for a specified period of time
+using <a class="reference internal" href="#c.k_sleep" title="k_sleep"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_sleep()</span></code></a>. However, this is different from suspending
+a thread since a sleeping thread becomes executable automatically when the
+time limit is reached.</p>
+</div>
+</div>
+</div>
+<div class="section" id="thread-states">
+<span id="id1"></span><h2><a class="toc-backref" href="#id8">Thread States</a><a class="headerlink" href="#thread-states" title="Permalink to this headline">¶</a></h2>
+<p>A thread that has no factors that prevent its execution is deemed
+to be <strong>ready</strong>, and is eligible to be selected as the current thread.</p>
+<p>A thread that has one or more factors that prevent its execution
+is deemed to be <strong>unready</strong>, and cannot be selected as the current thread.</p>
+<p>The following factors make a thread unready:</p>
+<ul>
+<li><p>The thread has not been started.</p></li>
+<li><p>The thread is waiting for a kernel object to complete an operation.
+(For example, the thread is taking a semaphore that is unavailable.)</p></li>
+<li><p>The thread is waiting for a timeout to occur.</p></li>
+<li><p>The thread has been suspended.</p></li>
+<li><p>The thread has terminated or aborted.</p>
+<img alt="../../../_images/thread_states.svg" class="align-center" src="../../../_images/thread_states.svg" /></li>
+</ul>
+</div>
+<div class="section" id="thread-stack-objects">
+<h2><a class="toc-backref" href="#id9">Thread Stack objects</a><a class="headerlink" href="#thread-stack-objects" title="Permalink to this headline">¶</a></h2>
+<p>Every thread requires its own stack buffer for the CPU to push context.
+Depending on configuration, there are several constraints that must be
+met:</p>
+<ul class="simple">
+<li><p>There may need to be additional memory reserved for memory management
+structures</p></li>
+<li><p>If guard-based stack overflow detection is enabled, a small write-
+protected memory management region must immediately precede the stack buffer
+to catch overflows.</p></li>
+<li><p>If userspace is enabled, a separate fixed-size privilege elevation stack must
+be reserved to serve as a private kernel stack for handling system calls.</p></li>
+<li><p>If userspace is enabled, the thread’s stack buffer must be appropriately
+sized and aligned such that a memory protection region may be programmed
+to exactly fit.</p></li>
+</ul>
+<p>The alignment constraints can be quite restrictive, for example some MPUs
+require their regions to be of some power of two in size, and aligned to its
+own size.</p>
+<p>Because of this, portable code can’t simply pass an arbitrary character buffer
+to <a class="reference internal" href="#c.k_thread_create" title="k_thread_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_create()</span></code></a>. Special macros exist to instantiate stacks,
+prefixed with <code class="docutils literal notranslate"><span class="pre">K_KERNEL_STACK</span></code> and <code class="docutils literal notranslate"><span class="pre">K_THREAD_STACK</span></code>.</p>
+<div class="section" id="kernel-only-stacks">
+<h3><a class="toc-backref" href="#id10">Kernel-only Stacks</a><a class="headerlink" href="#kernel-only-stacks" title="Permalink to this headline">¶</a></h3>
+<p>If it is known that a thread will never run in user mode, or the stack is
+being used for special contexts like handling interrupts, it is best to
+define stacks using the <code class="docutils literal notranslate"><span class="pre">K_KERNEL_STACK</span></code> macros.</p>
+<p>These stacks save memory because an MPU region will never need to be
+programmed to cover the stack buffer itself, and the kernel will not need
+to reserve additional room for the privilege elevation stack, or memory
+management data structures which only pertain to user mode threads.</p>
+<p>Attempts from user mode to use stacks declared in this way will result in
+a fatal error for the caller.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code> is not enabled, the set of <code class="docutils literal notranslate"><span class="pre">K_THREAD_STACK</span></code> macros
+have an identical effect to the <code class="docutils literal notranslate"><span class="pre">K_KERNEL_STACK</span></code> macros.</p>
+</div>
+<div class="section" id="thread-stacks">
+<h3><a class="toc-backref" href="#id11">Thread stacks</a><a class="headerlink" href="#thread-stacks" title="Permalink to this headline">¶</a></h3>
+<p>If it is known that a stack will need to host user threads, or if this
+cannot be determined, define the stack with <code class="docutils literal notranslate"><span class="pre">K_THREAD_STACK</span></code> macros.
+This may use more memory but the stack object is suitable for hosting
+user threads.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code> is not enabled, the set of <code class="docutils literal notranslate"><span class="pre">K_THREAD_STACK</span></code> macros
+have an identical effect to the <code class="docutils literal notranslate"><span class="pre">K_KERNEL_STACK</span></code> macros.</p>
+</div>
+</div>
+<div class="section" id="thread-priorities">
+<span id="id2"></span><h2><a class="toc-backref" href="#id12">Thread Priorities</a><a class="headerlink" href="#thread-priorities" title="Permalink to this headline">¶</a></h2>
+<p>A thread’s priority is an integer value, and can be either negative or
+non-negative.
+Numerically lower priorities takes precedence over numerically higher values.
+For example, the scheduler gives thread A of priority 4 <em>higher</em> priority
+over thread B of priority 7; likewise thread C of priority -2 has higher
+priority than both thread A and thread B.</p>
+<p>The scheduler distinguishes between two classes of threads,
+based on each thread’s priority.</p>
+<ul class="simple">
+<li><p>A <em class="dfn">cooperative thread</em> has a negative priority value.
+Once it becomes the current thread, a cooperative thread remains
+the current thread until it performs an action that makes it unready.</p></li>
+<li><p>A <em class="dfn">preemptible thread</em> has a non-negative priority value.
+Once it becomes the current thread, a preemptible thread may be supplanted
+at any time if a cooperative thread, or a preemptible thread of higher
+or equal priority, becomes ready.</p></li>
+</ul>
+<p>A thread’s initial priority value can be altered up or down after the thread
+has been started. Thus it is possible for a preemptible thread to become
+a cooperative thread, and vice versa, by changing its priority.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The scheduler does not make heuristic decisions to re-prioritize threads.
+Thread priorities are set and changed only at the application’s request.</p>
+</div>
+<p>The kernel supports a virtually unlimited number of thread priority levels.
+The configuration options <a class="reference internal" href="../../../kconfig.html#CONFIG_NUM_COOP_PRIORITIES" title="CONFIG_NUM_COOP_PRIORITIES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NUM_COOP_PRIORITIES</span></code></a> and
+<a class="reference internal" href="../../../kconfig.html#CONFIG_NUM_PREEMPT_PRIORITIES" title="CONFIG_NUM_PREEMPT_PRIORITIES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NUM_PREEMPT_PRIORITIES</span></code></a> specify the number of priority
+levels for each class of thread, resulting in the following usable priority
+ranges:</p>
+<ul class="simple">
+<li><p>cooperative threads: (-<a class="reference internal" href="../../../kconfig.html#CONFIG_NUM_COOP_PRIORITIES" title="CONFIG_NUM_COOP_PRIORITIES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NUM_COOP_PRIORITIES</span></code></a>) to -1</p></li>
+<li><p>preemptive threads: 0 to (<a class="reference internal" href="../../../kconfig.html#CONFIG_NUM_PREEMPT_PRIORITIES" title="CONFIG_NUM_PREEMPT_PRIORITIES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NUM_PREEMPT_PRIORITIES</span></code></a> - 1)</p></li>
+</ul>
+<img alt="../../../_images/priorities.svg" class="align-center" src="../../../_images/priorities.svg" /><p>For example, configuring 5 cooperative priorities and 10 preemptive priorities
+results in the ranges -5 to -1 and 0 to 9, respectively.</p>
+<div class="section" id="meta-irq-priorities">
+<span id="metairq-priorities"></span><h3><a class="toc-backref" href="#id13">Meta-IRQ Priorities</a><a class="headerlink" href="#meta-irq-priorities" title="Permalink to this headline">¶</a></h3>
+<p>When enabled (see <a class="reference internal" href="../../../kconfig.html#CONFIG_NUM_METAIRQ_PRIORITIES" title="CONFIG_NUM_METAIRQ_PRIORITIES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NUM_METAIRQ_PRIORITIES</span></code></a>), there is a special
+subclass of cooperative priorities at the highest (numerically lowest)
+end of the priority space: meta-IRQ threads.  These are scheduled
+according to their normal priority, but also have the special ability
+to preempt all other threads (and other meta-IRQ threads) at lower
+priorities, even if those threads are cooperative and/or have taken a
+scheduler lock. Meta-IRQ threads are still threads, however,
+and can still be interrupted by any hardware interrupt.</p>
+<p>This behavior makes the act of unblocking a meta-IRQ thread (by any
+means, e.g. creating it, calling k_sem_give(), etc.) into the
+equivalent of a synchronous system call when done by a lower
+priority thread, or an ARM-like “pended IRQ” when done from true
+interrupt context.  The intent is that this feature will be used to
+implement interrupt “bottom half” processing and/or “tasklet” features
+in driver subsystems.  The thread, once woken, will be guaranteed to
+run before the current CPU returns into application code.</p>
+<p>Unlike similar features in other OSes, meta-IRQ threads are true
+threads and run on their own stack (which must be allocated normally),
+not the per-CPU interrupt stack. Design work to enable the use of the
+IRQ stack on supported architectures is pending.</p>
+<p>Note that because this breaks the promise made to cooperative
+threads by the Zephyr API (namely that the OS won’t schedule other
+thread until the current thread deliberately blocks), it should be
+used only with great care from application code.  These are not simply
+very high priority threads and should not be used as such.</p>
+</div>
+</div>
+<div class="section" id="thread-options">
+<span id="thread-options-v2"></span><h2><a class="toc-backref" href="#id14">Thread Options</a><a class="headerlink" href="#thread-options" title="Permalink to this headline">¶</a></h2>
+<p>The kernel supports a small set of <em class="dfn">thread options</em> that allow a thread
+to receive special treatment under specific circumstances. The set of options
+associated with a thread are specified when the thread is spawned.</p>
+<p>A thread that does not require any thread option has an option value of zero.
+A thread that requires a thread option specifies it by name, using the
+<code class="docutils literal notranslate"><span class="pre">|</span></code> character as a separator if multiple options are needed
+(i.e. combine options using the bitwise OR operator).</p>
+<p>The following thread options are supported.</p>
+<dl>
+<dt><a class="reference internal" href="#c.K_ESSENTIAL" title="K_ESSENTIAL"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_ESSENTIAL</span></code></a></dt><dd><p>This option tags the thread as an <em class="dfn">essential thread</em>. This instructs
+the kernel to treat the termination or aborting of the thread as a fatal
+system error.</p>
+<p>By default, the thread is not considered to be an essential thread.</p>
+</dd>
+<dt><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_SSE_REGS</span></code></dt><dd><p>This x86-specific option indicate that the thread uses the CPU’s
+SSE registers. Also see <a class="reference internal" href="#c.K_FP_REGS" title="K_FP_REGS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_FP_REGS</span></code></a>.</p>
+<p>By default, the kernel does not attempt to save and restore the contents
+of these registers when scheduling the thread.</p>
+</dd>
+<dt><a class="reference internal" href="#c.K_FP_REGS" title="K_FP_REGS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_FP_REGS</span></code></a></dt><dd><p>This option indicate that the thread uses the CPU’s floating point
+registers. This instructs the kernel to take additional steps to save
+and restore the contents of these registers when scheduling the thread.
+(For more information see <a class="reference internal" href="../other/float.html#float-v2"><span class="std std-ref">Floating Point Services</span></a>.)</p>
+<p>By default, the kernel does not attempt to save and restore the contents
+of this register when scheduling the thread.</p>
+</dd>
+<dt><a class="reference internal" href="#c.K_USER" title="K_USER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_USER</span></code></a></dt><dd><p>If <a class="reference internal" href="../../../kconfig.html#CONFIG_USERSPACE" title="CONFIG_USERSPACE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code></a> is enabled, this thread will be created in
+user mode and will have reduced privileges. See <a class="reference internal" href="../../usermode/index.html#usermode-api"><span class="std std-ref">User Mode</span></a>. Otherwise
+this flag does nothing.</p>
+</dd>
+<dt><a class="reference internal" href="#c.K_INHERIT_PERMS" title="K_INHERIT_PERMS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_INHERIT_PERMS</span></code></a></dt><dd><p>If <a class="reference internal" href="../../../kconfig.html#CONFIG_USERSPACE" title="CONFIG_USERSPACE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code></a> is enabled, this thread will inherit all
+kernel object permissions that the parent thread had, except the parent
+thread object.  See <a class="reference internal" href="../../usermode/index.html#usermode-api"><span class="std std-ref">User Mode</span></a>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="thread-custom-data">
+<span id="custom-data-v2"></span><h2><a class="toc-backref" href="#id15">Thread Custom Data</a><a class="headerlink" href="#thread-custom-data" title="Permalink to this headline">¶</a></h2>
+<p>Every thread has a 32-bit <em class="dfn">custom data</em> area, accessible only by
+the thread itself, and may be used by the application for any purpose
+it chooses. The default custom data value for a thread is zero.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Custom data support is not available to ISRs because they operate
+within a single shared kernel interrupt handling context.</p>
+</div>
+<p>By default, thread custom data support is disabled. The configuration option
+<a class="reference internal" href="../../../kconfig.html#CONFIG_THREAD_CUSTOM_DATA" title="CONFIG_THREAD_CUSTOM_DATA"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_THREAD_CUSTOM_DATA</span></code></a> can be used to enable support.</p>
+<p>The <a class="reference internal" href="#c.k_thread_custom_data_set" title="k_thread_custom_data_set"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_custom_data_set()</span></code></a> and
+<a class="reference internal" href="#c.k_thread_custom_data_get" title="k_thread_custom_data_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_custom_data_get()</span></code></a> functions are used to write and read
+a thread’s custom data, respectively. A thread can only access its own
+custom data, and not that of another thread.</p>
+<p>The following code uses the custom data feature to record the number of times
+each thread calls a specific routine.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Obviously, only a single routine can use this technique,
+since it monopolizes the use of the custom data feature.</p>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">call_tracking_routine</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">call_count</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">k_is_in_isr</span><span class="p">())</span> <span class="p">{</span>
+        <span class="cm">/* ignore any call made by an ISR */</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">call_count</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">k_thread_custom_data_get</span><span class="p">();</span>
+        <span class="n">call_count</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">k_thread_custom_data_set</span><span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">call_count</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* do rest of routine&#39;s processing */</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Use thread custom data to allow a routine to access thread-specific information,
+by using the custom data as a pointer to a data structure owned by the thread.</p>
+</div>
+<div class="section" id="implementation">
+<h2><a class="toc-backref" href="#id16">Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="spawning-a-thread">
+<h3><a class="toc-backref" href="#id17">Spawning a Thread</a><a class="headerlink" href="#spawning-a-thread" title="Permalink to this headline">¶</a></h3>
+<p>A thread is spawned by defining its stack area and its thread control block,
+and then calling <a class="reference internal" href="#c.k_thread_create" title="k_thread_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_create()</span></code></a>.</p>
+<p>The stack area must be defined using <a class="reference internal" href="#c.K_THREAD_STACK_DEFINE" title="K_THREAD_STACK_DEFINE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_THREAD_STACK_DEFINE</span></code></a> or
+<a class="reference internal" href="#c.K_KERNEL_STACK_DEFINE" title="K_KERNEL_STACK_DEFINE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_KERNEL_STACK_DEFINE</span></code></a> to ensure it is properly set up in memory.</p>
+<p>The size parameter for the stack must be one of three values:</p>
+<ul class="simple">
+<li><p>The original requested stack size passed to
+<code class="docutils literal notranslate"><span class="pre">K_THREAD_STACK</span></code> or <code class="docutils literal notranslate"><span class="pre">K_KERNEL_STACK</span></code> family of stack instantiation
+macros.</p></li>
+<li><p>For a stack object defined with the <code class="docutils literal notranslate"><span class="pre">K_THREAD_STACK</span></code> family of
+macros, the return value of <a class="reference internal" href="#c.K_THREAD_STACK_SIZEOF" title="K_THREAD_STACK_SIZEOF"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_THREAD_STACK_SIZEOF()</span></code></a> for that’
+object.</p></li>
+<li><p>For a stack object defined with the <code class="docutils literal notranslate"><span class="pre">K_KERNEL_STACK</span></code> family of
+macros, the return value of <a class="reference internal" href="#c.K_KERNEL_STACK_SIZEOF" title="K_KERNEL_STACK_SIZEOF"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_KERNEL_STACK_SIZEOF()</span></code></a> for that
+object.</p></li>
+</ul>
+<p>The thread spawning function returns its thread id, which can be used
+to reference the thread.</p>
+<p>The following code spawns a thread that starts immediately.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define MY_STACK_SIZE 500</span>
+<span class="cp">#define MY_PRIORITY 5</span>
+
+<span class="k">extern</span> <span class="kt">void</span> <span class="nf">my_entry_point</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">);</span>
+
+<span class="n">K_THREAD_STACK_DEFINE</span><span class="p">(</span><span class="n">my_stack_area</span><span class="p">,</span> <span class="n">MY_STACK_SIZE</span><span class="p">);</span>
+<span class="k">struct</span> <span class="nc">k_thread</span> <span class="n">my_thread_data</span><span class="p">;</span>
+
+<span class="n">k_tid_t</span> <span class="n">my_tid</span> <span class="o">=</span> <span class="n">k_thread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_thread_data</span><span class="p">,</span> <span class="n">my_stack_area</span><span class="p">,</span>
+                                 <span class="n">K_THREAD_STACK_SIZEOF</span><span class="p">(</span><span class="n">my_stack_area</span><span class="p">),</span>
+                                 <span class="n">my_entry_point</span><span class="p">,</span>
+                                 <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span>
+                                 <span class="n">MY_PRIORITY</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">K_NO_WAIT</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Alternatively, a thread can be declared at compile time by calling
+<a class="reference internal" href="#c.K_THREAD_DEFINE" title="K_THREAD_DEFINE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_THREAD_DEFINE</span></code></a>. Observe that the macro defines
+the stack area, control block, and thread id variables automatically.</p>
+<p>The following code has the same effect as the code segment above.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define MY_STACK_SIZE 500</span>
+<span class="cp">#define MY_PRIORITY 5</span>
+
+<span class="k">extern</span> <span class="kt">void</span> <span class="nf">my_entry_point</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">);</span>
+
+<span class="n">K_THREAD_DEFINE</span><span class="p">(</span><span class="n">my_tid</span><span class="p">,</span> <span class="n">MY_STACK_SIZE</span><span class="p">,</span>
+                <span class="n">my_entry_point</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span>
+                <span class="n">MY_PRIORITY</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The delay parameter to <a class="reference internal" href="#c.k_thread_create" title="k_thread_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_create()</span></code></a> is a
+<a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><code class="xref c c-type docutils literal notranslate"><span class="pre">k_timeout_t</span></code></a> value, so <a class="reference internal" href="../timing/clocks.html#c.K_NO_WAIT" title="K_NO_WAIT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_NO_WAIT</span></code></a> means to start the
+thread immediately. The corresponding parameter to <a class="reference internal" href="#c.K_THREAD_DEFINE" title="K_THREAD_DEFINE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_THREAD_DEFINE</span></code></a>
+is a duration in integral milliseconds, so the equivalent argument is 0.</p>
+</div>
+<div class="section" id="user-mode-constraints">
+<h4>User Mode Constraints<a class="headerlink" href="#user-mode-constraints" title="Permalink to this headline">¶</a></h4>
+<p>This section only applies if <a class="reference internal" href="../../../kconfig.html#CONFIG_USERSPACE" title="CONFIG_USERSPACE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code></a> is enabled, and a user
+thread tries to create a new thread. The <a class="reference internal" href="#c.k_thread_create" title="k_thread_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_create()</span></code></a> API is
+still used, but there are additional constraints which must be met or the
+calling thread will be terminated:</p>
+<ul class="simple">
+<li><p>The calling thread must have permissions granted on both the child thread
+and stack parameters; both are tracked by the kernel as kernel objects.</p></li>
+<li><p>The child thread and stack objects must be in an uninitialized state,
+i.e. it is not currently running and the stack memory is unused.</p></li>
+<li><p>The stack size parameter passed in must be equal to or less than the
+bounds of the stack object when it was declared.</p></li>
+<li><p>The <a class="reference internal" href="#c.K_USER" title="K_USER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_USER</span></code></a> option must be used, as user threads can only create
+other user threads.</p></li>
+<li><p>The <a class="reference internal" href="#c.K_ESSENTIAL" title="K_ESSENTIAL"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_ESSENTIAL</span></code></a> option must not be used, user threads may not be
+considered essential threads.</p></li>
+<li><p>The priority of the child thread must be a valid priority value, and equal to
+or lower than the parent thread.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dropping-permissions">
+<h3><a class="toc-backref" href="#id18">Dropping Permissions</a><a class="headerlink" href="#dropping-permissions" title="Permalink to this headline">¶</a></h3>
+<p>If <a class="reference internal" href="../../../kconfig.html#CONFIG_USERSPACE" title="CONFIG_USERSPACE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code></a> is enabled, a thread running in supervisor mode
+may perform a one-way transition to user mode using the
+<a class="reference internal" href="#c.k_thread_user_mode_enter" title="k_thread_user_mode_enter"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_thread_user_mode_enter()</span></code></a> API. This is a one-way operation which
+will reset and zero the thread’s stack memory. The thread will be marked
+as non-essential.</p>
+</div>
+<div class="section" id="terminating-a-thread">
+<h3><a class="toc-backref" href="#id19">Terminating a Thread</a><a class="headerlink" href="#terminating-a-thread" title="Permalink to this headline">¶</a></h3>
+<p>A thread terminates itself by returning from its entry point function.</p>
+<p>The following code illustrates the ways a thread can terminate.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">my_entry_point</span><span class="p">(</span><span class="kt">int</span> <span class="n">unused1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">unused2</span><span class="p">,</span> <span class="kt">int</span> <span class="n">unused3</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">...</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">some</span> <span class="n">condition</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span> <span class="cm">/* thread terminates from mid-entry point function */</span>
+        <span class="p">}</span>
+        <span class="p">...</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* thread terminates at end of entry point function */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If <a class="reference internal" href="../../../kconfig.html#CONFIG_USERSPACE" title="CONFIG_USERSPACE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code></a> is enabled, aborting a thread will additionally
+mark the thread and stack objects as uninitialized so that they may be re-used.</p>
+</div>
+</div>
+<div class="section" id="runtime-statistics">
+<h2><a class="toc-backref" href="#id20">Runtime Statistics</a><a class="headerlink" href="#runtime-statistics" title="Permalink to this headline">¶</a></h2>
+<p>Thread runtime statistics can be gathered and retrieved if
+<a class="reference internal" href="../../../kconfig.html#CONFIG_THREAD_RUNTIME_STATS" title="CONFIG_THREAD_RUNTIME_STATS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_THREAD_RUNTIME_STATS</span></code></a> is enabled, for example, total number of
+execution cycles of a thread.</p>
+<p>By default, the runtime statistics are gathered using the default kernel
+timer. For some architectures, SoCs or boards, there are timers with higher
+resolution available via timing functions. Using of these timers can be
+enabled via <a class="reference internal" href="../../../kconfig.html#CONFIG_THREAD_RUNTIME_STATS_USE_TIMING_FUNCTIONS" title="CONFIG_THREAD_RUNTIME_STATS_USE_TIMING_FUNCTIONS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_THREAD_RUNTIME_STATS_USE_TIMING_FUNCTIONS</span></code></a>.</p>
+<p>Here is an example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">k_thread_runtime_stats_t</span> <span class="n">rt_stats_thread</span><span class="p">;</span>
+
+<span class="n">k_thread_runtime_stats_get</span><span class="p">(</span><span class="n">k_current_get</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">rt_stats_thread</span><span class="p">);</span>
+
+<span class="n">printk</span><span class="p">(</span><span class="s">&quot;Cycles: %llu</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">rt_stats_thread</span><span class="p">.</span><span class="n">execution_cycles</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="suggested-uses">
+<h2><a class="toc-backref" href="#id21">Suggested Uses</a><a class="headerlink" href="#suggested-uses" title="Permalink to this headline">¶</a></h2>
+<p>Use threads to handle processing that cannot be handled in an ISR.</p>
+<p>Use separate threads to handle logically distinct processing operations
+that can execute in parallel.</p>
+</div>
+<div class="section" id="configuration-options">
+<h2><a class="toc-backref" href="#id22">Configuration Options</a><a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_MAIN_THREAD_PRIORITY" title="CONFIG_MAIN_THREAD_PRIORITY"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MAIN_THREAD_PRIORITY</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_MAIN_STACK_SIZE" title="CONFIG_MAIN_STACK_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MAIN_STACK_SIZE</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_IDLE_STACK_SIZE" title="CONFIG_IDLE_STACK_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_IDLE_STACK_SIZE</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_THREAD_CUSTOM_DATA" title="CONFIG_THREAD_CUSTOM_DATA"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_THREAD_CUSTOM_DATA</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_NUM_COOP_PRIORITIES" title="CONFIG_NUM_COOP_PRIORITIES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NUM_COOP_PRIORITIES</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_NUM_PREEMPT_PRIORITIES" title="CONFIG_NUM_PREEMPT_PRIORITIES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NUM_PREEMPT_PRIORITIES</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_TIMESLICING" title="CONFIG_TIMESLICING"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TIMESLICING</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_TIMESLICE_SIZE" title="CONFIG_TIMESLICE_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TIMESLICE_SIZE</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_TIMESLICE_PRIORITY" title="CONFIG_TIMESLICE_PRIORITY"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TIMESLICE_PRIORITY</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_USERSPACE" title="CONFIG_USERSPACE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id23">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__thread__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">thread_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_ESSENTIAL">
+<span class="target" id="group__thread__apis_1gad503fbcca905a9266b0e154e3ded258c"></span><span class="sig-name descname"><span class="n"><span class="pre">K_ESSENTIAL</span></span></span><a class="headerlink" href="#c.K_ESSENTIAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>system thread that must not abort </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_FP_REGS">
+<span class="target" id="group__thread__apis_1gab18cf1e8728e7adf53db2ae4bbcdd951"></span><span class="sig-name descname"><span class="n"><span class="pre">K_FP_REGS</span></span></span><a class="headerlink" href="#c.K_FP_REGS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>FPU registers are managed by context switch. </p>
+<p>This option indicates that the thread uses the CPU’s floating point registers. This instructs the kernel to take additional steps to save and restore the contents of these registers when scheduling the thread. No effect if<span> <a class="reference internal" href="../../../kconfig.html#CONFIG_FPU_SHARING" title="CONFIG_FPU_SHARING"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_FPU_SHARING</span></code></a> </span> is not enabled. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_USER">
+<span class="target" id="group__thread__apis_1gacb5340339892f22301e02697c6039ccc"></span><span class="sig-name descname"><span class="n"><span class="pre">K_USER</span></span></span><a class="headerlink" href="#c.K_USER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>user mode thread </p>
+<p>This thread has dropped from supervisor mode to user mode and consequently has additional restrictions </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_INHERIT_PERMS">
+<span class="target" id="group__thread__apis_1gaa1788a413a055745d1de71b4da7c2eb2"></span><span class="sig-name descname"><span class="n"><span class="pre">K_INHERIT_PERMS</span></span></span><a class="headerlink" href="#c.K_INHERIT_PERMS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Inherit Permissions. </p>
+<p>Indicates that the thread being created should inherit all kernel object permissions from the thread that created it. No effect if <span> <a class="reference internal" href="../../../kconfig.html#CONFIG_USERSPACE" title="CONFIG_USERSPACE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_USERSPACE</span></code></a> </span> is not enabled. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_CALLBACK_STATE">
+<span class="target" id="group__thread__apis_1gacbdb579370978fe07e4a863a84bd8bee"></span><span class="sig-name descname"><span class="n"><span class="pre">K_CALLBACK_STATE</span></span></span><a class="headerlink" href="#c.K_CALLBACK_STATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback item state. </p>
+<p>This is a single bit of state reserved for “callback manager” utilities (p4wq initially) who need to track operations invoked from within a user-provided callback they have been invoked. Effectively it serves as a tiny bit of zero-overhead TLS data. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.k_thread_access_grant">
+<span class="target" id="group__thread__apis_1gafec540511e6d2e0a074a5bfb515c53b0"></span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_access_grant</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">thread</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_access_grant" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Grant a thread access to a set of kernel objects. </p>
+<p>This is a convenience function. For the provided thread, grant access to the remaining arguments, which must be pointers to kernel objects.</p>
+<p>The thread object must be initialized (i.e. running). The objects don’t need to be. Note that NULL shouldn’t be passed as an argument.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Thread to grant access to objects </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code>: list of kernel object pointers </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_THREAD_DEFINE">
+<span class="target" id="group__thread__apis_1gab3ced58648ca35788a40676e8478ecd2"></span><span class="sig-name descname"><span class="n"><span class="pre">K_THREAD_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">stack_size</span></span>, <span class="n"><span class="pre">entry</span></span>, <span class="n"><span class="pre">p1</span></span>, <span class="n"><span class="pre">p2</span></span>, <span class="n"><span class="pre">p3</span></span>, <span class="n"><span class="pre">prio</span></span>, <span class="n"><span class="pre">options</span></span>, <span class="n"><span class="pre">delay</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_THREAD_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define and initialize a thread. </p>
+<p>The thread may be scheduled for immediate execution or a delayed start.</p>
+<p>Thread options are architecture-specific, and can include K_ESSENTIAL, K_FP_REGS, and K_SSE_REGS. Multiple options may be specified by separating them using “|” (the logical OR operator).</p>
+<p>The ID of the thread can be accessed using:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extern</span> <span class="n">const</span> <span class="n">k_tid_t</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">;</span> 
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the thread. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stack_size</span></code>: Stack size in bytes. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">entry</span></code>: Thread entry function. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p1</span></code>: 1st entry point parameter. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p2</span></code>: 2nd entry point parameter. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p3</span></code>: 3rd entry point parameter. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prio</span></code>: Thread priority. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">options</span></code>: Thread options. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delay</span></code>: Scheduling delay (in milliseconds), zero for no delay. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.k_thread_user_cb_t">
+<span class="target" id="group__thread__apis_1gaf9f23a6ff9dae76af56f25b373e74c75"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_user_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_thread" title="k_thread"><span class="n"><span class="pre">k_thread</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">thread</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.k_thread_user_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_foreach">
+<span class="target" id="group__thread__apis_1gae2596d56800769b06fc03c194a126a97"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_foreach</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.k_thread_user_cb_t" title="k_thread_user_cb_t"><span class="n"><span class="pre">k_thread_user_cb_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">user_cb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_foreach" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Iterate over all the threads in the system. </p>
+<p>This routine iterates over all the threads in the system and calls the user_cb function for each thread.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../../kconfig.html#CONFIG_THREAD_MONITOR" title="CONFIG_THREAD_MONITOR"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_THREAD_MONITOR</span></code></a> </span> must be set for this function to be effective. </p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>This API uses <a class="reference internal" href="../smp/smp.html#group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"><span class="std std-ref">k_spin_lock</span></a> to protect the _kernel.threads list which means creation of new threads and terminations of existing threads are blocked until this API returns. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user_cb</span></code>: Pointer to the user callback function. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: Pointer to user data.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_foreach_unlocked">
+<span class="target" id="group__thread__apis_1ga30ef8b445a6c1b4a82651674dbb737fc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_foreach_unlocked</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.k_thread_user_cb_t" title="k_thread_user_cb_t"><span class="n"><span class="pre">k_thread_user_cb_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">user_cb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_foreach_unlocked" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Iterate over all the threads in the system without locking. </p>
+<p>This routine works exactly the same like <a class="reference internal" href="#group__thread__apis_1gae2596d56800769b06fc03c194a126a97"><span class="std std-ref">k_thread_foreach</span></a> but unlocks interrupts when user_cb is executed.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../../kconfig.html#CONFIG_THREAD_MONITOR" title="CONFIG_THREAD_MONITOR"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_THREAD_MONITOR</span></code></a> </span> must be set for this function to be effective. </p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>This API uses <a class="reference internal" href="../smp/smp.html#group__spinlock__apis_1gaac60da4347f5b29ff8c4e5f24c99b3bf"><span class="std std-ref">k_spin_lock</span></a> only when accessing the _kernel.threads queue elements. It unlocks it during user callback function processing. If a new task is created when this <code class="docutils literal notranslate"><span class="pre">foreach</span></code> function is in progress, the added new task would not be included in the enumeration. If a task is aborted during this enumeration, there would be a race here and there is a possibility that this aborted task would be included in the enumeration. </p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>If the task is aborted and the memory occupied by its <code class="docutils literal notranslate"><a class="reference internal" href="#structk__thread"><span class="std std-ref"><span class="pre">k_thread</span></span></a></code> structure is reused when this <code class="docutils literal notranslate"><span class="pre">k_thread_foreach_unlocked</span></code> is in progress it might even lead to the system behave unstable. This function may never return, as it would follow some <code class="docutils literal notranslate"><span class="pre">next</span></code> task pointers treating given pointer as a pointer to the <a class="reference internal" href="#structk__thread"><span class="std std-ref">k_thread</span></a> structure while it is something different right now. Do not reuse the memory that was occupied by <a class="reference internal" href="#structk__thread"><span class="std std-ref">k_thread</span></a> structure of aborted task if it was aborted after this function was called in any context. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user_cb</span></code>: Pointer to the user callback function. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: Pointer to user data.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_create">
+<span class="target" id="group__thread__apis_1gad5b0bff3102f1656089f5875d999a367"></span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_create</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_thread" title="k_thread"><span class="n"><span class="pre">k_thread</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">new_thread</span></span>, <span class="n"><span class="pre">k_thread_stack_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stack</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">stack_size</span></span>, <span class="n"><span class="pre">k_thread_entry_t</span></span><span class="w"> </span><span class="n"><span class="pre">entry</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p1</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p2</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p3</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">prio</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">options</span></span>, <a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">delay</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_create" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a thread. </p>
+<p>This routine initializes a thread, then schedules it for execution.</p>
+<p>The new thread may be scheduled for immediate execution or a delayed start. If the newly spawned thread does not have a delayed start the kernel scheduler may preempt the current thread to allow the new thread to execute.</p>
+<p>Thread options are architecture-specific, and can include K_ESSENTIAL, K_FP_REGS, and K_SSE_REGS. Multiple options may be specified by separating them using “|” (the logical OR operator).</p>
+<p>Stack objects passed to this function must be originally defined with either of these macros in order to be portable:</p>
+<p><ul class="simple">
+<li><p><a class="reference internal" href="#group__thread__stack__api_1gac5368ce24fdeab3863b5c8dee2ebd955"><span class="std std-ref">K_THREAD_STACK_DEFINE()</span></a> - For stacks that may support either user or supervisor threads.</p></li>
+<li><p>K_KERNEL_STACK_DEFINE() - For stacks that may support supervisor threads only. These stacks use less memory if CONFIG_USERSPACE is enabled.</p></li>
+</ul>
+</p>
+<p>The stack_size parameter has constraints. It must either be:</p>
+<p><ul class="simple">
+<li><p>The original size value passed to <a class="reference internal" href="#group__thread__stack__api_1gac5368ce24fdeab3863b5c8dee2ebd955"><span class="std std-ref">K_THREAD_STACK_DEFINE()</span></a> or K_KERNEL_STACK_DEFINE()</p></li>
+<li><p>The return value of <a class="reference internal" href="#group__thread__stack__api_1ga775f8e6b4144cfdd24f3261b6db64150"><span class="std std-ref">K_THREAD_STACK_SIZEOF(stack)</span></a> if the stack was defined with <a class="reference internal" href="#group__thread__stack__api_1gac5368ce24fdeab3863b5c8dee2ebd955"><span class="std std-ref">K_THREAD_STACK_DEFINE()</span></a></p></li>
+<li><p>The return value of <a class="reference internal" href="#group__thread__stack__api_1ga57b3824b117c634dbb6052d47dc4301c"><span class="std std-ref">K_KERNEL_STACK_SIZEOF(stack)</span></a> if the stack was defined with K_KERNEL_STACK_DEFINE().</p></li>
+</ul>
+</p>
+<p>Using other values, or sizeof(stack) may produce undefined behavior.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>ID of new thread. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">new_thread</span></code>: Pointer to uninitialized struct <a class="reference internal" href="#structk__thread"><span class="std std-ref">k_thread</span></a> </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stack</span></code>: Pointer to the stack space. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stack_size</span></code>: Stack size in bytes. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">entry</span></code>: Thread entry function. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p1</span></code>: 1st entry point parameter. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p2</span></code>: 2nd entry point parameter. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p3</span></code>: 3rd entry point parameter. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prio</span></code>: Thread priority. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">options</span></code>: Thread options. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delay</span></code>: Scheduling delay, or K_NO_WAIT (for no delay).</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_user_mode_enter">
+<span class="target" id="group__thread__apis_1ga3fbe1c8a5f3ef1c25382c7d6fca35764"></span><span class="pre">FUNC_NORETURN</span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_user_mode_enter</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_thread_entry_t</span></span><span class="w"> </span><span class="n"><span class="pre">entry</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p1</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p2</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p3</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_user_mode_enter" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Drop a thread’s privileges permanently to user mode. </p>
+<p>This allows a supervisor thread to be re-used as a user thread. This function does not return, but control will transfer to the provided entry point as if this was a new user thread.</p>
+<p>The implementation ensures that the stack buffer contents are erased. Any thread-local storage will be reverted to a pristine state.</p>
+<p>Memory domain membership, resource pool assignment, kernel object permissions, priority, and thread options are preserved.</p>
+<p>A common use of this function is to re-use the main thread as a user thread once all supervisor mode-only tasks have been completed.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">entry</span></code>: Function to start executing from </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p1</span></code>: 1st entry point parameter </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p2</span></code>: 2nd entry point parameter </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p3</span></code>: 3rd entry point parameter </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_heap_assign">
+<span class="target" id="group__thread__apis_1ga3f46c06833add2a2e0ddb7242f06702c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_heap_assign</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_thread" title="k_thread"><span class="n"><span class="pre">k_thread</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">thread</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../memory/heap.html#c.k_heap" title="k_heap"><span class="n"><span class="pre">k_heap</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">heap</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_heap_assign" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Assign a resource memory pool to a thread. </p>
+<p>By default, threads have no resource pool assigned unless their parent thread has a resource pool, in which case it is inherited. Multiple threads may be assigned to the same memory pool.</p>
+<p>Changing a thread’s resource pool will not migrate allocations from the previous pool.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Target thread to assign a memory pool for resource requests. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">heap</span></code>: Heap object to use for resources, or NULL if the thread should no longer have a memory pool. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_system_pool_assign">
+<span class="target" id="group__thread__apis_1ga220d22dc35115fcdc0badb262e7a019d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_system_pool_assign</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_thread" title="k_thread"><span class="n"><span class="pre">k_thread</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">thread</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_system_pool_assign" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Assign the system heap as a thread’s resource pool. </p>
+<p>Similar to z_thread_heap_assign(), but the thread will use the kernel heap to draw memory.</p>
+<p>Use with caution, as a malicious thread could perform DoS attacks on the kernel heap.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Target thread to assign the system heap for resource requests </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_join">
+<span class="target" id="group__thread__apis_1ga40a733561eb1f64dcaae0e01b167d233"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_join</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_thread" title="k_thread"><span class="n"><span class="pre">k_thread</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">thread</span></span>, <a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_join" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sleep until a thread exits. </p>
+<p>The caller will be put to sleep until the target thread exits, either due to being aborted, self-exiting, or taking a fatal error. This API returns immediately if the thread isn’t running.</p>
+<p>This API may only be called from ISRs with a K_NO_WAIT timeout, where it can be useful as a predicate to detect when a thread has aborted.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Thread to wait to exit </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: upper bound time to wait for the thread to exit. </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: success, target thread has exited or wasn’t running </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: returned without waiting </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: waiting period timed out </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EDEADLK</span></code>: target thread is joining on the caller, or target thread is the caller </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_sleep">
+<span class="target" id="group__thread__apis_1ga48d4b041790454da4d68ac8711f29657"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_sleep</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_sleep" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Put the current thread to sleep. </p>
+<p>This routine puts the current thread to sleep for <em>duration</em>, specified as a <a class="reference internal" href="../timing/clocks.html#structk__timeout__t"><span class="std std-ref">k_timeout_t</span></a> object.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>if <em>timeout</em> is set to K_FOREVER then the thread is suspended.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Zero if the requested time has elapsed or the number of milliseconds left to sleep, if thread was woken up by <a class="reference internal" href="#group__thread__apis_1ga9275a019c8ff3c7fe49a81f8c078157e"><span class="std std-ref">k_wakeup</span></a> call. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Desired duration of sleep.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_msleep">
+<span class="target" id="group__thread__apis_1ga51307cdfe153ab3e918b18755d97c5d9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_msleep</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">ms</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_msleep" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Put the current thread to sleep. </p>
+<p>This routine puts the current thread to sleep for <em>duration</em> milliseconds.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Zero if the requested time has elapsed or the number of milliseconds left to sleep, if thread was woken up by <a class="reference internal" href="#group__thread__apis_1ga9275a019c8ff3c7fe49a81f8c078157e"><span class="std std-ref">k_wakeup</span></a> call. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ms</span></code>: Number of milliseconds to sleep.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_usleep">
+<span class="target" id="group__thread__apis_1gaeac56bb072ce295b9fdc372ab8cee67e"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_usleep</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">us</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_usleep" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Put the current thread to sleep with microsecond resolution. </p>
+<p>This function is unlikely to work as expected without kernel tuning. In particular, because the lower bound on the duration of a sleep is the duration of a tick,<span> <a class="reference internal" href="../../../kconfig.html#CONFIG_SYS_CLOCK_TICKS_PER_SEC" title="CONFIG_SYS_CLOCK_TICKS_PER_SEC"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SYS_CLOCK_TICKS_PER_SEC</span></code></a> </span> must be adjusted to achieve the resolution desired. The implications of doing this must be understood before attempting to use <a class="reference internal" href="#group__thread__apis_1gaeac56bb072ce295b9fdc372ab8cee67e"><span class="std std-ref">k_usleep()</span></a>. Use with caution.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Zero if the requested time has elapsed or the number of microseconds left to sleep, if thread was woken up by <a class="reference internal" href="#group__thread__apis_1ga9275a019c8ff3c7fe49a81f8c078157e"><span class="std std-ref">k_wakeup</span></a> call. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">us</span></code>: Number of microseconds to sleep.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_busy_wait">
+<span class="target" id="group__thread__apis_1ga550b642e071480323e589866abb99c22"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_busy_wait</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">usec_to_wait</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_busy_wait" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Cause the current thread to busy wait. </p>
+<p>This routine causes the current thread to execute a “do nothing” loop for <em>usec_to_wait</em> microseconds.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>The clock used for the microsecond-resolution delay here may be skewed relative to the clock used for system timeouts like <a class="reference internal" href="#group__thread__apis_1ga48d4b041790454da4d68ac8711f29657"><span class="std std-ref">k_sleep()</span></a>. For example k_busy_wait(1000) may take slightly more or less time than k_sleep(K_MSEC(1)), with the offset dependent on clock tolerances. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_yield">
+<span class="target" id="group__thread__apis_1ga08a3484c33444ecedc2d71d78495a295"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_yield</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_yield" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Yield the current thread. </p>
+<p>This routine causes the current thread to yield execution to another thread of the same or higher priority. If there are no other ready threads of the same or higher priority, the routine returns immediately. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_wakeup">
+<span class="target" id="group__thread__apis_1ga9275a019c8ff3c7fe49a81f8c078157e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_wakeup</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_wakeup" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Wake up a sleeping thread. </p>
+<p>This routine prematurely wakes up <em>thread</em> from sleeping.</p>
+<p>If <em>thread</em> is not currently sleeping, the routine has no effect.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: ID of thread to wake. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_current_get">
+<span class="target" id="group__thread__apis_1ga7ef1ed0fb9513df8096ede1e52fc76b2"></span><span class="pre">__attribute_const__</span><span class="w"> </span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_current_get</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_current_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get thread ID of the current thread. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>ID of current thread. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_abort">
+<span class="target" id="group__thread__apis_1ga1f44bb0307bea7a97227764ecd7bf963"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_abort</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_abort" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Abort a thread. </p>
+<p>This routine permanently stops execution of <em>thread</em>. The thread is taken off all kernel queues it is part of (i.e. the ready queue, the timeout queue, or a kernel object wait queue). However, any kernel resources the thread might currently own (such as mutexes or memory blocks) are not released. It is the responsibility of the caller of this routine to ensure all necessary cleanup is performed.</p>
+<p>After <a class="reference internal" href="#group__thread__apis_1ga1f44bb0307bea7a97227764ecd7bf963"><span class="std std-ref">k_thread_abort()</span></a> returns, the thread is guaranteed not to be running or to become runnable anywhere on the system. Normally this is done via blocking the caller (in the same manner as <a class="reference internal" href="#group__thread__apis_1ga40a733561eb1f64dcaae0e01b167d233"><span class="std std-ref">k_thread_join()</span></a>), but in interrupt context on SMP systems the implementation is required to spin for threads that are running on other CPUs. Note that as specified, this means that on SMP platforms it is possible for application code to create a deadlock condition by simultaneously aborting a cycle of threads using at least one termination from interrupt context. Zephyr cannot detect all such conditions.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: ID of thread to abort. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_start">
+<span class="target" id="group__thread__apis_1ga88031bd9fcfcd4305bae4029a4d8416f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_start</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_start" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Start an inactive thread. </p>
+<p>If a thread was created with K_FOREVER in the delay parameter, it will not be added to the scheduling queue until this function is called on it.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: thread to start </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_timeout_expires_ticks">
+<span class="target" id="group__thread__apis_1ga80013f10d12ccdffbbd88cee048f1c21"></span><a class="reference internal" href="../timing/clocks.html#c.k_ticks_t" title="k_ticks_t"><span class="n"><span class="pre">k_ticks_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_timeout_expires_ticks</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_thread" title="k_thread"><span class="n"><span class="pre">k_thread</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_timeout_expires_ticks" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get time when a thread wakes up, in system ticks. </p>
+<p>This routine computes the system uptime when a waiting thread next executes, in units of system ticks. If the thread is not waiting, it returns current system time. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_timeout_remaining_ticks">
+<span class="target" id="group__thread__apis_1ga4cb4126c8e4f62bd44f3dd03f2e4a423"></span><a class="reference internal" href="../timing/clocks.html#c.k_ticks_t" title="k_ticks_t"><span class="n"><span class="pre">k_ticks_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_timeout_remaining_ticks</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_thread" title="k_thread"><span class="n"><span class="pre">k_thread</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_timeout_remaining_ticks" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get time remaining before a thread wakes up, in system ticks. </p>
+<p>This routine computes the time remaining before a waiting thread next executes, in units of system ticks. If the thread is not waiting, it returns zero. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_priority_get">
+<span class="target" id="group__thread__apis_1ga3a46ed8ad2c3b12416fafe11325f82b3"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_priority_get</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_priority_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a thread’s priority. </p>
+<p>This routine gets the priority of <em>thread</em>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Priority of <em>thread</em>. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: ID of thread whose priority is needed.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_priority_set">
+<span class="target" id="group__thread__apis_1ga24e50a60c524d1eb22fe21cdf269b6a6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_priority_set</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">prio</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_priority_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set a thread’s priority. </p>
+<p>This routine immediately changes the priority of <em>thread</em>.</p>
+<p>Rescheduling can occur immediately depending on the priority <em>thread</em> is set to:</p>
+<p><ul class="simple">
+<li><p>If its priority is raised above the priority of the caller of this function, and the caller is preemptible, <em>thread</em> will be scheduled in.</p></li>
+<li><p>If the caller operates on itself, it lowers its priority below that of other threads in the system, and the caller is preemptible, the thread of highest priority will be scheduled in.</p></li>
+</ul>
+</p>
+<p>Priority can be assigned in the range of -CONFIG_NUM_COOP_PRIORITIES to CONFIG_NUM_PREEMPT_PRIORITIES-1, where -CONFIG_NUM_COOP_PRIORITIES is the highest priority.</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>Changing the priority of a thread currently involved in mutex priority inheritance may result in undefined behavior. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: ID of thread whose priority is to be set. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prio</span></code>: New priority.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_deadline_set">
+<span class="target" id="group__thread__apis_1gad887f16c1dd6f3247682a83beb22d1ce"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_deadline_set</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">deadline</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_deadline_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set deadline expiration time for scheduler. </p>
+<p>This sets the “deadline” expiration as a time delta from the current time, in the same units used by <a class="reference internal" href="../timing/clocks.html#group__clock__apis_1ga208687de625e0036558343b4e66143d3"><span class="std std-ref">k_cycle_get_32()</span></a>. The scheduler (when deadline scheduling is enabled) will choose the next expiring thread when selecting between threads at the same static priority. Threads at different priorities will be scheduled according to their static priority.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Deadlines are stored internally using 32 bit unsigned integers. The number of cycles between the “first” deadline in the scheduler queue and the “last” deadline must be less than 2^31 (i.e a signed non-negative quantity). Failure to adhere to this rule may result in scheduled threads running in an incorrect deadline order.</p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>Despite the API naming, the scheduler makes no guarantees the the thread WILL be scheduled within that deadline, nor does it take extra metadata (like e.g. the “runtime” and “period” parameters in Linux sched_setattr()) that allows the kernel to validate the scheduling for achievability. Such features could be implemented above this call, which is simply input to the priority selection logic.</p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>You should enable<span> <a class="reference internal" href="../../../kconfig.html#CONFIG_SCHED_DEADLINE" title="CONFIG_SCHED_DEADLINE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SCHED_DEADLINE</span></code></a> </span> in your project configuration.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: A thread on which to set the deadline </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">deadline</span></code>: A time delta, in cycle units </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_cpu_mask_clear">
+<span class="target" id="group__thread__apis_1ga80b9c58df6600c7e79f16756c128f44c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_cpu_mask_clear</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_cpu_mask_clear" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets all CPU enable masks to zero. </p>
+<p>After this returns, the thread will no longer be schedulable on any CPUs. The thread must not be currently runnable.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>You should enable<span> <a class="reference internal" href="../../../kconfig.html#CONFIG_SCHED_DEADLINE" title="CONFIG_SCHED_DEADLINE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SCHED_DEADLINE</span></code></a> </span> in your project configuration.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Zero on success, otherwise error code </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Thread to operate upon </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_cpu_mask_enable_all">
+<span class="target" id="group__thread__apis_1gaedcfeb0964ae72611791241580b2119d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_cpu_mask_enable_all</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_cpu_mask_enable_all" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets all CPU enable masks to one. </p>
+<p>After this returns, the thread will be schedulable on any CPU. The thread must not be currently runnable.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>You should enable<span> <a class="reference internal" href="../../../kconfig.html#CONFIG_SCHED_DEADLINE" title="CONFIG_SCHED_DEADLINE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SCHED_DEADLINE</span></code></a> </span> in your project configuration.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Zero on success, otherwise error code </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Thread to operate upon </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_cpu_mask_enable">
+<span class="target" id="group__thread__apis_1ga306587604a7496db8059bd395fd90fc0"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_cpu_mask_enable</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">cpu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_cpu_mask_enable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Enable thread to run on specified CPU. </p>
+<p>The thread must not be currently runnable.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>You should enable<span> <a class="reference internal" href="../../../kconfig.html#CONFIG_SCHED_DEADLINE" title="CONFIG_SCHED_DEADLINE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SCHED_DEADLINE</span></code></a> </span> in your project configuration.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Zero on success, otherwise error code </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Thread to operate upon </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cpu</span></code>: CPU index </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_cpu_mask_disable">
+<span class="target" id="group__thread__apis_1ga89e6c07ac112da75b2ef115d1a557d44"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_cpu_mask_disable</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">cpu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_cpu_mask_disable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Prevent thread to run on specified CPU. </p>
+<p>The thread must not be currently runnable.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>You should enable<span> <a class="reference internal" href="../../../kconfig.html#CONFIG_SCHED_DEADLINE" title="CONFIG_SCHED_DEADLINE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SCHED_DEADLINE</span></code></a> </span> in your project configuration.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Zero on success, otherwise error code </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Thread to operate upon </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cpu</span></code>: CPU index </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_suspend">
+<span class="target" id="group__thread__apis_1ga66cf8682fb65870eceb5e57d667a8d4e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_suspend</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_suspend" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Suspend a thread. </p>
+<p>This routine prevents the kernel scheduler from making <em>thread</em> the current thread. All other internal operations on <em>thread</em> are still performed; for example, kernel objects it is waiting on are still handed to it. Note that any existing timeouts (e.g. <a class="reference internal" href="#group__thread__apis_1ga48d4b041790454da4d68ac8711f29657"><span class="std std-ref">k_sleep()</span></a>, or a timeout argument to <a class="reference internal" href="../synchronization/semaphores.html#group__semaphore__apis_1gac71e2383c1920dddc45a561cacfef090"><span class="std std-ref">k_sem_take()</span></a> et. al.) will be canceled. On resume, the thread will begin running immediately and return from the blocked call.</p>
+<p>If <em>thread</em> is already suspended, the routine has no effect.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: ID of thread to suspend. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_resume">
+<span class="target" id="group__thread__apis_1ga117b26f8569ec3045ead1fad1851663d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_resume</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_resume" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resume a suspended thread. </p>
+<p>This routine allows the kernel scheduler to make <em>thread</em> the current thread, when it is next eligible for that role.</p>
+<p>If <em>thread</em> is not currently suspended, the routine has no effect.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: ID of thread to resume. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_sched_time_slice_set">
+<span class="target" id="group__thread__apis_1ga877c1bfeffbf8f097d1656f9e10a66e8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_sched_time_slice_set</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">slice</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">prio</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_sched_time_slice_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set time-slicing period and scope. </p>
+<p>This routine specifies how the scheduler will perform time slicing of preemptible threads.</p>
+<p>To enable time slicing, <em>slice</em> must be non-zero. The scheduler ensures that no thread runs for more than the specified time limit before other threads of that priority are given a chance to execute. Any thread whose priority is higher than <em>prio</em> is exempted, and may execute as long as desired without being preempted due to time slicing.</p>
+<p>Time slicing only limits the maximum amount of time a thread may continuously execute. Once the scheduler selects a thread for execution, there is no minimum guaranteed time the thread will execute before threads of greater or equal priority are scheduled.</p>
+<p>When the current thread is the only one of that priority eligible for execution, this routine has no effect; the thread is immediately rescheduled after the slice period expires.</p>
+<p>To disable timeslicing, set both <em>slice</em> and <em>prio</em> to zero.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">slice</span></code>: Maximum time slice length (in milliseconds). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prio</span></code>: Highest thread priority level eligible for time slicing. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_time_slice_set">
+<span class="target" id="group__thread__apis_1ga563928f292a4134acd4142029b60e631"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_time_slice_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_thread" title="k_thread"><span class="n"><span class="pre">k_thread</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">th</span></span>, <span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">slice_ticks</span></span>, <span class="n"><span class="pre">k_thread_timeslice_fn_t</span></span><span class="w"> </span><span class="n"><span class="pre">expired</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_time_slice_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set thread time slice. </p>
+<p>As for k_sched_time_slice_set, but (when CONFIG_TIMESLICE_PER_THREAD=y) sets the timeslice for a specific thread. When non-zero, this timeslice will take precedence over the global value.</p>
+<p>When such a thread’s timeslice expires, the configured callback will be called before the thread is removed/re-added to the run queue. This callback will occur in interrupt context, and the specified thread is guaranteed to have been preempted by the currently-executing ISR. Such a callback is free to, for example, modify the thread priority or slice time for future execution, suspend the thread, etc…</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Unlike the older API, the time slice parameter here is specified in ticks, not milliseconds. Ticks have always been the internal unit, and not all platforms have integer conversions between the two.</p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>Threads with a non-zero slice time set will be timesliced always, even if they are higher priority than the maximum timeslice priority set via <a class="reference internal" href="#group__thread__apis_1ga877c1bfeffbf8f097d1656f9e10a66e8"><span class="std std-ref">k_sched_time_slice_set()</span></a>.</p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>The callback notification for slice expiration happens, as it must, while the thread is still “current”, and thus it happens before any registered timeouts at this tick. This has the somewhat confusing side effect that the tick time (c.f. <a class="reference internal" href="../timing/clocks.html#group__clock__apis_1gae3e992cd3257c23d5b26d765fcbb2b69"><span class="std std-ref">k_uptime_get()</span></a>) does not yet reflect the expired ticks. Applications wishing to make fine-grained timing decisions within this callback should use the cycle API, or derived facilities like k_thread_runtime_stats_get().</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">th</span></code>: A valid, initialized thread </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">slice_ticks</span></code>: Maximum timeslice, in ticks </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expired</span></code>: Callback function called on slice expiration </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Parameter for the expiration handler </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_sched_lock">
+<span class="target" id="group__thread__apis_1ga4f0c5d0b9f279b12a4ad97db0c116a5f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_sched_lock</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_sched_lock" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Lock the scheduler. </p>
+<p>This routine prevents the current thread from being preempted by another thread by instructing the scheduler to treat it as a cooperative thread. If the thread subsequently performs an operation that makes it unready, it will be context switched out in the normal manner. When the thread again becomes the current thread, its non-preemptible status is maintained.</p>
+<p>This routine can be called recursively.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><a class="reference internal" href="#group__thread__apis_1ga4f0c5d0b9f279b12a4ad97db0c116a5f"><span class="std std-ref">k_sched_lock()</span></a> and <a class="reference internal" href="#group__thread__apis_1ga7b26f64523cc4c36522cc828ccf85580"><span class="std std-ref">k_sched_unlock()</span></a> should normally be used when the operation being performed can be safely interrupted by ISRs. However, if the amount of processing involved is very small, better performance may be obtained by using <a class="reference internal" href="../other/interrupts.html#group__isr__apis_1ga19fdde73c3b02fcca6cf1d1e67631228"><span class="std std-ref">irq_lock()</span></a> and <a class="reference internal" href="../other/interrupts.html#group__isr__apis_1ga646045943b3b2a130738bcc48867bf57"><span class="std std-ref">irq_unlock()</span></a>. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_sched_unlock">
+<span class="target" id="group__thread__apis_1ga7b26f64523cc4c36522cc828ccf85580"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_sched_unlock</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_sched_unlock" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unlock the scheduler. </p>
+<p>This routine reverses the effect of a previous call to <a class="reference internal" href="#group__thread__apis_1ga4f0c5d0b9f279b12a4ad97db0c116a5f"><span class="std std-ref">k_sched_lock()</span></a>. A thread must call the routine once for each time it called <a class="reference internal" href="#group__thread__apis_1ga4f0c5d0b9f279b12a4ad97db0c116a5f"><span class="std std-ref">k_sched_lock()</span></a> before the thread becomes preemptible. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_custom_data_set">
+<span class="target" id="group__thread__apis_1ga4834d9b81ed60c00eee77b0d4f8ab9e4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_custom_data_set</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_custom_data_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set current thread’s custom data. </p>
+<p>This routine sets the custom data for the current thread to &#64; value.</p>
+<p>Custom data is not used by the kernel itself, and is freely available for a thread to use as it sees fit. It can be used as a framework upon which to build thread-local storage.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: New custom data value. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_custom_data_get">
+<span class="target" id="group__thread__apis_1ga8a53350c009f408fdfcd5002437132ba"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_custom_data_get</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_custom_data_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get current thread’s custom data. </p>
+<p>This routine returns the custom data for the current thread.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Current custom data value. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_name_set">
+<span class="target" id="group__thread__apis_1ga23107333f134b9c9a8b692374211e841"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_name_set</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">str</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_name_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set current thread name. </p>
+<p>Set the name of the thread to be used when<span> <a class="reference internal" href="../../../kconfig.html#CONFIG_THREAD_MONITOR" title="CONFIG_THREAD_MONITOR"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_THREAD_MONITOR</span></code></a> </span> is enabled for tracing and debugging.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Thread to set name, or NULL to set the current thread </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: Name string </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EFAULT</span></code>: Memory access error with supplied string </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: Thread name configuration option not enabled </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: Thread name too long </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_name_get">
+<span class="target" id="group__thread__apis_1gae98efad5213c80e4018190e78d376ae8"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_name_get</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_name_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get thread name. </p>
+<p>Get the name of a thread</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Thread ID </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Thread</span></code>: name, or NULL if configuration not enabled </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_name_copy">
+<span class="target" id="group__thread__apis_1ga07b59ade055c69929ccdc08a14361794"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_name_copy</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_name_copy" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Copy the thread name into a supplied buffer. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Thread to obtain name information </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Destination buffer </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Destination buffer size </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSPC</span></code>: Destination buffer too small </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EFAULT</span></code>: Memory access error </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: Thread name feature not enabled </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Success </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_thread_state_str">
+<span class="target" id="group__thread__apis_1gac38ea93f4a8899f95492894d2a671cac"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_thread_state_str</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">k_tid_t</span></span><span class="w"> </span><span class="n"><span class="pre">thread_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_thread_state_str" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get thread state string. </p>
+<p>Get the human friendly thread state string</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thread_id</span></code>: Thread ID </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Thread</span></code>: state string, empty if no state flag is set </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.k_thread">
+<span class="target" id="structk__thread"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_thread</span></span></span><a class="headerlink" href="#c.k_thread" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;thread.h&gt;</em><p>Thread Structure </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.callee_saved">
+<span class="target" id="structk__thread_1ae804efd7a191ed1022dd2cf5f588b0ef"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">_callee_saved</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">callee_saved</span></span></span><a class="headerlink" href="#c.k_thread.callee_saved" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>defined by the architecture, but all archs need these </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.init_data">
+<span class="target" id="structk__thread_1a315fe3ad42c5c4c15d4596e6ceaf0694"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">init_data</span></span></span><a class="headerlink" href="#c.k_thread.init_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>static thread init data </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.join_queue">
+<span class="target" id="structk__thread_1aa8c560f5fbaf6cd551be99d491e654f6"></span><span class="n"><span class="pre">_wait_q_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">join_queue</span></span></span><a class="headerlink" href="#c.k_thread.join_queue" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>threads waiting in <a class="reference internal" href="#group__thread__apis_1ga40a733561eb1f64dcaae0e01b167d233"><span class="std std-ref">k_thread_join()</span></a> </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.entry">
+<span class="target" id="structk__thread_1a63d78888376893fe0bdb485c5f114e03"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">__thread_entry</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">entry</span></span></span><a class="headerlink" href="#c.k_thread.entry" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>thread entry and parameters description </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.next_thread">
+<span class="target" id="structk__thread_1a0f0bf272e21ad4709082631a34a8b240"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_thread" title="k_thread"><span class="n"><span class="pre">k_thread</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">next_thread</span></span></span><a class="headerlink" href="#c.k_thread.next_thread" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>next item in list of all threads </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.custom_data">
+<span class="target" id="structk__thread_1a459150bfd58cfb97eca88730eab7f325"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">custom_data</span></span></span><a class="headerlink" href="#c.k_thread.custom_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>crude thread-local storage </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.stack_info">
+<span class="target" id="structk__thread_1a8be452e7b016fc901adad8518d7fe518"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">_thread_stack_info</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stack_info</span></span></span><a class="headerlink" href="#c.k_thread.stack_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Stack Info </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.mem_domain_info">
+<span class="target" id="structk__thread_1ab2fe91c58940a2f9d9cb7a30aa91cc55"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">_mem_domain_info</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mem_domain_info</span></span></span><a class="headerlink" href="#c.k_thread.mem_domain_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>memory domain info of the thread </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.stack_obj">
+<span class="target" id="structk__thread_1a40103270ef1e99a43e544b9a6737e96c"></span><span class="n"><span class="pre">k_thread_stack_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">stack_obj</span></span></span><a class="headerlink" href="#c.k_thread.stack_obj" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Base address of thread stack </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.syscall_frame">
+<span class="target" id="structk__thread_1a7a6114f1bf7993ad7f80a26f71e7a230"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">syscall_frame</span></span></span><a class="headerlink" href="#c.k_thread.syscall_frame" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>current syscall frame pointer </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.swap_retval">
+<span class="target" id="structk__thread_1ae4cbe01f267cc15663c84c03d80aa3c1"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">swap_retval</span></span></span><a class="headerlink" href="#c.k_thread.swap_retval" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>z_swap() return value </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.switch_handle">
+<span class="target" id="structk__thread_1a351c093c8f32f66ab62f364b477128c4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">switch_handle</span></span></span><a class="headerlink" href="#c.k_thread.switch_handle" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Context handle returned via <a class="reference internal" href="../../../guides/porting/arch.html#group__arch-threads_1gab411d82ce5b60f062171f5a19e33e025"><span class="std std-ref">arch_switch()</span></a> </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.resource_pool">
+<span class="target" id="structk__thread_1a35b859bded3a270f25ccc40efece7583"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../memory/heap.html#c.k_heap" title="k_heap"><span class="n"><span class="pre">k_heap</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">resource_pool</span></span></span><a class="headerlink" href="#c.k_thread.resource_pool" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>resource pool </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_thread.arch">
+<span class="target" id="structk__thread_1a0fa3dd64d03f6eef06320b51b0623301"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">_thread_arch</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arch</span></span></span><a class="headerlink" href="#c.k_thread.arch" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>arch-specifics: must always be at the end </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__thread__stack__api"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">thread_stack_api</span></span></dt>
+<dd><p>Thread Stack APIs. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_KERNEL_STACK_ARRAY_EXTERN">
+<span class="target" id="group__thread__stack__api_1gac2977b55bda99f931314aea5adb1bd2a"></span><span class="sig-name descname"><span class="n"><span class="pre">K_KERNEL_STACK_ARRAY_EXTERN</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">nmemb</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_KERNEL_STACK_ARRAY_EXTERN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain an extern reference to a stack array. </p>
+<p>This macro properly brings the symbol of a stack array declared elsewhere into scope.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Thread stack symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nmemb</span></code>: Number of stacks to declare </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_KERNEL_PINNED_STACK_ARRAY_EXTERN">
+<span class="target" id="group__thread__stack__api_1ga110a3044827a3c5154479fbdc96ebf0c"></span><span class="sig-name descname"><span class="n"><span class="pre">K_KERNEL_PINNED_STACK_ARRAY_EXTERN</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">nmemb</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_KERNEL_PINNED_STACK_ARRAY_EXTERN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain an extern reference to a pinned stack array. </p>
+<p>This macro properly brings the symbol of a pinned stack array declared elsewhere into scope.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Thread stack symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nmemb</span></code>: Number of stacks to declare </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_KERNEL_STACK_DEFINE">
+<span class="target" id="group__thread__stack__api_1ga9e05e3cb5aa5b72d6f19e2f327313271"></span><span class="sig-name descname"><span class="n"><span class="pre">K_KERNEL_STACK_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_KERNEL_STACK_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define a toplevel kernel stack memory region. </p>
+<p>This declares a region of memory for use as a thread stack, for threads that exclusively run in supervisor mode. This is also suitable for declaring special stacks for interrupt or exception handling.</p>
+<p>Stacks declared with this macro may not host user mode threads.</p>
+<p>It is legal to precede this definition with the ‘static’ keyword.</p>
+<p>It is NOT legal to take the sizeof(sym) and pass that to the stackSize parameter of <a class="reference internal" href="#group__thread__apis_1gad5b0bff3102f1656089f5875d999a367"><span class="std std-ref">k_thread_create()</span></a>, it may not be the same as the ‘size’ parameter. Use <a class="reference internal" href="#group__thread__stack__api_1ga57b3824b117c634dbb6052d47dc4301c"><span class="std std-ref">K_KERNEL_STACK_SIZEOF()</span></a> instead.</p>
+<p>The total amount of memory allocated may be increased to accommodate fixed-size stack overflow guards.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Thread stack symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_KERNEL_PINNED_STACK_DEFINE">
+<span class="target" id="group__thread__stack__api_1ga7f6a9e1bd5f99b5240c69d372bfd4aa0"></span><span class="sig-name descname"><span class="n"><span class="pre">K_KERNEL_PINNED_STACK_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_KERNEL_PINNED_STACK_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define a toplevel kernel stack memory region in pinned section. </p>
+<p>See <a class="reference internal" href="#group__thread__stack__api_1ga9e05e3cb5aa5b72d6f19e2f327313271"><span class="std std-ref">K_KERNEL_STACK_DEFINE()</span></a> for more information and constraints.</p>
+<p>This puts the stack into the pinned noinit linker section if CONFIG_LINKER_USE_PINNED_SECTION is enabled, or else it would put the stack into the same section as <a class="reference internal" href="#group__thread__stack__api_1ga9e05e3cb5aa5b72d6f19e2f327313271"><span class="std std-ref">K_KERNEL_STACK_DEFINE()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Thread stack symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_KERNEL_STACK_ARRAY_DEFINE">
+<span class="target" id="group__thread__stack__api_1gaf05127bd2ab7e8a0aeb394f18cbd923a"></span><span class="sig-name descname"><span class="n"><span class="pre">K_KERNEL_STACK_ARRAY_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">nmemb</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_KERNEL_STACK_ARRAY_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define a toplevel array of kernel stack memory regions. </p>
+<p>Stacks declared with this macro may not host user mode threads.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Kernel stack array symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nmemb</span></code>: Number of stacks to declare </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_KERNEL_PINNED_STACK_ARRAY_DEFINE">
+<span class="target" id="group__thread__stack__api_1ga628f79ffde2cc43cf7b5525e5f4276df"></span><span class="sig-name descname"><span class="n"><span class="pre">K_KERNEL_PINNED_STACK_ARRAY_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">nmemb</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_KERNEL_PINNED_STACK_ARRAY_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define a toplevel array of kernel stack memory regions in pinned section. </p>
+<p>See <a class="reference internal" href="#group__thread__stack__api_1gaf05127bd2ab7e8a0aeb394f18cbd923a"><span class="std std-ref">K_KERNEL_STACK_ARRAY_DEFINE()</span></a> for more information and constraints.</p>
+<p>This puts the stack into the pinned noinit linker section if CONFIG_LINKER_USE_PINNED_SECTION is enabled, or else it would put the stack into the same section as <a class="reference internal" href="#group__thread__stack__api_1gaf05127bd2ab7e8a0aeb394f18cbd923a"><span class="std std-ref">K_KERNEL_STACK_ARRAY_DEFINE()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Kernel stack array symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nmemb</span></code>: Number of stacks to declare </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_KERNEL_STACK_MEMBER">
+<span class="target" id="group__thread__stack__api_1ga600162959def399e70310b944834711f"></span><span class="sig-name descname"><span class="n"><span class="pre">K_KERNEL_STACK_MEMBER</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_KERNEL_STACK_MEMBER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare an embedded stack memory region. </p>
+<p>Used for kernel stacks embedded within other data structures.</p>
+<p>Stacks declared with this macro may not host user mode threads. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Thread stack symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_KERNEL_STACK_SIZEOF">
+<span class="target" id="group__thread__stack__api_1ga57b3824b117c634dbb6052d47dc4301c"></span><span class="sig-name descname"><span class="n"><span class="pre">K_KERNEL_STACK_SIZEOF</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_KERNEL_STACK_SIZEOF" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_THREAD_STACK_SIZEOF">
+<span class="target" id="group__thread__stack__api_1ga775f8e6b4144cfdd24f3261b6db64150"></span><span class="sig-name descname"><span class="n"><span class="pre">K_THREAD_STACK_SIZEOF</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_THREAD_STACK_SIZEOF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the size in bytes of a stack memory region. </p>
+<p>Convenience macro for passing the desired stack size to <a class="reference internal" href="#group__thread__apis_1gad5b0bff3102f1656089f5875d999a367"><span class="std std-ref">k_thread_create()</span></a> since the underlying implementation may actually create something larger (for instance a guard area).</p>
+<p>The value returned here is not guaranteed to match the ‘size’ parameter passed to K_THREAD_STACK_DEFINE and may be larger, but is always safe to pass to <a class="reference internal" href="#group__thread__apis_1gad5b0bff3102f1656089f5875d999a367"><span class="std std-ref">k_thread_create()</span></a> for the associated stack object.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Size of the stack buffer </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Stack memory symbol </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_THREAD_STACK_DEFINE">
+<span class="target" id="group__thread__stack__api_1gac5368ce24fdeab3863b5c8dee2ebd955"></span><span class="sig-name descname"><span class="n"><span class="pre">K_THREAD_STACK_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_THREAD_STACK_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare a toplevel thread stack memory region. </p>
+<p>This declares a region of memory suitable for use as a thread’s stack.</p>
+<p>This is the generic, historical definition. Align to Z_THREAD_STACK_OBJ_ALIGN and put in ‘noinit’ section so that it isn’t zeroed at boot</p>
+<p>The declared symbol will always be a k_thread_stack_t which can be passed to <a class="reference internal" href="#group__thread__apis_1gad5b0bff3102f1656089f5875d999a367"><span class="std std-ref">k_thread_create()</span></a>, but should otherwise not be manipulated. If the buffer inside needs to be examined, examine thread-&gt;stack_info for the associated thread object to obtain the boundaries.</p>
+<p>It is legal to precede this definition with the ‘static’ keyword.</p>
+<p>It is NOT legal to take the sizeof(sym) and pass that to the stackSize parameter of <a class="reference internal" href="#group__thread__apis_1gad5b0bff3102f1656089f5875d999a367"><span class="std std-ref">k_thread_create()</span></a>, it may not be the same as the ‘size’ parameter. Use <a class="reference internal" href="#group__thread__stack__api_1ga775f8e6b4144cfdd24f3261b6db64150"><span class="std std-ref">K_THREAD_STACK_SIZEOF()</span></a> instead.</p>
+<p>Some arches may round the size of the usable stack region up to satisfy alignment constraints. <a class="reference internal" href="#group__thread__stack__api_1ga775f8e6b4144cfdd24f3261b6db64150"><span class="std std-ref">K_THREAD_STACK_SIZEOF()</span></a> will return the aligned size.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Thread stack symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_THREAD_PINNED_STACK_DEFINE">
+<span class="target" id="group__thread__stack__api_1ga7227f78410cf126deb5b185a0534f7f3"></span><span class="sig-name descname"><span class="n"><span class="pre">K_THREAD_PINNED_STACK_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_THREAD_PINNED_STACK_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define a toplevel thread stack memory region in pinned section. </p>
+<p>This declares a region of memory suitable for use as a thread’s stack.</p>
+<p>This is the generic, historical definition. Align to Z_THREAD_STACK_OBJ_ALIGN and put in ‘noinit’ section so that it isn’t zeroed at boot</p>
+<p>The declared symbol will always be a k_thread_stack_t which can be passed to <a class="reference internal" href="#group__thread__apis_1gad5b0bff3102f1656089f5875d999a367"><span class="std std-ref">k_thread_create()</span></a>, but should otherwise not be manipulated. If the buffer inside needs to be examined, examine thread-&gt;stack_info for the associated thread object to obtain the boundaries.</p>
+<p>It is legal to precede this definition with the ‘static’ keyword.</p>
+<p>It is NOT legal to take the sizeof(sym) and pass that to the stackSize parameter of <a class="reference internal" href="#group__thread__apis_1gad5b0bff3102f1656089f5875d999a367"><span class="std std-ref">k_thread_create()</span></a>, it may not be the same as the ‘size’ parameter. Use <a class="reference internal" href="#group__thread__stack__api_1ga775f8e6b4144cfdd24f3261b6db64150"><span class="std std-ref">K_THREAD_STACK_SIZEOF()</span></a> instead.</p>
+<p>Some arches may round the size of the usable stack region up to satisfy alignment constraints. <a class="reference internal" href="#group__thread__stack__api_1ga775f8e6b4144cfdd24f3261b6db64150"><span class="std std-ref">K_THREAD_STACK_SIZEOF()</span></a> will return the aligned size.</p>
+<p>This puts the stack into the pinned noinit linker section if CONFIG_LINKER_USE_PINNED_SECTION is enabled, or else it would put the stack into the same section as <a class="reference internal" href="#group__thread__stack__api_1gac5368ce24fdeab3863b5c8dee2ebd955"><span class="std std-ref">K_THREAD_STACK_DEFINE()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Thread stack symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_THREAD_STACK_LEN">
+<span class="target" id="group__thread__stack__api_1ga72fa31a9d8e28ccabd6e5e908a24ec00"></span><span class="sig-name descname"><span class="n"><span class="pre">K_THREAD_STACK_LEN</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_THREAD_STACK_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Calculate size of stacks to be allocated in a stack array. </p>
+<p>This macro calculates the size to be allocated for the stacks inside a stack array. It accepts the indicated “size” as a parameter and if required, pads some extra bytes (e.g. for MPU scenarios). Refer K_THREAD_STACK_ARRAY_DEFINE definition to see how this is used. The returned size ensures each array member will be aligned to the required stack base alignment.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Appropriate size for an array member </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_THREAD_STACK_ARRAY_DEFINE">
+<span class="target" id="group__thread__stack__api_1gaae2471b24bdc574382f083163fb42597"></span><span class="sig-name descname"><span class="n"><span class="pre">K_THREAD_STACK_ARRAY_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">nmemb</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_THREAD_STACK_ARRAY_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare a toplevel array of thread stack memory regions. </p>
+<p>Create an array of equally sized stacks. See K_THREAD_STACK_DEFINE definition for additional details and constraints.</p>
+<p>This is the generic, historical definition. Align to Z_THREAD_STACK_OBJ_ALIGN and put in ‘noinit’ section so that it isn’t zeroed at boot</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Thread stack symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nmemb</span></code>: Number of stacks to declare </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_THREAD_PINNED_STACK_ARRAY_DEFINE">
+<span class="target" id="group__thread__stack__api_1gaa2e5014926e11e2241141cdd82888b09"></span><span class="sig-name descname"><span class="n"><span class="pre">K_THREAD_PINNED_STACK_ARRAY_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">nmemb</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_THREAD_PINNED_STACK_ARRAY_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare a toplevel array of thread stack memory regions in pinned section. </p>
+<p>Create an array of equally sized stacks. See K_THREAD_STACK_DEFINE definition for additional details and constraints.</p>
+<p>This is the generic, historical definition. Align to Z_THREAD_STACK_OBJ_ALIGN and put in ‘noinit’ section so that it isn’t zeroed at boot</p>
+<p>This puts the stack into the pinned noinit linker section if CONFIG_LINKER_USE_PINNED_SECTION is enabled, or else it would put the stack into the same section as <a class="reference internal" href="#group__thread__stack__api_1gac5368ce24fdeab3863b5c8dee2ebd955"><span class="std std-ref">K_THREAD_STACK_DEFINE()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Thread stack symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nmemb</span></code>: Number of stacks to declare </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_THREAD_STACK_MEMBER">
+<span class="target" id="group__thread__stack__api_1ga753188e7f124f0ee03ed0fa1dad8ecfb"></span><span class="sig-name descname"><span class="n"><span class="pre">K_THREAD_STACK_MEMBER</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sym</span></span>, <span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_THREAD_STACK_MEMBER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare an embedded stack memory region. </p>
+<p>Used for stacks embedded within other data structures. Use is highly discouraged but in some cases necessary. For memory protection scenarios, it is very important that any RAM preceding this member not be writable by threads else a stack overflow will lead to silent corruption. In other words, the containing data structure should live in RAM owned by the kernel.</p>
+<p>A user thread can only be started with a stack defined in this way if the thread starting it is in supervisor mode.</p>
+<p>This is now deprecated, as stacks defined in this way are not usable from user mode. Use K_KERNEL_STACK_MEMBER.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sym</span></code>: Thread stack symbol name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the stack memory region </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../scheduling/index.html" class="btn btn-neutral float-right" title="Scheduling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="Kernel Services" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

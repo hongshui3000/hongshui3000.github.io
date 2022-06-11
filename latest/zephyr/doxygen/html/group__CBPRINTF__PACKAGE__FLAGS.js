@@ -1,0 +1,4 @@
+var group__CBPRINTF__PACKAGE__FLAGS =
+[
+    [ "CBPRINTF_PACKAGE_ADD_STRING_IDXS", "group__CBPRINTF__PACKAGE__FLAGS.html#ga95b0b7f91303781b8bad610f7cac3fa3", null ]
+];

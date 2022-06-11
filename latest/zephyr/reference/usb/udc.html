@@ -1,0 +1,893 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>USB device controller driver &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="USB device stack" href="uds.html" />
+    <link rel="prev" title="USB device support" href="index.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">USB device support</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">USB device controller driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="uds.html">USB device stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uds_testing.html">Testing USB device support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hid.html">USB Human Interface Devices (HID) support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uds_cdc_acm.html">USB device stack CDC ACM support</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">USB device support</a> &raquo;</li>
+        
+      <li>USB device controller driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/usb/udc.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="usb-device-controller-driver">
+<span id="udc-api"></span><h1>USB device controller driver<a class="headerlink" href="#usb-device-controller-driver" title="Permalink to this headline">¶</a></h1>
+<p>The USB Device Controller Driver Layer implements the low level control routines
+to deal directly with the hardware. All device controller drivers should
+implement the APIs described in <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/drivers/usb/usb_dc.h">include/drivers/usb/usb_dc.h</a>.
+This allows the integration of new USB device controllers to be done without
+changing the upper layers.
+With this API it is not possible to support more than one controller
+instance at runtime.</p>
+<div class="section" id="api-reference">
+<h2>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group____usb__device__controller__api"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">_usb_device_controller_api</span></span></dt>
+<dd><p>USB Device Controller API. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.usb_dc_ep_callback">
+<span class="target" id="group____usb__device__controller__api_1gad75ee35cdfb5dc4f1fad0e615067cb70"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_callback</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_dc_ep_cb_status_code" title="usb_dc_ep_cb_status_code"><span class="n"><span class="pre">usb_dc_ep_cb_status_code</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb_status</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.usb_dc_ep_callback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback function signature for the USB Endpoint status </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.usb_dc_status_callback">
+<span class="target" id="group____usb__device__controller__api_1ga2ddb0b059b4e1e76473ed7f56d0cf2ee"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_status_callback</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_dc_status_code" title="usb_dc_status_code"><span class="n"><span class="pre">usb_dc_status_code</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb_status</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">param</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.usb_dc_status_callback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback function signature for the device </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.usb_dc_status_code">
+<span class="target" id="group____usb__device__controller__api_1gac09e3e0af1a2b41a5bfbad91f900baf7"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_status_code</span></span></span><a class="headerlink" href="#c.usb_dc_status_code" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB Driver Status Codes. </p>
+<p>Status codes reported by the registered device status callback. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_ERROR">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7a8c34e2279a64268809170d6b7f08ed14"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_ERROR</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_ERROR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB error reported by the controller </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_RESET">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7a6486b0e1a9f4c68fd3bc3b6b3354daa6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_RESET</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_RESET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB reset </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_CONNECTED">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7a643918c145a481a36bda37ae5b36599f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_CONNECTED</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_CONNECTED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB connection established, hardware enumeration is completed </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_CONFIGURED">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7a63372b97af29a434d58a970439afc23f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_CONFIGURED</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_CONFIGURED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB configuration done </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_DISCONNECTED">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7a3584740de2622bf915e67fee6104da4c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_DISCONNECTED</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_DISCONNECTED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB connection lost </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_SUSPEND">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7afb40fc53f01c4e947a7d4c85a1a21c87"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_SUSPEND</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_SUSPEND" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB connection suspended by the HOST </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_RESUME">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7a306cbcf313be2111434f3e29b787de1d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_RESUME</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_RESUME" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB connection resumed by the HOST </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_INTERFACE">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7a65828d350f0cd42be7f8406624eb3828"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_INTERFACE</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_INTERFACE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB interface selected </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_SET_HALT">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7a426477e3ab4378cb0783523346e5ff23"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_SET_HALT</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_SET_HALT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set Feature ENDPOINT_HALT received </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_CLEAR_HALT">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7a25d070f91c1e3ff0382b360f5ac2d501"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_CLEAR_HALT</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_CLEAR_HALT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Clear Feature ENDPOINT_HALT received </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_SOF">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7abe89e0ffc160ffd1d8ae88d3771fcbc0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_SOF</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_SOF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Start of Frame received </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_status_code.USB_DC_UNKNOWN">
+<span class="target" id="group____usb__device__controller__api_1ggac09e3e0af1a2b41a5bfbad91f900baf7a8a0f6af1f3625530c9ecdfb2409205d9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_UNKNOWN</span></span></span><a class="headerlink" href="#c.usb_dc_status_code.USB_DC_UNKNOWN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initial USB connection status </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.usb_dc_ep_cb_status_code">
+<span class="target" id="group____usb__device__controller__api_1gaf7f083f61e1406e7d41513113dccd3bd"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_cb_status_code</span></span></span><a class="headerlink" href="#c.usb_dc_ep_cb_status_code" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB Endpoint Callback Status Codes. </p>
+<p>Status Codes reported by the registered endpoint callback. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_ep_cb_status_code.USB_DC_EP_SETUP">
+<span class="target" id="group____usb__device__controller__api_1ggaf7f083f61e1406e7d41513113dccd3bdabeb0ca69354218c5efc14c4ddbdf1c27"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_EP_SETUP</span></span></span><a class="headerlink" href="#c.usb_dc_ep_cb_status_code.USB_DC_EP_SETUP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>SETUP received </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_ep_cb_status_code.USB_DC_EP_DATA_OUT">
+<span class="target" id="group____usb__device__controller__api_1ggaf7f083f61e1406e7d41513113dccd3bda1801d1ba252ed6a0e573c46e76ae1f78"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_EP_DATA_OUT</span></span></span><a class="headerlink" href="#c.usb_dc_ep_cb_status_code.USB_DC_EP_DATA_OUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Out transaction on this EP, data is available for read </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_ep_cb_status_code.USB_DC_EP_DATA_IN">
+<span class="target" id="group____usb__device__controller__api_1ggaf7f083f61e1406e7d41513113dccd3bdae2f497d34e18d6431ab886d120bd124c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_EP_DATA_IN</span></span></span><a class="headerlink" href="#c.usb_dc_ep_cb_status_code.USB_DC_EP_DATA_IN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>In transaction done on this EP </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.usb_dc_ep_transfer_type">
+<span class="target" id="group____usb__device__controller__api_1gaca68e4a7c3c0a984d1df23794cfa7d87"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_transfer_type</span></span></span><a class="headerlink" href="#c.usb_dc_ep_transfer_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB Endpoint Transfer Type. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_ep_transfer_type.USB_DC_EP_CONTROL">
+<span class="target" id="group____usb__device__controller__api_1ggaca68e4a7c3c0a984d1df23794cfa7d87a10c7e329a8eceb8cc693b77743f43681"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_EP_CONTROL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.usb_dc_ep_transfer_type.USB_DC_EP_CONTROL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Control type endpoint </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_ep_transfer_type.USB_DC_EP_ISOCHRONOUS">
+<span class="target" id="group____usb__device__controller__api_1ggaca68e4a7c3c0a984d1df23794cfa7d87a75c49ff44a9729723af190640a710ab6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_EP_ISOCHRONOUS</span></span></span><a class="headerlink" href="#c.usb_dc_ep_transfer_type.USB_DC_EP_ISOCHRONOUS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Isochronous type endpoint </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_ep_transfer_type.USB_DC_EP_BULK">
+<span class="target" id="group____usb__device__controller__api_1ggaca68e4a7c3c0a984d1df23794cfa7d87aa0ecbc47a337243efd86155cb4ca54fe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_EP_BULK</span></span></span><a class="headerlink" href="#c.usb_dc_ep_transfer_type.USB_DC_EP_BULK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Bulk type endpoint </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_ep_transfer_type.USB_DC_EP_INTERRUPT">
+<span class="target" id="group____usb__device__controller__api_1ggaca68e4a7c3c0a984d1df23794cfa7d87aa70b161209601f1d7a43c5ebcc197b73"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_EP_INTERRUPT</span></span></span><a class="headerlink" href="#c.usb_dc_ep_transfer_type.USB_DC_EP_INTERRUPT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Interrupt type endpoint </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.usb_dc_ep_synchronozation_type">
+<span class="target" id="group____usb__device__controller__api_1gae247c1ce7213e35d7ce74598225fa428"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_synchronozation_type</span></span></span><a class="headerlink" href="#c.usb_dc_ep_synchronozation_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>USB Endpoint Synchronization Type. </p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Valid only for Isochronous Endpoints </p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_ep_synchronozation_type.USB_DC_EP_NO_SYNCHRONIZATION">
+<span class="target" id="group____usb__device__controller__api_1ggae247c1ce7213e35d7ce74598225fa428a98061a0e90201b01c7b9b04b51eb0da8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_EP_NO_SYNCHRONIZATION</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">0U</span></span><span class="w"> </span><span class="o"><span class="pre">&lt;&lt;</span></span><span class="w"> </span><span class="m"><span class="pre">2U</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.usb_dc_ep_synchronozation_type.USB_DC_EP_NO_SYNCHRONIZATION" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>No Synchronization </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_ep_synchronozation_type.USB_DC_EP_ASYNCHRONOUS">
+<span class="target" id="group____usb__device__controller__api_1ggae247c1ce7213e35d7ce74598225fa428a8cb40e0f2b85da1adfc005fbd5f9f45d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_EP_ASYNCHRONOUS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1U</span></span><span class="w"> </span><span class="o"><span class="pre">&lt;&lt;</span></span><span class="w"> </span><span class="m"><span class="pre">2U</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.usb_dc_ep_synchronozation_type.USB_DC_EP_ASYNCHRONOUS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Asynchronous </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_ep_synchronozation_type.USB_DC_EP_ADAPTIVE">
+<span class="target" id="group____usb__device__controller__api_1ggae247c1ce7213e35d7ce74598225fa428a13e7d8970d0723b36a17ae8a29dc9151"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_EP_ADAPTIVE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">2U</span></span><span class="w"> </span><span class="o"><span class="pre">&lt;&lt;</span></span><span class="w"> </span><span class="m"><span class="pre">2U</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.usb_dc_ep_synchronozation_type.USB_DC_EP_ADAPTIVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Adaptive </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.usb_dc_ep_synchronozation_type.USB_DC_EP_SYNCHRONOUS">
+<span class="target" id="group____usb__device__controller__api_1ggae247c1ce7213e35d7ce74598225fa428a70976afffbf9a9ef89eb51453c4307c5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USB_DC_EP_SYNCHRONOUS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">3U</span></span><span class="w"> </span><span class="o"><span class="pre">&lt;&lt;</span></span><span class="w"> </span><span class="m"><span class="pre">2U</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.usb_dc_ep_synchronozation_type.USB_DC_EP_SYNCHRONOUS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Synchronous </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_attach">
+<span class="target" id="group____usb__device__controller__api_1gaf78984e6103185c6ebadee2fcbdf62f7"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_attach</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_attach" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Attach USB for device connection. </p>
+<p>Function to attach USB for device connection. Upon success, the USB PLL is enabled, and the USB device is now capable of transmitting and receiving on the USB bus and of generating interrupts.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_detach">
+<span class="target" id="group____usb__device__controller__api_1ga062b4c8b618f2e964984786baf635a93"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_detach</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_detach" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Detach the USB device. </p>
+<p>Function to detach the USB device. Upon success, the USB hardware PLL is powered down and USB communication is disabled.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_reset">
+<span class="target" id="group____usb__device__controller__api_1ga8a72b00cfa90dcde41daa228791b61da"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_reset</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_reset" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reset the USB device. </p>
+<p>This function returns the USB device and firmware back to it’s initial state. N.B. the USB PLL is handled by the usb_detach function</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_set_address">
+<span class="target" id="group____usb__device__controller__api_1ga54a8280e4b011eff3640f6d21af1c292"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_set_address</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_set_address" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set USB device address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">addr</span></code>: Device address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_set_status_callback">
+<span class="target" id="group____usb__device__controller__api_1ga478eb2e57635ea816fd6acc8cb9a9424"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_set_status_callback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_dc_status_callback" title="usb_dc_status_callback"><span class="n"><span class="pre">usb_dc_status_callback</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_set_status_callback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set USB device controller status callback. </p>
+<p>Function to set USB device controller status callback. The registered callback is used to report changes in the status of the device controller. The status code are described by the usb_dc_status_code enumeration.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">cb</span></code>: Callback function </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_check_cap">
+<span class="target" id="group____usb__device__controller__api_1gab6b9ca74059ff2285bd301e9264df45b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_check_cap</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_dc_ep_cfg_data" title="usb_dc_ep_cfg_data"><span class="n"><span class="pre">usb_dc_ep_cfg_data</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">cfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_check_cap" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>check endpoint capabilities </p>
+<p>Function to check capabilities of an endpoint. <a class="reference internal" href="#structusb__dc__ep__cfg__data"><span class="std std-ref">usb_dc_ep_cfg_data</span></a> structure provides the endpoint configuration parameters: endpoint address, endpoint maximum packet size and endpoint type. The driver should check endpoint capabilities and return 0 if the endpoint configuration is possible.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">cfg</span></code>: Endpoint config</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_configure">
+<span class="target" id="group____usb__device__controller__api_1ga858a4e1bf2c35f5a0ec333801e75b718"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_configure</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_dc_ep_cfg_data" title="usb_dc_ep_cfg_data"><span class="n"><span class="pre">usb_dc_ep_cfg_data</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">cfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_configure" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Configure endpoint. </p>
+<p>Function to configure an endpoint. <a class="reference internal" href="#structusb__dc__ep__cfg__data"><span class="std std-ref">usb_dc_ep_cfg_data</span></a> structure provides the endpoint configuration parameters: endpoint address, endpoint maximum packet size and endpoint type.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">cfg</span></code>: Endpoint config</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_set_stall">
+<span class="target" id="group____usb__device__controller__api_1ga68fcfcfe36a36cef202586686c5d30e3"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_set_stall</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_set_stall" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set stall condition for the selected endpoint. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_clear_stall">
+<span class="target" id="group____usb__device__controller__api_1gab89ebb3049f7fd7a1e764ffef16b1b64"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_clear_stall</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_clear_stall" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Clear stall condition for the selected endpoint. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_is_stalled">
+<span class="target" id="group____usb__device__controller__api_1gaff2d98b0b6d4ae409b9961a7a123b326"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_is_stalled</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">stalled</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_is_stalled" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the selected endpoint is stalled. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">stalled</span></code>: Endpoint stall status</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_halt">
+<span class="target" id="group____usb__device__controller__api_1ga821d65d9872ebb62bfaee79afbb80004"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_halt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_halt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Halt the selected endpoint. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_enable">
+<span class="target" id="group____usb__device__controller__api_1ga199aaf51e878cadc0e4ad65007a5a622"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_enable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_enable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Enable the selected endpoint. </p>
+<p>Function to enable the selected endpoint. Upon success interrupts are enabled for the corresponding endpoint and the endpoint is ready for transmitting/receiving data.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_disable">
+<span class="target" id="group____usb__device__controller__api_1ga0154d6b5d462fa2a9db174a985259429"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_disable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_disable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Disable the selected endpoint. </p>
+<p>Function to disable the selected endpoint. Upon success interrupts are disabled for the corresponding endpoint and the endpoint is no longer able for transmitting/receiving data.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_flush">
+<span class="target" id="group____usb__device__controller__api_1ga8f702709dd2ed8257d61a8593c4c3b0d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_flush</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_flush" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flush the selected endpoint. </p>
+<p>This function flushes the FIFOs for the selected endpoint.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_write">
+<span class="target" id="group____usb__device__controller__api_1gad0b822f08c4a29a46aaa8fa8b30d58ef"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_write</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">data_len</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ret_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_write" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write data to the specified endpoint. </p>
+<p>This function is called to write data to the specified endpoint. The supplied usb_ep_callback function will be called when data is transmitted out.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">data</span></code>: Pointer to data to write </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">data_len</span></code>: Length of the data requested to write. This may be zero for a zero length status packet. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">ret_bytes</span></code>: Bytes scheduled for transmission. This value may be NULL if the application expects all bytes to be written</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_read">
+<span class="target" id="group____usb__device__controller__api_1ga8b51a93295c7f9d3b15f4bfe8a09bb11"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_read</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">max_data_len</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">read_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_read" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read data from the specified endpoint. </p>
+<p>This function is called by the endpoint handler function, after an OUT interrupt has been received for that EP. The application must only call this function through the supplied usb_ep_callback function. This function clears the ENDPOINT NAK, if all data in the endpoint FIFO has been read, so as to accept more data from host.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">data</span></code>: Pointer to data buffer to write to </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">max_data_len</span></code>: Max length of data to read </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">read_bytes</span></code>: Number of bytes read. If data is NULL and max_data_len is 0 the number of bytes available for read should be returned.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_set_callback">
+<span class="target" id="group____usb__device__controller__api_1gaba2134e2a7b8d870860903aead03b418"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_set_callback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_dc_ep_callback" title="usb_dc_ep_callback"><span class="n"><span class="pre">usb_dc_ep_callback</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_set_callback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set callback function for the specified endpoint. </p>
+<p>Function to set callback function for notification of data received and available to application or transmit done on the selected endpoint, NULL if callback not required by application code. The callback status code is described by usb_dc_ep_cb_status_code.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">cb</span></code>: Callback function</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_read_wait">
+<span class="target" id="group____usb__device__controller__api_1ga012fb4d99870e1e30e0ecd4ac2b22312"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_read_wait</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">max_data_len</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">read_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_read_wait" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read data from the specified endpoint. </p>
+<p>This is similar to usb_dc_ep_read, the difference being that, it doesn’t clear the endpoint NAKs so that the consumer is not bogged down by further upcalls till he is done with the processing of the data. The caller should reactivate ep by invoking <a class="reference internal" href="#group____usb__device__controller__api_1ga9694ad0cc1ee84a4ed9de4f2860d4ae6"><span class="std std-ref">usb_dc_ep_read_continue()</span></a> do so.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">data</span></code>: Pointer to data buffer to write to </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">max_data_len</span></code>: Max length of data to read </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">read_bytes</span></code>: Number of bytes read. If data is NULL and max_data_len is 0 the number of bytes available for read should be returned.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_read_continue">
+<span class="target" id="group____usb__device__controller__api_1ga9694ad0cc1ee84a4ed9de4f2860d4ae6"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_read_continue</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_read_continue" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Continue reading data from the endpoint. </p>
+<p>Clear the endpoint NAK and enable the endpoint to accept more data from the host. Usually called after <a class="reference internal" href="#group____usb__device__controller__api_1ga012fb4d99870e1e30e0ecd4ac2b22312"><span class="std std-ref">usb_dc_ep_read_wait()</span></a> when the consumer is fine to accept more data. Thus these calls together act as a flow control mechanism.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_ep_mps">
+<span class="target" id="group____usb__device__controller__api_1ga6e97104269bfe6dd08f5d0bbb791390e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_mps</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">ep</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_ep_mps" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get endpoint max packet size. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Enpoint max packet size (mps) </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ep</span></code>: Endpoint address corresponding to the one listed in the device configuration table</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_dc_wakeup_request">
+<span class="target" id="group____usb__device__controller__api_1ga459110125c2a52da95b5b2c3c6fff096"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_wakeup_request</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_dc_wakeup_request" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Start the host wake up procedure. </p>
+<p>Function to wake up the host if it’s currently in sleep mode.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code on fail. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.usb_dc_ep_cfg_data">
+<span class="target" id="structusb__dc__ep__cfg__data"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_dc_ep_cfg_data</span></span></span><a class="headerlink" href="#c.usb_dc_ep_cfg_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;usb_dc.h&gt;</em><p>USB Endpoint Configuration. </p>
+<p>Structure containing the USB endpoint configuration. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.usb_dc_ep_cfg_data.ep_addr">
+<span class="target" id="structusb__dc__ep__cfg__data_1aba57a59450c93db5935e2ca08c94aa8b"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ep_addr</span></span></span><a class="headerlink" href="#c.usb_dc_ep_cfg_data.ep_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The number associated with the EP in the device configuration structure IN EP = 0x80 | &lt;endpoint number&gt; OUT EP = 0x00 | &lt;endpoint number&gt; </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.usb_dc_ep_cfg_data.ep_mps">
+<span class="target" id="structusb__dc__ep__cfg__data_1a497bc16439e98415f383a680a0c4d008"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ep_mps</span></span></span><a class="headerlink" href="#c.usb_dc_ep_cfg_data.ep_mps" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Endpoint max packet size </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.usb_dc_ep_cfg_data.ep_type">
+<span class="target" id="structusb__dc__ep__cfg__data_1a689682e1df951fd2fd492dda5e03cf08"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_dc_ep_transfer_type" title="usb_dc_ep_transfer_type"><span class="n"><span class="pre">usb_dc_ep_transfer_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ep_type</span></span></span><a class="headerlink" href="#c.usb_dc_ep_cfg_data.ep_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Endpoint Transfer Type. May be Bulk, Interrupt, Control or Isochronous </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="uds.html" class="btn btn-neutral float-right" title="USB device stack" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="USB device support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,589 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Data Buffers &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Generic Access Profile (GAP)" href="gap.html" />
+    <link rel="prev" title="Cryptography" href="crypto.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Bluetooth</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="connection_mgmt.html">Connection Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="controller.html">Bluetooth Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crypto.html">Cryptography</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Data Buffers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gap.html">Generic Access Profile (GAP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gatt.html">Generic Attribute Profile (GATT)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci_drivers.html">HCI Drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci_raw.html">HCI RAW channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hfp.html">Hands Free Profile (HFP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l2cap.html">Logical Link Control and Adaptation Protocol (L2CAP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mesh.html">Bluetooth Mesh Profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfcomm.html">Serial Port Emulation (RFCOMM)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdp.html">Service Discovery Protocol (SDP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uuid.html">Universal Unique Identifiers (UUIDs)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/audio.html">Bluetooth: Basic Audio Profile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Bluetooth</a> &raquo;</li>
+        
+      <li>Data Buffers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/bluetooth/data_buffer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="data-buffers">
+<span id="bt-data-buffers"></span><h1>Data Buffers<a class="headerlink" href="#data-buffers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__bt__buf"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">bt_buf</span></span></dt>
+<dd><p>Data buffers. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_RESERVE">
+<span class="target" id="group__bt__buf_1ga41f80f3995e79982f704f832394a6bef"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_RESERVE</span></span></span><a class="headerlink" href="#c.BT_BUF_RESERVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_SIZE">
+<span class="target" id="group__bt__buf_1ga9c114a415dc8fc2b84503736b1283468"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_SIZE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_BUF_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper to include reserved HCI data in buffer calculations </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_ACL_SIZE">
+<span class="target" id="group__bt__buf_1ga8f570211d5e391be63bd46c189eac637"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_ACL_SIZE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_BUF_ACL_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper to calculate needed buffer size for HCI ACL packets </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_EVT_SIZE">
+<span class="target" id="group__bt__buf_1ga098d042ed58592d7c2428967928ee478"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_EVT_SIZE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_BUF_EVT_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper to calculate needed buffer size for HCI Event packets. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_CMD_SIZE">
+<span class="target" id="group__bt__buf_1ga9dc9de00be5e8bf673ec60921ea6681b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_CMD_SIZE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_BUF_CMD_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper to calculate needed buffer size for HCI Command packets. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_ISO_SIZE">
+<span class="target" id="group__bt__buf_1gaa820dee05a7202304e1aaa9a36386ca4"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_ISO_SIZE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_BUF_ISO_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper to calculate needed buffer size for HCI ISO packets. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_ACL_RX_SIZE">
+<span class="target" id="group__bt__buf_1ga3ad106326ce13d6eb61d0ac16f592003"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_ACL_RX_SIZE</span></span></span><a class="headerlink" href="#c.BT_BUF_ACL_RX_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data size needed for HCI ACL RX buffers </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_EVT_RX_SIZE">
+<span class="target" id="group__bt__buf_1gac76caf2a7fce82ba652eab094162ec66"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_EVT_RX_SIZE</span></span></span><a class="headerlink" href="#c.BT_BUF_EVT_RX_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data size needed for HCI Event RX buffers </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_ISO_RX_SIZE">
+<span class="target" id="group__bt__buf_1gae5db5f9f282f9675fe620842e0c50337"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_ISO_RX_SIZE</span></span></span><a class="headerlink" href="#c.BT_BUF_ISO_RX_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_ISO_RX_COUNT">
+<span class="target" id="group__bt__buf_1gac45f7915fff9516d9d156a42794e8221"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_ISO_RX_COUNT</span></span></span><a class="headerlink" href="#c.BT_BUF_ISO_RX_COUNT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_RX_SIZE">
+<span class="target" id="group__bt__buf_1ga3e16a5f4c0c9c4c9117d972b7043d82b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_RX_SIZE</span></span></span><a class="headerlink" href="#c.BT_BUF_RX_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data size needed for HCI ACL, HCI ISO or Event RX buffers </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_RX_COUNT">
+<span class="target" id="group__bt__buf_1gaa3ab0861dfd4ebc5f7485f36c1b0fdf1"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_RX_COUNT</span></span></span><a class="headerlink" href="#c.BT_BUF_RX_COUNT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Buffer count needed for HCI ACL, HCI ISO or Event RX buffers </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_BUF_CMD_TX_SIZE">
+<span class="target" id="group__bt__buf_1ga366c2eee5dcc6056430b203d1c020042"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_CMD_TX_SIZE</span></span></span><a class="headerlink" href="#c.BT_BUF_CMD_TX_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data size needed for HCI Command buffers. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.bt_buf_type">
+<span class="target" id="group__bt__buf_1gafe1539a89ba3389d52d010a071620d7b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_buf_type</span></span></span><a class="headerlink" href="#c.bt_buf_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Possible types of buffers passed around the Bluetooth stack </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_buf_type.BT_BUF_CMD">
+<span class="target" id="group__bt__buf_1ggafe1539a89ba3389d52d010a071620d7baead9b640992dd72bd90ebd5d1fa3aaf1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_CMD</span></span></span><a class="headerlink" href="#c.bt_buf_type.BT_BUF_CMD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HCI command </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_buf_type.BT_BUF_EVT">
+<span class="target" id="group__bt__buf_1ggafe1539a89ba3389d52d010a071620d7ba350a2419b238423e479203a61d45a6e5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_EVT</span></span></span><a class="headerlink" href="#c.bt_buf_type.BT_BUF_EVT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>HCI event </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_buf_type.BT_BUF_ACL_OUT">
+<span class="target" id="group__bt__buf_1ggafe1539a89ba3389d52d010a071620d7ba4332d09d0ae276cf48aa550cf2ab4091"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_ACL_OUT</span></span></span><a class="headerlink" href="#c.bt_buf_type.BT_BUF_ACL_OUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Outgoing ACL data </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_buf_type.BT_BUF_ACL_IN">
+<span class="target" id="group__bt__buf_1ggafe1539a89ba3389d52d010a071620d7baff31d58d06bf1d330f570bf8f1600c13"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_ACL_IN</span></span></span><a class="headerlink" href="#c.bt_buf_type.BT_BUF_ACL_IN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Incoming ACL data </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_buf_type.BT_BUF_ISO_OUT">
+<span class="target" id="group__bt__buf_1ggafe1539a89ba3389d52d010a071620d7ba4137aa547b58a7dbf69ef9c29127fa7e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_ISO_OUT</span></span></span><a class="headerlink" href="#c.bt_buf_type.BT_BUF_ISO_OUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Outgoing ISO data </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_buf_type.BT_BUF_ISO_IN">
+<span class="target" id="group__bt__buf_1ggafe1539a89ba3389d52d010a071620d7badd49c17ef6b2f452c9172fce6f96fb9e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_ISO_IN</span></span></span><a class="headerlink" href="#c.bt_buf_type.BT_BUF_ISO_IN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Incoming ISO data </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_buf_type.BT_BUF_H4">
+<span class="target" id="group__bt__buf_1ggafe1539a89ba3389d52d010a071620d7baf9a0d91bbd7c45c285615c6e4d9e5b57"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_BUF_H4</span></span></span><a class="headerlink" href="#c.bt_buf_type.BT_BUF_H4" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>H:4 data </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_buf_get_rx">
+<span class="target" id="group__bt__buf_1gad091ead91d66719f3ab37f429bb1f439"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">bt_buf_get_rx</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_buf_type" title="bt_buf_type"><span class="n"><span class="pre">bt_buf_type</span></span></a><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_buf_get_rx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate a buffer for incoming data</p>
+<p>This will set the buffer type so <a class="reference internal" href="#group__bt__buf_1gaec645aec3d6fb845f214c07f2a864fec"><span class="std std-ref">bt_buf_set_type()</span></a> does not need to be explicitly called before <a class="reference internal" href="hci_drivers.html#group__bt__hci__driver_1ga19c61df1660d6049ae6b03afe3554fee"><span class="std std-ref">bt_recv_prio()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>A new buffer. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: Type of buffer. Only BT_BUF_EVT and BT_BUF_ACL_IN are allowed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Non-negative waiting period to obtain a buffer or one of the special values K_NO_WAIT and K_FOREVER. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_buf_get_tx">
+<span class="target" id="group__bt__buf_1ga207c7d4c00f748637c332f7e042927bb"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">bt_buf_get_tx</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_buf_type" title="bt_buf_type"><span class="n"><span class="pre">bt_buf_type</span></span></a><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_buf_get_tx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate a buffer for outgoing data</p>
+<p>This will set the buffer type so <a class="reference internal" href="#group__bt__buf_1gaec645aec3d6fb845f214c07f2a864fec"><span class="std std-ref">bt_buf_set_type()</span></a> does not need to be explicitly called before <a class="reference internal" href="hci_raw.html#group__hci__raw_1ga8de934e01eb9a16a3c9d096151e58313"><span class="std std-ref">bt_send()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>A new buffer. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: Type of buffer. Only BT_BUF_CMD, BT_BUF_ACL_OUT or BT_BUF_H4, when operating on H:4 mode, are allowed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Non-negative waiting period to obtain a buffer or one of the special values K_NO_WAIT and K_FOREVER. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Initial data to append to buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Initial data size. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_buf_get_cmd_complete">
+<span class="target" id="group__bt__buf_1gab208c66bd5b7adfe6306e9dbfba5e14a"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">bt_buf_get_cmd_complete</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_buf_get_cmd_complete" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate a buffer for an HCI Command Complete/Status Event</p>
+<p>This will set the buffer type so <a class="reference internal" href="#group__bt__buf_1gaec645aec3d6fb845f214c07f2a864fec"><span class="std std-ref">bt_buf_set_type()</span></a> does not need to be explicitly called before <a class="reference internal" href="hci_drivers.html#group__bt__hci__driver_1ga19c61df1660d6049ae6b03afe3554fee"><span class="std std-ref">bt_recv_prio()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>A new buffer. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Non-negative waiting period to obtain a buffer or one of the special values K_NO_WAIT and K_FOREVER. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_buf_get_evt">
+<span class="target" id="group__bt__buf_1gaf0ad6b5154426f7e9b583921b9d90af6"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">bt_buf_get_evt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">evt</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">discardable</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_buf_get_evt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate a buffer for an HCI Event</p>
+<p>This will set the buffer type so <a class="reference internal" href="#group__bt__buf_1gaec645aec3d6fb845f214c07f2a864fec"><span class="std std-ref">bt_buf_set_type()</span></a> does not need to be explicitly called before <a class="reference internal" href="hci_drivers.html#group__bt__hci__driver_1ga19c61df1660d6049ae6b03afe3554fee"><span class="std std-ref">bt_recv_prio()</span></a> or <a class="reference internal" href="hci_drivers.html#group__bt__hci__driver_1gaca80bc9dacc4fa44416bd545bd185ef7"><span class="std std-ref">bt_recv()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>A new buffer. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">evt</span></code>: HCI event code </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">discardable</span></code>: Whether the driver considers the event discardable. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Non-negative waiting period to obtain a buffer or one of the special values K_NO_WAIT and K_FOREVER. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_buf_set_type">
+<span class="target" id="group__bt__buf_1gaec645aec3d6fb845f214c07f2a864fec"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_buf_set_type</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_buf_type" title="bt_buf_type"><span class="n"><span class="pre">bt_buf_type</span></span></a><span class="w"> </span><span class="n"><span class="pre">type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_buf_set_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the buffer type</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Bluetooth buffer </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: The BT_* type to set the buffer to </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_buf_get_type">
+<span class="target" id="group__bt__buf_1ga2e35f0593e54d28bad62d6b8933f1599"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_buf_type" title="bt_buf_type"><span class="n"><span class="pre">bt_buf_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_buf_get_type</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_buf_get_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the buffer type</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>The BT_* type to of the buffer </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Bluetooth buffer</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_buf_data">
+<span class="target" id="structbt__buf__data"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_buf_data</span></span></span><a class="headerlink" href="#c.bt_buf_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;buf.h&gt;</em><p>This is a base type for bt_buf user data. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gap.html" class="btn btn-neutral float-right" title="Generic Access Profile (GAP)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="crypto.html" class="btn btn-neutral" title="Cryptography" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

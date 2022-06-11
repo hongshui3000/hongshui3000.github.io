@@ -1,0 +1,28 @@
+var mcux__lpc__syscon__clock_8h =
+[
+    [ "MCUX_CTIMER0_CLK", "mcux__lpc__syscon__clock_8h.html#a29436fa81a77c707ca9c08a42a301019", null ],
+    [ "MCUX_CTIMER1_CLK", "mcux__lpc__syscon__clock_8h.html#a813bc9c11cded4fa7abda6fa3ac33bf2", null ],
+    [ "MCUX_CTIMER2_CLK", "mcux__lpc__syscon__clock_8h.html#a4f142a3a6cf54650c0a9c1510d078e59", null ],
+    [ "MCUX_CTIMER3_CLK", "mcux__lpc__syscon__clock_8h.html#aa8835aa87fd2ce75ea4a734c0f9dcf61", null ],
+    [ "MCUX_CTIMER4_CLK", "mcux__lpc__syscon__clock_8h.html#a0cd96aaaf82fd1acba2c8e24914547a1", null ],
+    [ "MCUX_CTIMER_CLK_OFFSET", "mcux__lpc__syscon__clock_8h.html#ae1a860e5ab8828ea6547994b786b05e8", null ],
+    [ "MCUX_FLEXCOMM0_CLK", "mcux__lpc__syscon__clock_8h.html#a0131126fce0a606a4d1ade85654bb61a", null ],
+    [ "MCUX_FLEXCOMM10_CLK", "mcux__lpc__syscon__clock_8h.html#a27e647672c88a6cdf3dce2a1918e3745", null ],
+    [ "MCUX_FLEXCOMM11_CLK", "mcux__lpc__syscon__clock_8h.html#a3cc7e2a23e06ed72cb5fc267dc0bbd8a", null ],
+    [ "MCUX_FLEXCOMM12_CLK", "mcux__lpc__syscon__clock_8h.html#a69bbe063f4e3a961d7cf5818e4538e09", null ],
+    [ "MCUX_FLEXCOMM13_CLK", "mcux__lpc__syscon__clock_8h.html#ad70ee63f0f119911b8d2b3ecf57c4dea", null ],
+    [ "MCUX_FLEXCOMM1_CLK", "mcux__lpc__syscon__clock_8h.html#a94328a748738aa7599c54178320a4270", null ],
+    [ "MCUX_FLEXCOMM2_CLK", "mcux__lpc__syscon__clock_8h.html#ac7b838481b0c3e22ea0c73cc20649261", null ],
+    [ "MCUX_FLEXCOMM3_CLK", "mcux__lpc__syscon__clock_8h.html#a81d32a4628c73ae2cff0c7083269adb3", null ],
+    [ "MCUX_FLEXCOMM4_CLK", "mcux__lpc__syscon__clock_8h.html#aae97de225885a02eaf43c02bdb63a0f7", null ],
+    [ "MCUX_FLEXCOMM5_CLK", "mcux__lpc__syscon__clock_8h.html#aea277f7f67bc9cfaa9fce0c6028a7ffb", null ],
+    [ "MCUX_FLEXCOMM6_CLK", "mcux__lpc__syscon__clock_8h.html#ada5a860ef2da608f969b9efcbc17f2c7", null ],
+    [ "MCUX_FLEXCOMM7_CLK", "mcux__lpc__syscon__clock_8h.html#abd3d4114d1d3214eb08513ea3a8b904b", null ],
+    [ "MCUX_FLEXCOMM8_CLK", "mcux__lpc__syscon__clock_8h.html#a4db5314db3735bd28e4742e37b703cf1", null ],
+    [ "MCUX_FLEXCOMM9_CLK", "mcux__lpc__syscon__clock_8h.html#ad3931251f9e41dfb1529c784b25e52f7", null ],
+    [ "MCUX_HS_SPI_CLK", "mcux__lpc__syscon__clock_8h.html#ace02fa0f8524187210a42b35cc81b3b4", null ],
+    [ "MCUX_MCAN_CLK", "mcux__lpc__syscon__clock_8h.html#afe9d906202d3e843dcfc340e4bb65571", null ],
+    [ "MCUX_PMIC_I2C_CLK", "mcux__lpc__syscon__clock_8h.html#afd7c883dfbd0d6f45c0dda39fb454c3c", null ],
+    [ "MCUX_USDHC1_CLK", "mcux__lpc__syscon__clock_8h.html#af75d628dbb0a7721ad41e975149ac933", null ],
+    [ "MCUX_USDHC2_CLK", "mcux__lpc__syscon__clock_8h.html#a035029233e88559d5cc8c278f57f2327", null ]
+];

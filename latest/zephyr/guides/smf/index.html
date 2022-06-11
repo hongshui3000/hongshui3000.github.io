@@ -1,0 +1,622 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>State Machine Framework &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Testing" href="../test/index.html" />
+    <link rel="prev" title="Shields" href="../porting/shields.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">State Machine Framework</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#state-creation">State Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#state-machine-creation">State Machine Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#state-machine-execution">State Machine Execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#state-machine-termination">State Machine Termination</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flat-state-machine-example">Flat State Machine Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hierarchical-state-machine-example">Hierarchical State Machine Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+      <li>State Machine Framework</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/smf/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="state-machine-framework">
+<span id="smf"></span><h1>State Machine Framework<a class="headerlink" href="#state-machine-framework" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The State Machine Framework (SMF) is an application agnostic framework that
+provides an easy way for developers to integrate state machines into their
+application. The framework can be added to any project by enabling the
+<a class="reference internal" href="../../kconfig.html#CONFIG_SMF" title="CONFIG_SMF"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SMF</span></code></a> option.</p>
+</div>
+<div class="section" id="state-creation">
+<h2>State Creation<a class="headerlink" href="#state-creation" title="Permalink to this headline">¶</a></h2>
+<p>A state is represented by three functions, where one function implements the
+Entry actions, another function implements the Run actions, and the last
+function implements the Exit actions. The prototype for these functions is as
+follows: <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">funct(void</span> <span class="pre">*obj)</span></code>, where the <code class="docutils literal notranslate"><span class="pre">obj</span></code> parameter is a user
+defined structure that has the state machine context, <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">smf_ctx</span></code>, as
+its first member. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">user_object</span> <span class="p">{</span>
+   <span class="n">struct</span> <span class="n">smf_ctx</span> <span class="n">ctx</span><span class="p">;</span>
+   <span class="o">/*</span> <span class="n">All</span> <span class="n">User</span> <span class="n">Defined</span> <span class="n">Data</span> <span class="n">Follows</span> <span class="o">*/</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">smf_ctx</span></code> member must be first because the state machine
+framework’s functions casts the user defined object to the <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">smf_ctx</span></code>
+type with the following macro: <code class="docutils literal notranslate"><span class="pre">SMF_CTX(o)</span></code></p>
+<p>For example instead of doing this <code class="docutils literal notranslate"><span class="pre">(struct</span> <span class="pre">smf_ctx</span> <span class="pre">*)&amp;user_obj</span></code>, you could
+use <code class="docutils literal notranslate"><span class="pre">SMF_CTX(&amp;user_obj)</span></code>.</p>
+<p>By default, a state can have no anscestor states, resulting in a flat state
+machine. But to enable the creation of a hierarchical state machine, the
+<a class="reference internal" href="../../kconfig.html#CONFIG_SMF_ANCESTOR_SUPPORT" title="CONFIG_SMF_ANCESTOR_SUPPORT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SMF_ANCESTOR_SUPPORT</span></code></a> option must be enabled.</p>
+<p>The following macro can be used for easy state creation:</p>
+<ul class="simple">
+<li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">SMF_CREATE_STATE</span></code> Create a state</p></li>
+</ul>
+<p><strong>NOTE:</strong> The <code class="xref c c-macro docutils literal notranslate"><span class="pre">SMF_CREATE_STATE</span></code> macro takes an additional parameter
+when <a class="reference internal" href="../../kconfig.html#CONFIG_SMF_ANCESTOR_SUPPORT" title="CONFIG_SMF_ANCESTOR_SUPPORT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SMF_ANCESTOR_SUPPORT</span></code></a> is enabled.</p>
+</div>
+<div class="section" id="state-machine-creation">
+<h2>State Machine Creation<a class="headerlink" href="#state-machine-creation" title="Permalink to this headline">¶</a></h2>
+<p>A state machine is created by defining a table of states that’s indexed by an
+enum. For example, the following creates three flat states:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">enum</span> <span class="n">demo_state</span> <span class="p">{</span> <span class="n">S0</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span> <span class="p">};</span>
+
+<span class="n">const</span> <span class="n">struct</span> <span class="n">smf_state</span> <span class="n">demo_states</span> <span class="p">{</span>
+   <span class="p">[</span><span class="n">S0</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">s0_entry</span><span class="p">,</span> <span class="n">s0_run</span><span class="p">,</span> <span class="n">s0_exit</span><span class="p">),</span>
+   <span class="p">[</span><span class="n">S1</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">s1_entry</span><span class="p">,</span> <span class="n">s1_run</span><span class="p">,</span> <span class="n">s1_exit</span><span class="p">),</span>
+   <span class="p">[</span><span class="n">S2</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">s2_entry</span><span class="p">,</span> <span class="n">s2_run</span><span class="p">,</span> <span class="n">s2_exit</span><span class="p">)</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>And this example creates three hierarchical states:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">enum</span> <span class="n">demo_state</span> <span class="p">{</span> <span class="n">S0</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span> <span class="p">};</span>
+
+<span class="n">const</span> <span class="n">struct</span> <span class="n">smf_state</span> <span class="n">demo_states</span> <span class="p">{</span>
+   <span class="p">[</span><span class="n">S0</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">s0_entry</span><span class="p">,</span> <span class="n">s0_run</span><span class="p">,</span> <span class="n">s0_exit</span><span class="p">,</span> <span class="n">parent_s0</span><span class="p">),</span>
+   <span class="p">[</span><span class="n">S1</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">s1_entry</span><span class="p">,</span> <span class="n">s1_run</span><span class="p">,</span> <span class="n">s1_exit</span><span class="p">,</span> <span class="n">parent_s12</span><span class="p">),</span>
+   <span class="p">[</span><span class="n">S2</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">s2_entry</span><span class="p">,</span> <span class="n">s2_run</span><span class="p">,</span> <span class="n">s2_exit</span><span class="p">,</span> <span class="n">parent_s12</span><span class="p">)</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>To set the initial state, the <code class="docutils literal notranslate"><span class="pre">smf_set_initial</span></code> function should be
+called. It has the following prototype:
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">smf_set_initial(smf_ctx</span> <span class="pre">*ctx,</span> <span class="pre">smf_state</span> <span class="pre">*state)</span></code></p>
+<p>To transition from one state to another, the <code class="docutils literal notranslate"><span class="pre">smf_set_state</span></code> function is
+used and it has the following prototype:
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">smf_set_state(smf_ctx</span> <span class="pre">*ctx,</span> <span class="pre">smf_state</span> <span class="pre">*state)</span></code></p>
+<p><strong>NOTE:</strong> While the state machine is running, smf_set_state should only be
+called from the Entry and Run functions. Calling smf_set_state from the Exit
+functions doesn’t make sense and will generate a warning.</p>
+</div>
+<div class="section" id="state-machine-execution">
+<h2>State Machine Execution<a class="headerlink" href="#state-machine-execution" title="Permalink to this headline">¶</a></h2>
+<p>To run the state machine, the <code class="docutils literal notranslate"><span class="pre">smf_run_state</span></code> function should be called in
+some application dependent way. An application should cease calling
+smf_run_state if it returns a non-zero value. The function has the following
+prototype: <code class="docutils literal notranslate"><span class="pre">int32_t</span> <span class="pre">smf_run_state(smf_ctx</span> <span class="pre">*ctx)</span></code></p>
+</div>
+<div class="section" id="state-machine-termination">
+<h2>State Machine Termination<a class="headerlink" href="#state-machine-termination" title="Permalink to this headline">¶</a></h2>
+<p>To terminate the state machine, the <code class="docutils literal notranslate"><span class="pre">smf_terminate</span></code> function should be
+called. It can be called from the entry, run, or exit action. The function
+takes a non-zero user defined value that’s returned by the <code class="docutils literal notranslate"><span class="pre">smf_run_state</span></code>
+function. The function has the following prototype:
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">smf_terminate(smf_ctx</span> <span class="pre">*ctx,</span> <span class="pre">int32_t</span> <span class="pre">val)</span></code></p>
+</div>
+<div class="section" id="flat-state-machine-example">
+<h2>Flat State Machine Example<a class="headerlink" href="#flat-state-machine-example" title="Permalink to this headline">¶</a></h2>
+<p>This example turns the following state diagram into code using the SMF, where
+the initial state is S0.</p>
+<div class="figure align-default" id="id1">
+<div class="graphviz"><object data="../../_images/graphviz-325838af2e8152dddd017abbbaca2192d2e55a3e.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph smf_flat {
+   node [style=rounded];
+   init [shape = point];
+   STATE_S0 [shape = box];
+   STATE_S1 [shape = box];
+   STATE_S2 [shape = box];
+
+   init -&gt; STATE_S0;
+   STATE_S0 -&gt; STATE_S1;
+   STATE_S1 -&gt; STATE_S2;
+   STATE_S2 -&gt; STATE_S0;
+}</p></object></div>
+<p class="caption"><span class="caption-number">Fig. 37 </span><span class="caption-text">Flat state machine diagram</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>Code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;smf.h&gt;</span>
+
+<span class="o">/*</span> <span class="n">Forward</span> <span class="n">declaration</span> <span class="n">of</span> <span class="n">state</span> <span class="n">table</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">smf_state</span> <span class="n">demo_states</span><span class="p">[];</span>
+
+<span class="o">/*</span> <span class="n">List</span> <span class="n">of</span> <span class="n">demo</span> <span class="n">states</span> <span class="o">*/</span>
+<span class="n">enum</span> <span class="n">demo_state</span> <span class="p">{</span> <span class="n">S0</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span> <span class="p">};</span>
+
+<span class="o">/*</span> <span class="n">User</span> <span class="n">defined</span> <span class="nb">object</span> <span class="o">*/</span>
+<span class="n">struct</span> <span class="n">s_object</span> <span class="p">{</span>
+        <span class="o">/*</span> <span class="n">This</span> <span class="n">must</span> <span class="n">be</span> <span class="n">first</span> <span class="o">*/</span>
+        <span class="n">struct</span> <span class="n">smf_ctx</span> <span class="n">ctx</span><span class="p">;</span>
+
+        <span class="o">/*</span> <span class="n">Other</span> <span class="n">state</span> <span class="n">specific</span> <span class="n">data</span> <span class="n">add</span> <span class="n">here</span> <span class="o">*/</span>
+<span class="p">}</span> <span class="n">s_obj</span><span class="p">;</span>
+
+<span class="o">/*</span> <span class="n">State</span> <span class="n">S0</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">s0_entry</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="o">/*</span> <span class="n">Do</span> <span class="n">something</span> <span class="o">*/</span>
+<span class="p">}</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">s0_run</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">smf_set_state</span><span class="p">(</span><span class="n">SMF_CTX</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_obj</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">demo_states</span><span class="p">[</span><span class="n">S1</span><span class="p">]);</span>
+<span class="p">}</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">s0_exit</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="o">/*</span> <span class="n">Do</span> <span class="n">something</span> <span class="o">*/</span>
+<span class="p">}</span>
+
+<span class="o">/*</span> <span class="n">State</span> <span class="n">S1</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">s1_run</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">smf_set_state</span><span class="p">(</span><span class="n">SMF_CTX</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_obj</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">demo_states</span><span class="p">[</span><span class="n">S2</span><span class="p">]);</span>
+<span class="p">}</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">s1_exit</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="o">/*</span> <span class="n">Do</span> <span class="n">something</span> <span class="o">*/</span>
+<span class="p">}</span>
+
+<span class="o">/*</span> <span class="n">State</span> <span class="n">S2</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">s2_entry</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="o">/*</span> <span class="n">Do</span> <span class="n">something</span> <span class="o">*/</span>
+<span class="p">}</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">s2_run</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">smf_set_state</span><span class="p">(</span><span class="n">SMF_CTX</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_obj</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">demo_states</span><span class="p">[</span><span class="n">S0</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="o">/*</span> <span class="n">Populate</span> <span class="n">state</span> <span class="n">table</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">smf_state</span> <span class="n">demo_states</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">S0</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">s0_entry</span><span class="p">,</span> <span class="n">s0_run</span><span class="p">,</span> <span class="n">s0_exit</span><span class="p">),</span>
+        <span class="o">/*</span> <span class="n">State</span> <span class="n">S1</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">have</span> <span class="n">an</span> <span class="n">entry</span> <span class="n">action</span> <span class="o">*/</span>
+        <span class="p">[</span><span class="n">S1</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">s1_run</span><span class="p">,</span> <span class="n">s1_exit</span><span class="p">),</span>
+        <span class="o">/*</span> <span class="n">State</span> <span class="n">S2</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">have</span> <span class="n">an</span> <span class="n">exit</span> <span class="n">action</span> <span class="o">*/</span>
+        <span class="p">[</span><span class="n">S2</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">s2_entry</span><span class="p">,</span> <span class="n">s2_run</span><span class="p">,</span> <span class="n">NULL</span><span class="p">),</span>
+<span class="p">};</span>
+
+<span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">int32_t</span> <span class="n">ret</span><span class="p">;</span>
+
+        <span class="o">/*</span> <span class="n">Set</span> <span class="n">initial</span> <span class="n">state</span> <span class="o">*/</span>
+        <span class="n">smf_set_initial</span><span class="p">(</span><span class="n">SMF_CTX</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_obj</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">demo_states</span><span class="p">[</span><span class="n">S0</span><span class="p">]);</span>
+
+        <span class="o">/*</span> <span class="n">Run</span> <span class="n">the</span> <span class="n">state</span> <span class="n">machine</span> <span class="o">*/</span>
+        <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="o">/*</span> <span class="n">State</span> <span class="n">machine</span> <span class="n">terminates</span> <span class="k">if</span> <span class="n">a</span> <span class="n">non</span><span class="o">-</span><span class="n">zero</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">returned</span> <span class="o">*/</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">smf_run_state</span><span class="p">(</span><span class="n">SMF_CTX</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_obj</span><span class="p">));</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="o">/*</span> <span class="n">handle</span> <span class="k">return</span> <span class="n">code</span> <span class="ow">and</span> <span class="n">terminate</span> <span class="n">state</span> <span class="n">machine</span> <span class="o">*/</span>
+                        <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">k_msleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hierarchical-state-machine-example">
+<h2>Hierarchical State Machine Example<a class="headerlink" href="#hierarchical-state-machine-example" title="Permalink to this headline">¶</a></h2>
+<p>This example turns the following state diagram into code using the SMF, where
+S0 and S1 share a parent state and S0 is the initial state.</p>
+<div class="figure align-default" id="id2">
+<div class="graphviz"><object data="../../_images/graphviz-14a27dfcb43c55fab06da5f018f79971bd853515.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph smf_hierarchical {
+   node [style = rounded];
+   init [shape = point];
+   STATE_S0 [shape = box];
+   STATE_S1 [shape = box];
+   STATE_S2 [shape = box];
+
+   subgraph cluster_0 {
+      label = &quot;PARENT&quot;;
+      style = rounded;
+      STATE_S0 -&gt; STATE_S1;
+   }
+
+   init -&gt; STATE_S0;
+   STATE_S1 -&gt; STATE_S2;
+   STATE_S2 -&gt; STATE_S0;
+}</p></object></div>
+<p class="caption"><span class="caption-number">Fig. 38 </span><span class="caption-text">Hierarchial state machine diagram</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>Code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;smf.h&gt;</span>
+
+<span class="o">/*</span> <span class="n">Forward</span> <span class="n">declaration</span> <span class="n">of</span> <span class="n">state</span> <span class="n">table</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">smf_state</span> <span class="n">demo_states</span><span class="p">[];</span>
+
+<span class="o">/*</span> <span class="n">List</span> <span class="n">of</span> <span class="n">demo</span> <span class="n">states</span> <span class="o">*/</span>
+<span class="n">enum</span> <span class="n">demo_state</span> <span class="p">{</span> <span class="n">PARENT</span><span class="p">,</span> <span class="n">S0</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span> <span class="p">};</span>
+
+<span class="o">/*</span> <span class="n">User</span> <span class="n">defined</span> <span class="nb">object</span> <span class="o">*/</span>
+<span class="n">struct</span> <span class="n">s_object</span> <span class="p">{</span>
+        <span class="o">/*</span> <span class="n">This</span> <span class="n">must</span> <span class="n">be</span> <span class="n">first</span> <span class="o">*/</span>
+        <span class="n">struct</span> <span class="n">smf_ctx</span> <span class="n">ctx</span><span class="p">;</span>
+
+        <span class="o">/*</span> <span class="n">Other</span> <span class="n">state</span> <span class="n">specific</span> <span class="n">data</span> <span class="n">add</span> <span class="n">here</span> <span class="o">*/</span>
+<span class="p">}</span> <span class="n">s_obj</span><span class="p">;</span>
+
+<span class="o">/*</span> <span class="n">Parent</span> <span class="n">State</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">parent_entry</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="o">/*</span> <span class="n">Do</span> <span class="n">something</span> <span class="o">*/</span>
+<span class="p">}</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">parent_exit</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="o">/*</span> <span class="n">Do</span> <span class="n">something</span> <span class="o">*/</span>
+<span class="p">}</span>
+
+<span class="o">/*</span> <span class="n">State</span> <span class="n">S0</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">s0_run</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">smf_set_state</span><span class="p">(</span><span class="n">SMF_CTX</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_obj</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">demo_states</span><span class="p">[</span><span class="n">S1</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="o">/*</span> <span class="n">State</span> <span class="n">S1</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">s1_run</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">smf_set_state</span><span class="p">(</span><span class="n">SMF_CTX</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_obj</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">demo_states</span><span class="p">[</span><span class="n">S2</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="o">/*</span> <span class="n">State</span> <span class="n">S2</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">s2_run</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">o</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">smf_set_state</span><span class="p">(</span><span class="n">SMF_CTX</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_obj</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">demo_states</span><span class="p">[</span><span class="n">S0</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="o">/*</span> <span class="n">Populate</span> <span class="n">state</span> <span class="n">table</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">smf_state</span> <span class="n">demo_states</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="o">/*</span> <span class="n">Parent</span> <span class="n">state</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">have</span> <span class="n">a</span> <span class="n">run</span> <span class="n">action</span> <span class="o">*/</span>
+        <span class="p">[</span><span class="n">PARENT</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">parent_entry</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">parent_exit</span><span class="p">,</span> <span class="n">NULL</span><span class="p">),</span>
+        <span class="o">/*</span> <span class="n">Child</span> <span class="n">states</span> <span class="n">do</span> <span class="ow">not</span> <span class="n">have</span> <span class="n">entry</span> <span class="ow">or</span> <span class="n">exit</span> <span class="n">actions</span> <span class="o">*/</span>
+        <span class="p">[</span><span class="n">S0</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">s0_run</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">demo_states</span><span class="p">[</span><span class="n">PARENT</span><span class="p">]),</span>
+        <span class="p">[</span><span class="n">S1</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">s1_run</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">demo_states</span><span class="p">[</span><span class="n">PARENT</span><span class="p">]),</span>
+        <span class="o">/*</span> <span class="n">State</span> <span class="n">S2</span> <span class="n">do</span> <span class="n">ot</span> <span class="n">have</span> <span class="n">entry</span> <span class="ow">or</span> <span class="n">exit</span> <span class="n">actions</span> <span class="ow">and</span> <span class="n">no</span> <span class="n">parent</span> <span class="o">*/</span>
+        <span class="p">[</span><span class="n">S2</span><span class="p">]</span> <span class="o">=</span> <span class="n">SMF_CREATE_STATE</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">s2_run</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">NULL</span><span class="p">),</span>
+<span class="p">};</span>
+
+<span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">int32_t</span> <span class="n">ret</span><span class="p">;</span>
+
+        <span class="o">/*</span> <span class="n">Set</span> <span class="n">initial</span> <span class="n">state</span> <span class="o">*/</span>
+        <span class="n">smf_set_initial</span><span class="p">(</span><span class="n">SMF_CTX</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_obj</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">demo_states</span><span class="p">[</span><span class="n">S0</span><span class="p">]);</span>
+
+        <span class="o">/*</span> <span class="n">Run</span> <span class="n">the</span> <span class="n">state</span> <span class="n">machine</span> <span class="o">*/</span>
+        <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="o">/*</span> <span class="n">State</span> <span class="n">machine</span> <span class="n">terminates</span> <span class="k">if</span> <span class="n">a</span> <span class="n">non</span><span class="o">-</span><span class="n">zero</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">returned</span> <span class="o">*/</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">smf_run_state</span><span class="p">(</span><span class="n">SMF_CTX</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_obj</span><span class="p">));</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="o">/*</span> <span class="n">handle</span> <span class="k">return</span> <span class="n">code</span> <span class="ow">and</span> <span class="n">terminate</span> <span class="n">state</span> <span class="n">machine</span> <span class="o">*/</span>
+                        <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">k_msleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>When designing hierarchical state machines, the following should be considered:</dt><dd><ul class="simple">
+<li><p>Ancestor entry actions are executed before the sibling entry actions. For
+example, the parent_entry function is called before the s0_entry function.</p></li>
+<li><p>Transitioning from one sibling to another with a shared ancestry does not
+re-execute the ancestor's entry action or execute the exit action.
+For example, the parent_entry function is not called when transitioning
+from S0 to S1, nor is the parent_exit function called.</p></li>
+<li><p>Ancestor exit actions are executed after the sibling exit actions. For
+example, the s1_exit function is called before the parent_exit function
+is called.</p></li>
+<li><p>The parent_run function only executes if the child_run function returns
+whithout transitioning to another state, ie. calling smf_set_state.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../test/index.html" class="btn btn-neutral float-right" title="Testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../porting/shields.html" class="btn btn-neutral" title="Shields" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

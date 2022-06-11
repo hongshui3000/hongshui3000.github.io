@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Prepare a New Component for Testbench &mdash; SOF Project 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/sof.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Test Audio Quality" href="test_audio_quality.html" />
+    <link rel="prev" title="Debug Component in Testbench" href="debug_in_testbench.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SOF Project
+          
+
+          
+            
+            <img src="../../_static/logo_sof_white_200w.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://sofproject.org">SOF project website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction to the SOF Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architectures/index.html">Supported Architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/index.html">Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algos/index.html">Algorithms</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../unit_tests.html">Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xtrun/index.html">Xtensa Simulator (xt-run)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/topology.html">SOF Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../uuid/index.html">UUID Usage in SOF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugability/index.html">Debugability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tuning/sof-ctl.html">Runtime Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rimage/index.html">Rimage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_driver/index.html">SOF Linux Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/virtualization.html">SOF VirtIO design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/running.html">Run SOF VirtIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fuzzing/index.html">Fuzzing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Testbench</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="build_testbench.html">Build and Run Testbench</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug_in_testbench.html">Debug Component in Testbench</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Prepare a New Component for Testbench</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test_audio_quality.html">Test Audio Quality</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#technical-notes">Technical Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../release.html">Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contributing to the Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tsc/index.html">Technical Steering Committee (TSC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maintainers/index.html">SOF admin, maintainers and code owners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../presentations/index.html">Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SOF Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Testbench</a> &raquo;</li>
+        
+      <li>Prepare a New Component for Testbench</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/developer_guides/testbench/prepare_new_component.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="prepare-a-new-component-for-testbench">
+<span id="prepare-new-component"></span><h1>Prepare a New Component for Testbench<a class="headerlink" href="#prepare-a-new-component-for-testbench" title="Permalink to this headline">¶</a></h1>
+<p>Since the introduction of the UUID system for SOF processing components,
+we no longer need kernel topology parsing to add new components. However, at
+the time of this writing, the testbench is limited in that it does not parse UUIDs from component libraries.</p>
+<p>The following diff shows edits that are needed in order to testbench a new
+component called “newcomp”. Remember to copy the UUID bytes from the actual
+component code. Include it in your component pull request as a commit to keep the testbench updated.</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gh">diff --git a/tools/testbench/include/testbench/common_test.h b/tools/testbench/include/testbench/common_test.h</span>
+<span class="gh">index 5744a84cb..093f115d9 100644</span>
+<span class="gd">--- a/tools/testbench/include/testbench/common_test.h</span>
+<span class="gi">+++ b/tools/testbench/include/testbench/common_test.h</span>
+<span class="gu">@@ -23,7 +23,7 @@</span>
+#define MAX_OUTPUT_FILE_NUM    4
+
+/* number of widgets types supported in testbench */
+<span class="gd">-#define NUM_WIDGETS_SUPPORTED  9</span>
+<span class="gi">+#define NUM_WIDGETS_SUPPORTED  10</span>
+
+ struct testbench_prm {
+        char *tplg_file; /* topology file to use */
+<span class="gh">diff --git a/tools/testbench/testbench.c b/tools/testbench/testbench.c</span>
+<span class="gh">index 9d3c79438..15e00e82f 100644</span>
+<span class="gd">--- a/tools/testbench/testbench.c</span>
+<span class="gi">+++ b/tools/testbench/testbench.c</span>
+<span class="gu">@@ -30,6 +30,9 @@ DECLARE_SOF_TB_UUID(&quot;crossover&quot;, crossover_uuid, 0x948c9ad1, 0x806a, 0x4131,</span>
+ DECLARE_SOF_TB_UUID(&quot;tdfb&quot;, tdfb_uuid,  0xdd511749, 0xd9fa, 0x455c,
+                     0xb3, 0xa7, 0x13, 0x58, 0x56, 0x93, 0xf1, 0xaf);
+
+<span class="gi">+DECLARE_SOF_TB_UUID(&quot;newcomp&quot;, newcomp_uuid,  0x00000000, 0x0000, 0x0000,</span>
+<span class="gi">+                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);</span>
+<span class="gi">+</span>
+ #define TESTBENCH_NCH 2 /* Stereo */
+
+ /* shared library look up table */
+<span class="gu">@@ -43,6 +46,7 @@ struct shared_lib_table lib_table[NUM_WIDGETS_SUPPORTED] = {</span>
+        {&quot;dcblock&quot;, &quot;libsof_dcblock.so&quot;, SOF_COMP_DCBLOCK, NULL, 0, NULL},
+        {&quot;crossover&quot;, &quot;libsof_crossover.so&quot;, SOF_COMP_NONE, SOF_TB_UUID(crossover_uuid), 0, NULL},
+        {&quot;tdfb&quot;, &quot;libsof_tdfb.so&quot;, SOF_COMP_NONE, SOF_TB_UUID(tdfb_uuid), 0, NULL},
+<span class="gi">+       {&quot;newcomp&quot;, &quot;libsof_newcomp.so&quot;, SOF_COMP_NONE, SOF_TB_UUID(newcomp_uuid), 0, NULL},</span>
+ };
+
+ /* main firmware context */
+</pre></div>
+</div>
+<p>A need also exists to add pipelines generation tests for “newcomp”. You
+will need to add a pipeline macro <code class="docutils literal notranslate"><span class="pre">pipe-newcomp-playback.m4</span></code> into the
+<code class="docutils literal notranslate"><span class="pre">tools/topology/sof</span></code> directory. The file should exist for normal usage
+of a playback component.</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gh">diff --git a/tools/test/topology/tplg-build.sh b/tools/test/topology/tplg-build.sh</span>
+<span class="gh">index 5c9dcb02b..1e236b7e8 100755</span>
+<span class="gd">--- a/tools/test/topology/tplg-build.sh</span>
+<span class="gi">+++ b/tools/test/topology/tplg-build.sh</span>
+<span class="gu">@@ -227,7 +227,7 @@ done</span>
+
+
+ # for processing algorithms
+<span class="gd">-ALG_SINGLE_MODE_TESTS=(asrc eq-fir eq-iir src dcblock tdfb)</span>
+<span class="gi">+ALG_SINGLE_MODE_TESTS=(asrc eq-fir eq-iir src dcblock tdfb newcomp)</span>
+ ALG_SINGLE_SIMPLE_TESTS=(test-capture test-playback)
+ ALG_MULTI_MODE_TESTS=(crossover)
+ ALG_MULTI_SIMPLE_TESTS=(test-playback)
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since the testbench currently only supports playback direction, a
+need exists to add a playback pipeline macro even if the
+component is meant only for capture direction, such as for a
+microphone processing component.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="test_audio_quality.html" class="btn btn-neutral float-right" title="Test Audio Quality" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="debug_in_testbench.html" class="btn btn-neutral" title="Debug Component in Testbench" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; Copyright 2021, SOF Project..
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> SOF Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version zephyr">
+        <a href="../../../zephyr/index.html">Zephyr Project</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

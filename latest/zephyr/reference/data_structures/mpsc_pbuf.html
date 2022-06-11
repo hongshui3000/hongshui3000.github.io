@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Multi Producer Single Consumer Packet Buffer &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Balanced Red/Black Tree" href="rbtree.html" />
+    <link rel="prev" title="Double-linked List" href="dlist.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Structures</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="slist.html">Single-linked List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dlist.html">Double-linked List</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Multi Producer Single Consumer Packet Buffer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#internals">Internals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rbtree.html">Balanced Red/Black Tree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ring_buffers.html">Ring Buffers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Data Structures</a> &raquo;</li>
+        
+      <li>Multi Producer Single Consumer Packet Buffer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/data_structures/mpsc_pbuf.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="multi-producer-single-consumer-packet-buffer">
+<span id="mpsc-pbuf"></span><h1>Multi Producer Single Consumer Packet Buffer<a class="headerlink" href="#multi-producer-single-consumer-packet-buffer" title="Permalink to this headline">¶</a></h1>
+<p>A <em class="dfn">Multi Producer Single Consumer Packet Buffer (MPSC_PBUF)</em> is a circular
+buffer, whose contents are stored in first-in-first-out order. Variable size
+packets are stored in the buffer. Packet buffer works under assumption that there
+is a single context that consumes the data. However, it is possible that another
+context may interfere to flush the data and never come back (panic case).
+Packet is produced in two steps: first requested amount of data is allocated,
+producer fills the data and commits it. Consuming a packet is also performed in
+two steps: consumer claims the packet, gets pointer to it and length and later
+on packet is freed. This approach reduces memory copying.</p>
+<p>A <em class="dfn">MPSC Packet Buffer</em> has the following key properties:</p>
+<ul class="simple">
+<li><p>Allocate, commit scheme used for packet producing.</p></li>
+<li><p>Claim, free scheme used for packet consuming.</p></li>
+<li><p>Allocator ensures that continue memory of requested length is allocated.</p></li>
+<li><p>Following policies can be applied when requested space cannot be allocated:</p>
+<ul>
+<li><p><strong>Overwrite</strong> - oldest entries are dropped until requested amount of memory can
+be allocated. For each dropped packet user callback is called.</p></li>
+<li><p><strong>No overwrite</strong> - When requested amount of space cannot be allocated,
+allocation fails.</p></li>
+</ul>
+</li>
+<li><p>Dedicated, optimized API for storing short packets.</p></li>
+<li><p>Allocation with timeout.</p></li>
+</ul>
+<div class="section" id="internals">
+<h2>Internals<a class="headerlink" href="#internals" title="Permalink to this headline">¶</a></h2>
+<p>Each packet in the buffer contains <code class="docutils literal notranslate"><span class="pre">MPSC_PBUF</span></code> specific header which is used
+for internal management. Header consists of 2 bit flags. In order to optimize
+memory usage, header can be added on top of the user header using
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">MPSC_PBUF_HDR</span></code> and remaining bits in the first word can be application
+specific. Header consists of following flags:</p>
+<ul class="simple">
+<li><p>valid - bit set to one when packet contains valid user packet</p></li>
+<li><p>busy - bit set when packet is being consumed (claimed but not free)</p></li>
+</ul>
+<p>Header state:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 17%" />
+<col style="width: 63%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>valid</p></td>
+<td><p>busy</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>space is free</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>valid packet</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>claimed valid packet</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>internal skip packet</p></td>
+</tr>
+</tbody>
+</table>
+<p>Packet buffer space contains free space, valid user packets and internal skip
+packets. Internal skip packets indicates padding, e.g. at the of the buffer.</p>
+<div class="section" id="allocation">
+<h3>Allocation<a class="headerlink" href="#allocation" title="Permalink to this headline">¶</a></h3>
+<p>Using pairs for read and write indexes, available space is determined. If
+space can be allocated, temporary write index is moved and pointer to a space
+witing buffer is returned. Packet header is reset. If allocation required
+wrapping of the write index, a skip packet is added to the end of buffer. If
+space cannot be allocated and overwrite is disabled then <code class="docutils literal notranslate"><span class="pre">NULL</span></code> pointer is
+returned or context blocks if allocation was with timeout.</p>
+</div>
+<div class="section" id="allocation-with-overwrite">
+<h3>Allocation with overwrite<a class="headerlink" href="#allocation-with-overwrite" title="Permalink to this headline">¶</a></h3>
+<p>If overwrite is enabled, oldest packets are dropped until requested amount of
+space can be allocated. When packets are dropped <code class="docutils literal notranslate"><span class="pre">busy</span></code> flag is checked in the
+header to ensure that currently consumed packet is not overwritten. In that case,
+skip packet is added before busy packet and packets following the busy packet
+are dropped. When busy packet is being freed, such situation is detected and
+packet is converted to skip packet to avoid double processing.</p>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="packet-header-definition">
+<h3>Packet header definition<a class="headerlink" href="#packet-header-definition" title="Permalink to this headline">¶</a></h3>
+<p>Packet header details can be found in <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/sys/mpsc_packet.h">include/sys/mpsc_packet.h</a>.
+API functions can be found in <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/sys/mpsc_pbuf.h">include/sys/mpsc_pbuf.h</a>. Headers
+are split to avoid include spam when declaring the packet.</p>
+<p>User header structure must start with internal header:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;sys/mpsc_packet.h&gt;</span><span class="cp"></span>
+
+<span class="k">struct</span> <span class="nc">foo_header</span> <span class="p">{</span>
+        <span class="n">MPSC_PBUF_HDR</span><span class="p">;</span>
+        <span class="kt">uint32_t</span> <span class="nl">length</span><span class="p">:</span> <span class="mi">32</span> <span class="o">-</span> <span class="n">MPSC_PBUF_HDR_BITS</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="packet-buffer-configuration">
+<h3>Packet buffer configuration<a class="headerlink" href="#packet-buffer-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Configuration structure contains buffer details, configuration flags and
+callbacks. Following callbacks are used by the packet buffer:</p>
+<ul class="simple">
+<li><p>Drop notification - callback called whenever a packet is dropped due to
+overwrite.</p></li>
+<li><p>Get packet length - callback to determine packet length</p></li>
+</ul>
+</div>
+<div class="section" id="packet-producing">
+<h3>Packet producing<a class="headerlink" href="#packet-producing" title="Permalink to this headline">¶</a></h3>
+<p>Standard, two step method:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">foo_packet</span> <span class="o">*</span><span class="n">packet</span> <span class="o">=</span> <span class="n">mpsc_pbuf_alloc</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="n">K_NO_WAIT</span><span class="p">);</span>
+
+<span class="n">fill_data</span><span class="p">(</span><span class="n">packet</span><span class="p">);</span>
+
+<span class="n">mpsc_pbuf_commit</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">packet</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Performance optimized storing of small packets:</p>
+<ul class="simple">
+<li><p>32 bit word packet</p></li>
+<li><p>32 bit word with pointer packet</p></li>
+</ul>
+<p>Note that since packets are written by value, they should already contain
+<code class="docutils literal notranslate"><span class="pre">valid</span></code> bit set in the header.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">mpsc_pbuf_put_word</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+<span class="n">mpsc_pbuf_put_word_ext</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">ptr</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="packet-consuming">
+<h3>Packet consuming<a class="headerlink" href="#packet-consuming" title="Permalink to this headline">¶</a></h3>
+<p>Two step method:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">foo_packet</span> <span class="o">*</span><span class="n">packet</span> <span class="o">=</span> <span class="n">mpsc_pbuf_claim</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+
+<span class="n">process</span><span class="p">(</span><span class="n">packet</span><span class="p">);</span>
+
+<span class="n">mpsc_pbuf_free</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">packet</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rbtree.html" class="btn btn-neutral float-right" title="Balanced Red/Black Tree" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dlist.html" class="btn btn-neutral" title="Double-linked List" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

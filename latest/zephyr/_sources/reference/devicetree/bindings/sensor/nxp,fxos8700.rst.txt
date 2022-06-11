@@ -1,0 +1,462 @@
+:orphan:
+
+.. raw:: html
+
+    <!--
+    FIXME: do not limit page width until content uses another representation
+    format other than tables
+    -->
+    <style>.wy-nav-content { max-width: none; !important }</style>
+
+.. dtcompatible:: nxp,fxos8700
+.. _dtbinding_nxp_fxos8700:
+
+nxp,fxos8700 (on i2c bus)
+#########################
+
+Vendor: :ref:`NXP Semiconductors <dt_vendor_nxp>`
+
+Description
+***********
+
+
+
+.. code-block:: none
+
+   FXOS8700 6-axis accelerometer/magnetometer sensor
+
+Properties
+**********
+
+.. tabs::
+
+   .. group-tab:: Node specific properties
+
+      Properties not inherited from the base binding file.
+
+      .. list-table::
+         :widths: 1 1 4
+         :header-rows: 1
+
+         * - Name
+           - Type
+           - Details
+
+         * - ``reset-gpios``
+           - ``phandle-array``
+           - .. code-block:: none
+
+                RST pin
+                This pin defaults to active high when consumed by the sensor.
+                The property value should ensure the flags properly describe
+                the signal that is presented to the driver.
+
+
+
+         * - ``int1-gpios``
+           - ``phandle-array``
+           - .. code-block:: none
+
+                INT1 pin
+                This pin defaults to active low when produced by the sensor.
+                The property value should ensure the flags properly describe
+                the signal that is presented to the driver.
+
+
+
+         * - ``int2-gpios``
+           - ``phandle-array``
+           - .. code-block:: none
+
+                INT2 pin
+                This pin defaults to active low when produced by the sensor.
+                The property value should ensure the flags properly describe
+                the signal that is presented to the driver.
+
+
+
+         * - ``range``
+           - ``int``
+           - .. code-block:: none
+
+                Range in g
+
+
+             Default value: ``8``
+
+             Legal values: ``8``, ``4``, ``2``
+
+         * - ``power-mode``
+           - ``int``
+           - .. code-block:: none
+
+                Power mode
+
+
+             Legal values: ``0``, ``1``, ``2``, ``3``
+
+         * - ``pulse-cfg``
+           - ``int``
+           - .. code-block:: none
+
+                Pulse configuration register
+
+
+             Default value: ``63``
+
+         * - ``pulse-thsx``
+           - ``int``
+           - .. code-block:: none
+
+                Pulse X-axis threshold
+                Threshold to start the pulse-event detection procedure on the X-axis.
+                Threshold values for each axis are unsigned 7-bit numbers with a fixed
+                resolution of 0.063 g/LSB, corresponding to an 8g acceleration
+                full-scale range.
+
+
+
+             Default value: ``32``
+
+         * - ``pulse-thsy``
+           - ``int``
+           - .. code-block:: none
+
+                Pulse Y-axis threshold
+                Threshold to start the pulse-event detection procedure on the Y-axis.
+                Threshold values for each axis are unsigned 7-bit numbers with a fixed
+                resolution of 0.063 g/LSB, corresponding to an 8g acceleration
+                full-scale range.
+
+
+
+             Default value: ``32``
+
+         * - ``pulse-thsz``
+           - ``int``
+           - .. code-block:: none
+
+                Pulse Z-axis threshold
+                Threshold to start the pulse-event detection procedure on the Z-axis.
+                Threshold values for each axis are unsigned 7-bit numbers with a fixed
+                resolution of 0.063 g/LSB, corresponding to an 8g acceleration
+                full-scale range.
+
+
+
+             Default value: ``64``
+
+         * - ``pulse-tmlt``
+           - ``int``
+           - .. code-block:: none
+
+                Pulse time limit
+                The maximum time interval that can elapse between the start of the
+                acceleration on the selected channel exceeding the specified threshold
+                and the end when the channel acceleration goes back below the specified
+                threshold. The resolution depends upon the sample rate (ODR) and the
+                high-pass filter configuration (HP_FILTER_CUTOFF[pls_hpf_en]). For
+                ODR=800 Hz and pls_hpf_en=0, the resolution is 0.625 ms/LSB.
+
+
+
+             Default value: ``24``
+
+         * - ``pulse-ltcy``
+           - ``int``
+           - .. code-block:: none
+
+                Pulse latency
+                The time interval that starts after the first pulse detection where the
+                pulse-detection function ignores the start of a new pulse. The
+                resolution depends upon the sample rate (ODR) and the high-pass filter
+                configuration (HP_FILTER_CUTOFF[pls_hpf_en]). For ODR=800 Hz and
+                pls_hpf_en=0, the resolution is 1.25 ms/LSB.
+
+
+
+             Default value: ``40``
+
+         * - ``pulse-wind``
+           - ``int``
+           - .. code-block:: none
+
+                Pulse window
+                The maximum interval of time that can elapse after the end of the
+                latency interval in which the start of the second pulse event must be
+                detected provided the device has been configured for double pulse
+                detection. The detected second pulse width must be shorter than the
+                time limit constraint specified by the PULSE_TMLT register, but the end
+                of the double pulse need not finish within the time specified by the
+                PULSE_WIND register. The resolution depends upon the sample rate (ODR)
+                and the high-pass filter configuration (HP_FILTER_CUTOFF[pls_hpf_en]).
+                For ODR=800 Hz and pls_hpf_en=0, the resolution is 1.25 ms/LSB.
+
+
+
+             Default value: ``60``
+
+         * - ``mag-vecm-cfg``
+           - ``int``
+           - .. code-block:: none
+
+                Magnetic vector-magnitude configuration register
+
+
+             Default value: ``78``
+
+         * - ``mag-vecm-ths-msb``
+           - ``int``
+           - .. code-block:: none
+
+                Magnetic vector-magnitude threshold most significant byte.
+                Resolution is 0.1 uT/LSB.
+
+
+
+         * - ``mag-vecm-ths-lsb``
+           - ``int``
+           - .. code-block:: none
+
+                Magnetic vector-magnitude threshold least significant byte.
+                Resolution is 0.1 uT/LSB.
+
+
+
+             Default value: ``90``
+
+         * - ``supply-gpios``
+           - ``phandle-array``
+           - .. code-block:: none
+
+                GPIO specifier that controls power to the device.
+
+                This property should be provided when the device has a dedicated
+                switch that controls power to the device.  The supply state is
+                entirely the responsibility of the device driver.
+
+                Contrast with vin-supply.
+
+
+
+         * - ``vin-supply``
+           - ``phandle``
+           - .. code-block:: none
+
+                Reference to the regulator that controls power to the device.
+                The referenced devicetree node must have a regulator compatible.
+
+                This property should be provided when device power is supplied
+                by a shared regulator.  The supply state is dependent on the
+                request status of all devices fed by the regulator.
+
+                Contrast with supply-gpios.  If both properties are provided
+                then the regulator must be requested before the supply GPIOS is
+                set to an active state, and the supply GPIOS must be set to an
+                inactive state before releasing the regulator.
+
+
+
+
+
+   .. group-tab:: Deprecated node specific properties
+
+      Deprecated properties not inherited from the base binding file.
+
+      (None)
+
+   .. group-tab:: Base properties
+
+      Properties inherited from the base binding file, which defines
+      common properties that may be set on many nodes. Not all of these
+      may apply to the "nxp,fxos8700" compatible.
+
+      .. list-table::
+         :widths: 1 1 4
+         :header-rows: 1
+
+         * - Name
+           - Type
+           - Details
+
+         * - ``reg``
+           - ``array``
+           - .. code-block:: none
+
+                device address on i2c bus
+
+
+             This property is **required**.
+
+             See :ref:`dt-important-props` for more information.
+
+         * - ``label``
+           - ``string``
+           - .. code-block:: none
+
+                Human readable string describing the device (used as device_get_binding() argument)
+
+
+             This property is **required**.
+
+             See :ref:`dt-important-props` for more information.
+
+         * - ``status``
+           - ``string``
+           - .. code-block:: none
+
+                indicates the operational status of a device
+
+
+             Legal values: ``'ok'``, ``'okay'``, ``'disabled'``, ``'reserved'``, ``'fail'``, ``'fail-sss'``
+
+             See :ref:`dt-important-props` for more information.
+
+         * - ``compatible``
+           - ``string-array``
+           - .. code-block:: none
+
+                compatible strings
+
+
+             This property is **required**.
+
+             See :ref:`dt-important-props` for more information.
+
+         * - ``reg-names``
+           - ``string-array``
+           - .. code-block:: none
+
+                name of each register space
+
+
+         * - ``interrupts``
+           - ``array``
+           - .. code-block:: none
+
+                interrupts for device
+
+
+             See :ref:`dt-important-props` for more information.
+
+         * - ``interrupts-extended``
+           - ``compound``
+           - .. code-block:: none
+
+                extended interrupt specifier for device
+
+
+         * - ``interrupt-names``
+           - ``string-array``
+           - .. code-block:: none
+
+                name of each interrupt
+
+
+         * - ``interrupt-parent``
+           - ``phandle``
+           - .. code-block:: none
+
+                phandle to interrupt controller node
+
+
+         * - ``clocks``
+           - ``phandle-array``
+           - .. code-block:: none
+
+                Clock gate information
+
+
+         * - ``clock-names``
+           - ``string-array``
+           - .. code-block:: none
+
+                name of each clock
+
+
+         * - ``#address-cells``
+           - ``int``
+           - .. code-block:: none
+
+                number of address cells in reg property
+
+
+         * - ``#size-cells``
+           - ``int``
+           - .. code-block:: none
+
+                number of size cells in reg property
+
+
+         * - ``dmas``
+           - ``phandle-array``
+           - .. code-block:: none
+
+                DMA channels specifiers
+
+
+         * - ``dma-names``
+           - ``string-array``
+           - .. code-block:: none
+
+                Provided names of DMA channel specifiers
+
+
+         * - ``io-channels``
+           - ``phandle-array``
+           - .. code-block:: none
+
+                IO channels specifiers
+
+
+         * - ``io-channel-names``
+           - ``string-array``
+           - .. code-block:: none
+
+                Provided names of IO channel specifiers
+
+
+         * - ``mboxes``
+           - ``phandle-array``
+           - .. code-block:: none
+
+                mailbox / IPM channels specifiers
+
+
+         * - ``mbox-names``
+           - ``string-array``
+           - .. code-block:: none
+
+                Provided names of mailbox / IPM channel specifiers
+
+
+         * - ``wakeup-source``
+           - ``boolean``
+           - .. code-block:: none
+
+                Property to identify that a device can be used as wake up source.
+
+                When this property is provided a specific flag is set into the
+                device that tells the system that the device is capable of
+                wake up the system.
+
+                Wake up capable devices are disabled (interruptions will not wake up
+                the system) by default but they can be enabled at runtime if necessary.
+
+
+
+         * - ``power-domain``
+           - ``phandle``
+           - .. code-block:: none
+
+
+                Power domain the device belongs to.
+
+                The device will be notified when the power domain it belongs to is either
+                suspended or resumed.
+
+
+
+
+
+

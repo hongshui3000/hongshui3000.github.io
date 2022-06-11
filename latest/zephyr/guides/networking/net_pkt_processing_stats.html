@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Network Packet Processing Statistics &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Network Connectivity API" href="networking-api-usage.html" />
+    <link rel="prev" title="Network Stack Architecture" href="net-stack-architecture.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="net-stack-architecture.html">Network Stack Architecture</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Network Packet Processing Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net-stack-architecture.html#high-level-overview-of-the-network-stack">High level overview of the network stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net-stack-architecture.html#network-data-flow">Network data flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net-stack-architecture.html#network-packet-processing-statistics">Network packet processing statistics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="networking-api-usage.html">Network Connectivity API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="networking_with_host.html">Networking with the host system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network_monitoring.html">Monitor Network Traffic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="net-stack-architecture.html">Network Stack Architecture</a> &raquo;</li>
+        
+      <li>Network Packet Processing Statistics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/networking/net_pkt_processing_stats.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="network-packet-processing-statistics">
+<span id="net-pkt-processing-stats"></span><h1>Network Packet Processing Statistics<a class="headerlink" href="#network-packet-processing-statistics" title="Permalink to this headline">¶</a></h1>
+<p>This page describes how to get information about network packet processing
+statistics inside network stack.</p>
+<p>Network stack contains infrastructure to figure out how long the network packet
+processing takes either in sending or receiving path. There are two Kconfig
+options that control this. For transmit (TX) path the option is called
+<a class="reference internal" href="../../kconfig.html#CONFIG_NET_PKT_TXTIME_STATS" title="CONFIG_NET_PKT_TXTIME_STATS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_PKT_TXTIME_STATS</span></code></a> and for receive (RX) path the options is
+called <a class="reference internal" href="../../kconfig.html#CONFIG_NET_PKT_RXTIME_STATS" title="CONFIG_NET_PKT_RXTIME_STATS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_PKT_RXTIME_STATS</span></code></a>. Note that for TX, all kind of
+network packet statistics is collected. For RX, only UDP, TCP or raw packet
+type network packet statistics is collected.</p>
+<p>After enabling these options, the <a class="reference internal" href="../../reference/networking/net_shell.html#net-shell"><span class="std std-ref">net stats</span></a> network shell
+command will show this information:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Avg TX net_pkt (11484) time 67 us</span>
+<span class="go">Avg RX net_pkt (11474) time 43 us</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The values above and below are from emulated qemu_x86 board and UDP traffic</p>
+</div>
+<p>The TX time tells how long it took for network packet from its creation to
+when it was sent to the network. The RX time tells the time from its creation
+to when it was passed to the application. The values are in microseconds. The
+statistics will be collected per traffic class if there are more than one
+transmit or receive queues defined in the system. These are controlled by
+<a class="reference internal" href="../../kconfig.html#CONFIG_NET_TC_TX_COUNT" title="CONFIG_NET_TC_TX_COUNT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_TC_TX_COUNT</span></code></a> and <a class="reference internal" href="../../kconfig.html#CONFIG_NET_TC_RX_COUNT" title="CONFIG_NET_TC_RX_COUNT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_TC_RX_COUNT</span></code></a> options.</p>
+<p>If you enable <a class="reference internal" href="../../kconfig.html#CONFIG_NET_PKT_TXTIME_STATS_DETAIL" title="CONFIG_NET_PKT_TXTIME_STATS_DETAIL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_PKT_TXTIME_STATS_DETAIL</span></code></a> or
+<a class="reference internal" href="../../kconfig.html#CONFIG_NET_PKT_RXTIME_STATS_DETAIL" title="CONFIG_NET_PKT_RXTIME_STATS_DETAIL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_PKT_RXTIME_STATS_DETAIL</span></code></a> options, then additional
+information for TX or RX network packets are collected when the network packet
+traverses the IP stack.</p>
+<p>After enabling these options, the <a class="reference internal" href="../../reference/networking/net_shell.html#net-shell"><span class="std std-ref">net stats</span></a> will show
+this information:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Avg TX net_pkt (18902) time 63 us    [0-&gt;22-&gt;15-&gt;23=60 us]</span>
+<span class="go">Avg RX net_pkt (18892) time 42 us    [0-&gt;9-&gt;6-&gt;11-&gt;13=39 us]</span>
+</pre></div>
+</div>
+<p>The numbers inside the brackets contain information how many microseconds it
+took for a network packet to go from previous state to next.</p>
+<p>In the TX example above, the values are averages over <strong>18902</strong> packets and
+contain this information:</p>
+<ul class="simple">
+<li><p>Packet was created by application so the time is <strong>0</strong>.</p></li>
+<li><p>Packet is about to be placed to transmit queue. The time it took from network
+packet creation to this state, is <strong>22</strong> microseconds in this example.</p></li>
+<li><p>The correct TX thread is invoked, and the packet is read from the transmit
+queue. It took <strong>15</strong> microseconds from previous state.</p></li>
+<li><p>The network packet was just sent and the network stack is about to free the
+network packet. It took <strong>23</strong> microseconds from previous state.</p></li>
+<li><p>In total it took on average <strong>60</strong> microseconds to get the network packet
+sent. The value <strong>63</strong> tells also the same information, but is calculated
+differently so there is slight difference because of rounding errors.</p></li>
+</ul>
+<p>In the RX example above, the values are averages over <strong>18892</strong> packets and
+contain this information:</p>
+<ul class="simple">
+<li><p>Packet was created network device driver so the time is <strong>0</strong>.</p></li>
+<li><p>Packet is about to be placed to receive queue. The time it took from network
+packet creation to this state, is <strong>9</strong> microseconds in this example.</p></li>
+<li><p>The correct RX thread is invoked, and the packet is read from the receive
+queue. It took <strong>6</strong> microseconds from previous state.</p></li>
+<li><p>The network packet is then processed and placed to correct socket queue.
+It took <strong>11</strong> microseconds from previous state.</p></li>
+<li><p>The last value tells how long it took from there to the application. Here
+the value is <strong>13</strong> microseconds.</p></li>
+<li><p>In total it took on average <strong>39</strong> microseconds to get the network packet
+sent. The value <strong>42</strong> tells also the same information, but is calculated
+differently so there is slight difference because of rounding errors.</p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="networking-api-usage.html" class="btn btn-neutral float-right" title="Network Connectivity API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="net-stack-architecture.html" class="btn btn-neutral" title="Network Stack Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

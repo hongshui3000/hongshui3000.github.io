@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Asynchronous Notifications &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Bluetooth" href="../bluetooth/index.html" />
+    <link rel="prev" title="I2S" href="../audio/i2s.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Asynchronous Notifications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+      <li>Asynchronous Notifications</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/misc/notify.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="asynchronous-notifications">
+<span id="async-notification"></span><h1>Asynchronous Notifications<a class="headerlink" href="#asynchronous-notifications" title="Permalink to this headline">¶</a></h1>
+<p>Zephyr APIs often include <a class="reference internal" href="../api/terminology.html#api-term-async"><span class="std std-ref">async</span></a> functions where an
+operation is initiated and the application needs to be informed when it
+completes, and whether it succeeded.  Using <a class="reference internal" href="../kernel/other/polling.html#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a> is
+often a good method, but some application architectures may be more
+suited to a callback notification, and operations like enabling clocks
+and power rails may need to be invoked before kernel functions are
+available so a busy-wait for completion may be needed.</p>
+<p>This API is intended to be embedded within specific subsystems such as
+<a class="reference internal" href="../resource_management/index.html#resource-mgmt-onoff"><span class="std std-ref">On-Off Manager</span></a> and other APIs that support async
+transactions.  The subsystem wrappers are responsible for extracting
+operation-specific data from requests that include a notification
+element, and for invoking callbacks with the parameters required by the
+API.</p>
+<p>A limitation is that this API is not suitable for <a class="reference internal" href="../usermode/syscalls.html#syscalls"><span class="std std-ref">System Calls</span></a>
+because:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#c.sys_notify" title="sys_notify"><code class="xref c c-struct docutils literal notranslate"><span class="pre">sys_notify</span></code></a> is not a kernel object;</p></li>
+<li><p>copying the notification content from userspace will break use of
+<a class="reference internal" href="../util/index.html#c.CONTAINER_OF" title="CONTAINER_OF"><code class="xref c c-macro docutils literal notranslate"><span class="pre">CONTAINER_OF</span></code></a> in the implementing function;</p></li>
+<li><p>neither the spin-wait nor callback notification methods can be
+accepted from userspace callers.</p></li>
+</ul>
+<p>Where a notification is required for an asynchronous operation invoked
+from a user mode thread the subsystem or driver should provide a syscall
+API that uses <a class="reference internal" href="../kernel/other/polling.html#c.k_poll_signal" title="k_poll_signal"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_poll_signal</span></code></a> for notification.</p>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__sys__notify__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">sys_notify_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.sys_notify_generic_callback">
+<span class="target" id="group__sys__notify__apis_1ga2a9ffe35a5ad44fb7c5b00bb5c5c0499"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sys_notify_generic_callback</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.sys_notify_generic_callback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generic signature used to notify of result completion by callback. </p>
+<p>Functions with this role may be invoked from any context including pre-kernel, ISR, or cooperative or pre-emptible threads. Compatible functions must be isr-ok and not sleep.</p>
+<p>Parameters that should generally be passed to such functions include:</p>
+<p><ul class="simple">
+<li><p>a pointer to a specific client request structure, i.e. the one that contains the <a class="reference internal" href="#structsys__notify"><span class="std std-ref">sys_notify</span></a> structure.</p></li>
+<li><p>the result of the operation, either as passed to <a class="reference internal" href="#group__sys__notify__apis_1ga424b1c94c1010bdc4170cf06c7f2ec72"><span class="std std-ref">sys_notify_finalize()</span></a> or extracted afterwards using <a class="reference internal" href="#group__sys__notify__apis_1ga823397b1917e10593d606daf3ec06a65"><span class="std std-ref">sys_notify_fetch_result()</span></a>. Expected values are service-specific, but the value shall be non-negative if the operation succeeded, and negative if the operation failed. </p></li>
+</ul>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_notify_get_method">
+<span class="target" id="group__sys__notify__apis_1ga19a2ca050ef4fcd4fac70e73c3fd3514"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_notify_get_method</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sys_notify" title="sys_notify"><span class="n"><span class="pre">sys_notify</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">notify</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_notify_get_method" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_notify_validate">
+<span class="target" id="group__sys__notify__apis_1ga71a9ccb690151020a6abea2ec9ffc667"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_notify_validate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sys_notify" title="sys_notify"><span class="n"><span class="pre">sys_notify</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">notify</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_notify_validate" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Validate and initialize the notify structure. </p>
+<p>This should be invoked at the start of any service-specific configuration validation. It ensures that the basic asynchronous notification configuration is consistent, and clears the result.</p>
+<p>Note that this function does not validate extension bits (zeroed by async notify API init functions like <a class="reference internal" href="#group__sys__notify__apis_1gaa9f31f78c03f48a3c649bbac15cc3a6c"><span class="std std-ref">sys_notify_init_callback()</span></a>). It may fail to recognize that an uninitialized structure has been passed because only method bits of flags are tested against method settings. To reduce the chance of accepting an uninititalized operation service validation of structures that contain an <a class="reference internal" href="#structsys__notify"><span class="std std-ref">sys_notify</span></a> instance should confirm that the extension bits are set or cleared as expected.</p>
+<p><dl class="simple">
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on successful validation and reinitialization </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: if the configuration is not valid. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_notify_finalize">
+<span class="target" id="group__sys__notify__apis_1ga424b1c94c1010bdc4170cf06c7f2ec72"></span><a class="reference internal" href="#c.sys_notify_generic_callback" title="sys_notify_generic_callback"><span class="n"><span class="pre">sys_notify_generic_callback</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_notify_finalize</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sys_notify" title="sys_notify"><span class="n"><span class="pre">sys_notify</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">notify</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">res</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_notify_finalize" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Record and signal the operation completion. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>If the notification is to be done by callback this returns the generic version of the function to be invoked. The caller must immediately invoke that function with whatever arguments are expected by the callback. If notification is by spin-wait or signal, the notification has been completed by the point this function returns, and a null pointer is returned. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">notify</span></code>: pointer to the notification state structure.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">res</span></code>: the result of the operation. Expected values are service-specific, but the value shall be non-negative if the operation succeeded, and negative if the operation failed.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_notify_fetch_result">
+<span class="target" id="group__sys__notify__apis_1ga823397b1917e10593d606daf3ec06a65"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_notify_fetch_result</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sys_notify" title="sys_notify"><span class="n"><span class="pre">sys_notify</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">notify</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">result</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_notify_fetch_result" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check for and read the result of an asynchronous operation. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">notify</span></code>: pointer to the object used to specify asynchronous function behavior and store completion information.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">result</span></code>: pointer to storage for the result of the operation. The result is stored only if the operation has completed.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: if the operation has completed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: if the operation has not completed. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_notify_init_spinwait">
+<span class="target" id="group__sys__notify__apis_1gad1a5c3e58ff962ab3cac743dde8c6c1e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_notify_init_spinwait</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sys_notify" title="sys_notify"><span class="n"><span class="pre">sys_notify</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">notify</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_notify_init_spinwait" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a notify object for spin-wait notification. </p>
+<p>Clients that use this initialization receive no asynchronous notification, and instead must periodically check for completion using <a class="reference internal" href="#group__sys__notify__apis_1ga823397b1917e10593d606daf3ec06a65"><span class="std std-ref">sys_notify_fetch_result()</span></a>.</p>
+<p>On completion of the operation the client object must be reinitialized before it can be re-used.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">notify</span></code>: pointer to the notification configuration object. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_notify_init_signal">
+<span class="target" id="group__sys__notify__apis_1ga30f9eff4b20b7d637a3a1df5f4cb38f8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_notify_init_signal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sys_notify" title="sys_notify"><span class="n"><span class="pre">sys_notify</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">notify</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../kernel/other/polling.html#c.k_poll_signal" title="k_poll_signal"><span class="n"><span class="pre">k_poll_signal</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sigp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_notify_init_signal" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a notify object for (k_poll) signal notification. </p>
+<p>Clients that use this initialization will be notified of the completion of operations through the provided signal.</p>
+<p>On completion of the operation the client object must be reinitialized before it can be re-used.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This capability is available only when<span> <a class="reference internal" href="../../kconfig.html#CONFIG_POLL" title="CONFIG_POLL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_POLL</span></code></a> </span> is selected.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">notify</span></code>: pointer to the notification configuration object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sigp</span></code>: pointer to the signal to use for notification. The value must not be null. The signal must be reset before the client object is passed to the on-off service API. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_notify_init_callback">
+<span class="target" id="group__sys__notify__apis_1gaa9f31f78c03f48a3c649bbac15cc3a6c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_notify_init_callback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sys_notify" title="sys_notify"><span class="n"><span class="pre">sys_notify</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">notify</span></span>, <a class="reference internal" href="#c.sys_notify_generic_callback" title="sys_notify_generic_callback"><span class="n"><span class="pre">sys_notify_generic_callback</span></span></a><span class="w"> </span><span class="n"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_notify_init_callback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a notify object for callback notification. </p>
+<p>Clients that use this initialization will be notified of the completion of operations through the provided callback. Note that callbacks may be invoked from various contexts depending on the specific service; see <a class="reference internal" href="#group__sys__notify__apis_1ga2a9ffe35a5ad44fb7c5b00bb5c5c0499"><span class="std std-ref">sys_notify_generic_callback</span></a>.</p>
+<p>On completion of the operation the client object must be reinitialized before it can be re-used.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">notify</span></code>: pointer to the notification configuration object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">handler</span></code>: a function pointer to use for notification. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_notify_uses_callback">
+<span class="target" id="group__sys__notify__apis_1ga9772f8b356685acd707bd905860a2ca7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_notify_uses_callback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.sys_notify" title="sys_notify"><span class="n"><span class="pre">sys_notify</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">notify</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_notify_uses_callback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Detect whether a particular notification uses a callback. </p>
+<p>The generic handler does not capture the signature expected by the callback, and the translation to a service-specific callback must be provided by the service. This check allows abstracted services to reject callback notification requests when the service doesn’t provide a translation function.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>true if and only if a callback is to be used for notification. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.sys_notify">
+<span class="target" id="structsys__notify"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_notify</span></span></span><a class="headerlink" href="#c.sys_notify" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;notify.h&gt;</em><p>State associated with notification for an asynchronous operation. </p>
+<p>Objects of this type are allocated by a client, which must use an initialization function (e.g. <a class="reference internal" href="#group__sys__notify__apis_1ga30f9eff4b20b7d637a3a1df5f4cb38f8"><span class="std std-ref">sys_notify_init_signal()</span></a>) to configure them. Generally the structure is a member of a service-specific client structure, such as <a class="reference internal" href="../resource_management/index.html#structonoff__client"><span class="std std-ref">onoff_client</span></a>.</p>
+<p>Control of the containing object transfers to the service provider when a pointer to the object is passed to a service function that is documented to take control of the object, such as onoff_service_request(). While the service provider controls the object the client must not change any object fields. Control reverts to the client:<ul class="simple">
+<li><p>if the call to the service API returns an error;</p></li>
+<li><p>when operation completion is posted. This may occur before the call to the service API returns.</p></li>
+</ul>
+</p>
+<p>Operation completion is technically posted when the flags field is updated so that <a class="reference internal" href="#group__sys__notify__apis_1ga823397b1917e10593d606daf3ec06a65"><span class="std std-ref">sys_notify_fetch_result()</span></a> returns success. This will happen before the signal is posted or callback is invoked. Note that although the manager will no longer reference the <a class="reference internal" href="#structsys__notify"><span class="std std-ref">sys_notify</span></a> object past this point, the containing object may have state that will be referenced within the callback. Where callbacks are used control of the containing object does not revert to the client until the callback has been invoked. (Re-use within the callback is explicitly permitted.)</p>
+<p>After control has reverted to the client the notify object must be reinitialized for the next operation.</p>
+<p>The content of this structure is not public API to clients: all configuration and inspection should be done with functions like <a class="reference internal" href="#group__sys__notify__apis_1gaa9f31f78c03f48a3c649bbac15cc3a6c"><span class="std std-ref">sys_notify_init_callback()</span></a> and <a class="reference internal" href="#group__sys__notify__apis_1ga823397b1917e10593d606daf3ec06a65"><span class="std std-ref">sys_notify_fetch_result()</span></a>. However, services that use this structure may access certain fields directly. </p>
+<dl class="c union">
+<dt class="sig sig-object c" id="c.sys_notify.method">
+<span class="target" id="unionsys__notify_1_1method"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">method</span></span></span><a class="headerlink" href="#c.sys_notify.method" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;notify.h&gt;</em><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.sys_notify.method.signal">
+<span class="target" id="unionsys__notify_1_1method_1a6db217c9960d59b8046457d0503f56d3"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../kernel/other/polling.html#c.k_poll_signal" title="k_poll_signal"><span class="n"><span class="pre">k_poll_signal</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">signal</span></span></span><a class="headerlink" href="#c.sys_notify.method.signal" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.sys_notify.method.callback">
+<span class="target" id="unionsys__notify_1_1method_1abb9d173c53db24a5388327cf05110020"></span><a class="reference internal" href="#c.sys_notify_generic_callback" title="sys_notify_generic_callback"><span class="n"><span class="pre">sys_notify_generic_callback</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">callback</span></span></span><a class="headerlink" href="#c.sys_notify.method.callback" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../bluetooth/index.html" class="btn btn-neutral float-right" title="Bluetooth" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../audio/i2s.html" class="btn btn-neutral" title="I2S" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

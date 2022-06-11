@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="system__timer_8h" kind="file" language="C++">
+    <compoundname>system_timer.h</compoundname>
+    <includes refid="stdbool_8h" local="no">stdbool.h</includes>
+    <includes refid="include_2zephyr_2types_8h" local="no">zephyr/types.h</includes>
+    <incdepgraph>
+      <node id="3">
+        <label>zephyr/types.h</label>
+        <link refid="include_2zephyr_2types_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>include/drivers/timer/system_timer.h</label>
+        <link refid="system__timer_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>stdbool.h</label>
+        <link refid="stdbool_8h"/>
+      </node>
+      <node id="4">
+        <label>stddef.h</label>
+      </node>
+      <node id="5">
+        <label>stdint.h</label>
+        <link refid="stdint_8h"/>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__clock__apis_1ga747c1f4a99a3bc48e7ec65d7bc5e4767" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void sys_clock_set_timeout</definition>
+        <argsstring>(int32_t ticks, bool idle)</argsstring>
+        <name>sys_clock_set_timeout</name>
+        <param>
+          <type><ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref></type>
+          <declname>ticks</declname>
+        </param>
+        <param>
+          <type><ref refid="stdbool_8h_1abb452686968e48b67397da5f97445f5b" kindref="member">bool</ref></type>
+          <declname>idle</declname>
+        </param>
+        <briefdescription>
+<para>Set system clock timeout. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Informs the system clock driver that the next needed call to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> will not be until the specified number of ticks from the the current time have elapsed. Note that spurious calls to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> are allowed (i.e. it&apos;s legal to announce every tick and implement this function as a noop), the requirement is that one tick announcement should occur within one tick BEFORE the specified expiration (that is, passing ticks==1 means &quot;announce
+the next tick&quot;, this convention was chosen to match legacy usage). Similarly a ticks value of zero (or even negative) is legal and treated identically: it simply indicates the kernel would like the next tick announcement as soon as possible.</para>
+<para>Note that ticks can also be passed the special value K_TICKS_FOREVER, indicating that no future timer interrupts are expected or required and that the system is permitted to enter an indefinite sleep even if this could cause rollover of the internal counter (i.e. the system uptime counter is allowed to be wrong</para>
+<para>Note also that it is conventional for the kernel to pass INT_MAX for ticks if it wants to preserve the uptime tick count but doesn&apos;t have a specific event to await. The intent here is that the driver will schedule any needed timeout as far into the future as possible. For the specific case of INT_MAX, the next call to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> may occur at any point in the future, not just at INT_MAX ticks. But the correspondence between the announced ticks and real-world time must be correct.</para>
+<para>A final note about SMP: note that the call to <ref refid="group__clock__apis_1ga747c1f4a99a3bc48e7ec65d7bc5e4767" kindref="member">sys_clock_set_timeout()</ref> is made on any CPU, and reflects the next timeout desired globally. The resulting calls(s) to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> must be properly serialized by the driver such that a given tick is announced exactly once across the system. The kernel does not (cannot, really) attempt to serialize things by &quot;assigning&quot; timeouts to specific CPUs.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ticks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Timeout in tick units </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>idle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Hint to the driver that the system is about to enter the idle state immediately after setting the timeout </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/timer/system_timer.h" line="73" column="13" declfile="include/drivers/timer/system_timer.h" declline="73" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1ga6ca2139000b8c75b1ed2c6c1f672ff79" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void sys_clock_idle_exit</definition>
+        <argsstring>(void)</argsstring>
+        <name>sys_clock_idle_exit</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Timer idle exit notification. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This notifies the timer driver that the system is exiting the idle and allows it to do whatever bookkeeping is needed to restore timer operation and compute elapsed ticks.</para>
+<para><simplesect kind="note"><para>Legacy timer drivers also use this opportunity to call back into <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> to notify the kernel of expired ticks. This is allowed for compatibility, but not recommended. The kernel will figure that out on its own. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/timer/system_timer.h" line="87" column="13" declfile="include/drivers/timer/system_timer.h" declline="87" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void sys_clock_announce</definition>
+        <argsstring>(int32_t ticks)</argsstring>
+        <name>sys_clock_announce</name>
+        <param>
+          <type><ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref></type>
+          <declname>ticks</declname>
+        </param>
+        <briefdescription>
+<para>Announce time progress to the kernel. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Informs the kernel that the specified number of ticks have elapsed since the last call to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> (or system startup for the first call). The timer driver is expected to delivery these announcements as close as practical (subject to hardware and latency limitations) to tick boundaries.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ticks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Elapsed time, in ticks </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/timer/system_timer.h" line="100" column="13" declfile="include/drivers/timer/system_timer.h" declline="100" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1gaa9b6d8eebc69d2808beb0580d974bb84" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref></type>
+        <definition>uint32_t sys_clock_elapsed</definition>
+        <argsstring>(void)</argsstring>
+        <name>sys_clock_elapsed</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Ticks elapsed since last <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> call. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Queries the clock driver for the current time elapsed since the last call to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> was made. The kernel will call this with appropriate locking, the driver needs only provide an instantaneous answer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/timer/system_timer.h" line="110" column="17" declfile="include/drivers/timer/system_timer.h" declline="110" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1ga49c900ab49a72c347d0aefb14aecb550" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void sys_clock_disable</definition>
+        <argsstring>(void)</argsstring>
+        <name>sys_clock_disable</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Disable system timer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function is a no-op if the system timer does not have the capability of being disabled. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/timer/system_timer.h" line="121" column="13" declfile="include/drivers/timer/system_timer.h" declline="121" declcolumn="13"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Timer driver API. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Declare API implemented by system timer driver and used by kernel components. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2015<sp/>Wind<sp/>River<sp/>Systems,<sp/>Inc.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2019<sp/>Intel<sp/>Corporation</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>SPDX-License-Identifier:<sp/>Apache-2.0</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ZEPHYR_INCLUDE_DRIVERS_SYSTEM_TIMER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ZEPHYR_INCLUDE_DRIVERS_SYSTEM_TIMER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="stdbool_8h" kindref="compound">stdbool.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="include_2zephyr_2types_8h" kindref="compound">zephyr/types.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="group__clock__apis_1ga747c1f4a99a3bc48e7ec65d7bc5e4767" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__clock__apis_1ga747c1f4a99a3bc48e7ec65d7bc5e4767" kindref="member">sys_clock_set_timeout</ref>(<ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref><sp/>ticks,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="test__sched__priority_8c_1a96961ee4486981f5e7f6b2264461ea97" kindref="member">idle</ref>);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="group__clock__apis_1ga6ca2139000b8c75b1ed2c6c1f672ff79" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__clock__apis_1ga6ca2139000b8c75b1ed2c6c1f672ff79" kindref="member">sys_clock_idle_exit</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100" refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce</ref>(<ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref><sp/>ticks);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110" refid="group__clock__apis_1gaa9b6d8eebc69d2808beb0580d974bb84" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref><sp/><ref refid="group__clock__apis_1gaa9b6d8eebc69d2808beb0580d974bb84" kindref="member">sys_clock_elapsed</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(CONFIG_SYS_CLOCK_EXISTS)<sp/>&amp;&amp;<sp/>\</highlight></codeline>
+<codeline lineno="113"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>defined(CONFIG_SYSTEM_TIMER_HAS_DISABLE_SUPPORT)<sp/>||<sp/>\</highlight></codeline>
+<codeline lineno="114"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>defined(__DOXYGEN__)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121" refid="group__clock__apis_1ga49c900ab49a72c347d0aefb14aecb550" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__clock__apis_1ga49c900ab49a72c347d0aefb14aecb550" kindref="member">sys_clock_disable</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="group__clock__apis_1ga49c900ab49a72c347d0aefb14aecb550" kindref="member">sys_clock_disable</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">)<sp/>{}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>CONFIG_SYSTEM_TIMER_HAS_DISABLE_SUPPORT<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ZEPHYR_INCLUDE_DRIVERS_SYSTEM_TIMER_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="include/drivers/timer/system_timer.h"/>
+  </compounddef>
+</doxygen>

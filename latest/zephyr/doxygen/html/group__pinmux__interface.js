@@ -1,0 +1,37 @@
+var group__pinmux__interface =
+[
+    [ "pinmux_driver_api", "structpinmux__driver__api.html", [
+      [ "get", "structpinmux__driver__api.html#a871e4c3e31b8bce4259b2dcf5972a6c6", null ],
+      [ "input", "structpinmux__driver__api.html#a3e3eb9d61aad212d6ed25e6477761ed7", null ],
+      [ "pullup", "structpinmux__driver__api.html#aa881913041ab8173177c88e0dee85d82", null ],
+      [ "set", "structpinmux__driver__api.html#a23983515d5005441c71ea684e82cce99", null ]
+    ] ],
+    [ "PINMUX_FUNC_A", "group__pinmux__interface.html#ga98cfa6f81cd2d924b4b8410cc58dcced", null ],
+    [ "PINMUX_FUNC_B", "group__pinmux__interface.html#ga1f94697f2a9f866e751fad5fa50ac54a", null ],
+    [ "PINMUX_FUNC_C", "group__pinmux__interface.html#gad65d0f30a98080f3e21e2db0d6f63e90", null ],
+    [ "PINMUX_FUNC_D", "group__pinmux__interface.html#gabcab76c799f9fefa55d8814c820f212a", null ],
+    [ "PINMUX_FUNC_E", "group__pinmux__interface.html#ga91037775d3a5534ebd06f13631419773", null ],
+    [ "PINMUX_FUNC_F", "group__pinmux__interface.html#ga4545af61cc191f7c9b53a7c2bd6efce8", null ],
+    [ "PINMUX_FUNC_G", "group__pinmux__interface.html#ga26a7183a9a7f4b19306e4e497f07804a", null ],
+    [ "PINMUX_FUNC_H", "group__pinmux__interface.html#ga780316d37117380d257e1280bdddc80a", null ],
+    [ "PINMUX_FUNC_I", "group__pinmux__interface.html#gae900563f48de8e05ff4c1678de4f25b1", null ],
+    [ "PINMUX_FUNC_J", "group__pinmux__interface.html#ga679bd0cd61067e444d27df05c2b2d8a3", null ],
+    [ "PINMUX_FUNC_K", "group__pinmux__interface.html#gab7b45213fb252d04ca76638b7b6e3453", null ],
+    [ "PINMUX_FUNC_L", "group__pinmux__interface.html#ga8bc0c983b9b3e1be9ebc78dd79839dff", null ],
+    [ "PINMUX_FUNC_M", "group__pinmux__interface.html#ga02d9d70f1296c8866cc83d894cc50fcc", null ],
+    [ "PINMUX_FUNC_N", "group__pinmux__interface.html#ga5689712d6b4e0c0a04a52c5c928e605f", null ],
+    [ "PINMUX_FUNC_O", "group__pinmux__interface.html#gabcc9415a1170474b30c34f7a19091d71", null ],
+    [ "PINMUX_FUNC_P", "group__pinmux__interface.html#gac8af06303acd7811ddc98666c47e058b", null ],
+    [ "PINMUX_INPUT_ENABLED", "group__pinmux__interface.html#ga5069cd0df03a8b025bb450cfbc68ec9d", null ],
+    [ "PINMUX_OUTPUT_ENABLED", "group__pinmux__interface.html#gac7b6ef9a7d226dcacc308225a74da3f7", null ],
+    [ "PINMUX_PULLUP_DISABLE", "group__pinmux__interface.html#gade55cf3295ee85713135cb9ac8d65172", null ],
+    [ "PINMUX_PULLUP_ENABLE", "group__pinmux__interface.html#ga8dc656edabddd2ce6235734929ca286d", null ],
+    [ "pmux_get", "group__pinmux__interface.html#ga42dfbf99e469beafe9258e4dfb6c2384", null ],
+    [ "pmux_input", "group__pinmux__interface.html#ga527bc40d9df441ec79463d0ce8b69a82", null ],
+    [ "pmux_pullup", "group__pinmux__interface.html#ga98b09868145eaa3580d9a77e3fdfaccb", null ],
+    [ "pmux_set", "group__pinmux__interface.html#ga3794003259d7588cb0969fa27562092d", null ],
+    [ "pinmux_pin_get", "group__pinmux__interface.html#ga650875ff6bc51e0a321886cc967d137f", null ],
+    [ "pinmux_pin_input_enable", "group__pinmux__interface.html#ga263a5ce6a868711b65b7de5dd915a2b3", null ],
+    [ "pinmux_pin_pullup", "group__pinmux__interface.html#ga6cde3b5db19672c38998a0cccd94ae6b", null ],
+    [ "pinmux_pin_set", "group__pinmux__interface.html#ga6c00892519c29aab488169fe3ebae5ce", null ]
+];

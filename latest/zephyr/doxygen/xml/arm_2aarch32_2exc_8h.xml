@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="arm_2aarch32_2exc_8h" kind="file" language="C++">
+    <compoundname>exc.h</compoundname>
+    <includes refid="include_2zephyr_2types_8h" local="no">zephyr/types.h</includes>
+    <includedby refid="arm_2aarch32_2arch_8h" local="no">include/arch/arm/aarch32/arch.h</includedby>
+    <includedby refid="arm_2aarch32_2asm__inline__gcc_8h" local="no">include/arch/arm/aarch32/asm_inline_gcc.h</includedby>
+    <includedby refid="arm_2aarch32_2error_8h" local="no">include/arch/arm/aarch32/error.h</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>zephyr/types.h</label>
+        <link refid="include_2zephyr_2types_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>stddef.h</label>
+      </node>
+      <node id="4">
+        <label>stdint.h</label>
+        <link refid="stdint_8h"/>
+      </node>
+      <node id="1">
+        <label>include/arch/arm/aarch32/exc.h</label>
+        <link refid="arm_2aarch32_2exc_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>include/arch/arm/aarch32/asm_inline_gcc.h</label>
+        <link refid="arm_2aarch32_2asm__inline__gcc_8h"/>
+      </node>
+      <node id="4">
+        <label>include/arch/arm/aarch32/error.h</label>
+        <link refid="arm_2aarch32_2error_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>include/arch/arm/aarch32/exc.h</label>
+        <link refid="arm_2aarch32_2exc_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>include/arch/arm/aarch32/arch.h</label>
+        <link refid="arm_2aarch32_2arch_8h"/>
+      </node>
+    </invincdepgraph>
+    <briefdescription>
+<para>ARM AArch32 public exception handling. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>ARM AArch32-specific kernel exception handling interface. Included by arm/arch.h. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2013-2014<sp/>Wind<sp/>River<sp/>Systems,<sp/>Inc.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>SPDX-License-Identifier:<sp/>Apache-2.0</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ZEPHYR_INCLUDE_ARCH_ARM_AARCH32_EXC_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ZEPHYR_INCLUDE_ARCH_ARM_AARCH32_EXC_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(CONFIG_CPU_CORTEX_M)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="devicetree_8h" kindref="compound">devicetree.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="nvic_8h" kindref="compound">arch/arm/aarch32/cortex_m/nvic.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>for<sp/>assembler,<sp/>only<sp/>works<sp/>with<sp/>constants<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>Z_EXC_PRIO(pri)<sp/>(((pri)<sp/>&lt;&lt;<sp/>(8<sp/>-<sp/>NUM_IRQ_PRIO_BITS))<sp/>&amp;<sp/>0xff)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>In<sp/>architecture<sp/>variants<sp/>with<sp/>non-programmable<sp/>fault<sp/>exceptions</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>(e.g.<sp/>Cortex-M<sp/>Baseline<sp/>variants),<sp/>hardware<sp/>ensures<sp/>processor<sp/>faults</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>are<sp/>given<sp/>the<sp/>highest<sp/>interrupt<sp/>priority<sp/>level.<sp/>SVCalls<sp/>are<sp/>assigned</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>the<sp/>highest<sp/>configurable<sp/>priority<sp/>level<sp/>(level<sp/>0);<sp/>note,<sp/>however,<sp/>that</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>this<sp/>interrupt<sp/>level<sp/>may<sp/>be<sp/>shared<sp/>with<sp/>HW<sp/>interrupts.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>In<sp/>Cortex<sp/>variants<sp/>with<sp/>programmable<sp/>fault<sp/>exception<sp/>priorities<sp/>we</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>assign<sp/>the<sp/>highest<sp/>interrupt<sp/>priority<sp/>level<sp/>(level<sp/>0)<sp/>to<sp/>processor<sp/>faults</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>with<sp/>configurable<sp/>priority.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>The<sp/>highest<sp/>priority<sp/>level<sp/>may<sp/>be<sp/>shared<sp/>with<sp/>either<sp/>Zero-Latency<sp/>IRQs<sp/>(if</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>support<sp/>for<sp/>the<sp/>feature<sp/>is<sp/>enabled)<sp/>or<sp/>with<sp/>SVCall<sp/>priority<sp/>level.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>Regular<sp/>HW<sp/>IRQs<sp/>are<sp/>always<sp/>assigned<sp/>priority<sp/>levels<sp/>lower<sp/>than<sp/>the<sp/>priority</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>levels<sp/>for<sp/>SVCalls,<sp/>Zero-Latency<sp/>IRQs<sp/>and<sp/>processor<sp/>faults.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>PendSV<sp/>IRQ<sp/>(which<sp/>is<sp/>used<sp/>in<sp/>Cortex-M<sp/>variants<sp/>to<sp/>implement<sp/>thread</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>context-switching)<sp/>is<sp/>assigned<sp/>the<sp/>lowest<sp/>IRQ<sp/>priority<sp/>level.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(CONFIG_CPU_CORTEX_M_HAS_PROGRAMMABLE_FAULT_PRIOS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_EXCEPTION_RESERVED_PRIO<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_EXCEPTION_RESERVED_PRIO<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_EXC_FAULT_PRIO<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_EXC_ZERO_LATENCY_IRQS_PRIO<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_EXC_SVC_PRIO<sp/>COND_CODE_1(CONFIG_ZERO_LATENCY_IRQS,<sp/>(1),<sp/>(0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_IRQ_PRIO_OFFSET<sp/>(_EXCEPTION_RESERVED_PRIO<sp/>+<sp/>_EXC_SVC_PRIO)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>IRQ_PRIO_LOWEST<sp/>(BIT(NUM_IRQ_PRIO_BITS)<sp/>-<sp/>(_IRQ_PRIO_OFFSET)<sp/>-<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_EXC_IRQ_DEFAULT_PRIO<sp/>Z_EXC_PRIO(_IRQ_PRIO_OFFSET)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Use<sp/>lowest<sp/>possible<sp/>priority<sp/>level<sp/>for<sp/>PendSV<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_EXC_PENDSV_PRIO<sp/>0xff</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_EXC_PENDSV_PRIO_MASK<sp/>Z_EXC_PRIO(_EXC_PENDSV_PRIO)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>CONFIG_CPU_CORTEX_M<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>_ASMLANGUAGE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal">GTEXT(z_arm_exc_exit);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="include_2zephyr_2types_8h" kindref="compound">zephyr/types.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Additional<sp/>register<sp/>state<sp/>that<sp/>is<sp/>not<sp/>stacked<sp/>by<sp/>hardware<sp/>on<sp/>exception</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/>entry.</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/>These<sp/>fields<sp/>are<sp/>ONLY<sp/>valid<sp/>in<sp/>the<sp/>ESF<sp/>copy<sp/>passed<sp/>into<sp/>z_arm_fatal_error().</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*<sp/>When<sp/>information<sp/>for<sp/>a<sp/>member<sp/>is<sp/>unavailable,<sp/>the<sp/>field<sp/>is<sp/>set<sp/>to<sp/>zero.</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(CONFIG_EXTRA_EXCEPTION_INFO)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">__extra_esf_info<sp/>{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_callee_saved_t<sp/>*callee;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref><sp/>msp;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref><sp/>exc_return;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>CONFIG_EXTRA_EXCEPTION_INFO<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">__esf<sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">__basic_sf<sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="arm_2aarch32_2arch_8h_1a59d42697fc33d0b600597145a7b76dc7" kindref="member">sys_define_gpr_with_alias</ref>(a1,<sp/>r0);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="arm_2aarch32_2arch_8h_1a59d42697fc33d0b600597145a7b76dc7" kindref="member">sys_define_gpr_with_alias</ref>(a2,<sp/>r1);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="arm_2aarch32_2arch_8h_1a59d42697fc33d0b600597145a7b76dc7" kindref="member">sys_define_gpr_with_alias</ref>(a3,<sp/>r2);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="arm_2aarch32_2arch_8h_1a59d42697fc33d0b600597145a7b76dc7" kindref="member">sys_define_gpr_with_alias</ref>(a4,<sp/>r3);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="arm_2aarch32_2arch_8h_1a59d42697fc33d0b600597145a7b76dc7" kindref="member">sys_define_gpr_with_alias</ref>(ip,<sp/>r12);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="arm_2aarch32_2arch_8h_1a59d42697fc33d0b600597145a7b76dc7" kindref="member">sys_define_gpr_with_alias</ref>(lr,<sp/>r14);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="arm_2aarch32_2arch_8h_1a59d42697fc33d0b600597145a7b76dc7" kindref="member">sys_define_gpr_with_alias</ref>(pc,<sp/>r15);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref><sp/>xpsr;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/>basic;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(CONFIG_FPU)<sp/>&amp;&amp;<sp/>defined(CONFIG_FPU_SHARING)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="asm-macro-32-bit-gnu_8h_1a39e110111e0f42a0d4fb025a96888293" kindref="member">s</ref>[16];</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref><sp/>fpscr;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref><sp/>undefined;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(CONFIG_EXTRA_EXCEPTION_INFO)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">__extra_esf_info<sp/>extra_info;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref><sp/>z_arm_coredump_fault_sp;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">__esf<sp/>z_arch_esf_t;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>CONFIG_CPU_CORTEX_M</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>z_arm_exc_exit(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>z_arm_exc_exit(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>fatal);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>_ASMLANGUAGE<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ZEPHYR_INCLUDE_ARCH_ARM_AARCH32_EXC_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="include/arch/arm/aarch32/exc.h"/>
+  </compounddef>
+</doxygen>

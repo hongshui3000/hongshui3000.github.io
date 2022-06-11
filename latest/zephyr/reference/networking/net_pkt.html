@@ -1,0 +1,1554 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Packet Management &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Networking Technologies" href="net_tech.html" />
+    <link rel="prev" title="Network Buffer" href="net_buf.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="apis.html">Network APIs</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="buf_mgmt.html">Network Buffer Management</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="net_buf.html">Network Buffer</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Packet Management</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="net_tech.html">Networking Technologies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="protocols.html">Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system_mgmt.html">Network System Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsn.html">Time Sensitive Networking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsm_modem.html">Generic GSM Modem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="buf_mgmt.html">Network Buffer Management</a> &raquo;</li>
+        
+      <li>Packet Management</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/networking/net_pkt.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="packet-management">
+<span id="net-pkt-interface"></span><h1>Packet Management<a class="headerlink" href="#packet-management" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p>
+<ul>
+<li><p><a class="reference internal" href="#architectural-notes" id="id2">Architectural notes</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#memory-management" id="id3">Memory management</a></p>
+<ul>
+<li><p><a class="reference internal" href="#allocation" id="id4">Allocation</a></p></li>
+<li><p><a class="reference internal" href="#buffer-allocation" id="id5">Buffer allocation</a></p></li>
+<li><p><a class="reference internal" href="#deallocation" id="id6">Deallocation</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#operations" id="id7">Operations</a></p>
+<ul>
+<li><p><a class="reference internal" href="#read-and-write-access" id="id8">Read and Write access</a></p></li>
+<li><p><a class="reference internal" href="#data-access" id="id9">Data access</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#api-reference" id="id10">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id1">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Network packets are the main data the networking stack manipulates.
+Such data is represented through the net_pkt structure which provides
+a means to hold the packet, write and read it, as well as necessary
+metadata for the core to hold important information. Such an object is
+called net_pkt in this document.</p>
+<p>The data structure and the whole API around it are defined in
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/net/net_pkt.h">include/net/net_pkt.h</a>.</p>
+<div class="section" id="architectural-notes">
+<h3><a class="toc-backref" href="#id2">Architectural notes</a><a class="headerlink" href="#architectural-notes" title="Permalink to this headline">¶</a></h3>
+<p>There are two network packets flows within the stack, <strong>TX</strong> for the
+transmission path, and <strong>RX</strong> for the reception one. In both paths,
+each net_pkt is written and read from the beginning to the end, or
+more specifically from the headers to the payload.</p>
+</div>
+</div>
+<div class="section" id="memory-management">
+<h2><a class="toc-backref" href="#id3">Memory management</a><a class="headerlink" href="#memory-management" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="allocation">
+<h3><a class="toc-backref" href="#id4">Allocation</a><a class="headerlink" href="#allocation" title="Permalink to this headline">¶</a></h3>
+<p>All net_pkt objects come from a pre-defined pool of struct net_pkt.
+Such pool is defined via</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">NET_PKT_SLAB_DEFINE</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note, however, one will rarely have to use it, as the core provides
+already two pools, one for the TX path and one for the RX path.</p>
+<p>Allocating a raw net_pkt can be done through:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pkt</span> <span class="o">=</span> <span class="n">net_pkt_alloc</span><span class="p">(</span><span class="n">timeout</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>However, by its nature, a raw net_pkt is useless without a buffer and
+needs various metadata information to become relevant as well.  It
+requires at least to get the network interface it is meant to be sent
+through or through which it was received. As this is a very common
+operation, a helper exist:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pkt</span> <span class="o">=</span> <span class="n">net_pkt_alloc_on_iface</span><span class="p">(</span><span class="n">iface</span><span class="p">,</span> <span class="n">timeout</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>A more complete allocator exists, where both the net_pkt and its buffer
+can be allocated at once:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pkt</span> <span class="o">=</span> <span class="n">net_pkt_alloc_with_buffer</span><span class="p">(</span><span class="n">iface</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">family</span><span class="p">,</span> <span class="n">proto</span><span class="p">,</span> <span class="n">timeout</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>See below how the buffer is allocated.</p>
+</div>
+<div class="section" id="buffer-allocation">
+<h3><a class="toc-backref" href="#id5">Buffer allocation</a><a class="headerlink" href="#buffer-allocation" title="Permalink to this headline">¶</a></h3>
+<p>The net_pkt object does not define its own buffer, but instead uses an
+existing object for this: <a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><code class="xref c c-struct docutils literal notranslate"><span class="pre">net_buf</span></code></a>. (See
+<a class="reference internal" href="net_buf.html#net-buf-interface"><span class="std std-ref">Network Buffer</span></a> for more information). However, it mostly
+hides the usage of such a buffer because net_pkt brings network
+awareness to buffer allocation and, as we will see later, its
+operation too.</p>
+<p>To allocate a buffer, a net_pkt needs to have at least its network
+interface set. This works if the family of the packet is unknown at
+the time of buffer allocation. Then one could do:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">net_pkt_alloc_buffer</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">proto</span><span class="p">,</span> <span class="n">timeout</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Where proto could be 0 if unknown (there is no IPPROTO_UNSPEC).</p>
+<p>As seen previously, the net_pkt and its buffer can be allocated at
+once via <a class="reference internal" href="#c.net_pkt_alloc_with_buffer" title="net_pkt_alloc_with_buffer"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_pkt_alloc_with_buffer()</span></code></a>. It is actually the most
+widely used allocator.</p>
+<p>The network interface, the family, and the protocol of the packet are
+used by the buffer allocation to determine if the requested size can
+be allocated.  Indeed, the allocator will use the network interface to
+know the MTU and then the family and protocol for the headers space
+(if only these 2 are specified).  If the whole fits within the MTU,
+the allocated space will be of the requested size plus, eventually,
+the headers space. If there is insufficient MTU space, the requested
+size will be shrunk so the possible headers space and new size will
+fit within the MTU.</p>
+<p>For instance, on an Ethernet network interface, with an MTU of 1500
+bytes:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pkt</span> <span class="o">=</span> <span class="n">net_pkt_alloc_with_buffer</span><span class="p">(</span><span class="n">iface</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="n">AF_INET4</span><span class="p">,</span> <span class="n">IPPROTO_UDP</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>will successfully allocate 800 + 20 + 8 bytes of buffer for the new
+net_pkt where:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pkt</span> <span class="o">=</span> <span class="n">net_pkt_alloc_with_buffer</span><span class="p">(</span><span class="n">iface</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="n">AF_INET4</span><span class="p">,</span> <span class="n">IPPROTO_UDP</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>will successfully allocate 1500 bytes, and where 20 + 8 bytes (IPv4 +
+UDP headers) will not be used for the payload.</p>
+<p>On the receiving side, when the family and protocol are not known:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pkt</span> <span class="o">=</span> <span class="n">net_pkt_rx_alloc_with_buffer</span><span class="p">(</span><span class="n">iface</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="n">AF_UNSPEC</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>will allocate 800 bytes and no extra header space.
+But a:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pkt</span> <span class="o">=</span> <span class="n">net_pkt_rx_alloc_with_buffer</span><span class="p">(</span><span class="n">iface</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="n">AF_UNSPEC</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>will allocate 1514 bytes, the MTU + Ethernet header space.</p>
+<p>One can increase the amount of buffer space allocated by calling
+<a class="reference internal" href="#c.net_pkt_alloc_buffer" title="net_pkt_alloc_buffer"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_pkt_alloc_buffer()</span></code></a>, as it will take into account the
+existing buffer. It will also account for the header space if
+net_pkt’s family is a valid one, as well as the proto parameter. In
+that case, the newly allocated buffer space will be appended to the
+existing one, and not inserted in the front. Note however such a use
+case is rather limited.  Usually, one should know from the start how
+much size should be requested.</p>
+</div>
+<div class="section" id="deallocation">
+<h3><a class="toc-backref" href="#id6">Deallocation</a><a class="headerlink" href="#deallocation" title="Permalink to this headline">¶</a></h3>
+<p>Each net_pkt is reference counted. At allocation, the reference is set
+to 1.  The reference count can be incremented with
+<a class="reference internal" href="#c.net_pkt_ref" title="net_pkt_ref"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_pkt_ref()</span></code></a> or decremented with
+<a class="reference internal" href="#c.net_pkt_unref" title="net_pkt_unref"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_pkt_unref()</span></code></a>. When the count drops to zero the buffer is
+also un-referenced and net_pkt is automatically placed back into the
+free net_pkt_slabs</p>
+<p>If net_pkt’s buffer is needed even after net_pkt deallocation, one
+will need to reference once more all the chain of net_buf before
+calling last net_pkt_unref. See <a class="reference internal" href="net_buf.html#net-buf-interface"><span class="std std-ref">Network Buffer</span></a> for more
+information.</p>
+</div>
+</div>
+<div class="section" id="operations">
+<h2><a class="toc-backref" href="#id7">Operations</a><a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h2>
+<p>There are two ways to access the net_pkt buffer, explained in the
+following sections: basic read/write access and data access, the
+latter being the preferred way.</p>
+<div class="section" id="read-and-write-access">
+<h3><a class="toc-backref" href="#id8">Read and Write access</a><a class="headerlink" href="#read-and-write-access" title="Permalink to this headline">¶</a></h3>
+<p>As said earlier, though net_pkt uses net_buf for its buffer, it
+provides its own API to access it. Indeed, a network packet might be
+scattered over a chain of net_buf objects, the functions provided by
+net_buf are then limited for such case.  Instead, net_pkt provides
+functions which hide all the complexity of potential non-contiguous
+access.</p>
+<p>Data movement into the buffer is made through a cursor maintained
+within each net_pkt.  All read/write operations affect this
+cursor. Note as well that read or write functions are strict on their
+length parameters: if it cannot r/w the given length it will
+fail. Length is not interpreted as an upper limit, it is instead the
+exact amount of data that must be read or written.</p>
+<p>As there are two paths, TX and RX, there are two access modes: write
+and overwrite.  This might sound a bit unusual, but is in fact simple
+and provides flexibility.</p>
+<p>In write mode, whatever is written in the buffer affects the length of
+actual data present in the buffer. Buffer length should not be
+confused with the buffer size which is a limit any mode cannot pass.
+In overwrite mode then, whatever is written must happen on valid data,
+and will not affect the buffer length. By default, a newly allocated
+net_pkt is on write mode, and its cursor points to the beginning of
+its buffer.</p>
+<p>Let’s see now, step by step, the functions and how they behave
+depending on the mode.</p>
+<p>When freshly allocated with a buffer of 500 bytes, a net_pkt has 0
+length, which means no valid data is in its buffer. One could verify
+this by:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">len</span> <span class="o">=</span> <span class="n">net_pkt_get_len</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Now, let’s write 8 bytes:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">net_pkt_write</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The buffer length is now 8 bytes.
+There are various helpers to write a byte, or big endian uint16_t, uint32_t.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">net_pkt_write_u8</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">foo</span><span class="p">);</span>
+<span class="n">net_pkt_write_be16</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ba</span><span class="p">);</span>
+<span class="n">net_pkt_write_be32</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">bar</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Logically, net_pkt’s length is now 15. But if we try to read at this
+point, it will fail because there is nothing to read at the cursor
+where we are at in the net_pkt. It is possible, while in write mode,
+to read what has been already written by resetting the cursor of the
+net_pkt. For instance:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">net_pkt_cursor_init</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
+<span class="n">net_pkt_read</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="mi">15</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This will reset the cursor of the pkt to the beginning of the buffer
+and then let you read the actual 15 bytes present. The cursor is then
+again pointing at the end of the buffer.</p>
+<p>To set a large area with the same byte, a memset function is provided:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">net_pkt_memset</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Our net_pkt has now a length of 20 bytes.</p>
+<p>Switching between modes can be achieved via
+<code class="xref c c-func docutils literal notranslate"><span class="pre">net_pkt_set_overwrite()</span></code> function. It is possible to switch
+mode back and forth at any time.  The net_pkt will be set to overwrite
+and its cursor reset:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">net_pkt_set_overwrite</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+<span class="n">net_pkt_cursor_init</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Now the same operators can be used, but it will be limited to the
+existing data in the buffer, i.e. 20 bytes.</p>
+<p>If it is necessary to know how much space is available in the net_pkt
+call:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">net_pkt_available_buffer</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Or, if headers space needs to be accounted for, call:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">net_pkt_available_payload_buffer</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="n">proto</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If you want to place the cursor at a known position use the function
+<a class="reference internal" href="#c.net_pkt_skip" title="net_pkt_skip"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_pkt_skip()</span></code></a>.  For example, to go after the IP header, use:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">net_pkt_cursor_init</span><span class="p">(</span><span class="n">pkt</span><span class="p">);</span>
+<span class="n">net_pkt_skip</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="n">net_pkt_ip_header_len</span><span class="p">(</span><span class="n">pkt</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-access">
+<h3><a class="toc-backref" href="#id9">Data access</a><a class="headerlink" href="#data-access" title="Permalink to this headline">¶</a></h3>
+<p>Though the API shown previously is rather simple, it involves always
+copying things to and from the net_pkt buffer. In many occasions, it
+is more relevant to access the information stored in the buffer
+contiguously, especially with network packets which embed headers.</p>
+<p>These headers are, most of the time, a known fixed set of bytes. It is
+then more natural to have a structure representing a certain type of
+header.  In addition to this, if it is known the header size appears
+in a contiguous area of the buffer, it will be way more efficient to
+cast the actual position in the buffer to the type of header. Either
+for reading or writing the fields of such header, accessing it
+directly will save memory.</p>
+<p>Net pkt comes with a dedicated API for this, built on top of the
+previously described API. It is able to handle both contiguous and
+non-contiguous access transparently.</p>
+<p>There are two macros used to define a data access descriptor:
+<a class="reference internal" href="#c.NET_PKT_DATA_ACCESS_DEFINE" title="NET_PKT_DATA_ACCESS_DEFINE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">NET_PKT_DATA_ACCESS_DEFINE</span></code></a> when it is not possible to
+tell if the data will be in a contiguous area, and
+<a class="reference internal" href="#c.NET_PKT_DATA_ACCESS_CONTIGUOUS_DEFINE" title="NET_PKT_DATA_ACCESS_CONTIGUOUS_DEFINE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">NET_PKT_DATA_ACCESS_CONTIGUOUS_DEFINE</span></code></a> when
+it is guaranteed the data is in a contiguous area.</p>
+<p>Let’s take the example of IP and UDP. Both IPv4 and IPv6 headers are
+always found at the beginning of the packet and are small enough to
+fit in a net_buf of 128 bytes (for instance, though 64 bytes could be
+chosen).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">NET_PKT_DATA_ACCESS_CONTIGUOUS_DEFINE</span><span class="p">(</span><span class="n">ipv4_access</span><span class="p">,</span> <span class="k">struct</span> <span class="nc">net_ipv4_hdr</span><span class="p">);</span>
+<span class="k">struct</span> <span class="nc">net_ipv4_hdr</span> <span class="o">*</span><span class="n">ipv4_hdr</span><span class="p">;</span>
+
+<span class="n">ipv4_hdr</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="nc">net_ipv4_hdr</span> <span class="o">*</span><span class="p">)</span><span class="n">net_pkt_get_data</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ipv4_acess</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>It would be the same for struct net_ipv4_hdr. For a UDP header it
+is likely not to be in a contiguous area in IPv6
+for instance so:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">NET_PKT_DATA_ACCESS_DEFINE</span><span class="p">(</span><span class="n">udp_access</span><span class="p">,</span> <span class="k">struct</span> <span class="nc">net_udp_hdr</span><span class="p">);</span>
+<span class="k">struct</span> <span class="nc">net_udp_hdr</span> <span class="o">*</span><span class="n">udp_hdr</span><span class="p">;</span>
+
+<span class="n">udp_hdr</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="nc">net_udp_hdr</span> <span class="o">*</span><span class="p">)</span><span class="n">net_pkt_get_data</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">udp_access</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>At this point, the cursor of the net_pkt points at the beginning of
+the requested data. On the RX path, these headers will be read but not
+modified so to proceed further the cursor needs to advance past the
+data. There is a function dedicated for this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">net_pkt_acknowledge_data</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ipv4_access</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>On the TX path, however, the header fields have been modified. In such
+a case:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">net_pkt_set_data</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ipv4_access</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If the data are in a contiguous area, it will advance the cursor
+relevantly. If not, it will write the data and the cursor will be
+updated. Note that <a class="reference internal" href="#c.net_pkt_set_data" title="net_pkt_set_data"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_pkt_set_data()</span></code></a> could be used in the RX
+path as well, but it is slightly faster to use
+<a class="reference internal" href="#c.net_pkt_acknowledge_data" title="net_pkt_acknowledge_data"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_pkt_acknowledge_data()</span></code></a> as this one does not care about
+contiguity at all, it just advances the cursor via
+<a class="reference internal" href="#c.net_pkt_skip" title="net_pkt_skip"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_pkt_skip()</span></code></a> directly.</p>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id10">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__net__pkt"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">net_pkt</span></span></dt>
+<dd><p>Network packet management library. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NET_PKT_SLAB_DEFINE">
+<span class="target" id="group__net__pkt_1gafc7e98d5b64d816faabcbaa2ec22a2bb"></span><span class="sig-name descname"><span class="n"><span class="pre">NET_PKT_SLAB_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">count</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NET_PKT_SLAB_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> slab. </p>
+<p>A <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> slab is used to store meta-information about network packets. It must be coupled with a data fragment pool (:c:macro:<code class="docutils literal notranslate"><span class="pre">NET_PKT_DATA_POOL_DEFINE</span></code>) used to store the actual packet data. The macro can be used by an application to define additional custom per-context TX packet slabs (see :c:func:<code class="docutils literal notranslate"><span class="pre">net_context_setup_pools</span></code>).</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the slab. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count</span></code>: Number of <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> in this slab. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NET_PKT_TX_SLAB_DEFINE">
+<span class="target" id="group__net__pkt_1gacb3bb7347aa5dccb902531a1d6fbd190"></span><span class="sig-name descname"><span class="n"><span class="pre">NET_PKT_TX_SLAB_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">count</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NET_PKT_TX_SLAB_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NET_PKT_DATA_POOL_DEFINE">
+<span class="target" id="group__net__pkt_1ga94ab6300b59d739c4e3c5604d3fbe8a5"></span><span class="sig-name descname"><span class="n"><span class="pre">NET_PKT_DATA_POOL_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">count</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NET_PKT_DATA_POOL_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a data fragment <a class="reference internal" href="net_buf.html#structnet__buf"><span class="std std-ref">net_buf</span></a> pool. </p>
+<p>A <a class="reference internal" href="net_buf.html#structnet__buf"><span class="std std-ref">net_buf</span></a> pool is used to store actual data for network packets. It must be coupled with a <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> slab (:c:macro:<code class="docutils literal notranslate"><span class="pre">NET_PKT_SLAB_DEFINE</span></code>) used to store the packet meta-information. The macro can be used by an application to define additional custom per-context TX packet pools (see :c:func:<code class="docutils literal notranslate"><span class="pre">net_context_setup_pools</span></code>).</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the pool. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count</span></code>: Number of <a class="reference internal" href="net_buf.html#structnet__buf"><span class="std std-ref">net_buf</span></a> in this pool. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.net_pkt_print_frags">
+<span class="target" id="group__net__pkt_1ga2b2d0900ae76674d418918ec955bad48"></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_print_frags</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_print_frags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Print fragment list and the fragment sizes. </p>
+<p>Only available if debugging is activated.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network pkt. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NET_PKT_DATA_ACCESS_DEFINE">
+<span class="target" id="group__net__pkt_1gafd11f2d4f773bf247296eb08b7006c27"></span><span class="sig-name descname"><span class="n"><span class="pre">NET_PKT_DATA_ACCESS_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NET_PKT_DATA_ACCESS_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NET_PKT_DATA_ACCESS_CONTIGUOUS_DEFINE">
+<span class="target" id="group__net__pkt_1gaa6a48974656755dcc0979683b8431c37"></span><span class="sig-name descname"><span class="n"><span class="pre">NET_PKT_DATA_ACCESS_CONTIGUOUS_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.NET_PKT_DATA_ACCESS_CONTIGUOUS_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_get_reserve_rx_data">
+<span class="target" id="group__net__pkt_1gacbfd12279c28e7618118409c89afb8a7"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_get_reserve_rx_data</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_get_reserve_rx_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get RX DATA buffer from pool. Normally you should use <a class="reference internal" href="#group__net__pkt_1ga81e2e9a82978b1b73d70995b0e721bd3"><span class="std std-ref">net_pkt_get_frag()</span></a> instead. </p>
+<p>Normally this version is not useful for applications but is mainly used by network fragmentation code.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Network buffer if successful, NULL otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Affects the action taken should the net buf pool be empty. If K_NO_WAIT, then return immediately. If K_FOREVER, then wait as long as necessary. Otherwise, wait up to the specified time.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_get_reserve_tx_data">
+<span class="target" id="group__net__pkt_1ga819c6b1a0bd4a34a81342555124151d9"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_get_reserve_tx_data</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_get_reserve_tx_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get TX DATA buffer from pool. Normally you should use <a class="reference internal" href="#group__net__pkt_1ga81e2e9a82978b1b73d70995b0e721bd3"><span class="std std-ref">net_pkt_get_frag()</span></a> instead. </p>
+<p>Normally this version is not useful for applications but is mainly used by network fragmentation code.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Network buffer if successful, NULL otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Affects the action taken should the net buf pool be empty. If K_NO_WAIT, then return immediately. If K_FOREVER, then wait as long as necessary. Otherwise, wait up to the specified time.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_get_frag">
+<span class="target" id="group__net__pkt_1ga81e2e9a82978b1b73d70995b0e721bd3"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_get_frag</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_get_frag" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a data fragment that might be from user specific buffer pool or from global DATA pool. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Network buffer if successful, NULL otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Affects the action taken should the net buf pool be empty. If K_NO_WAIT, then return immediately. If K_FOREVER, then wait as long as necessary. Otherwise, wait up to the specified time.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_unref">
+<span class="target" id="group__net__pkt_1ga893d1660fd18ad5842224fda78466099"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_unref</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_unref" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Place packet back into the available packets slab. </p>
+<p>Releases the packet to other use. This needs to be called by application after it has finished with the packet.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet to release. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_ref">
+<span class="target" id="group__net__pkt_1ga34cbb90f95e6f4d3bd48db3c03a909e9"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_ref</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_ref" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Increase the packet ref count. </p>
+<p>Mark the packet to be used still.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Network packet if successful, NULL otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet to ref.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_frag_ref">
+<span class="target" id="group__net__pkt_1gac95635e1c8c8c485919b3d06db14a445"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_frag_ref</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">frag</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_frag_ref" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Increase the packet fragment ref count. </p>
+<p>Mark the fragment to be used still.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a pointer on the referenced Network fragment. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">frag</span></code>: Network fragment to ref.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_frag_unref">
+<span class="target" id="group__net__pkt_1ga5c75ef2149d2ba5ff07525988e0fb7cc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_frag_unref</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">frag</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_frag_unref" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Decrease the packet fragment ref count. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">frag</span></code>: Network fragment to unref. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_frag_del">
+<span class="target" id="group__net__pkt_1ga116700c908ff6d036c487ddf808109c1"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_frag_del</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">parent</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">frag</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_frag_del" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Delete existing fragment from a packet. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to the following fragment, or NULL if it had no further fragments. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet from which frag belongs to. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parent</span></code>: parent fragment of frag, or NULL if none. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frag</span></code>: Fragment to delete.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_frag_add">
+<span class="target" id="group__net__pkt_1ga03a53365cfc2b6c3448763d81f56c2c0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_frag_add</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">frag</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_frag_add" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add a fragment to a packet at the end of its fragment list. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: pkt Network packet where to add the fragment </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frag</span></code>: Fragment to add </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_frag_insert">
+<span class="target" id="group__net__pkt_1gabcd375d9dbdca21855abe27d7b5a0a7e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_frag_insert</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">frag</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_frag_insert" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Insert a fragment to a packet at the beginning of its fragment list. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: pkt Network packet where to insert the fragment </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frag</span></code>: Fragment to insert </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_compact">
+<span class="target" id="group__net__pkt_1ga8d18adc7dc87bf6b54f45f0227c12423"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_compact</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_compact" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compact the fragment list of a packet. </p>
+<p>After this there is no more any free space in individual fragments. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if compact success, False otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_get_info">
+<span class="target" id="group__net__pkt_1ga7b02b95838b928febfd4970de5e9c9f9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_get_info</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_mem_slab</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rx</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_mem_slab</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tx</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf_pool" title="net_buf_pool"><span class="n"><span class="pre">net_buf_pool</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rx_data</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf_pool" title="net_buf_pool"><span class="n"><span class="pre">net_buf_pool</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tx_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_get_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get information about predefined RX, TX and DATA pools. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rx</span></code>: Pointer to RX pool is returned. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tx</span></code>: Pointer to TX pool is returned. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rx_data</span></code>: Pointer to RX DATA pool is returned. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tx_data</span></code>: Pointer to TX DATA pool is returned. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_alloc">
+<span class="target" id="group__net__pkt_1ga82f8ac06b9012406f07e41d062f56ab8"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_alloc</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_alloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate an initialized <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>. </p>
+<p>for the time being, 2 pools are used. One for TX and one for RX. This allocator has to be used for TX.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a pointer to a newly allocated <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> on success, NULL otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Maximum time to wait for an allocation.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_alloc_from_slab">
+<span class="target" id="group__net__pkt_1ga8677d7cfa0406ad3296cc887d6675ef2"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_alloc_from_slab</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_mem_slab</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">slab</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_alloc_from_slab" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate an initialized <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> from a specific slab. </p>
+<p>unlike <a class="reference internal" href="#group__net__pkt_1ga82f8ac06b9012406f07e41d062f56ab8"><span class="std std-ref">net_pkt_alloc()</span></a> which uses core slabs, this one will use an external slab (see <a class="reference internal" href="#group__net__pkt_1gafc7e98d5b64d816faabcbaa2ec22a2bb"><span class="std std-ref">NET_PKT_SLAB_DEFINE()</span></a>). Do <em>not</em> use it unless you know what you are doing. Basically, only net_context should be using this, in order to allocate packet and then buffer on its local slab/pool (if any).</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a pointer to a newly allocated <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> on success, NULL otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">slab</span></code>: The slab to use for allocating the packet </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Maximum time to wait for an allocation.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_rx_alloc">
+<span class="target" id="group__net__pkt_1ga4a4cef39482a3a834f4ccc4cfa196b89"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_rx_alloc</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_rx_alloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate an initialized <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> for RX. </p>
+<p>for the time being, 2 pools are used. One for TX and one for RX. This allocator has to be used for RX.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a pointer to a newly allocated <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> on success, NULL otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Maximum time to wait for an allocation.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_alloc_on_iface">
+<span class="target" id="group__net__pkt_1ga3769ca805cb883be4a9cd2015fc7d52a"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_alloc_on_iface</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_alloc_on_iface" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate a network packet for a specific network interface. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a pointer to a newly allocated <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> on success, NULL otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface</span></code>: The network interface the packet is supposed to go through. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Maximum time to wait for an allocation.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_rx_alloc_on_iface">
+<span class="target" id="group__net__pkt_1ga2ca2a14850fa37128719df7917864b53"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_rx_alloc_on_iface</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_rx_alloc_on_iface" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_alloc_buffer">
+<span class="target" id="group__net__pkt_1gae31b4afd510bce346f7d00a9ec5d190d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_alloc_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.net_ip_protocol" title="net_ip_protocol"><span class="n"><span class="pre">net_ip_protocol</span></span></a><span class="w"> </span><span class="n"><span class="pre">proto</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_alloc_buffer" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate buffer for a <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>. </p>
+<p>: such allocator will take into account space necessary for headers, MTU, and existing buffer (if any). Beware that, due to all these criteria, the allocated size might be smaller/bigger than requested one.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The network packet requiring buffer to be allocated. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: The size of buffer being requested. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">proto</span></code>: The IP protocol type (can be 0 for none). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Maximum time to wait for an allocation.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_alloc_with_buffer">
+<span class="target" id="group__net__pkt_1gaa65e93c887522e6bd7e46e93937362af"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_alloc_with_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <a class="reference internal" href="ip_4_6.html#c.sa_family_t" title="sa_family_t"><span class="n"><span class="pre">sa_family_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">family</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.net_ip_protocol" title="net_ip_protocol"><span class="n"><span class="pre">net_ip_protocol</span></span></a><span class="w"> </span><span class="n"><span class="pre">proto</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_alloc_with_buffer" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate a network packet and buffer at once. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a pointer to a newly allocated <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> on success, NULL otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface</span></code>: The network interface the packet is supposed to go through. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: The size of buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">family</span></code>: The family to which the packet belongs. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">proto</span></code>: The IP protocol type (can be 0 for none). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Maximum time to wait for an allocation.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_rx_alloc_with_buffer">
+<span class="target" id="group__net__pkt_1ga47c4d5d5b26f1b205074748a8c5576a4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_rx_alloc_with_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <a class="reference internal" href="ip_4_6.html#c.sa_family_t" title="sa_family_t"><span class="n"><span class="pre">sa_family_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">family</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.net_ip_protocol" title="net_ip_protocol"><span class="n"><span class="pre">net_ip_protocol</span></span></a><span class="w"> </span><span class="n"><span class="pre">proto</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_rx_alloc_with_buffer" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_append_buffer">
+<span class="target" id="group__net__pkt_1ga2b11492ae3c16368aa6a0ab8f47b67e7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_append_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buffer</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_append_buffer" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Append a buffer in packet. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet where to append the buffer </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buffer</span></code>: Buffer to append </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_available_buffer">
+<span class="target" id="group__net__pkt_1gaeed119d192e3a14ea3eea6e623334519"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_available_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_available_buffer" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get available buffer space from a pkt. </p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Reserved bytes (headroom) in any of the fragments are not considered to be available.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>the amount of buffer available </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> which buffer availability should be evaluated</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_available_payload_buffer">
+<span class="target" id="group__net__pkt_1gaa9f63047b7945a4a155e5d88eac5203b"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_available_payload_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="ip_4_6.html#c.net_ip_protocol" title="net_ip_protocol"><span class="n"><span class="pre">net_ip_protocol</span></span></a><span class="w"> </span><span class="n"><span class="pre">proto</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_available_payload_buffer" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get available buffer space for payload from a pkt. </p>
+<p><p>Unlike </p>
+<a class="reference internal" href="#group__net__pkt_1gaeed119d192e3a14ea3eea6e623334519"><span class="std std-ref">net_pkt_available_buffer()</span></a>, this will take into account the headers space.<dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Reserved bytes (headroom) in any of the fragments are not considered to be available.</p>
+</dd>
+</dl>
+</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>the amount of buffer available for payload </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> which payload buffer availability should be evaluated </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">proto</span></code>: The IP protocol type (can be 0 for none).</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_trim_buffer">
+<span class="target" id="group__net__pkt_1ga71d1c49f68afab07324cebd835f08a29"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_trim_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_trim_buffer" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Trim <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> buffer. </p>
+<p>This will basically check for unused buffers and deallocates them relevantly</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> which buffer will be trimmed </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_remove_tail">
+<span class="target" id="group__net__pkt_1gab657c80669733a4afefaf1be6310107e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_remove_tail</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_remove_tail" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remove <em>length</em> bytes from tail of packet. </p>
+<p>This function does not take packet cursor into account. It is a helper to remove unneeded bytes from tail of packet (like appended CRC). It takes care of buffer deallocation if removed bytes span whole buffer(s).</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code>: Number of bytes to be removed</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: On success. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: If packet length is shorter than <em>length</em>. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_cursor_init">
+<span class="target" id="group__net__pkt_1ga1b7da39f62dfc8b8948d7689e2dd114a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_cursor_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_cursor_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> cursor. </p>
+<p>This will initialize the <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> cursor from its buffer.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> whose cursor is going to be initialized </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_cursor_backup">
+<span class="target" id="group__net__pkt_1gabd352b66cdeaff2fb45361a0fae62876"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_cursor_backup</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt_cursor" title="net_pkt_cursor"><span class="n"><span class="pre">net_pkt_cursor</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">backup</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_cursor_backup" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Backup <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> cursor. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> whose cursor is going to be backed up </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">backup</span></code>: The cursor where to backup <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> cursor </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_cursor_restore">
+<span class="target" id="group__net__pkt_1gad5ab788f01b4bb3640755e8c4a2c612e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_cursor_restore</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt_cursor" title="net_pkt_cursor"><span class="n"><span class="pre">net_pkt_cursor</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">backup</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_cursor_restore" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Restore <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> cursor from a backup. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> whose cursor is going to be restored </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">backup</span></code>: The cursor from where to restore <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> cursor </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_cursor_get_pos">
+<span class="target" id="group__net__pkt_1ga62c630d3c9bf875c9e336d51920d2e29"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_cursor_get_pos</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_cursor_get_pos" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns current position of the cursor. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>cursor’s position </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> whose cursor position is going to be returned</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_skip">
+<span class="target" id="group__net__pkt_1ga223a79baa1e740a53c4ed0f083d62185"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_skip</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_skip" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Skip some data from a <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>. </p>
+<p><a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor should be properly initialized Cursor position will be updated after the operation. Depending on the value of pkt-&gt;overwrite bit, this function will affect the buffer length or not. If it’s true, it will advance the cursor to the requested length. If it’s false, it will do the same but if the cursor was already also at the end of existing data, it will increment the buffer length. So in this case, its behavior is just like net_pkt_write or net_pkt_memset, difference being that it will not affect the buffer content itself (which may be just garbage then).</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in success, negative errno code otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> whose cursor will be updated to skip given amount of data from the buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code>: Amount of data to skip in the buffer</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_memset">
+<span class="target" id="group__net__pkt_1gabd241a539bf1290f3d45610fd15b2c1f"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_memset</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">byte</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_memset" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Memset some data in a <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>. </p>
+<p><a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor should be properly initialized and, if needed, positioned using net_pkt_skip. Cursor position will be updated after the operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in success, negative errno code otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> whose buffer to fill starting at the current cursor position. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">byte</span></code>: The byte to write in memory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code>: Amount of data to memset with given byte</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_copy">
+<span class="target" id="group__net__pkt_1ga4648828ca353c8c0ecf00ae2648e963a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_copy</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt_dst</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt_src</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_copy" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Copy data from a packet into another one. </p>
+<p>Both <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> cursors should be properly initialized and, if needed, positioned using net_pkt_skip. The cursors will be updated after the operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt_dst</span></code>: Destination network packet. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt_src</span></code>: Source network packet. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code>: Length of data to be copied.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_clone">
+<span class="target" id="group__net__pkt_1ga83ee1d689f9650e36dea72326aae6018"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_clone</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_clone" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Clone pkt and its buffer. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>NULL if error, cloned packet otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Original pkt to be cloned </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Timeout to wait for free buffer</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_shallow_clone">
+<span class="target" id="group__net__pkt_1gad2677bfe89be4355005a2ff68723f421"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_shallow_clone</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_shallow_clone" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Clone pkt and increase the refcount of its buffer. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>NULL if error, cloned packet otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Original pkt to be shallow cloned </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Timeout to wait for free packet</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_read">
+<span class="target" id="group__net__pkt_1ga914be010ddd225a4fc2d6ab521ee7b64"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_read</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_read" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read some data from a <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>. </p>
+<p><a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor should be properly initialized and, if needed, positioned using net_pkt_skip. Cursor position will be updated after the operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The network packet from where to read some data </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: The destination buffer where to copy the data </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code>: The amount of data to copy</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_read_u8">
+<span class="target" id="group__net__pkt_1gaf9b2753cb514804a77d9494c9f070089"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_read_u8</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_read_u8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_read_be16">
+<span class="target" id="group__net__pkt_1ga500a318977cfecd4ec7c60cea01db2fc"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_read_be16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_read_be16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read uint16_t big endian data from a <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>. </p>
+<p><a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor should be properly initialized and, if needed, positioned using net_pkt_skip. Cursor position will be updated after the operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The network packet from where to read </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: The destination uint16_t where to copy the data</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_read_le16">
+<span class="target" id="group__net__pkt_1gab1735ef4f6a2e538a2692358295dd8d1"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_read_le16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_read_le16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read uint16_t little endian data from a <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>. </p>
+<p><a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor should be properly initialized and, if needed, positioned using net_pkt_skip. Cursor position will be updated after the operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The network packet from where to read </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: The destination uint16_t where to copy the data</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_read_be32">
+<span class="target" id="group__net__pkt_1gab38c99947d02982073df65c0d5893d2c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_read_be32</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_read_be32" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read uint32_t big endian data from a <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>. </p>
+<p><a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor should be properly initialized and, if needed, positioned using net_pkt_skip. Cursor position will be updated after the operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The network packet from where to read </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: The destination uint32_t where to copy the data</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_write">
+<span class="target" id="group__net__pkt_1gae99eadd977b7f66ecc91d2ccba34c6fa"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_write</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_write" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write data into a <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>. </p>
+<p><a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor should be properly initialized and, if needed, positioned using net_pkt_skip. Cursor position will be updated after the operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The network packet where to write </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Data to be written </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code>: Length of the data to be written</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_write_u8">
+<span class="target" id="group__net__pkt_1gaa5129f661075c13d9b59627ae9110bd1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_write_u8</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_write_u8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_write_be16">
+<span class="target" id="group__net__pkt_1ga8e5083388ccb0333fdcf745bc60ad260"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_write_be16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_write_be16" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_write_be32">
+<span class="target" id="group__net__pkt_1ga053aff4ff0a501f336132c35b7fb2022"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_write_be32</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_write_be32" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_write_le32">
+<span class="target" id="group__net__pkt_1gaf2388032e4e0b76fe32e4618ef3ea548"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_write_le32</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_write_le32" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_write_le16">
+<span class="target" id="group__net__pkt_1gac8a6ea1b0dc1bcd7b6a3f15869027dd1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_write_le16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_write_le16" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_remaining_data">
+<span class="target" id="group__net__pkt_1gadee5307216b6b3b725a2fd7584a224c9"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_remaining_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_remaining_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the amount of data which can be read from current cursor position. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Amount of data which can be read from current pkt cursor </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_update_length">
+<span class="target" id="group__net__pkt_1ga2e7a0f9348a623c5160124da188445ee"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_update_length</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_update_length" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Update the overall length of a packet. </p>
+<p>Unlike <a class="reference internal" href="#group__net__pkt_1ga434c347a32600ee113c0e1cc13f70cd4"><span class="std std-ref">net_pkt_pull()</span></a> below, this does not take packet cursor into account. It’s mainly a helper dedicated for ipv4 and ipv6 input functions. It shrinks the overall length by given parameter.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code>: The new length of the packet</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_pull">
+<span class="target" id="group__net__pkt_1ga434c347a32600ee113c0e1cc13f70cd4"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_pull</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_pull" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remove data from the packet at current location. </p>
+<p><a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor should be properly initialized and, eventually, properly positioned using net_pkt_skip/read/write. Note that <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor is reset by this function.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno code otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code>: Number of bytes to be removed</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_get_current_offset">
+<span class="target" id="group__net__pkt_1gadb3b705a0431b3bb98fb2e8193c3b510"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_get_current_offset</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_get_current_offset" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the actual offset in the packet from its cursor. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a valid offset on success, 0 otherwise as there is nothing that can be done to evaluate the offset. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_is_contiguous">
+<span class="target" id="group__net__pkt_1gaf4ee5a8903b495e000a3a4c8a8493160"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_is_contiguous</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_is_contiguous" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if a data size could fit contiguously. </p>
+<p><a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor should be properly initialized and, if needed, positioned using net_pkt_skip.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>true if that is the case, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: The size to check for contiguity</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_get_contiguous_len">
+<span class="target" id="group__net__pkt_1gafbd6c0ab33139b134f67a8f8c0096445"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_get_contiguous_len</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_get_contiguous_len" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the contiguous buffer space</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>The available contiguous buffer space in bytes starting from the current cursor position. 0 in case of an error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_get_data">
+<span class="target" id="group__net__pkt_1ga43b562fee5ac149424e57958251bd1ed"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_get_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt_data_access" title="net_pkt_data_access"><span class="n"><span class="pre">net_pkt_data_access</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">access</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_get_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get data from a network packet in a contiguous way. </p>
+<p><a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor should be properly initialized and, if needed, positioned using net_pkt_skip. Cursor position will be updated after the operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a pointer to the requested contiguous data, NULL otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The network packet from where to get the data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">access</span></code>: A pointer to a valid <a class="reference internal" href="#structnet__pkt__data__access"><span class="std std-ref">net_pkt_data_access</span></a> describing the data to get in a contiguous way.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_set_data">
+<span class="target" id="group__net__pkt_1ga98df84477b35e203b11029fc4ddec1cc"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_set_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt_data_access" title="net_pkt_data_access"><span class="n"><span class="pre">net_pkt_data_access</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">access</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_set_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set contiguous data into a network packet. </p>
+<p><a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>’s cursor should be properly initialized and, if needed, positioned using net_pkt_skip. Cursor position will be updated after the operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, a negative errno otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: The network packet to where the data should be set. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">access</span></code>: A pointer to a valid <a class="reference internal" href="#structnet__pkt__data__access"><span class="std std-ref">net_pkt_data_access</span></a> describing the data to set.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_pkt_acknowledge_data">
+<span class="target" id="group__net__pkt_1gac7226cbfa2da28408f9691d375bc8f9f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_acknowledge_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt_data_access" title="net_pkt_data_access"><span class="n"><span class="pre">net_pkt_data_access</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">access</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_pkt_acknowledge_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Acknowledge previously contiguous data taken from a network packet Packet needs to be set to overwrite mode. </p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.net_pkt_cursor">
+<span class="target" id="structnet__pkt__cursor"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_cursor</span></span></span><a class="headerlink" href="#c.net_pkt_cursor" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_pkt.h&gt;</em><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_pkt_cursor.buf">
+<span class="target" id="structnet__pkt__cursor_1af81267720cf13d06b90ddaa87fb7ad67"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">buf</span></span></span><a class="headerlink" href="#c.net_pkt_cursor.buf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Current <a class="reference internal" href="net_buf.html#structnet__buf"><span class="std std-ref">net_buf</span></a> pointer by the cursor </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_pkt_cursor.pos">
+<span class="target" id="structnet__pkt__cursor_1a0901a4cc727e55b94e2dcb60f3c54caf"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pos</span></span></span><a class="headerlink" href="#c.net_pkt_cursor.pos" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Current position in the data buffer of the <a class="reference internal" href="net_buf.html#structnet__buf"><span class="std std-ref">net_buf</span></a> </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.net_pkt">
+<span class="target" id="structnet__pkt"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt</span></span></span><a class="headerlink" href="#c.net_pkt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_pkt.h&gt;</em><p>Network packet. </p>
+<p>Note that if you add new fields into <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a>, remember to update <a class="reference internal" href="#group__net__pkt_1ga83ee1d689f9650e36dea72326aae6018"><span class="std std-ref">net_pkt_clone()</span></a> function. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_pkt.fifo">
+<span class="target" id="structnet__pkt_1a96e82461f6786814de708049f2bc0b22"></span><span class="n"><span class="pre">intptr_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fifo</span></span></span><a class="headerlink" href="#c.net_pkt.fifo" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The fifo is used by RX/TX threads and by socket layer. The <a class="reference internal" href="#structnet__pkt"><span class="std std-ref">net_pkt</span></a> is queued via fifo to the processing thread. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_pkt.slab">
+<span class="target" id="structnet__pkt_1add4540bddb5c549a5ae61b99b14b0b54"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_mem_slab</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">slab</span></span></span><a class="headerlink" href="#c.net_pkt.slab" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Slab pointer from where it belongs to </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_pkt.&#64;209">
+<span class="target" id="structnet__pkt_1a1cc22ac95bd8394dfccf331bc93808b8"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="p"><span class="pre">.</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#c.net_pkt.@209" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>buffer holding the packet </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_pkt.cursor">
+<span class="target" id="structnet__pkt_1a52f155a86698a929fa2130b594630d06"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_pkt_cursor" title="net_pkt_cursor"><span class="n"><span class="pre">net_pkt_cursor</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cursor</span></span></span><a class="headerlink" href="#c.net_pkt.cursor" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Internal buffer iterator used for reading/writing </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_pkt.context">
+<span class="target" id="structnet__pkt_1a4b9c3f62209f4d7748070224654360cf"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">net_context</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">context</span></span></span><a class="headerlink" href="#c.net_pkt.context" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Network connection context </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_pkt.iface">
+<span class="target" id="structnet__pkt_1a7590eeacf06469206cb7e7949acfa7b2"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">iface</span></span></span><a class="headerlink" href="#c.net_pkt.iface" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Network interface </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.net_pkt_data_access">
+<span class="target" id="structnet__pkt__data__access"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_pkt_data_access</span></span></span><a class="headerlink" href="#c.net_pkt_data_access" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_pkt.h&gt;</em></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="net_tech.html" class="btn btn-neutral float-right" title="Networking Technologies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="net_buf.html" class="btn btn-neutral" title="Network Buffer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['package_20flags_2e_44291',['Package flags.',['../group__CBPRINTF__MUST__RUNTIME__PACKAGE__FLAGS.html',1,'(Global Namespace)'],['../group__CBPRINTF__PACKAGE__FLAGS.html',1,'(Global Namespace)']]],
+  ['pci_20express_20controller_20interface_44292',['PCI Express Controller Interface',['../group__pcie__controller__interface.html',1,'']]],
+  ['peci_20interface_44293',['PECI Interface',['../group__peci__interface.html',1,'']]],
+  ['pending_20tests_44294',['Pending tests',['../group__kernel__pending__tests.html',1,'']]],
+  ['pin_20control_44295',['Pin control',['../group__devicetree-pinctrl.html',1,'']]],
+  ['pin_20controller_20interface_44296',['Pin Controller Interface',['../group__pinctrl__interface.html',1,'']]],
+  ['pinmux_20interface_44297',['Pinmux Interface',['../group__pinmux__interface.html',1,'']]],
+  ['pipe_20apis_44298',['Pipe APIs',['../group__pipe__apis.html',1,'']]],
+  ['pipe_20tracing_20apis_44299',['Pipe Tracing APIs',['../group__subsys__tracing__apis__pipe.html',1,'']]],
+  ['pipes_44300',['PIPEs',['../group__kernel__pipe__tests.html',1,'']]],
+  ['pm_20device_20runtime_20tracing_20apis_44301',['PM Device Runtime Tracing APIs',['../group__subsys__tracing__apis__pm__device__runtime.html',1,'']]],
+  ['poll_20tests_44302',['Poll tests',['../group__kernel__poll__tests.html',1,'']]],
+  ['poll_20tracing_20apis_44303',['Poll Tracing APIs',['../group__subsys__tracing__apis__poll.html',1,'']]],
+  ['polling_20uart_20api_44304',['Polling UART API',['../group__uart__polling.html',1,'']]],
+  ['power_20management_20_28pm_29_44305',['Power Management (PM)',['../group__subsys__pm.html',1,'']]],
+  ['ppp_20l2_2fdriver_20support_20functions_44306',['PPP L2/driver Support Functions',['../group__ppp.html',1,'']]],
+  ['profiling_44307',['Profiling',['../group__kernel__profiling__tests.html',1,'']]],
+  ['promiscuous_20mode_44308',['Promiscuous mode',['../group__promiscuous.html',1,'']]],
+  ['property_20accessors_44309',['Property accessors',['../group__devicetree-generic-prop.html',1,'']]],
+  ['provisioning_44310',['Provisioning',['../group__bt__mesh__prov.html',1,'']]],
+  ['proxy_44311',['Proxy',['../group__bt__mesh__proxy.html',1,'']]],
+  ['ps_2f2_20driver_20apis_44312',['PS/2 Driver APIs',['../group__ps2__interface.html',1,'']]],
+  ['ptp_20time_44313',['PTP time',['../group__ptp__time.html',1,'']]],
+  ['pwm_20interface_44314',['PWM Interface',['../group__pwm__interface.html',1,'']]]
+];

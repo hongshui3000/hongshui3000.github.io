@@ -1,0 +1,28 @@
+var group__devicetree_generic_prop =
+[
+    [ "DT_ENUM_IDX", "group__devicetree-generic-prop.html#ga6c1a3b93e30429c1c69a7e2d8fe2d840", null ],
+    [ "DT_ENUM_IDX_OR", "group__devicetree-generic-prop.html#gac3616e3aa1a025235032786de8d31576", null ],
+    [ "DT_LABEL", "group__devicetree-generic-prop.html#ga89070ef089930290ce31788b5b3b84e5", null ],
+    [ "DT_PHA", "group__devicetree-generic-prop.html#gacef5921973a55433161fe0be3f8f628d", null ],
+    [ "DT_PHA_BY_IDX", "group__devicetree-generic-prop.html#ga118b63fd22c20ef940ac2fa073c126ed", null ],
+    [ "DT_PHA_BY_IDX_OR", "group__devicetree-generic-prop.html#gad830ed96dbc4f7dac3455153e0a944d6", null ],
+    [ "DT_PHA_BY_NAME", "group__devicetree-generic-prop.html#gae469615356a867c49416da15bdc44a26", null ],
+    [ "DT_PHA_BY_NAME_OR", "group__devicetree-generic-prop.html#ga79cda6ca70cc1e27b034ad096d4f4401", null ],
+    [ "DT_PHA_OR", "group__devicetree-generic-prop.html#ga886559b058b24164b62ab95215d860bd", null ],
+    [ "DT_PHANDLE", "group__devicetree-generic-prop.html#ga7bd77c49472ba4547d87f00f40fd7171", null ],
+    [ "DT_PHANDLE_BY_IDX", "group__devicetree-generic-prop.html#ga8ff163c240878a988d29d727671671de", null ],
+    [ "DT_PHANDLE_BY_NAME", "group__devicetree-generic-prop.html#ga65c90d2d96255b8569c5b869b637c2fd", null ],
+    [ "DT_PROP", "group__devicetree-generic-prop.html#ga8e1fd9ebacd85d2013df027d041d506b", null ],
+    [ "DT_PROP_BY_IDX", "group__devicetree-generic-prop.html#ga52ad691ea4cae633ca702020e939d461", null ],
+    [ "DT_PROP_BY_PHANDLE", "group__devicetree-generic-prop.html#gabc1b099dda97fb03a9259a8b21fc04d2", null ],
+    [ "DT_PROP_BY_PHANDLE_IDX", "group__devicetree-generic-prop.html#gaeba973992914d493cff5506ecf86a00d", null ],
+    [ "DT_PROP_BY_PHANDLE_IDX_OR", "group__devicetree-generic-prop.html#gad1c6a6544eac7bc77c1ed4aebd15df2b", null ],
+    [ "DT_PROP_HAS_IDX", "group__devicetree-generic-prop.html#ga479dfc704087eea7e7c5af42ae98576c", null ],
+    [ "DT_PROP_HAS_NAME", "group__devicetree-generic-prop.html#gae46c100aecd299eaea51e033890d9a58", null ],
+    [ "DT_PROP_LEN", "group__devicetree-generic-prop.html#gaa7f5afcedd1f54be79a5337e8e28a5b6", null ],
+    [ "DT_PROP_LEN_OR", "group__devicetree-generic-prop.html#gabd2d8a9242818c7a9bf981114c912d75", null ],
+    [ "DT_PROP_OR", "group__devicetree-generic-prop.html#ga5e5bfc9b1a6627b3f73014329e96340f", null ],
+    [ "DT_STRING_TOKEN", "group__devicetree-generic-prop.html#ga5995350cc7fd2d12ef7daa2487d1db54", null ],
+    [ "DT_STRING_TOKEN_OR", "group__devicetree-generic-prop.html#ga5c7c7f82abd34403d4e9a6e0c5703e4c", null ],
+    [ "DT_STRING_UPPER_TOKEN", "group__devicetree-generic-prop.html#gae0b5e2b6633a98ead17ec20d3494658f", null ]
+];

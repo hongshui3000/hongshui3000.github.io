@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Overview of Intel hardware platforms &mdash; SOF Project 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/sof.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Suggestions before filing an SOF bug" href="suggestions.html" />
+    <link rel="prev" title="Set up a Ktest-based environment" href="../setup/setup_ktest_environment.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SOF Project
+          
+
+          
+            
+            <img src="../../_static/logo_sof_white_200w.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://sofproject.org">SOF project website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction to the SOF Project</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting Started Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#build-sof">Build SOF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#set-up-sof-on-hardware">Set up SOF on hardware</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#debug-audio-issues-on-intel-platforms">Debug Audio issues on Intel platforms</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Overview of Intel hardware platforms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acpi-platforms-introduced-before-and-up-to-2015">ACPI platforms (introduced before and up to 2015)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pci-devices-introduced-after-2016">PCI devices (introduced after 2016)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-space-and-filesystem-requirements">User space and filesystem requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="suggestions.html">Suggestions before filing an SOF bug</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../architectures/index.html">Supported Architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/index.html">Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algos/index.html">Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guides/index.html">Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release.html">Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contributing to the Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tsc/index.html">Technical Steering Committee (TSC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maintainers/index.html">SOF admin, maintainers and code owners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../presentations/index.html">Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SOF Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Getting Started Guides</a> &raquo;</li>
+        
+      <li>Overview of Intel hardware platforms</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/getting_started/intel_debug/introduction.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="overview-of-intel-hardware-platforms">
+<span id="intel-debug-introduction"></span><h1>Overview of Intel hardware platforms<a class="headerlink" href="#overview-of-intel-hardware-platforms" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="acpi-platforms-introduced-before-and-up-to-2015">
+<h2>ACPI platforms (introduced before and up to 2015)<a class="headerlink" href="#acpi-platforms-introduced-before-and-up-to-2015" title="Permalink to this headline">¶</a></h2>
+<p>On Baytrail, Cherrytrail, Braswell, and Broadwell devices (also referred to
+as <cite>legacy</cite> devices), the DSP enumeration is handled by the ACPI
+subsystem.</p>
+<div class="section" id="local-audio-accessories-mics-speakers-headset">
+<h3>1. Local audio accessories (mics, speakers, headset)<a class="headerlink" href="#local-audio-accessories-mics-speakers-headset" title="Permalink to this headline">¶</a></h3>
+<p>On Baytrail, Cherrytrail, Braswell, and Broadwell, the BIOS can either
+enable or disable the DSP:</p>
+<ul class="simple">
+<li><p>Enable the DSP. In this case, a DSP driver is required. This mode is
+selected on platforms where the audio interface for 3rd-party codecs is based on the I2C/I2S/TDM interfaces.</p></li>
+<li><p>Disable the DSP. In this case, an HDaudio controller is exposed and the
+<code class="docutils literal notranslate"><span class="pre">snd-intel-hda</span></code> driver will take care of all audio usages. SOF cannot be used in this case.</p></li>
+</ul>
+</div>
+<div class="section" id="hdmi-dp-interfaces">
+<h3>2. HDMI/DP interfaces<a class="headerlink" href="#hdmi-dp-interfaces" title="Permalink to this headline">¶</a></h3>
+<p>On Broadwell, HDMI/DP is handled by an HDaudio controller.</p>
+<p>On Baytrail/Cherrytrail and Braswell, the BIOS can enable two modes:</p>
+<ul class="simple">
+<li><p>HDAudio-based solution (similar to Broadwell).</p></li>
+<li><p>LPE HDMI Audio. This mode is used by the majority of tablets and low-cost
+devices. It provides functionality similar to HDaudio, but with a different interface. This mode is enabled in Linux via the <code class="docutils literal notranslate"><span class="pre">CONFIG_HDMI_LPE_AUDIO</span></code> option.</p></li>
+</ul>
+<p>The DSP cannot control any of these interfaces because SOF does not support
+HDMI/DP on those devices.</p>
+<p>On all of these legacy platforms, HDMI support is exposed in Linux as a
+separate card.</p>
+</div>
+</div>
+<div class="section" id="pci-devices-introduced-after-2016">
+<h2>PCI devices (introduced after 2016)<a class="headerlink" href="#pci-devices-introduced-after-2016" title="Permalink to this headline">¶</a></h2>
+<p>In newer devices, the same HDAudio controller can handle both local
+accessories and HDMI/DP interfaces. However, SOF is not always
+supported on those platforms.</p>
+<p>When the Intel DSP is not enabled in the BIOS (OEM choice), audio
+interfaces are handled by the <code class="docutils literal notranslate"><span class="pre">snd-hda-intel</span></code> driver. The platform only
+exposes PCM devices and no audio processing capabilities.</p>
+<p>When OEM platforms integrate digital microphones attached directly
+to the Intel chipset (aka DMIC), or they use I2C/I2S or SoundWire
+interfaces, the DSP must be enabled by the BIOS. There is, however, one
+more option. On Skylake and Kabylake platforms, the Intel DSP is handled by
+the <code class="docutils literal notranslate"><span class="pre">snd-soc-skl</span></code> module which relies on closed-source firmware.</p>
+<p>SOF is available on Intel PCI devices starting with GeminiLake, and
+has since been the only solution provided by Intel for the following
+platforms: CometLake, IceLake, and TigerLake.</p>
+<p>Since multiple drivers can register for the same PCI ID, it was (until
+recently) common for users and distributions to use the wrong
+driver, which could only be resolved by changing the Linux <code class="docutils literal notranslate"><span class="pre">.config</span></code> file
+or deselecting drivers in the <code class="docutils literal notranslate"><span class="pre">/etc/modprobe.d</span></code> configuration files.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">snd-intel-dspcfg</span></code> module introduced in early 2020 exposes an API
+used by all drivers, and the user can now override default choices by
+setting the <code class="docutils literal notranslate"><span class="pre">dsp_driver</span></code> parameter. For example, setting</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="n">snd</span><span class="o">-</span><span class="n">intel</span><span class="o">-</span><span class="n">dspcfg</span> <span class="n">dsp_driver</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>will allow for the HDaudio legacy driver to be used. This will typically
+work for speakers and headphones/headsets, but will not allow DMIC
+capture.</p>
+<p>Conversely, when a platform does not require a DSP-based platform, but
+the DSP is still enabled by the OEM, the user or integration can
+force the SOF Linux driver to be used.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="n">snd</span><span class="o">-</span><span class="n">intel</span><span class="o">-</span><span class="n">dspcfg</span> <span class="n">dsp_driver</span><span class="o">=</span><span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="user-space-and-filesystem-requirements">
+<h2>User space and filesystem requirements<a class="headerlink" href="#user-space-and-filesystem-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Selecting the SOF driver is not enough. Audio is properly configured only if
+the following elements are present on the file system.</p>
+<div class="section" id="firmware-binary">
+<h3>1. Firmware binary<a class="headerlink" href="#firmware-binary" title="Permalink to this headline">¶</a></h3>
+<p>The firmware file, <code class="docutils literal notranslate"><span class="pre">/lib/firmware/intel/sof/sof-tgl.ri</span></code>, contains
+all DSP code and tables. On PCI devices, the firmware can only be
+signed by an Intel production key which prevents community users from
+installing their own firmware. Notable exceptions include Google
+Chromebooks and Up2/Up-Extreme boards, where the <em>community key</em> is
+used.</p>
+<p>The Intel ME (Management Engine) is responsible for authentication of
+the firmware, whether it is signed by an Intel production key (consumer
+products), a community key (open development systems and Chromebooks
+since GeminiLake) or an OEM key. If the Intel ME is disabled by an
+OEM, or disabled by user-accessible BIOS options, the firmware
+authentication will fail and the firmware boot will not complete. If
+the ME is disabled by the OEM, the only solution is to fall-back
+to the legacy HDAudio driver. If the ME is disabled by the user, the user
+must re-enable it. Unfortunately, no documented mechanism exists for the
+Linux kernel to query whether or not the firmware authentication is enabled,
+which means <cite>dmesg</cite> logs cannot be provided to alert the user to an ME
+configuration issue.</p>
+</div>
+<div class="section" id="topology-file">
+<h3>2. Topology file<a class="headerlink" href="#topology-file" title="Permalink to this headline">¶</a></h3>
+<p>The topology file, such as <code class="docutils literal notranslate"><span class="pre">/lib/firmware/intel/sof-tplg/sof-hda-generic-2ch.tplg</span></code>, describes the processing graph and controls to
+be instantiated by the SOF driver. The topology can be regenerated and
+reconfigured with tools but requires expert knowledge of the ALSA/ASoC/topology frameworks.</p>
+</div>
+<div class="section" id="ucm-file">
+<h3>3. UCM file<a class="headerlink" href="#ucm-file" title="Permalink to this headline">¶</a></h3>
+<p>The UCM file, such as <code class="docutils literal notranslate"><span class="pre">/usr/share/alsa/ucm2/sof-hda-dsp/</span></code>, configures
+the controls exposed by the topology file and the external audio
+chips. UCM can be used in a terminal via the <code class="docutils literal notranslate"><span class="pre">alsaucm</span></code> command but
+will typically be used by audio servers such as PulseAudio or
+PipeWire. UCM files released by Intel are compatible with different
+drivers and should work when changing the <code class="docutils literal notranslate"><span class="pre">dsp_driver</span></code> parameter.</p>
+<p>The selection of firmware, topology, and UCM files is based on platform
+capabilities, codec names, and DMI options. While the SOF team and the
+community try to cover all possible cases, errors will happen when the
+wrong file is selected at any of the three layers.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="suggestions.html" class="btn btn-neutral float-right" title="Suggestions before filing an SOF bug" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../setup/setup_ktest_environment.html" class="btn btn-neutral" title="Set up a Ktest-based environment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; Copyright 2021, SOF Project..
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> SOF Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version zephyr">
+        <a href="../../../zephyr/index.html">Zephyr Project</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

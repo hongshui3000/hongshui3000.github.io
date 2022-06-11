@@ -1,0 +1,585 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Building and Running Zephyr with ACRN &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../../copyright.html" />
+    <link rel="next" title="Elkhart Lake CRB" href="../../ehl_crb/doc/index.html" />
+    <link rel="prev" title="x86 Boards" href="../../index.html" />
+  <link rel="shortcut icon" href="../../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Supported Boards</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">x86 Boards</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Building and Running Zephyr with ACRN</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#build-your-zephyr-app">Build your Zephyr App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configure-and-build-acrn">Configure and build ACRN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assemble-efi-boot-media">Assemble EFI Boot Media</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#boot-acrn">Boot ACRN</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ehl_crb/doc/index.html">Elkhart Lake CRB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qemu_x86/doc/index.html">X86 Emulation (QEMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up_squared/doc/index.html">UP Squared</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arm/index.html">ARM Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arm64/index.html">ARM64 Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arc/index.html">ARC Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../mips/index.html">MIPS Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nios2/index.html">NIOS II Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../xtensa/index.html">XTENSA Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../posix/index.html">POSIX/NATIVE Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../riscv/index.html">RISCV Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sparc/index.html">SPARC Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../shields/index.html">Shields</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Supported Boards</a> &raquo;</li>
+        
+          <li><a href="../../index.html">x86 Boards</a> &raquo;</li>
+        
+      <li>Building and Running Zephyr with ACRN</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/boards/x86/acrn/doc/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="building-and-running-zephyr-with-acrn">
+<h1>Building and Running Zephyr with ACRN<a class="headerlink" href="#building-and-running-zephyr-with-acrn" title="Permalink to this headline">¶</a></h1>
+<p>Zephyr’s is capable of running as a guest under the x86 ACRN
+hypervisor (see <a class="reference external" href="https://projectacrn.org/">https://projectacrn.org/</a>).  The process for getting
+this to work is somewhat involved, however.</p>
+<p>ACRN hypervisor supports a hybrid scenario where Zephyr runs in a so-
+called “pre-launched” mode. This means Zephyr will access the ACRN
+hypervisor directly without involving the SOS VM. This is the most
+practical user scenario in the real world because Zephyr’s real-time
+and safety capability can be assured without influence from other
+VMs. The following figure from ACRN’s official documentation shows
+how a hybrid scenario works:</p>
+<div class="align-center figure" id="id1">
+<a class="reference internal image-reference" href="../../../../_images/ACRN-Hybrid.png"><img alt="ACRN Hybrid User Scenario" src="../../../../_images/ACRN-Hybrid.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 47 </span><span class="caption-text">ACRN Hybrid User Scenario</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>In this tutorial, we will show you how to build a minimal running instance of Zephyr
+and ACRN hypervisor to demonstrate that it works successfully. To learn more about
+other features of ACRN, such as building and using the SOS VM or other guest VMs,
+please refer to the Getting Started Guide for ACRN:
+<a class="reference external" href="https://projectacrn.github.io/latest/tutorials/using_hybrid_mode_on_nuc.html">https://projectacrn.github.io/latest/tutorials/using_hybrid_mode_on_nuc.html</a></p>
+<div class="section" id="build-your-zephyr-app">
+<h2>Build your Zephyr App<a class="headerlink" href="#build-your-zephyr-app" title="Permalink to this headline">¶</a></h2>
+<p>First, build the Zephyr application you want to run in ACRN as you
+normally would, selecting an appropriate board:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b acrn_ehl_crb samples/hello_world</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>In this tutorial, we will use the Intel Elkhart Lake Reference Board
+(<a class="reference external" href="https://www.intel.com/content/www/us/en/products/docs/processors/embedded/enhanced-for-iot-platform-brief.html">EHL</a> CRB) since it is one of the suggested platform for this
+type of scenario. Use <code class="docutils literal notranslate"><span class="pre">acrn_ehl_crb</span></code> as the target board parameter.</p>
+<p>Note the kconfig output in <code class="docutils literal notranslate"><span class="pre">build/zephyr/.config</span></code>, you will need to
+reference that to configure ACRN later.</p>
+<p>The Zephyr build artifact you will need is <code class="docutils literal notranslate"><span class="pre">build/zephyr/zephyr.bin</span></code>,
+which is a raw memory image.  Unlike other x86 targets, you do not
+want to use <code class="docutils literal notranslate"><span class="pre">zephyr.elf</span></code>!</p>
+</div>
+<div class="section" id="configure-and-build-acrn">
+<h2>Configure and build ACRN<a class="headerlink" href="#configure-and-build-acrn" title="Permalink to this headline">¶</a></h2>
+<p>First you need the source code, clone from:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/projectacrn/acrn-hypervisor</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>We suggest that you use versions v2.5.1 or later of the ACRN hypervisor
+as they have better support for SMP in Zephyr.</p>
+<p>Like Zephyr, ACRN favors build-time configuration management instead
+of runtime probing or control.  Unlike Zephyr, ACRN has single large
+configuration files instead of small easily-merged configuration
+elements like kconfig defconfig files or devicetree includes.  You
+have to edit a big XML file to match your Zephyr configuration.
+Choose an ACRN host config that matches your hardware (“ehl-crb-b” in
+this case).  Then find the relavent file in
+<code class="docutils literal notranslate"><span class="pre">misc/config_tools/data/&lt;platform&gt;/hybrid.xml</span></code>.</p>
+<p>First, find the list of <code class="docutils literal notranslate"><span class="pre">&lt;vm&gt;</span></code> declarations.  Each has an <code class="docutils literal notranslate"><span class="pre">id=</span></code>
+attribute.  For testing Zephyr, you will want to make sure that the
+Zephyr image is ID zero.  This allows you to launch ACRN with just one
+VM image and avoids the need to needlessly copy large Linux blobs into
+the boot filesystem.  Under currently tested configurations, Zephyr
+will always have a “vm_type” tag of “SAFETY_VM”.</p>
+<div class="section" id="configure-zephyr-memory-layout">
+<h3>Configure Zephyr Memory Layout<a class="headerlink" href="#configure-zephyr-memory-layout" title="Permalink to this headline">¶</a></h3>
+<p>Next, locate the load address of the Zephyr image and its entry point
+address.  These have to be configured manually in ACRN.  Traditionally
+Zephyr distributes itself as an ELF image where these addresses can be
+automatically extracted, but ACRN does not know how to do that, it
+only knows how to load a single contiguous region of data into memory
+and jump to a specific address.</p>
+<p>Find the “&lt;vm id=”0”&gt;…&lt;os_config&gt;” tag that will look something like this:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;os_config&gt;</span>
+    <span class="nt">&lt;name&gt;</span>Zephyr<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;kern_type&gt;</span>KERNEL_ZEPHYR<span class="nt">&lt;/kern_type&gt;</span>
+    <span class="nt">&lt;kern_mod&gt;</span>Zephyr_RawImage<span class="nt">&lt;/kern_mod&gt;</span>
+    <span class="nt">&lt;ramdisk_mod/&gt;</span>
+    <span class="nt">&lt;bootargs&gt;&lt;/bootargs&gt;</span>
+    <span class="nt">&lt;kern_load_addr&gt;</span>0x1000<span class="nt">&lt;/kern_load_addr&gt;</span>
+    <span class="nt">&lt;kern_entry_addr&gt;</span>0x1000<span class="nt">&lt;/kern_entry_addr&gt;</span>
+<span class="nt">&lt;/os_config&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">kern_load_addr</span></code> tag must match the Zephyr LOCORE_BASE symbol
+found in include/arch/x86/memory.ld.  This is currently 0x1000 and
+matches the default ACRN config.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">kern_entry_addr</span></code> tag must match the entry point in the built
+<code class="docutils literal notranslate"><span class="pre">zephyr.elf</span></code> file.  You can find this with binutils, for example:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>objdump -f build/zephyr/zephyr.elf
+
+<span class="go">build/zephyr/zephyr.elf:     file format elf64-x86-64</span>
+<span class="go">architecture: i386:x86-64, flags 0x00000012:</span>
+<span class="go">EXEC_P, HAS_SYMS</span>
+<span class="go">start address 0x0000000000001000</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>By default this entry address is the same, at 0x1000.  This has not
+always been true of all configurations, however, and will likely
+change in the future.</p>
+</div>
+<div class="section" id="configure-zephyr-cpus">
+<h3>Configure Zephyr CPUs<a class="headerlink" href="#configure-zephyr-cpus" title="Permalink to this headline">¶</a></h3>
+<p>Now you need to configure the CPU environment ACRN presents to the
+guest.  By default Zephyr builds in SMP mode, but ACRN’s default
+configuration gives it only one CPU.  Find the value of
+<code class="docutils literal notranslate"><span class="pre">CONFIG_MP_NUM_CPUS</span></code> in the Zephyr .config file give the guest that
+many CPUs in the <code class="docutils literal notranslate"><span class="pre">&lt;cpu_affinity&gt;</span></code> tag.  For example:</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;vm</span> <span class="na">id=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;vm_type&gt;</span>SAFETY_VM<span class="nt">&lt;/vm_type&gt;</span>
+    <span class="nt">&lt;name&gt;</span>ACRN PRE-LAUNCHED VM0<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;guest_flags&gt;</span>
+        <span class="nt">&lt;guest_flag&gt;</span>0<span class="nt">&lt;/guest_flag&gt;</span>
+    <span class="nt">&lt;/guest_flags&gt;</span>
+    <span class="nt">&lt;cpu_affinity&gt;</span>
+        <span class="nt">&lt;pcpu_id&gt;</span>0<span class="nt">&lt;/pcpu_id&gt;</span>
+        <span class="nt">&lt;pcpu_id&gt;</span>1<span class="nt">&lt;/pcpu_id&gt;</span>
+    <span class="nt">&lt;/cpu_affinity&gt;</span>
+    ...
+    <span class="nt">&lt;clos&gt;</span>
+        <span class="nt">&lt;vcpu_clos&gt;</span>0<span class="nt">&lt;/vcpu_clos&gt;</span>
+        <span class="nt">&lt;vcpu_clos&gt;</span>0<span class="nt">&lt;/vcpu_clos&gt;</span>
+    <span class="nt">&lt;/clos&gt;</span>
+    ...
+<span class="nt">&lt;/vm&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>To use SMP, we have to change the pcpu_id of VM0 to 0 and 1.
+This configures ACRN to run Zephyr on CPU0 and CPU1. The ACRN hypervisor
+and Zephyr application will not boot successfully without this change.
+If you plan to run Zephyr with one CPU only, you can skip it.</p>
+<p>Since Zephyr is using CPU0 and CPU1, we also have to change
+VM1’s configuration so it runs on CPU2 and CPU3. If your ACRN set up has
+additional VMs, you should change their configurations as well.</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;vm</span> <span class="na">id=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;vm_type&gt;</span>SOS_VM<span class="nt">&lt;/vm_type&gt;</span>
+    <span class="nt">&lt;name&gt;</span>ACRN SOS VM<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;guest_flags&gt;</span>
+        <span class="nt">&lt;guest_flag&gt;</span>0<span class="nt">&lt;/guest_flag&gt;</span>
+    <span class="nt">&lt;/guest_flags&gt;</span>
+    <span class="nt">&lt;cpu_affinity&gt;</span>
+        <span class="nt">&lt;pcpu_id&gt;</span>2<span class="nt">&lt;/pcpu_id&gt;</span>
+        <span class="nt">&lt;pcpu_id&gt;</span>3<span class="nt">&lt;/pcpu_id&gt;</span>
+    <span class="nt">&lt;/cpu_affinity&gt;</span>
+    <span class="nt">&lt;clos&gt;</span>
+        <span class="nt">&lt;vcpu_clos&gt;</span>0<span class="nt">&lt;/vcpu_clos&gt;</span>
+        <span class="nt">&lt;vcpu_clos&gt;</span>0<span class="nt">&lt;/vcpu_clos&gt;</span>
+    <span class="nt">&lt;/clos&gt;</span>
+    ...
+<span class="nt">&lt;/vm&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Note that these indexes are physical CPUs on the host.  When
+configuring multiple guests, you probably don’t want to overlap these
+assignments with other guests.  But for testing Zephyr simply using
+CPUs 0 and 1 works fine.  (Note that ehl-crb-b has four physical CPUs,
+so configuring all of 0-3 will work fine too, but leave no space for
+other guests to have dedicated CPUs).</p>
+</div>
+<div class="section" id="build-acrn">
+<h3>Build ACRN<a class="headerlink" href="#build-acrn" title="Permalink to this headline">¶</a></h3>
+<p>Once configuration is complete, ACRN builds fairly cleanly:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make -j <span class="nv">BOARD</span><span class="o">=</span>ehl-crb-b <span class="nv">SCENARIO</span><span class="o">=</span>hybrid
+</pre></div>
+</div>
+</div></blockquote>
+<p>The only build artifact you need is the ACRN multiboot image in
+<code class="docutils literal notranslate"><span class="pre">build/hypervisor/acrn.bin</span></code></p>
+</div>
+</div>
+<div class="section" id="assemble-efi-boot-media">
+<h2>Assemble EFI Boot Media<a class="headerlink" href="#assemble-efi-boot-media" title="Permalink to this headline">¶</a></h2>
+<p>ACRN will boot on the hardware via the GNU GRUB bootloader, which is
+itself launched from the EFI firmware.  These need to be configured
+correctly.</p>
+<div class="section" id="locate-grub">
+<h3>Locate GRUB<a class="headerlink" href="#locate-grub" title="Permalink to this headline">¶</a></h3>
+<p>First, you will need a GRUB EFI binary that corresponds to your
+hardware.  In many cases, a simple upstream build from source or a
+copy from a friendly Linux distribution will work.  In some cases it
+will not, however, and GRUB will need to be specially patched for
+specific hardware.  Contact your hardware support team (pause for
+laughter) for clear instructions for how to build a working GRUB.  In
+practice you may just need to ask around and copy a binary from the
+last test that worked for someone.</p>
+</div>
+<div class="section" id="create-efi-boot-filesystem">
+<h3>Create EFI Boot Filesystem<a class="headerlink" href="#create-efi-boot-filesystem" title="Permalink to this headline">¶</a></h3>
+<p>Now attach your boot media (e.g. a USB stick on /dev/sdb, your
+hardware may differ!) to a Linux system and create an EFI boot
+partition (type code 0xEF) large enough to store your boot artifacts.
+This command feeds the relevant commands to fdisk directly, but you
+can type them yourself if you like:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span><span class="k">for</span> i <span class="k">in</span> n p <span class="m">1</span> <span class="s2">&quot;&quot;</span> <span class="s2">&quot;&quot;</span> t ef w<span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$i</span><span class="p">;</span> <span class="k">done</span> <span class="p">|</span> fdisk /dev/sdb
+<span class="go">...</span>
+<span class="go">&lt;lots of fdisk output&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Now create a FAT filesystem in the new partition and mount it:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>mkfs.vfat -n ACRN_ZEPHYR /dev/sdb1
+<span class="gp"># </span>mkdir -p /mnt/acrn
+<span class="gp"># </span>mount /dev/sdb1 /mnt/acrn
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="copy-images-and-configure-grub">
+<h3>Copy Images and Configure GRUB<a class="headerlink" href="#copy-images-and-configure-grub" title="Permalink to this headline">¶</a></h3>
+<p>ACRN does not have access to a runtime filesystem of its own.  It
+receives its guest VMs (i.e. zephyr.bin) as GRUB “multiboot” modules.
+This means that we must rely on GRUB’s filesystem driver.  The three
+files (GRUB, ACRN and Zephyr) all need to be copied into the
+“/efi/boot” directory of the boot media.  Note that GRUB must be named
+“bootx64.efi” for the firmware to recognize it as the bootloader:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>mkdir -p /mnt/acrn/efi/boot
+<span class="gp"># </span>cp <span class="nv">$PATH_TO_GRUB_BINARY</span> /mnt/acrn/efi/boot/bootx64.efi
+<span class="gp"># </span>cp <span class="nv">$ZEPHYR_BASE</span>/build/zephyr/zephyr.bin /mnt/acrn/efi/boot/
+<span class="gp"># </span>cp <span class="nv">$PATH_TO_ACRN</span>/build/hypervisor/acrn.bin /mnt/acrn/efi/boot/
+</pre></div>
+</div>
+</div></blockquote>
+<p>At boot, GRUB will load a “efi/boot/grub.cfg” file for its runtime
+configuration instructions (a feature, ironically, that both ACRN and
+Zephyr lack!).  This needs to load acrn.bin as the boot target and
+pass it the zephyr.bin file as its first module (because Zephyr was
+configured as <code class="docutils literal notranslate"><span class="pre">&lt;vm</span> <span class="pre">id=&quot;0&quot;&gt;</span></code> above).  This minimal configuration will
+work fine for all but the weirdest hardware (i.e. “hd0” is virtually
+always the boot filesystem from which grub loaded), no need to fiddle
+with GRUB plugins or menus or timeouts:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>cat &gt; /mnt/acrn/efi/boot/grub.cfg&lt;&lt;EOF
+<span class="go">set root=&#39;hd0,msdos1&#39;</span>
+<span class="go">multiboot2 /efi/boot/acrn.bin</span>
+<span class="go">module2 /efi/boot/zephyr.bin Zephyr_RawImage</span>
+<span class="go">boot</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Now the filesystem should be complete</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>umount /dev/sdb1
+<span class="gp"># </span>sync
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="boot-acrn">
+<h2>Boot ACRN<a class="headerlink" href="#boot-acrn" title="Permalink to this headline">¶</a></h2>
+<p>If all goes well, booting your EFI media on the hardware will result
+in a running ACRN, a running Zephyr (because by default Zephyr is
+configured as a “prelaunched” VM), and a working ACRN command line on
+the console.</p>
+<p>You can see the Zephyr (vm 0) console output with the “vm_console”
+command:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ACRN:\&gt;vm_console 0</span>
+
+<span class="go">----- Entering VM 0 Shell -----</span>
+<span class="go">*** Booting Zephyr OS build v2.6.0-rc1-324-g1a03783861ad  ***</span>
+<span class="go">Hello World! acrn</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../ehl_crb/doc/index.html" class="btn btn-neutral float-right" title="Elkhart Lake CRB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../index.html" class="btn btn-neutral" title="x86 Boards" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

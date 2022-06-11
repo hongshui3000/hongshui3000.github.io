@@ -1,0 +1,433 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>x86 Developer Guide &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Bluetooth" href="../bluetooth/index.html" />
+    <link rel="prev" title="Arm Cortex-M Developer Guide" href="arm_cortex_m.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Architecture-related Guides</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="arc-support-status.html">Zephyr support status on ARC processors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arm_cortex_m.html">Arm Cortex-M Developer Guide</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">x86 Developer Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#virtual-memory">Virtual Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#specifying-additional-memory-mappings-at-build-time">Specifying Additional Memory Mappings at Build Time</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Architecture-related Guides</a> &raquo;</li>
+        
+      <li>x86 Developer Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/arch/x86.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="x86-developer-guide">
+<span id="id1"></span><h1>x86 Developer Guide<a class="headerlink" href="#x86-developer-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This page contains information on certain aspects when developing for
+x86-based platforms.</p>
+</div>
+<div class="section" id="virtual-memory">
+<h2>Virtual Memory<a class="headerlink" href="#virtual-memory" title="Permalink to this headline">¶</a></h2>
+<p>During very early boot, page tables are loaded so technically the kernel
+is executing in virtual address space. By default, physical and virtual
+memory are identity mapped and thus giving the appearance of execution
+taking place in physical address space. The physical address space is
+marked by kconfig <a class="reference internal" href="../../kconfig.html#CONFIG_SRAM_BASE_ADDRESS" title="CONFIG_SRAM_BASE_ADDRESS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SRAM_BASE_ADDRESS</span></code></a> and
+<a class="reference internal" href="../../kconfig.html#CONFIG_SRAM_SIZE" title="CONFIG_SRAM_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SRAM_SIZE</span></code></a> while the virtual address space is marked by
+<a class="reference internal" href="../../kconfig.html#CONFIG_KERNEL_VM_BASE" title="CONFIG_KERNEL_VM_BASE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_KERNEL_VM_BASE</span></code></a> and <a class="reference internal" href="../../kconfig.html#CONFIG_KERNEL_VM_SIZE" title="CONFIG_KERNEL_VM_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_KERNEL_VM_SIZE</span></code></a>.
+Note that <a class="reference internal" href="../../kconfig.html#CONFIG_SRAM_OFFSET" title="CONFIG_SRAM_OFFSET"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SRAM_OFFSET</span></code></a> controls where the Zephyr kernel
+is being placed in the memory, and its counterpart
+<a class="reference internal" href="../../kconfig.html#CONFIG_KERNEL_VM_OFFSET" title="CONFIG_KERNEL_VM_OFFSET"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_KERNEL_VM_OFFSET</span></code></a>.</p>
+<div class="section" id="separate-virtual-address-space-from-physical-address-space">
+<h3>Separate Virtual Address Space from Physical Address Space<a class="headerlink" href="#separate-virtual-address-space-from-physical-address-space" title="Permalink to this headline">¶</a></h3>
+<p>On 32-bit x86, it is possible to have separate phyiscal and virtual
+address space. Code and data are linked in virtual address space,
+but are still loaded in physical memory. However, during boot, code
+and data must be available and also addressable in physical address
+space before <code class="docutils literal notranslate"><span class="pre">vm_enter</span></code> inside <code class="file docutils literal notranslate"><span class="pre">arch/x86/core/ia32/crt0.S</span></code>.
+After <code class="docutils literal notranslate"><span class="pre">vm_enter</span></code>, code execution is done via virtual addresses
+and data can be referred via their virtual addresses. This is
+possible as the page table generation script
+(<code class="file docutils literal notranslate"><span class="pre">arch/x86/gen_mmu.py</span></code>) identity maps the physical addresses
+at the page directory level, in addition to mapping virtual addresses
+to the physical memory. Later in the boot process,
+the entries for identity mapping at the page directory level are
+cleared in <code class="xref c c-func docutils literal notranslate"><span class="pre">z_x86_mmu_init()</span></code>, effectively removing
+the identity mapping of physical memory. This unmapping must be done
+for userspace isolation or else they would be able to access
+restricted memory via physical addresses. Since the identity mapping
+is done at the page directory level, there is no need to allocate
+additional space for the page table. However, additional space may
+still be required for additional page directory table.</p>
+<p>There are restrictions on where virtual address space can be:</p>
+<ul class="simple">
+<li><p>Physical and virtual address spaces must be disjoint. This is
+required as the entries in page directory table will be cleared.
+If they are not disjoint, it would clear the entries needed for
+virtual addresses.</p>
+<ul>
+<li><p>If <a class="reference internal" href="../../kconfig.html#CONFIG_X86_PAE" title="CONFIG_X86_PAE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_X86_PAE</span></code></a> is enabled (<code class="docutils literal notranslate"><span class="pre">=y</span></code>), each address space
+must reside in their own 1GB region, due to each entry of PDP
+(Page Directory Pointer) covers 1GB of memory. For example:</p>
+<ul>
+<li><p>Assuming <code class="docutils literal notranslate"><span class="pre">CONFIG_SRAM_OFFSET</span></code> and <code class="docutils literal notranslate"><span class="pre">CONFIG_KERNEL_VM_OFFSET</span></code>
+are both <code class="docutils literal notranslate"><span class="pre">0x0</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_SRAM_BASE_ADDRESS</span> <span class="pre">==</span> <span class="pre">0x00000000</span></code> and
+<code class="docutils literal notranslate"><span class="pre">CONFIG_KERNEL_VM_BASE</span> <span class="pre">=</span> <span class="pre">0x40000000</span></code> is valid, while</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_SRAM_BASE_ADDRESS</span> <span class="pre">==</span> <span class="pre">0x00000000</span></code> and
+<code class="docutils literal notranslate"><span class="pre">CONFIG_KERNEL_VM_BASE</span> <span class="pre">=</span> <span class="pre">0x20000000</span></code> is not.</p></li>
+</ul>
+</li>
+<li><p>If <a class="reference internal" href="../../kconfig.html#CONFIG_X86_PAE" title="CONFIG_X86_PAE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_X86_PAE</span></code></a> is disabled (<code class="docutils literal notranslate"><span class="pre">=n</span></code>), each address space
+must reside in their own 4MB region, due to each entry of PD
+(Page Directory) covers 4MB of memory.</p></li>
+<li><p>Both <code class="docutils literal notranslate"><span class="pre">CONFIG_SRAM_BASE_ADDRESS</span></code> and <code class="docutils literal notranslate"><span class="pre">CONFIG_KERNEL_VM_BASE</span></code>
+must also align with the starting addresses of targeted regions.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="specifying-additional-memory-mappings-at-build-time">
+<h2>Specifying Additional Memory Mappings at Build Time<a class="headerlink" href="#specifying-additional-memory-mappings-at-build-time" title="Permalink to this headline">¶</a></h2>
+<p>The page table generation script (<code class="file docutils literal notranslate"><span class="pre">arch/x86/gen_mmu.py</span></code>) generates
+the necessary multi-level page tables for code execution and data access
+using the kernel image produced by the first linker pass. Additional
+command line arguments can be passed to the script to generate additional
+memory mappings. This is useful for static mappings and/or device MMIO
+access during very early boot. To pass extra command line arguments to
+the script, populate a CMake list named <code class="docutils literal notranslate"><span class="pre">X86_EXTRA_GEN_MMU_ARGUMENTS</span></code>
+in the board configuration file. Here is an example:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">X86_EXTRA_GEN_MMU_ARGUMENTS</span>
+    <span class="s">--map</span> <span class="s">0xA0000000,0x2000</span>
+    <span class="s">--map</span> <span class="s">0x80000000,0x400000,LWUX,0xB0000000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The argument <code class="docutils literal notranslate"><span class="pre">--map</span></code> takes the following value:
+<code class="docutils literal notranslate"><span class="pre">&lt;physical</span> <span class="pre">address&gt;,&lt;size&gt;[,&lt;flags:LUWX&gt;[,&lt;virtual</span> <span class="pre">adderss&gt;]]</span></code>, where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;physical</span> <span class="pre">address&gt;</span></code> is the physical address of the mapping. (Required)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;size&gt;</span></code> is the size of the region to be mapped. (Required)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;flags&gt;</span></code> is the flag associated with the mapping: (Optional)</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">L</span></code>: Large page at the page directory level.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">U</span></code>: Allow userspace access.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code>: Read/write.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">X</span></code>: Allow execution.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">D</span></code>: Cache disabled.</p>
+<ul>
+<li><p>Default is small page (4KB), supervisor only, read only, and
+execution disabled.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;virtual</span> <span class="pre">address</span></code> is the virtual address of the mapping. (Optional)</p></li>
+</ul>
+<p>Note that specifying additional memory mappings requires larger storage
+space for the pre-allocated page tables (both kernel and per-domain
+tables). <a class="reference internal" href="../../kconfig.html#CONFIG_X86_EXTRA_PAGE_TABLE_PAGES" title="CONFIG_X86_EXTRA_PAGE_TABLE_PAGES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_X86_EXTRA_PAGE_TABLE_PAGES</span></code></a> is needed to
+specify how many more memory pages to be reserved for the page tables.
+If the needed space is not exactly the same as required space,
+the <code class="docutils literal notranslate"><span class="pre">gen_mmu.py</span></code> script will print out a message indicating what
+needs to be the value for the kconfig.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../bluetooth/index.html" class="btn btn-neutral float-right" title="Bluetooth" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="arm_cortex_m.html" class="btn btn-neutral" title="Arm Cortex-M Developer Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

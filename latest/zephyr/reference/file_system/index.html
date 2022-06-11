@@ -1,0 +1,1182 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>File Systems &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Iterable Sections" href="../iterable_sections/index.html" />
+    <link rel="prev" title="Error Detection And Correction (EDAC)" href="../edac/index.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">File Systems</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#samples">Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+      <li>File Systems</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/file_system/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="file-systems">
+<span id="file-system-api"></span><h1>File Systems<a class="headerlink" href="#file-systems" title="Permalink to this headline">¶</a></h1>
+<p>Zephyr RTOS Virtual Filesystem Switch (VFS) allows applications to mount multiple
+file systems at different mount points (e.g., <code class="docutils literal notranslate"><span class="pre">/fatfs</span></code> and <code class="docutils literal notranslate"><span class="pre">/lfs</span></code>). The
+mount point data structure contains all the necessary information required
+to instantiate, mount, and operate on a file system. The File system Switch
+decouples the applications from directly accessing an individual file system’s
+specific API or internal functions by introducing file system registration
+mechanisms.</p>
+<p>In Zephyr, any file system implementation or library can be plugged into or
+pulled out through a file system registration API.  Each file system
+implementation must have a globally unique integer identifier; use
+<a class="reference internal" href="#c.&#64;144.FS_TYPE_EXTERNAL_BASE" title="FS_TYPE_EXTERNAL_BASE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">FS_TYPE_EXTERNAL_BASE</span></code></a> to avoid clashes with in-tree identifiers.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">fs_register</span><span class="p">(</span><span class="kt">int</span> <span class="n">type</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="nc">fs_file_system_t</span> <span class="o">*</span><span class="n">fs</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">fs_unregister</span><span class="p">(</span><span class="kt">int</span> <span class="n">type</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="nc">fs_file_system_t</span> <span class="o">*</span><span class="n">fs</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Zephyr RTOS supports multiple instances of a file system by making use of
+the mount point as the disk volume name, which is used by the file system library
+while formatting or mounting a disk.</p>
+<p>A file system is declared as:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="nc">fs_mount_t</span> <span class="n">mp</span> <span class="o">=</span> <span class="p">{</span>
+<span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">FS_FATFS</span><span class="p">,</span>
+<span class="p">.</span><span class="n">mnt_point</span> <span class="o">=</span> <span class="n">FATFS_MNTP</span><span class="p">,</span>
+<span class="p">.</span><span class="n">fs_data</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">fat_fs</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>where</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FS_FATFS</span></code> is the file system type like FATFS or LittleFS.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FATFS_MNTP</span></code> is the mount point where the file system will be mounted.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fat_fs</span></code> is the file system data which will be used by fs_mount() API.</p></li>
+</ul>
+<div class="section" id="samples">
+<h2>Samples<a class="headerlink" href="#samples" title="Permalink to this headline">¶</a></h2>
+<p>Samples for the VFS are mainly supplied in <code class="docutils literal notranslate"><span class="pre">samples/subsys/fs</span></code>, although various examples of the
+VFS usage are provided as important functionalities in samples for different subsystems.
+Here is the list of samples worth looking at:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">samples/subsys/fs/fat_fs</span></code> is an example of FAT file system usage with SDHC media;</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">samples/subsys/shell/fs</span></code> is an example of Shell fs subsystem, using internal flash partition</dt><dd><p>formatted to LittleFS;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">samples/subsys/usb/mass/</span></code> example of USB Mass Storage device that uses FAT FS driver with RAM</dt><dd><p>or SPI connected FLASH, or LittleFS in flash, depending on the sample configuration.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__file__system__api"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">file_system_api</span></span></dt>
+<dd><p>File System APIs. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-fs_open-open-and-creation-mode-flags">fs_open open and creation mode flags</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_O_READ">
+<span class="target" id="group__file__system__api_1gafd1228407bcf929a175cc18802cda4b2"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_O_READ</span></span></span><a class="headerlink" href="#c.FS_O_READ" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Open for read flag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_O_WRITE">
+<span class="target" id="group__file__system__api_1ga0e86c5413b46133e824deaa89b16ee8d"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_O_WRITE</span></span></span><a class="headerlink" href="#c.FS_O_WRITE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Open for write flag </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_O_RDWR">
+<span class="target" id="group__file__system__api_1ga24ebd0220844552dd044bc2f16de4bef"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_O_RDWR</span></span></span><a class="headerlink" href="#c.FS_O_RDWR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Open for read-write flag combination </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_O_MODE_MASK">
+<span class="target" id="group__file__system__api_1ga728a9885ecf444cec4a1610671cc68bf"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_O_MODE_MASK</span></span></span><a class="headerlink" href="#c.FS_O_MODE_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Bitmask for read and write flags </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_O_CREATE">
+<span class="target" id="group__file__system__api_1gaa0965d6d26ece16ee1300f815d31b4e8"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_O_CREATE</span></span></span><a class="headerlink" href="#c.FS_O_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create file if it does not exist </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_O_APPEND">
+<span class="target" id="group__file__system__api_1ga51d5d3c5df852cbb3699b3a7357dbcb3"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_O_APPEND</span></span></span><a class="headerlink" href="#c.FS_O_APPEND" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Open/create file for append </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_O_FLAGS_MASK">
+<span class="target" id="group__file__system__api_1gabe568c7cd0aef699b0c19385e33266d4"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_O_FLAGS_MASK</span></span></span><a class="headerlink" href="#c.FS_O_FLAGS_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Bitmask for open/create flags </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_O_MASK">
+<span class="target" id="group__file__system__api_1gafa921cd65710cfa28f3b7a519a1f6142"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_O_MASK</span></span></span><a class="headerlink" href="#c.FS_O_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Bitmask for open flags </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-fs_seek-whence-parameter-values">fs_seek whence parameter values</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_SEEK_SET">
+<span class="target" id="group__file__system__api_1ga5b33d405a458db1db212d345b21454f8"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_SEEK_SET</span></span></span><a class="headerlink" href="#c.FS_SEEK_SET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Seek from the beginning of file </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_SEEK_CUR">
+<span class="target" id="group__file__system__api_1gacf310c560f9076b5b4b6ab4192147211"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_SEEK_CUR</span></span></span><a class="headerlink" href="#c.FS_SEEK_CUR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Seek from a current position </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_SEEK_END">
+<span class="target" id="group__file__system__api_1gaea9734cc236a73aefd3b35444d08d39d"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_SEEK_END</span></span></span><a class="headerlink" href="#c.FS_SEEK_END" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Seek from the end of file </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_MOUNT_FLAG_NO_FORMAT">
+<span class="target" id="group__file__system__api_1ga37b6ee15dc50499516fc51e9cb6287d5"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_MOUNT_FLAG_NO_FORMAT</span></span></span><a class="headerlink" href="#c.FS_MOUNT_FLAG_NO_FORMAT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flag prevents formatting device if requested file system not found </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_MOUNT_FLAG_READ_ONLY">
+<span class="target" id="group__file__system__api_1ga789e7f0fbbbb1c751f9dee9d9ca9693d"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_MOUNT_FLAG_READ_ONLY</span></span></span><a class="headerlink" href="#c.FS_MOUNT_FLAG_READ_ONLY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flag makes mounted file system read-only </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_MOUNT_FLAG_AUTOMOUNT">
+<span class="target" id="group__file__system__api_1gac11f7ecef01b7758b6f8f70fdcd7089d"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_MOUNT_FLAG_AUTOMOUNT</span></span></span><a class="headerlink" href="#c.FS_MOUNT_FLAG_AUTOMOUNT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flag used in pre-defined mount structures that are to be mounted on startup.</p>
+<p>This flag has no impact in user-defined mount structures. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_MOUNT_FLAG_USE_DISK_ACCESS">
+<span class="target" id="group__file__system__api_1gadb6c0761d7d537f73b23b1056d12686e"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_MOUNT_FLAG_USE_DISK_ACCESS</span></span></span><a class="headerlink" href="#c.FS_MOUNT_FLAG_USE_DISK_ACCESS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flag requests file system driver to use Disk Access API. When the flag is set to the fs_mount_t.flags prior to fs_mount call, a file system needs to use the Disk Access API, otherwise mount callback for the driver should return -ENOSUP; when the flag is not set the file system driver should use Flash API by default, unless it only supports Disc Access API. When file system will use Disk Access API and the flag is not set, the mount callback for the file system should set the flag on success. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FSTAB_ENTRY_DT_MOUNT_FLAGS">
+<span class="target" id="group__file__system__api_1ga479d34077e909fccbb40f53616499f19"></span><span class="sig-name descname"><span class="n"><span class="pre">FSTAB_ENTRY_DT_MOUNT_FLAGS</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.FSTAB_ENTRY_DT_MOUNT_FLAGS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_FSTAB_ENTRY">
+<span class="target" id="group__file__system__api_1ga1f50cda8a852400e063ab5b0db94e3fe"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_FSTAB_ENTRY</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.FS_FSTAB_ENTRY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The name under which a zephyr,fstab entry mount structure is defined. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FS_FSTAB_DECLARE_ENTRY">
+<span class="target" id="group__file__system__api_1ga1a9f475a065f3e77b035b0daf1511387"></span><span class="sig-name descname"><span class="n"><span class="pre">FS_FSTAB_DECLARE_ENTRY</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.FS_FSTAB_DECLARE_ENTRY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate a declaration for the externally defined fstab entry. </p>
+<p>This will evaluate to the name of a struct <a class="reference internal" href="#structfs__mount__t"><span class="std std-ref">fs_mount_t</span></a> object. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.fs_dir_entry_type">
+<span class="target" id="group__file__system__api_1ga79f37397a1590284fae2c4b456f26afb"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_dir_entry_type</span></span></span><a class="headerlink" href="#c.fs_dir_entry_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.fs_dir_entry_type.FS_DIR_ENTRY_FILE">
+<span class="target" id="group__file__system__api_1gga79f37397a1590284fae2c4b456f26afbae84f63edd56b9a797a219b5382f85e3b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FS_DIR_ENTRY_FILE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.fs_dir_entry_type.FS_DIR_ENTRY_FILE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Identifier for file entry </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.fs_dir_entry_type.FS_DIR_ENTRY_DIR">
+<span class="target" id="group__file__system__api_1gga79f37397a1590284fae2c4b456f26afba443eeda19fcb1164475c2ffd8276e937"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FS_DIR_ENTRY_DIR</span></span></span><a class="headerlink" href="#c.fs_dir_entry_type.FS_DIR_ENTRY_DIR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Identifier for directory entry </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.&#64;144">
+<span class="target" id="group__file__system__api_1ga52864abcf6ebd8d120995b36fe6ce06e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#c.@144" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Enumeration to uniquely identify file system types. </p>
+<p>Zephyr supports in-tree file systems and external ones. Each requires a unique identifier used to register the file system implementation and to associate a mount point with the file system type. This anonymous enum defines global identifiers for the in-tree file systems.</p>
+<p>External file systems should be registered using unique identifiers starting at <code class="docutils literal notranslate"><span class="pre">FS_TYPE_EXTERNAL_BASE</span></code>. It is the responsibility of applications that use external file systems to ensure that these identifiers are unique if multiple file system implementations are used by the application. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.&#64;144.FS_FATFS">
+<span class="target" id="group__file__system__api_1gga52864abcf6ebd8d120995b36fe6ce06ea7f8f37a9e6506d6a2432391aee0fde40"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FS_FATFS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.@144.FS_FATFS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Identifier for in-tree FatFS file system. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.&#64;144.FS_LITTLEFS">
+<span class="target" id="group__file__system__api_1gga52864abcf6ebd8d120995b36fe6ce06ea18e15403ed6ec492c565e00d86c4a33f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FS_LITTLEFS</span></span></span><a class="headerlink" href="#c.@144.FS_LITTLEFS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Identifier for in-tree LittleFS file system. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.&#64;144.FS_TYPE_EXTERNAL_BASE">
+<span class="target" id="group__file__system__api_1gga52864abcf6ebd8d120995b36fe6ce06ea37c6c9e64a57fee8c51884e18facf25f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FS_TYPE_EXTERNAL_BASE</span></span></span><a class="headerlink" href="#c.@144.FS_TYPE_EXTERNAL_BASE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Base identifier for external file systems. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_file_t_init">
+<span class="target" id="group__file__system__api_1gad44be87cbda3ddc48021ed16d515f564"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_file_t_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_file_t" title="fs_file_t"><span class="n"><span class="pre">fs_file_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zfp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_file_t_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize <a class="reference internal" href="#structfs__file__t"><span class="std std-ref">fs_file_t</span></a> object. </p>
+<p>Initializes the <a class="reference internal" href="#structfs__file__t"><span class="std std-ref">fs_file_t</span></a> object; the function needs to be invoked on object before first use with fs_open.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zfp</span></code>: Pointer to file object </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_dir_t_init">
+<span class="target" id="group__file__system__api_1gacd31440cd0b10308e55a0484828ea2f3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_dir_t_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_dir_t" title="fs_dir_t"><span class="n"><span class="pre">fs_dir_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zdp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_dir_t_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize <a class="reference internal" href="#structfs__dir__t"><span class="std std-ref">fs_dir_t</span></a> object. </p>
+<p>Initializes the <a class="reference internal" href="#structfs__dir__t"><span class="std std-ref">fs_dir_t</span></a> object; the function needs to be invoked on object before first use with fs_opendir.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zdp</span></code>: Pointer to file object </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_open">
+<span class="target" id="group__file__system__api_1ga9c90031ba3e5a10da8e00e81d53ef63b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_open</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_file_t" title="fs_file_t"><span class="n"><span class="pre">fs_file_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zfp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">file_name</span></span>, <span class="n"><span class="pre">fs_mode_t</span></span><span class="w"> </span><span class="n"><span class="pre">flags</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_open" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Open or create file. </p>
+<p>Opens or possibly creates a file and associates a stream with it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">flags</span></code> can be 0 or a binary combination of one or more of the following identifiers:<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FS_O_READ</span></code> open for read</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FS_O_WRITE</span></code> open for write</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FS_O_RDWR</span></code> open for read/write (<code class="docutils literal notranslate"><span class="pre">FS_O_READ</span> <span class="pre">|</span> <span class="pre">FS_O_WRITE</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FS_O_CREATE</span></code> create file if it does not exist</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FS_O_APPEND</span></code> move to end of file before each write</p></li>
+</ul>
+</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">flags</span></code> are set to 0 the function will attempt to open an existing file with no read/write access; this may be used to e.g. check if the file exists.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zfp</span></code>: Pointer to a file object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file_name</span></code>: The name of a file to open </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code>: The mode flags</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: when zfp is already used; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: when a bad file name is given; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EROFS</span></code>: when opening read-only file for write, or attempting to create a file on a system that has been mounted with the FS_MOUNT_FLAG_READ_ONLY flag; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOENT</span></code>: when the file path is not possible (bad mount point); </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: an other negative errno code, depending on a file system back-end. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_close">
+<span class="target" id="group__file__system__api_1ga4811679c25021e9f763824e06292e043"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_close</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_file_t" title="fs_file_t"><span class="n"><span class="pre">fs_file_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zfp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_close" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Close file. </p>
+<p>Flushes the associated stream and closes the file.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zfp</span></code>: Pointer to the file object</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: a negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_unlink">
+<span class="target" id="group__file__system__api_1gab979f963a8372f98080f66e0f32c8df6"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_unlink</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">path</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_unlink" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unlink file. </p>
+<p>Deletes the specified file or directory</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: Path to the file or directory to delete</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: when a bad file name is given; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EROFS</span></code>: if file is read-only, or when file system has been mounted with the FS_MOUNT_FLAG_READ_ONLY flag; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: an other negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_rename">
+<span class="target" id="group__file__system__api_1ga28bb828c6e59bf7e1f0e3edc56a15575"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_rename</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">from</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">to</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_rename" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Rename file or directory. </p>
+<p>Performs a rename and / or move of the specified source path to the specified destination. The source path can refer to either a file or a directory. All intermediate directories in the destination path must already exist. If the source path refers to a file, the destination path must contain a full filename path, rather than just the new parent directory. If an object already exists at the specified destination path, this function causes it to be unlinked prior to the rename (i.e., the destination gets clobbered). <dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Current implementation does not allow moving files between mount points.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from</span></code>: The source path </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to</span></code>: The destination path</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: when a bad file name is given, or when rename would cause move between mount points; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EROFS</span></code>: if file is read-only, or when file system has been mounted with the FS_MOUNT_FLAG_READ_ONLY flag; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: an other negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_read">
+<span class="target" id="group__file__system__api_1gaba7e07127777187eedcd6976d352ab76"></span><span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_read</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_file_t" title="fs_file_t"><span class="n"><span class="pre">fs_file_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zfp</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ptr</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_read" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read file. </p>
+<p>Reads up to <code class="docutils literal notranslate"><span class="pre">size</span></code> bytes of data to <code class="docutils literal notranslate"><span class="pre">ptr</span></code> pointed buffer, returns number of bytes read. A returned value may be lower than <code class="docutils literal notranslate"><span class="pre">size</span></code> if there were fewer bytes available than requested.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zfp</span></code>: Pointer to the file object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ptr</span></code>: Pointer to the data buffer </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of bytes to be read</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;=0</span></code>: a number of bytes read, on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBADF</span></code>: when invoked on zfp that represents unopened/closed file; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: a negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_write">
+<span class="target" id="group__file__system__api_1ga9e0dccc0d4235ff8bc4a745bc697e808"></span><span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_write</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_file_t" title="fs_file_t"><span class="n"><span class="pre">fs_file_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zfp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ptr</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_write" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write file. </p>
+<p>Attempts to write <code class="docutils literal notranslate"><span class="pre">size</span></code> number of bytes to the specified file. If a negative value is returned from the function, the file pointer has not been advanced. If the function returns a non-negative number that is lower than <code class="docutils literal notranslate"><span class="pre">size</span></code>, the global <code class="docutils literal notranslate"><span class="pre">errno</span></code> variable should be checked for an error code, as the device may have no free space for data.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zfp</span></code>: Pointer to the file object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ptr</span></code>: Pointer to the data buffer </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of bytes to be written</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;=0</span></code>: a number of bytes written, on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBADF</span></code>: when invoked on zfp that represents unopened/closed file; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: an other negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_seek">
+<span class="target" id="group__file__system__api_1ga81fc26a759e82d7da7531f9687c1ea50"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_seek</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_file_t" title="fs_file_t"><span class="n"><span class="pre">fs_file_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zfp</span></span>, <span class="n"><span class="pre">off_t</span></span><span class="w"> </span><span class="n"><span class="pre">offset</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">whence</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_seek" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Seek file. </p>
+<p>Moves the file position to a new location in the file. The <code class="docutils literal notranslate"><span class="pre">offset</span></code> is added to file position based on the <code class="docutils literal notranslate"><span class="pre">whence</span></code> parameter.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zfp</span></code>: Pointer to the file object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">offset</span></code>: Relative location to move the file pointer to </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">whence</span></code>: Relative location from where offset is to be calculated.<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">FS_SEEK_SET</span></code> for the beginning of the file;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FS_SEEK_CUR</span></code> for the current position;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FS_SEEK_END</span></code> for the end of the file.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBADF</span></code>: when invoked on zfp that represents unopened/closed file; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: if not supported by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: an other negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_tell">
+<span class="target" id="group__file__system__api_1ga5e97d124edf3ad98c0e2057999745d88"></span><span class="n"><span class="pre">off_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_tell</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_file_t" title="fs_file_t"><span class="n"><span class="pre">fs_file_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zfp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_tell" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get current file position. </p>
+<p>Retrieves and returns the current position in the file stream.</p>
+<p><p>The current revision does not validate the file object. </p>
+<dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zfp</span></code>: Pointer to the file object</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>: 0 a current position in file; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBADF</span></code>: when invoked on zfp that represents unopened/closed file; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: if not supported by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: an other negative errno code on error.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_truncate">
+<span class="target" id="group__file__system__api_1gae525d9d95f4286f1c6eb0d2ded7febfa"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_truncate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_file_t" title="fs_file_t"><span class="n"><span class="pre">fs_file_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zfp</span></span>, <span class="n"><span class="pre">off_t</span></span><span class="w"> </span><span class="n"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_truncate" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Truncate or extend an open file to a given size. </p>
+<p>Truncates the file to the new length if it is shorter than the current size of the file. Expands the file if the new length is greater than the current size of the file. The expanded region would be filled with zeroes.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>In the case of expansion, if the volume got full during the expansion process, the function will expand to the maximum possible length and return success. Caller should check if the expanded size matches the requested length.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zfp</span></code>: Pointer to the file object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code>: New size of the file in bytes</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBADF</span></code>: when invoked on zfp that represents unopened/closed file; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: an other negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_sync">
+<span class="target" id="group__file__system__api_1gabf1951701521cf8d47a29129ec8462dd"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_sync</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_file_t" title="fs_file_t"><span class="n"><span class="pre">fs_file_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zfp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_sync" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flush cached write data buffers of an open file. </p>
+<p>The function flushes the cache of an open file; it can be invoked to ensure data gets written to the storage media immediately, e.g. to avoid data loss in case if power is removed unexpectedly. <dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Closing a file will cause caches to be flushed correctly so the function need not be called when the file is being closed.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zfp</span></code>: Pointer to the file object</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBADF</span></code>: when invoked on zfp that represents unopened/closed file; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: a negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_mkdir">
+<span class="target" id="group__file__system__api_1ga235cef7d5c4df385a40a0f0293574b0c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_mkdir</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">path</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_mkdir" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Directory create. </p>
+<p>Creates a new directory using specified path.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: Path to the directory to create</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EROFS</span></code>: if file is read-only, or when file system has been mounted with the FS_MOUNT_FLAG_READ_ONLY flag; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: an other negative errno code on error </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_opendir">
+<span class="target" id="group__file__system__api_1ga00c042be81b3785d868c0c7a680a2fcd"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_opendir</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_dir_t" title="fs_dir_t"><span class="n"><span class="pre">fs_dir_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zdp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">path</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_opendir" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Directory open. </p>
+<p>Opens an existing directory specified by the path.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zdp</span></code>: Pointer to the directory object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: Path to the directory to open</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: when a bad directory path is given; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: when zdp is already used; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: a negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_readdir">
+<span class="target" id="group__file__system__api_1gab17be11c60221cf65aaf5f70f373a68f"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_readdir</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_dir_t" title="fs_dir_t"><span class="n"><span class="pre">fs_dir_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zdp</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_dirent" title="fs_dirent"><span class="n"><span class="pre">fs_dirent</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">entry</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_readdir" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Directory read entry. </p>
+<p>Reads directory entries of an open directory. In end-of-dir condition, the function will return 0 and set the <code class="docutils literal notranslate"><span class="pre">entry-&gt;name[0]</span></code> to 0.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>: Most existing underlying file systems do not generate POSIX special directory entries “.” or “..”. For consistency the abstraction layer will remove these from lower layer results so higher layers see consistent results.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zdp</span></code>: Pointer to the directory object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">entry</span></code>: Pointer to zfs_dirent structure to read the entry into</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success or end-of-dir; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOENT</span></code>: when no such directory found; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: a negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_closedir">
+<span class="target" id="group__file__system__api_1gaa2bf80a27f8a142ea1d553631d43b77e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_closedir</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_dir_t" title="fs_dir_t"><span class="n"><span class="pre">fs_dir_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zdp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_closedir" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Directory close. </p>
+<p>Closes an open directory.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zdp</span></code>: Pointer to the directory object</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: a negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_mount">
+<span class="target" id="group__file__system__api_1ga46d59d84a1da3ce1d90478397826d793"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_mount</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_mount_t" title="fs_mount_t"><span class="n"><span class="pre">fs_mount_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_mount" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Mount filesystem. </p>
+<p>Perform steps needed for mounting a file system like calling the file system specific mount function and adding the mount point to mounted file system list.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Current implementation of ELM FAT driver allows only following mount points: “/RAM:”,”/NAND:”,”/CF:”,”/SD:”,”/SD2:”,”/USB:”,”/USB2:”,”/USB3:” or mount points that consist of single digit, e.g: “/0:”, “/1:” and so forth.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mp</span></code>: Pointer to the <a class="reference internal" href="#structfs__mount__t"><span class="std std-ref">fs_mount_t</span></a> structure. Referenced object is not changed if the mount operation failed. A reference is captured in the fs infrastructure if the mount operation succeeds, and the application must not mutate the structure contents until fs_unmount is successfully invoked on the same pointer.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOENT</span></code>: when file system type has not been registered; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not supported by underlying file system driver; when <code class="docutils literal notranslate"><span class="pre">FS_MOUNT_FLAG_USE_DISK_ACCESS</span></code> is set but driver does not support it. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EROFS</span></code>: if system requires formatting but <code class="docutils literal notranslate"><span class="pre">FS_MOUNT_FLAG_READ_ONLY</span></code> has been set; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: an other negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_unmount">
+<span class="target" id="group__file__system__api_1gabc20c3ce66340c4c207aba3c88448fbf"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_unmount</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_mount_t" title="fs_mount_t"><span class="n"><span class="pre">fs_mount_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_unmount" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unmount filesystem. </p>
+<p>Perform steps needed to unmount a file system like calling the file system specific unmount function and removing the mount point from mounted file system list.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mp</span></code>: Pointer to the <a class="reference internal" href="#structfs__mount__t"><span class="std std-ref">fs_mount_t</span></a> structure</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: if no system has been mounted at given mount point; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not supported by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: an other negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_readmount">
+<span class="target" id="group__file__system__api_1gab10d479fc27aa73aab2f08342387fc98"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_readmount</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">index</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_readmount" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get path of mount point at index. </p>
+<p>This function iterates through the list of mount points and returns the directory name of the mount point at the given <code class="docutils literal notranslate"><span class="pre">index</span></code>. On success <code class="docutils literal notranslate"><span class="pre">index</span></code> is incremented and <code class="docutils literal notranslate"><span class="pre">name</span></code> is set to the mount directory name. If a mount point with the given <code class="docutils literal notranslate"><span class="pre">index</span></code> does not exist, <code class="docutils literal notranslate"><span class="pre">name</span></code> will be set to <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">index</span></code>: Pointer to mount point index </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Pointer to pointer to path name</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOENT</span></code>: if there is no mount point with given index. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_stat">
+<span class="target" id="group__file__system__api_1ga890681c0d324b2d184da7b1577ed571e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_stat</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">path</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_dirent" title="fs_dirent"><span class="n"><span class="pre">fs_dirent</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">entry</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_stat" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>File or directory status. </p>
+<p>Checks the status of a file or directory specified by the <code class="docutils literal notranslate"><span class="pre">path</span></code>. <dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>The file on a storage device may not be updated until it is closed.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: Path to the file or directory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">entry</span></code>: Pointer to the zfs_dirent structure to fill if the file or directory exists.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: when a bad directory or file name is given; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOENT</span></code>: when no such directory or file is found; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not supported by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_statvfs">
+<span class="target" id="group__file__system__api_1ga12fc010a1b146e694f121a3a41e85430"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_statvfs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">path</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_statvfs" title="fs_statvfs"><span class="n"><span class="pre">fs_statvfs</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stat</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_statvfs" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieves statistics of the file system volume. </p>
+<p>Returns the total and available space in the file system volume.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: Path to the mounted directory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stat</span></code>: Pointer to the zfs_statvfs structure to receive the fs statistics.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: when a bad path to a directory, or a file, is given; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: when not implemented by underlying file system driver; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;0</span></code>: an other negative errno code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_register">
+<span class="target" id="group__file__system__api_1ga97f4c377097c96320b32419011eebc5d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_register</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_file_system_t" title="fs_file_system_t"><span class="n"><span class="pre">fs_file_system_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_register" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Register a file system. </p>
+<p>Register file system with virtual file system. Number of allowed file system types to be registered is controlled with the CONFIG_FILE_SYSTEM_MAX_TYPES Kconfig option.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: Type of file system (ex: <code class="docutils literal notranslate"><span class="pre">FS_FATFS</span></code>) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fs</span></code>: Pointer to File system</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EALREADY</span></code>: when a file system of a given type has already been registered; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSCP</span></code>: when there is no space left, in file system registry, to add this file system type. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fs_unregister">
+<span class="target" id="group__file__system__api_1ga098db65c6b327182ecbf0bdf44ec9c5b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_unregister</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fs_file_system_t" title="fs_file_system_t"><span class="n"><span class="pre">fs_file_system_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fs_unregister" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unregister a file system. </p>
+<p>Unregister file system from virtual file system.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: Type of file system (ex: <code class="docutils literal notranslate"><span class="pre">FS_FATFS</span></code>) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fs</span></code>: Pointer to File system</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success; </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: when file system of a given type has not been registered. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.fs_mount_t">
+<span class="target" id="structfs__mount__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_mount_t</span></span></span><a class="headerlink" href="#c.fs_mount_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;fs.h&gt;</em><p>File system mount info structure. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node</span></code>: Entry for the fs_mount_list list </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: File system type </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mnt_point</span></code>: Mount point directory name (ex: “/fatfs”) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fs_data</span></code>: Pointer to file system specific data </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_dev</span></code>: Pointer to backend storage device </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mountp_len</span></code>: Length of Mount point string </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fs</span></code>: Pointer to File system interface of the mount point </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code>: Mount flags </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.fs_dirent">
+<span class="target" id="structfs__dirent"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_dirent</span></span></span><a class="headerlink" href="#c.fs_dirent" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;fs.h&gt;</em><p>Structure to receive file or directory information. </p>
+<p>Used in functions that reads the directory entries to get file or directory information.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dir_entry_type</span></code>: Whether file or directory<ul>
+<li><p>FS_DIR_ENTRY_FILE</p></li>
+<li><p>FS_DIR_ENTRY_DIR </p></li>
+</ul>
+</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of directory or file </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of file. 0 if directory </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c">
+<span class="target" id="structfs__statvfs"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_statvfs</span></span></span><br /></dt>
+<dd><em>#include &lt;fs.h&gt;</em><p>Structure to receive volume statistics. </p>
+<p>Used to retrieve information about total and available space in the volume.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f_bsize</span></code>: Optimal transfer block size </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">f_frsize</span></code>: Allocation unit size </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">f_blocks</span></code>: Size of FS in f_frsize units </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">f_bfree</span></code>: Number of free blocks </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.fs_file_t">
+<span class="target" id="structfs__file__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_file_t</span></span></span><a class="headerlink" href="#c.fs_file_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;fs_interface.h&gt;</em><p>File object representing an open file. </p>
+<p>The object needs to be initialized with function <a class="reference internal" href="#group__file__system__api_1gad44be87cbda3ddc48021ed16d515f564"><span class="std std-ref">fs_file_t_init()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Pointer</span></code>: to FATFS file object structure </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mp</span></code>: Pointer to mount point structure </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.fs_dir_t">
+<span class="target" id="structfs__dir__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_dir_t</span></span></span><a class="headerlink" href="#c.fs_dir_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;fs_interface.h&gt;</em><p>Directory object representing an open directory. </p>
+<p>The object needs to be initialized with function <a class="reference internal" href="#group__file__system__api_1gacd31440cd0b10308e55a0484828ea2f3"><span class="std std-ref">fs_dir_t_init()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dirp</span></code>: Pointer to directory object structure </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mp</span></code>: Pointer to mount point structure </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.fs_file_system_t">
+<span class="target" id="structfs__file__system__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fs_file_system_t</span></span></span><a class="headerlink" href="#c.fs_file_system_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;fs_sys.h&gt;</em><p>File System interface structure. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">open</span></code>: Opens or creates a file, depending on flags given </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">read</span></code>: Reads nbytes number of bytes </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">write</span></code>: Writes nbytes number of bytes </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lseek</span></code>: Moves the file position to a new location in the file </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tell</span></code>: Retrieves the current position in the file </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">truncate</span></code>: Truncates/expands the file to the new length </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sync</span></code>: Flushes the cache of an open file </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">close</span></code>: Flushes the associated stream and closes the file </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opendir</span></code>: Opens an existing directory specified by the path </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">readdir</span></code>: Reads directory entries of an open directory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">closedir</span></code>: Closes an open directory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mount</span></code>: Mounts a file system </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unmount</span></code>: Unmounts a file system </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unlink</span></code>: Deletes the specified file or directory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rename</span></code>: Renames a file or directory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mkdir</span></code>: Creates a new directory using specified path </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stat</span></code>: Checks the status of a file or directory specified by the path </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">statvfs</span></code>: Returns the total and available space on the file system volume </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../iterable_sections/index.html" class="btn btn-neutral float-right" title="Iterable Sections" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../edac/index.html" class="btn btn-neutral" title="Error Detection And Correction (EDAC)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

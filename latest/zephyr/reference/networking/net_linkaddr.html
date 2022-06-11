@@ -1,0 +1,515 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Link Layer Address Handling &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Ethernet Management" href="ethernet_mgmt.html" />
+    <link rel="prev" title="Network Traffic Offloading" href="net_offload.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="apis.html">Network APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buf_mgmt.html">Network Buffer Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="net_tech.html">Networking Technologies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="protocols.html">Protocols</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="system_mgmt.html">Network System Management</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="net_config.html">Network Configuration Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dhcpv4.html">DHCPv4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_hostname.html">Hostname Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_core.html">Network Core Helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_if.html">Network Interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_l2.html">L2 Layer Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_offload.html">Network Traffic Offloading</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Link Layer Address Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ethernet_mgmt.html">Ethernet Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="traffic-class.html">Traffic Classification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_pkt_filter.html">Network Packet Filtering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_shell.html">Network Shell</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tsn.html">Time Sensitive Networking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsm_modem.html">Generic GSM Modem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="system_mgmt.html">Network System Management</a> &raquo;</li>
+        
+      <li>Link Layer Address Handling</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/networking/net_linkaddr.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="link-layer-address-handling">
+<span id="net-linkaddr-interface"></span><h1>Link Layer Address Handling<a class="headerlink" href="#link-layer-address-handling" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id2">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id1">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The link layer addresses are set for network interfaces so that L2
+connectivity works correctly in the network stack. Typically the link layer
+addresses are 6 bytes long like in Ethernet but for IEEE 802.15.4 the link
+layer address length is 8 bytes.</p>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id2">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__net__linkaddr"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">net_linkaddr</span></span></dt>
+<dd><p>Network link address library. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NET_LINK_ADDR_MAX_LENGTH">
+<span class="target" id="group__net__linkaddr_1ga5680cf2ac9302bbee824148f36193b2b"></span><span class="sig-name descname"><span class="n"><span class="pre">NET_LINK_ADDR_MAX_LENGTH</span></span></span><a class="headerlink" href="#c.NET_LINK_ADDR_MAX_LENGTH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum length of the link address </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.net_link_type">
+<span class="target" id="group__net__linkaddr_1ga1312c2322bc4a4f1c3b76d6466806b24"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_link_type</span></span></span><a class="headerlink" href="#c.net_link_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Type of the link address. This indicates the network technology that this address is used in. Note that in order to save space we store the value into a uint8_t variable, so please do not introduce any values &gt; 255 in this enum. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_link_type.NET_LINK_UNKNOWN">
+<span class="target" id="group__net__linkaddr_1gga1312c2322bc4a4f1c3b76d6466806b24a3e12f6af3333134a3e118fb16458bd34"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_LINK_UNKNOWN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.net_link_type.NET_LINK_UNKNOWN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unknown link address type. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_link_type.NET_LINK_IEEE802154">
+<span class="target" id="group__net__linkaddr_1gga1312c2322bc4a4f1c3b76d6466806b24a4f365da4c9300c31cd4022600e630ce3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_LINK_IEEE802154</span></span></span><a class="headerlink" href="#c.net_link_type.NET_LINK_IEEE802154" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>IEEE 802.15.4 link address. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_link_type.NET_LINK_BLUETOOTH">
+<span class="target" id="group__net__linkaddr_1gga1312c2322bc4a4f1c3b76d6466806b24abc3c811d04e998cbf498cc19644d182a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_LINK_BLUETOOTH</span></span></span><a class="headerlink" href="#c.net_link_type.NET_LINK_BLUETOOTH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Bluetooth IPSP link address. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_link_type.NET_LINK_ETHERNET">
+<span class="target" id="group__net__linkaddr_1gga1312c2322bc4a4f1c3b76d6466806b24a7fc0b181a04fe90ca3a9c72170810d7b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_LINK_ETHERNET</span></span></span><a class="headerlink" href="#c.net_link_type.NET_LINK_ETHERNET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Ethernet link address. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_link_type.NET_LINK_DUMMY">
+<span class="target" id="group__net__linkaddr_1gga1312c2322bc4a4f1c3b76d6466806b24a7895ba2ce84de4c6dc03cbc57a87b7c8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_LINK_DUMMY</span></span></span><a class="headerlink" href="#c.net_link_type.NET_LINK_DUMMY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Dummy link address. Used in testing apps and loopback support. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_link_type.NET_LINK_CANBUS_RAW">
+<span class="target" id="group__net__linkaddr_1gga1312c2322bc4a4f1c3b76d6466806b24ab452eaef0ff58af43468da87ecfa404a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NET_LINK_CANBUS_RAW</span></span></span><a class="headerlink" href="#c.net_link_type.NET_LINK_CANBUS_RAW" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>CANBUS link address. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_linkaddr_cmp">
+<span class="target" id="group__net__linkaddr_1ga36387353825a70fbe54dd16d076a9e26"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_linkaddr_cmp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_linkaddr" title="net_linkaddr"><span class="n"><span class="pre">net_linkaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lladdr1</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_linkaddr" title="net_linkaddr"><span class="n"><span class="pre">net_linkaddr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lladdr2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_linkaddr_cmp" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Compare two link layer addresses. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the addresses are the same, false otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lladdr1</span></code>: Pointer to a link layer address </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lladdr2</span></code>: Pointer to a link layer address</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_linkaddr_set">
+<span class="target" id="group__net__linkaddr_1gaa20d6cb50b240f9306ea88b1dc4c1de4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_linkaddr_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_linkaddr_storage" title="net_linkaddr_storage"><span class="n"><span class="pre">net_linkaddr_storage</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lladdr_store</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">new_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">new_len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_linkaddr_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the member data of a link layer address storage structure. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lladdr_store</span></code>: The link address storage structure to change. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">new_addr</span></code>: Array of bytes containing the link address. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">new_len</span></code>: Length of the link address array. This value should always be &lt;= NET_LINK_ADDR_MAX_LENGTH. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.net_linkaddr">
+<span class="target" id="structnet__linkaddr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_linkaddr</span></span></span><a class="headerlink" href="#c.net_linkaddr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_linkaddr.h&gt;</em><p>Hardware link address structure. </p>
+<p>Used to hold the link address information </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_linkaddr.addr">
+<span class="target" id="structnet__linkaddr_1a2176a9f7a444ac3b0108102d8cf852f0"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">addr</span></span></span><a class="headerlink" href="#c.net_linkaddr.addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The array of byte representing the address </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_linkaddr.len">
+<span class="target" id="structnet__linkaddr_1a7b2f8ebe68b557eb9cbb4c2f2ecd70e0"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">len</span></span></span><a class="headerlink" href="#c.net_linkaddr.len" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Length of that address array </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_linkaddr.type">
+<span class="target" id="structnet__linkaddr_1a5f5b4c3d353261d0fab8011aa09f00d7"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.net_linkaddr.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>What kind of address is this for </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.net_linkaddr_storage">
+<span class="target" id="structnet__linkaddr__storage"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_linkaddr_storage</span></span></span><a class="headerlink" href="#c.net_linkaddr_storage" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_linkaddr.h&gt;</em><p>Hardware link address structure. </p>
+<p>Used to hold the link address information. This variant is needed when we have to store the link layer address.</p>
+<p>Note that you cannot cast this to <a class="reference internal" href="#structnet__linkaddr"><span class="std std-ref">net_linkaddr</span></a> as uint8_t * is handled differently than uint8_t addr[] and the fields are purposely in different order. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_linkaddr_storage.type">
+<span class="target" id="structnet__linkaddr__storage_1a00ae00d99b6022663e0f5a3894704ca8"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.net_linkaddr_storage.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>What kind of address is this for </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_linkaddr_storage.len">
+<span class="target" id="structnet__linkaddr__storage_1ab1d9024ef8574f6e7daaa19ee5266a11"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">len</span></span></span><a class="headerlink" href="#c.net_linkaddr_storage.len" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The real length of the ll address. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_linkaddr_storage.addr">
+<span class="target" id="structnet__linkaddr__storage_1ae37b0b74f3d2b7ec09e2c2022e86c0bb"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addr</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.net_linkaddr_storage.addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The array of bytes representing the address </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ethernet_mgmt.html" class="btn btn-neutral float-right" title="Ethernet Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="net_offload.html" class="btn btn-neutral" title="Network Traffic Offloading" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

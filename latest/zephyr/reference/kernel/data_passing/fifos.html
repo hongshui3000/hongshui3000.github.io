@@ -1,0 +1,687 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>FIFOs &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="LIFOs" href="lifos.html" />
+    <link rel="prev" title="Queues" href="queues.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Kernel Services</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#scheduling-interrupts-and-synchronization">Scheduling, Interrupts, and Synchronization</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#data-passing">Data Passing</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="queues.html">Queues</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">FIFOs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lifos.html">LIFOs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stacks.html">Stacks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="message_queues.html">Message Queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mailboxes.html">Mailboxes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pipes.html">Pipes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#memory-management">Memory Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#timing">Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Kernel Services</a> &raquo;</li>
+        
+      <li>FIFOs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/kernel/data_passing/fifos.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fifos">
+<span id="fifos-v2"></span><h1>FIFOs<a class="headerlink" href="#fifos" title="Permalink to this headline">¶</a></h1>
+<p>A <em class="dfn">FIFO</em> is a kernel object that implements a traditional
+first in, first out (FIFO) queue, allowing threads and ISRs
+to add and remove data items of any size.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#concepts" id="id1">Concepts</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id2">Implementation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#defining-a-fifo" id="id3">Defining a FIFO</a></p></li>
+<li><p><a class="reference internal" href="#writing-to-a-fifo" id="id4">Writing to a FIFO</a></p></li>
+<li><p><a class="reference internal" href="#reading-from-a-fifo" id="id5">Reading from a FIFO</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#suggested-uses" id="id6">Suggested Uses</a></p></li>
+<li><p><a class="reference internal" href="#configuration-options" id="id7">Configuration Options</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id8">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="concepts">
+<h2><a class="toc-backref" href="#id1">Concepts</a><a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h2>
+<p>Any number of FIFOs can be defined (limited only by available RAM). Each FIFO is
+referenced by its memory address.</p>
+<p>A FIFO has the following key properties:</p>
+<ul class="simple">
+<li><p>A <strong>queue</strong> of data items that have been added but not yet removed.
+The queue is implemented as a simple linked list.</p></li>
+</ul>
+<p>A FIFO must be initialized before it can be used. This sets its queue to empty.</p>
+<p>FIFO data items must be aligned on a word boundary, as the kernel reserves
+the first word of an item for use as a pointer to the next data item in
+the queue. Consequently, a data item that holds N bytes of application
+data requires N+4 (or N+8) bytes of memory. There are no alignment or
+reserved space requirements for data items if they are added with
+<a class="reference internal" href="#c.k_fifo_alloc_put" title="k_fifo_alloc_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_fifo_alloc_put()</span></code></a>, instead additional memory is temporarily
+allocated from the calling thread’s resource pool.</p>
+<p>A data item may be <strong>added</strong> to a FIFO by a thread or an ISR.
+The item is given directly to a waiting thread, if one exists;
+otherwise the item is added to the FIFO’s queue.
+There is no limit to the number of items that may be queued.</p>
+<p>A data item may be <strong>removed</strong> from a FIFO by a thread. If the FIFO’s queue
+is empty a thread may choose to wait for a data item to be given.
+Any number of threads may wait on an empty FIFO simultaneously.
+When a data item is added, it is given to the highest priority thread
+that has waited longest.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The kernel does allow an ISR to remove an item from a FIFO, however
+the ISR must not attempt to wait if the FIFO is empty.</p>
+</div>
+<p>If desired, <strong>multiple data items</strong> can be added to a FIFO in a single operation
+if they are chained together into a singly-linked list. This capability can be
+useful if multiple writers are adding sets of related data items to the FIFO,
+as it ensures the data items in each set are not interleaved with other data
+items. Adding multiple data items to a FIFO is also more efficient than adding
+them one at a time, and can be used to guarantee that anyone who removes
+the first data item in a set will be able to remove the remaining data items
+without waiting.</p>
+</div>
+<div class="section" id="implementation">
+<h2><a class="toc-backref" href="#id2">Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="defining-a-fifo">
+<h3><a class="toc-backref" href="#id3">Defining a FIFO</a><a class="headerlink" href="#defining-a-fifo" title="Permalink to this headline">¶</a></h3>
+<p>A FIFO is defined using a variable of type <code class="xref c c-struct docutils literal notranslate"><span class="pre">k_fifo</span></code>.
+It must then be initialized by calling <a class="reference internal" href="#c.k_fifo_init" title="k_fifo_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_fifo_init()</span></code></a>.</p>
+<p>The following code defines and initializes an empty FIFO.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">k_fifo</span> <span class="n">my_fifo</span><span class="p">;</span>
+
+<span class="n">k_fifo_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_fifo</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Alternatively, an empty FIFO can be defined and initialized at compile time
+by calling <a class="reference internal" href="#c.K_FIFO_DEFINE" title="K_FIFO_DEFINE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_FIFO_DEFINE</span></code></a>.</p>
+<p>The following code has the same effect as the code segment above.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">K_FIFO_DEFINE</span><span class="p">(</span><span class="n">my_fifo</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="writing-to-a-fifo">
+<h3><a class="toc-backref" href="#id4">Writing to a FIFO</a><a class="headerlink" href="#writing-to-a-fifo" title="Permalink to this headline">¶</a></h3>
+<p>A data item is added to a FIFO by calling <a class="reference internal" href="#c.k_fifo_put" title="k_fifo_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_fifo_put()</span></code></a>.</p>
+<p>The following code builds on the example above, and uses the FIFO
+to send data to one or more consumer threads.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">data_item_t</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">fifo_reserved</span><span class="p">;</span>   <span class="cm">/* 1st word reserved for use by FIFO */</span>
+    <span class="p">...</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">data_item_t</span> <span class="n">tx_data</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">producer_thread</span><span class="p">(</span><span class="kt">int</span> <span class="n">unused1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">unused2</span><span class="p">,</span> <span class="kt">int</span> <span class="n">unused3</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* create data item to send */</span>
+        <span class="n">tx_data</span> <span class="o">=</span> <span class="p">...</span>
+
+        <span class="cm">/* send data to consumers */</span>
+        <span class="n">k_fifo_put</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_fifo</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tx_data</span><span class="p">);</span>
+
+        <span class="p">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Additionally, a singly-linked list of data items can be added to a FIFO
+by calling <a class="reference internal" href="#c.k_fifo_put_list" title="k_fifo_put_list"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_fifo_put_list()</span></code></a> or <a class="reference internal" href="#c.k_fifo_put_slist" title="k_fifo_put_slist"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_fifo_put_slist()</span></code></a>.</p>
+<p>Finally, a data item can be added to a FIFO with <a class="reference internal" href="#c.k_fifo_alloc_put" title="k_fifo_alloc_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_fifo_alloc_put()</span></code></a>.
+With this API, there is no need to reserve space for the kernel’s use in
+the data item, instead additional memory will be allocated from the calling
+thread’s resource pool until the item is read.</p>
+</div>
+<div class="section" id="reading-from-a-fifo">
+<h3><a class="toc-backref" href="#id5">Reading from a FIFO</a><a class="headerlink" href="#reading-from-a-fifo" title="Permalink to this headline">¶</a></h3>
+<p>A data item is removed from a FIFO by calling <a class="reference internal" href="#c.k_fifo_get" title="k_fifo_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_fifo_get()</span></code></a>.</p>
+<p>The following code builds on the example above, and uses the FIFO
+to obtain data items from a producer thread,
+which are then processed in some manner.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">consumer_thread</span><span class="p">(</span><span class="kt">int</span> <span class="n">unused1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">unused2</span><span class="p">,</span> <span class="kt">int</span> <span class="n">unused3</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="nc">data_item_t</span>  <span class="o">*</span><span class="n">rx_data</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">rx_data</span> <span class="o">=</span> <span class="n">k_fifo_get</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_fifo</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+
+        <span class="cm">/* process FIFO data item */</span>
+        <span class="p">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="suggested-uses">
+<h2><a class="toc-backref" href="#id6">Suggested Uses</a><a class="headerlink" href="#suggested-uses" title="Permalink to this headline">¶</a></h2>
+<p>Use a FIFO to asynchronously transfer data items of arbitrary size
+in a “first in, first out” manner.</p>
+</div>
+<div class="section" id="configuration-options">
+<h2><a class="toc-backref" href="#id7">Configuration Options</a><a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id8">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__fifo__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">fifo_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.k_fifo_init">
+<span class="target" id="group__fifo__apis_1gaeebf6ef54d4be61e19408f44a734a159"></span><span class="sig-name descname"><span class="n"><span class="pre">k_fifo_init</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fifo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_fifo_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a FIFO queue. </p>
+<p>This routine initializes a FIFO queue, prior to its first use.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fifo</span></code>: Address of the FIFO queue. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.k_fifo_cancel_wait">
+<span class="target" id="group__fifo__apis_1gab744080af449e093df8dd4982e013e16"></span><span class="sig-name descname"><span class="n"><span class="pre">k_fifo_cancel_wait</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fifo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_fifo_cancel_wait" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Cancel waiting on a FIFO queue. </p>
+<p>This routine causes first thread pending on <em>fifo</em>, if any, to return from <a class="reference internal" href="#group__fifo__apis_1ga1e2c480e2124116af97e94e7b4435de6"><span class="std std-ref">k_fifo_get()</span></a> call with NULL value (as if timeout expired).</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fifo</span></code>: Address of the FIFO queue. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.k_fifo_put">
+<span class="target" id="group__fifo__apis_1ga3addb10f86f19e245c23362433d5c913"></span><span class="sig-name descname"><span class="n"><span class="pre">k_fifo_put</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fifo</span></span>, <span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_fifo_put" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add an element to a FIFO queue. </p>
+<p>This routine adds a data item to <em>fifo</em>. A FIFO data item must be aligned on a word boundary, and the first word of the item is reserved for the kernel’s use.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fifo</span></code>: Address of the FIFO. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of the data item. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.k_fifo_alloc_put">
+<span class="target" id="group__fifo__apis_1gab1c5212040d12cbb92cede5cf54928ba"></span><span class="sig-name descname"><span class="n"><span class="pre">k_fifo_alloc_put</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fifo</span></span>, <span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_fifo_alloc_put" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add an element to a FIFO queue. </p>
+<p>This routine adds a data item to <em>fifo</em>. There is an implicit memory allocation to create an additional temporary bookkeeping data structure from the calling thread’s resource pool, which is automatically freed when the item is removed. The data itself is not copied.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fifo</span></code>: Address of the FIFO. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of the data item.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOMEM</span></code>: if there isn’t sufficient RAM in the caller’s resource pool </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.k_fifo_put_list">
+<span class="target" id="group__fifo__apis_1ga1bf5f52290c83e54ba14358cbbb4051b"></span><span class="sig-name descname"><span class="n"><span class="pre">k_fifo_put_list</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fifo</span></span>, <span class="n"><span class="pre">head</span></span>, <span class="n"><span class="pre">tail</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_fifo_put_list" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Atomically add a list of elements to a FIFO. </p>
+<p>This routine adds a list of data items to <em>fifo</em> in one operation. The data items must be in a singly-linked list, with the first word of each data item pointing to the next data item; the list must be NULL-terminated.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fifo</span></code>: Address of the FIFO queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">head</span></code>: Pointer to first node in singly-linked list. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tail</span></code>: Pointer to last node in singly-linked list. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.k_fifo_put_slist">
+<span class="target" id="group__fifo__apis_1ga4cdc286a7a6f0d43acab63a4846815e7"></span><span class="sig-name descname"><span class="n"><span class="pre">k_fifo_put_slist</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fifo</span></span>, <span class="n"><span class="pre">list</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_fifo_put_slist" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Atomically add a list of elements to a FIFO queue. </p>
+<p>This routine adds a list of data items to <em>fifo</em> in one operation. The data items must be in a singly-linked list implemented using a sys_slist_t object. Upon completion, the sys_slist_t object is invalid and must be re-initialized via <a class="reference internal" href="../../data_structures/slist.html#group__single-linked-list__apis_1ga913aea7661b4ab3b4b50a8efc0d70428"><span class="std std-ref">sys_slist_init()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fifo</span></code>: Address of the FIFO queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list</span></code>: Pointer to sys_slist_t object. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.k_fifo_get">
+<span class="target" id="group__fifo__apis_1ga1e2c480e2124116af97e94e7b4435de6"></span><span class="sig-name descname"><span class="n"><span class="pre">k_fifo_get</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fifo</span></span>, <span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_fifo_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get an element from a FIFO queue. </p>
+<p>This routine removes a data item from <em>fifo</em> in a “first in, first out” manner. The first word of the data item is reserved for the kernel’s use.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><em>timeout</em> must be set to K_NO_WAIT if called from ISR.</p>
+</dd>
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Address of the data item if successful; NULL if returned without waiting, or waiting period timed out. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fifo</span></code>: Address of the FIFO queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Waiting period to obtain a data item, or one of the special values K_NO_WAIT and K_FOREVER.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.k_fifo_is_empty">
+<span class="target" id="group__fifo__apis_1gab7cec4adc128ed1fd2d194ba6cd8c640"></span><span class="sig-name descname"><span class="n"><span class="pre">k_fifo_is_empty</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fifo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_fifo_is_empty" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Query a FIFO queue to see if it has data available. </p>
+<p>Note that the data might be already gone by the time this function returns if other threads is also trying to read from the FIFO.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Non-zero if the FIFO queue is empty. </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>0 if data is available. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fifo</span></code>: Address of the FIFO queue.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.k_fifo_peek_head">
+<span class="target" id="group__fifo__apis_1ga2e0c8608f095a929740fa94c94a4f389"></span><span class="sig-name descname"><span class="n"><span class="pre">k_fifo_peek_head</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fifo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_fifo_peek_head" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Peek element at the head of a FIFO queue. </p>
+<p>Return element from the head of FIFO queue without removing it. A usecase for this is if elements of the FIFO object are themselves containers. Then on each iteration of processing, a head container will be peeked, and some data processed out of it, and only if the container is empty, it will be completely remove from the FIFO queue.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Head element, or NULL if the FIFO queue is empty. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fifo</span></code>: Address of the FIFO queue.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.k_fifo_peek_tail">
+<span class="target" id="group__fifo__apis_1gafbe2ce9a6437b886cf149016187ba92f"></span><span class="sig-name descname"><span class="n"><span class="pre">k_fifo_peek_tail</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">fifo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_fifo_peek_tail" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Peek element at the tail of FIFO queue. </p>
+<p>Return element from the tail of FIFO queue (without removing it). A usecase for this is if elements of the FIFO queue are themselves containers. Then it may be useful to add more data to the last container in a FIFO queue.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Tail element, or NULL if a FIFO queue is empty. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fifo</span></code>: Address of the FIFO queue.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_FIFO_DEFINE">
+<span class="target" id="group__fifo__apis_1ga230b02a526ecb0ae1598be75cb9a8274"></span><span class="sig-name descname"><span class="n"><span class="pre">K_FIFO_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_FIFO_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define and initialize a FIFO queue. </p>
+<p>The FIFO queue can be accessed outside the module where it is defined using:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extern</span> <span class="n">struct</span> <span class="n">k_fifo</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">;</span> 
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the FIFO queue. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="lifos.html" class="btn btn-neutral float-right" title="LIFOs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="queues.html" class="btn btn-neutral" title="Queues" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

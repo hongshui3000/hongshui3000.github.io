@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nRF5x Clock Skew Demo &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../../copyright.html" />
+    <link rel="next" title="Dynamic Pin Control (nRF)" href="../dynamic_pinctrl/README.html" />
+    <link rel="prev" title="Battery Voltage Measurement" href="../battery/README.html" />
+  <link rel="shortcut icon" href="../../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../security/index.html">Security</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Samples and Demos</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../classic.html">Classic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basic/basic.html">Basic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../userspace/index.html">Userspace Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../subsys/subsys.html">Various Subsystems Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../net/net.html">Networking Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bluetooth/bluetooth.html">Bluetooth samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sensor/sensor.html">Sensor Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arch/index.html">Architecture Dependent Samples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../boards.html">Board-specific samples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../96b_argonkey/microphone/README.html">ArgonKey Board Microphone</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../96b_argonkey/sensors/README.html">ArgonKey Board Sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../arc_secure_services/README.html">ARC Secure Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bbc_microbit/display/README.html">BBC micro:bit display</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bbc_microbit/line_follower_robot/README.html">BBC micro:bit line-follower robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bbc_microbit/microbit.html">BBC micro:bit Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bbc_microbit/pong/README.html">BBC micro:bit pong game</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bbc_microbit/sound/README.html">BBC micro:bit sound</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../esp32/spiram_test/README.html">Espressif ESP32 SPIRAM test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../esp32/wifi_station/README.html">Espressif ESP32 WiFi Station</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../google_kukui/README.html">Kukui general features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../intel_s1000_crb/audio/README.html">Sue Creek 2-Way Audio Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../intel_s1000_crb/dmic/README.html">Intel® S1000 Digital Microphone Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../intel_s1000_crb/i2s/README.html">Intel® S1000 I2S Audio Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../intel_s1000_crb/intel_s1000_crb.html">Intel® S1000 Customer Reference Board Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mec15xxevb_assy6853/mec15xxevb_assy6853.html">MEC15xxEVB Reference Board Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mec15xxevb_assy6853/power_management/README.html">MEC15xx sample board test application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../battery/README.html">Battery Voltage Measurement</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">nRF5x Clock Skew Demo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-flashing-and-running">Building, Flashing and Running</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dynamic_pinctrl/README.html">Dynamic Pin Control (nRF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ieee802154/802154_rpmsg/README.html">nRF IEEE 802.15.4: Serialization RPMsg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mesh/onoff-app/README.html">Bluetooth: Mesh OnOff Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mesh/onoff_level_lighting_vnd_app/README.html">Bluetooth: Mesh Generic OnOff, Generic Level, Lighting &amp; Vendor Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nrf53_sync_rtc/README.html">Synchronized RTC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nrf_led_matrix/README.html">nRF LED matrix sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nrfx/README.html">nrfx use example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nrfx_prs/README.html">nrfx peripheral resource sharing example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../system_off/README.html">nRF5x System Off demo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../reel_board/mesh_badge/README.html">Mesh Badge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sensortile_box/README.html">ST SensorTile.box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../stm32/backup_sram/README.html">STM32 Backup SRAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../stm32/ccm/README.html">STM32 CCM example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../stm32/power_mgmt/blinky/README.html">STM32 PM Blinky</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../stm32/power_mgmt/stm32wb_ble/README.html">STM32: PM BLE Power Management (STM32WB)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../stm32/usbc/sink/README.html">Basic USBC SINK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ti/cc13x2_cc26x2/system_off/README.html">cc13x2_cc26x2 System Off demo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../up_squared/gpio_counter/README.html">UP Squared GPIO Counter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../drivers/drivers.html">Driver Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../application_development/application_development.html">Application development samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../shields/shields.html">Shields Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../posix/posix.html">POSIX Subsystem Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../kernel/index.html">Various Kernel and Scheduler Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tfm_integration/tfm_integration.html">TF-M Integration Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tfm_integration/tfm_integration.html#trusted-firmware-m-tf-m">Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules/index.html">External Module Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../compression/compression.html">Compression Samples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Samples and Demos</a> &raquo;</li>
+        
+          <li><a href="../../boards.html">Board-specific samples</a> &raquo;</li>
+        
+      <li>nRF5x Clock Skew Demo</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/samples/boards/nrf/clock_skew/README.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nrf5x-clock-skew-demo">
+<span id="nrf-clock-skew-sample"></span><h1>nRF5x Clock Skew Demo<a class="headerlink" href="#nrf5x-clock-skew-demo" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This sample uses the API for correlating time sources to measure the
+skew between HFCLK (used for the CPU) and LFCLK (used for system time).
+It also shows how to use this skew to correct durations measured in the
+LFCLK domain to durations in the HFCLK domain.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">CONFIG_APP_ENABLE_HFXO</span></code> Kconfig option can be select to configure
+the high frequency clock to use a crystal oscillator rather than the
+default RC oscillator.  (Capabilities like Bluetooth that require an
+accurate high-frequency clock generally enable this source
+automatically.)  The relative error is significantly lower when HFXO is
+enabled.</p>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>This application uses any nRF51 DK or nRF52 DK board for the demo.</p>
+</div>
+<div class="section" id="building-flashing-and-running">
+<h2>Building, Flashing and Running<a class="headerlink" href="#building-flashing-and-running" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b nrf52dk_nrf52840 samples/boards/nrf/clock_skew</span>
+<span class="go">west flash</span>
+</pre></div>
+</div>
+<p>Running:</p>
+<div class="section" id="sample-output">
+<h3>Sample Output<a class="headerlink" href="#sample-output" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">*** Booting Zephyr OS build v2.5.0-rc3-94-g06a4b650467b  ***</span>
+<span class="go">Power-up clocks: LFCLK[ON]: Running LFXO ; HFCLK[OFF]: Running HFINT</span>
+<span class="go">Start TIMER_0: 0</span>
+<span class="go">Timer-running clocks: LFCLK[ON]: Running LFXO ; HFCLK[OFF]: Running HFINT</span>
+<span class="go">Checking TIMER_0 at 16000000 Hz against ticks at 32768 Hz</span>
+<span class="go">Timer wraps every 268 s</span>
+
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:00:00.015666</span>
+<span class="go">LF  00:00:00.404937</span>
+<span class="go">Started sync: 0</span>
+
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:00:09.978436  00:00:00.015666  00:00:09.962769</span>
+<span class="go">LF  00:00:10.414520  00:00:00.404937  00:00:10.009582  00:00:00.046813</span>
+<span class="go">RHF 00:00:09.978435                                   -00:00:00.000000</span>
+<span class="go">Skew 0.995323 ; err 4676818 ppb</span>
+
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:00:19.959136  00:00:00.015666  00:00:19.943469</span>
+<span class="go">LF  00:00:20.441589  00:00:00.404937  00:00:20.036651  00:00:00.093182</span>
+<span class="go">RHF 00:00:19.959117                                   -00:00:00.000018</span>
+<span class="go">Skew 0.995349 ; err 4650592 ppb</span>
+
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:00:29.937181  00:00:00.015666  00:00:29.921514</span>
+<span class="go">LF  00:00:30.468627  00:00:00.404937  00:00:30.063690  00:00:00.142176</span>
+<span class="go">RHF 00:00:29.937175                                   -00:00:00.000005</span>
+<span class="go">Skew 0.995271 ; err 4729151 ppb</span>
+
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:00:39.917347  00:00:00.015666  00:00:39.901680</span>
+<span class="go">LF  00:00:40.495666  00:00:00.404937  00:00:40.090728  00:00:00.189048</span>
+<span class="go">RHF 00:00:39.917339                                   -00:00:00.000008</span>
+<span class="go">Skew 0.995284 ; err 4715502 ppb</span>
+
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:00:49.899493  00:00:00.015666  00:00:49.883826</span>
+<span class="go">LF  00:00:50.522674  00:00:00.404937  00:00:50.117736  00:00:00.233910</span>
+<span class="go">RHF 00:00:49.899486                                   -00:00:00.000007</span>
+<span class="go">Skew 0.995333 ; err 4667222 ppb</span>
+
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:00:59.878166  00:00:00.015666  00:00:59.862499</span>
+<span class="go">LF  00:01:00.549713  00:00:00.404937  00:01:00.144775  00:00:00.282276</span>
+<span class="go">RHF 00:00:59.878154                                   -00:00:00.000011</span>
+<span class="go">Skew 0.995307 ; err 4693269 ppb</span>
+<span class="go">...</span>
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:02:59.654855  00:00:00.015666  00:02:59.639188</span>
+<span class="go">LF  00:03:00.873901  00:00:00.404937  00:03:00.468963  00:00:00.829775</span>
+<span class="go">RHF 00:02:59.654857                                    00:00:00.000001</span>
+<span class="go">Skew 0.995402 ; err 4597902 ppb</span>
+<span class="go">...</span>
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:04:59.410593  00:00:00.015666  00:04:59.394926</span>
+<span class="go">LF  00:05:01.198181  00:00:00.404937  00:05:00.793243  00:00:01.398317</span>
+<span class="go">RHF 00:04:59.410594                                    00:00:00.000001</span>
+<span class="go">Skew 0.995351 ; err 4648745 ppb</span>
+<span class="go">...</span>
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:09:58.829511  00:00:00.015666  00:09:58.813845</span>
+<span class="go">LF  00:10:02.008911  00:00:00.404937  00:10:01.603973  00:00:02.790128</span>
+<span class="go">RHF 00:09:58.829509                                   -00:00:00.000002</span>
+<span class="go">Skew 0.995362 ; err 4637837 ppb</span>
+<span class="go">...</span>
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:29:56.607589  00:00:00.015666  00:29:56.591923</span>
+<span class="go">LF  00:30:05.250732  00:00:00.404937  00:30:04.845794  00:00:08.253871</span>
+<span class="go">RHF 00:29:56.607585                                   -00:00:00.000004</span>
+<span class="go">Skew 0.995427 ; err 4573166 ppb</span>
+<span class="go">...</span>
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  00:59:43.781443  00:00:00.015666  00:59:43.765776</span>
+<span class="go">LF  01:00:00.085113  00:00:00.404937  00:59:59.680175  00:00:15.914399</span>
+<span class="go">RHF 00:59:43.781535                                    00:00:00.000092</span>
+<span class="go">Skew 0.995579 ; err 4421055 ppb</span>
+<span class="go">...</span>
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  01:59:37.666395  00:00:00.015666  01:59:37.650728</span>
+<span class="go">LF  02:00:09.810913  00:00:00.404937  02:00:09.405975  00:00:31.755247</span>
+<span class="go">RHF 01:59:37.666057                                   -00:00:00.000338</span>
+<span class="go">Skew 0.995595 ; err 4404723 ppb</span>
+<span class="go">...</span>
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  05:58:33.905236  00:00:00.015666  05:58:33.889570</span>
+<span class="go">LF  06:00:08.604980  00:00:00.404937  06:00:08.200042  00:01:34.310472</span>
+<span class="go">RHF 05:58:33.904338                                   -00:00:00.000898</span>
+<span class="go">..</span>
+<span class="go">Skew 0.995635 ; err 4364550 ppb</span>
+<span class="go">Ty  Latest           Base             Span             Err</span>
+<span class="go">HF  11:56:59.503922  00:00:00.015666  11:56:59.488255</span>
+<span class="go">LF  12:00:06.793182  00:00:00.404937  12:00:06.388244  00:03:06.899989</span>
+<span class="go">RHF 11:56:59.503948                                    00:00:00.000025</span>
+<span class="go">Skew 0.995674 ; err 4325747 ppb</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../dynamic_pinctrl/README.html" class="btn btn-neutral float-right" title="Dynamic Pin Control (nRF)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../battery/README.html" class="btn btn-neutral" title="Battery Voltage Measurement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

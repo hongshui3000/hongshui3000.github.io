@@ -1,0 +1,1675 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>CAN Controller &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="ISO-TP Transport Protocol" href="isotp.html" />
+    <link rel="prev" title="Controller Area Network (CAN)" href="index.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Controller Area Network (CAN)</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CAN Controller</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sending">Sending</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#receiving">Receiving</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-the-bitrate">Setting the bitrate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#socketcan">SocketCAN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#samples">Samples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="isotp.html">ISO-TP Transport Protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Controller Area Network (CAN)</a> &raquo;</li>
+        
+      <li>CAN Controller</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/canbus/controller.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="can-controller">
+<span id="can-api"></span><h1>CAN Controller<a class="headerlink" href="#can-controller" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#sending" id="id2">Sending</a></p></li>
+<li><p><a class="reference internal" href="#receiving" id="id3">Receiving</a></p></li>
+<li><p><a class="reference internal" href="#setting-the-bitrate" id="id4">Setting the bitrate</a></p></li>
+<li><p><a class="reference internal" href="#socketcan" id="id5">SocketCAN</a></p></li>
+<li><p><a class="reference internal" href="#samples" id="id6">Samples</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id7">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id1">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Controller Area Network is a two-wire serial bus specified by the
+Bosch CAN Specification, Bosch CAN with Flexible Data-Rate specification and the
+ISO 11898-1:2003 standard.
+CAN is mostly known for its application in the automotive domain. However, it
+is also used in home and industrial automation and other products.</p>
+<p>A CAN transceiver is an external device that converts the logic level signals
+from the CAN controller to the bus-levels. The bus lines are called
+CAN High (CAN H) and CAN Low (CAN L).
+The transmit wire from the controller to the transceiver is called CAN TX,
+and the receive wire is called CAN RX.
+These wires use the logic levels whereas the bus-level is interpreted
+differentially between CAN H and CAN L.
+The bus can be either in the recessive (logical one) or dominant (logical zero)
+state. The recessive state is when both lines, CAN H and CAN L, at roughly at
+the same voltage level. This state is also the idle state.
+To write a dominant bit to the bus, open-drain transistors tie CAN H to Vdd
+and CAN L to ground.
+The first and last node use a 120-ohm resistor between CAN H and CAN L to
+terminate the bus. The dominant state always overrides the recessive state.
+This structure is called a wired-AND.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>CAN controllers can only initialize when the bus is in the idle (recessive)
+state for at least 11 recessive bits. Therefore you have to make sure that
+CAN RX is high, at least for a short time. This is also necessary for
+loopback mode.</p>
+</div>
+<a class="reference internal image-reference" href="../../_images/transceiver.svg"><img alt="CAN Transceiver" class="align-center" src="../../_images/transceiver.svg" width="70%" /></a>
+<p>The bit-timing as defined in ISO 11898-1:2003 looks as following:</p>
+<a class="reference internal image-reference" href="../../_images/timing.svg"><img alt="CAN Timing" class="align-center" src="../../_images/timing.svg" width="40%" /></a>
+<p>A single bit is split into four segments.</p>
+<ul class="simple">
+<li><p>Sync_Seg: The nodes synchronize at the edge of the Sync_Seg. It is always one time quantum in length.</p></li>
+<li><p>Prop_Seg: The signal propagation delay of the bus and other delays of the transceiver and node.</p></li>
+<li><p>Phase_Seg1 and Phase_Seg2 :Define the sampling point. The bit is sampled at the end of Phase_Seg1.</p></li>
+</ul>
+<p>The bit-rate is calculated from the time of a time quantum and the values
+defined above.
+A bit has the length of Sync_Seg plus Prop_Seg plus Phase_Seg1 plus Phase_Seg2
+multiplied by the time of single time quantum.
+The bit-rate is the inverse of the length of a single bit.</p>
+<p>A bit is sampled at the sampling point.
+The sample point is between Phase_Seg1 and PhaseSeg2 and therefore is a
+parameter that the user needs to choose.
+The CiA recommends setting the sample point to 87.5% of the bit.</p>
+<p>The resynchronization jump width (SJW) defines the amount of time quantum the
+sample point can be moved.
+The sample point is moved when resynchronization is needed.</p>
+<p>The timing parameters (SJW, bitrate and sampling point, or bitrate, Prop_Seg,
+Phase_Seg1and Phase_Seg2) are initially set from the device-tree and can be
+changed at run-time from the timing-API.</p>
+<p>CAN uses so-called identifiers to identify the frame instead of addresses to
+identify a node.
+This identifier can either have 11-bit width (Standard or Basic Frame) or
+29-bit in case of an Extended Frame. The Zephyr CAN API supports both Standard
+and Extended identifiers concurrently. A CAN frame starts with a dominant
+Start Of Frame bit. After that, the identifiers follow. This phase is called the
+arbitration phase. During the arbitration phase, write collisions are allowed.
+They resolve by the fact that dominant bits override recessive bits.
+Nodes monitor the bus and notice when their transmission is being overridden and
+in case, abort their transmission.
+This effectively gives lower number identifiers priority over higher number
+identifiers.</p>
+<p>Filters are used to whitelist identifiers that are of interest for the specific
+node. An identifier that doesn’t match any filter is ignored.
+Filters can either match exactly or a specified part of the identifier.
+This method is called masking.
+As an example, a mask with 11 bits set for standard or 29 bits set for extended
+identifiers must match perfectly.
+Bits that are set to zero in the mask are ignored when matching an identifier.
+Most CAN controllers implement a limited number of filters in hardware.
+The number of filters is also limited in Kconfig to save memory.</p>
+<p>Errors may occur during transmission. In case a node detects an erroneous frame,
+it partially overrides the current frame with an error-frame.
+Error-frames can either be error passive or error active, depending on the state
+of the controller.
+In case the controller is in error active state, it sends six consecutive
+dominant bits, which is a violation of the stuffing rule that all nodes can
+detect. The sender may resend the frame right after.</p>
+<p>An initialized node can be in one of the following states:</p>
+<ul class="simple">
+<li><p>Error-active</p></li>
+<li><p>Error-passive</p></li>
+<li><p>Bus-off</p></li>
+</ul>
+<p>After initialization, the node is in the error-active state. In this state, the
+node is allowed to send active error frames, ACK, and overload frames.
+Every node has a receive- and transmit-error counter.
+If either the receive- or the transmit-error counter exceeds 127,
+the node changes to error-passive state.
+In this state, the node is not allowed to send error-active frames anymore.
+If the transmit-error counter increases further to 255, the node changes to the
+bus-off state. In this state, the node is not allowed to send any dominant bits
+to the bus. Nodes in the bus-off state may recover after receiving 128
+occurrences of 11 concurrent recessive bits.</p>
+<p>You can read more about CAN bus in this
+<a class="reference external" href="https://en.wikipedia.org/wiki/CAN_bus">CAN Wikipedia article</a>.</p>
+<p>Zephyr supports following CAN features:</p>
+<ul class="simple">
+<li><p>Standard and Extended Identifers</p></li>
+<li><p>Filters with Masking</p></li>
+<li><p>Loopback and Silent mode</p></li>
+<li><p>Remote Request</p></li>
+</ul>
+</div>
+<div class="section" id="sending">
+<h2><a class="toc-backref" href="#id2">Sending</a><a class="headerlink" href="#sending" title="Permalink to this headline">¶</a></h2>
+<p>The following code snippets show how to send data.</p>
+<p>This basic sample sends a CAN frame with standard identifier 0x123 and eight
+bytes of data. When passing NULL as the callback, as shown in this example,
+the send function blocks until the frame is sent and acknowledged by at least
+one other node or an error occurred. The timeout only takes effect on acquiring
+a mailbox. When a transmitting mailbox is assigned, sending cannot be canceled.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">zcan_frame</span> <span class="n">frame</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">id_type</span> <span class="o">=</span> <span class="n">CAN_STANDARD_IDENTIFIER</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">rtr</span> <span class="o">=</span> <span class="n">CAN_DATAFRAME</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="mh">0x123</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">dlc</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">}</span>
+<span class="p">};</span>
+<span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">can_dev</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+
+<span class="n">can_dev</span> <span class="o">=</span> <span class="n">device_get_binding</span><span class="p">(</span><span class="s">&quot;CAN_0&quot;</span><span class="p">);</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">can_send</span><span class="p">(</span><span class="n">can_dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">frame</span><span class="p">,</span> <span class="n">K_MSEC</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">LOG_ERR</span><span class="p">(</span><span class="s">&quot;Sending failed [%d]&quot;</span><span class="p">,</span> <span class="n">ret</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This example shows how to send a frame with extended identifier 0x1234567 and
+two bytes of data. The provided callback is called when the message is sent, or
+an error occurred. Passing <a class="reference internal" href="../kernel/timing/clocks.html#c.K_FOREVER" title="K_FOREVER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_FOREVER</span></code></a> to the timeout causes the
+function to block until a transfer mailbox is assigned to the frame or an error
+occurred. It does not block until the message is sent like the example above.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">tx_irq_callback</span><span class="p">(</span><span class="kt">int</span> <span class="n">error</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="kt">char</span> <span class="o">*</span><span class="n">sender</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">LOG_ERR</span><span class="p">(</span><span class="s">&quot;Sendig failed [%d]</span><span class="se">\n</span><span class="s">Sender: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">sender</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">send_function</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">can_dev</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="k">struct</span> <span class="nc">zcan_frame</span> <span class="n">frame</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="p">.</span><span class="n">id_type</span> <span class="o">=</span> <span class="n">CAN_EXTENDED_IDENTIFIER</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">rtr</span> <span class="o">=</span> <span class="n">CAN_DATAFRAME</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="mh">0x1234567</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">dlc</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="p">};</span>
+
+        <span class="n">frame</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">frame</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="n">can_send</span><span class="p">(</span><span class="n">can_dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">frame</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">,</span> <span class="n">tx_irq_callback</span><span class="p">,</span> <span class="s">&quot;Sender 1&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="receiving">
+<h2><a class="toc-backref" href="#id3">Receiving</a><a class="headerlink" href="#receiving" title="Permalink to this headline">¶</a></h2>
+<p>Frames are only received when they match a filter.
+The following code snippets show how to receive frames by adding filters.</p>
+<p>Here we have an example for a receiving callback as used for
+<a class="reference internal" href="#c.can_add_rx_filter" title="can_add_rx_filter"><code class="xref c c-func docutils literal notranslate"><span class="pre">can_add_rx_filter()</span></code></a>. The user data argument is passed when the filter is
+added.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">rx_callback_function</span><span class="p">(</span><span class="k">struct</span> <span class="nc">zcan_frame</span> <span class="o">*</span><span class="n">frame</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">user_data</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="p">...</span> <span class="k">do</span> <span class="n">something</span> <span class="n">with</span> <span class="n">the</span> <span class="n">frame</span> <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The following snippet shows how to add a filter with a callback function.
+It is the most efficient but also the most critical way to receive messages.
+The callback function is called from an interrupt context, which means that the
+callback function should be as short as possible and must not block.
+Adding callback functions is not allowed from userspace context.</p>
+<p>The filter for this example is configured to match the identifier 0x123 exactly.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="k">struct</span> <span class="nc">zcan_filter</span> <span class="n">my_filter</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">id_type</span> <span class="o">=</span> <span class="n">CAN_STANDARD_IDENTIFIER</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">rtr</span> <span class="o">=</span> <span class="n">CAN_DATAFRAME</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="mh">0x123</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">rtr_mask</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">id_mask</span> <span class="o">=</span> <span class="n">CAN_STD_ID_MASK</span>
+<span class="p">};</span>
+<span class="kt">int</span> <span class="n">filter_id</span><span class="p">;</span>
+<span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">can_dev</span><span class="p">;</span>
+
+<span class="n">can_dev</span> <span class="o">=</span> <span class="n">device_get_binding</span><span class="p">(</span><span class="s">&quot;CAN_0&quot;</span><span class="p">);</span>
+
+<span class="n">filter_id</span> <span class="o">=</span> <span class="n">can_add_rx_filter</span><span class="p">(</span><span class="n">can_dev</span><span class="p">,</span> <span class="n">rx_callback_function</span><span class="p">,</span> <span class="n">callback_arg</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_filter</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">filter_id</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">LOG_ERR</span><span class="p">(</span><span class="s">&quot;Unable to add rx filter [%d]&quot;</span><span class="p">,</span> <span class="n">filter_id</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here an example for <a class="reference internal" href="#c.can_add_rx_filter_msgq" title="can_add_rx_filter_msgq"><code class="xref c c-func docutils literal notranslate"><span class="pre">can_add_rx_filter_msgq()</span></code></a> is shown. With this
+function, it is possible to receive frames synchronously. This function can be
+called from userspace context.  The size of the message queue should be as big
+as the expected backlog.</p>
+<p>The filter for this example is configured to match the extended identifier
+0x1234567 exactly.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="k">struct</span> <span class="nc">zcan_filter</span> <span class="n">my_filter</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">id_type</span> <span class="o">=</span> <span class="n">CAN_EXTENDED_IDENTIFIER</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">rtr</span> <span class="o">=</span> <span class="n">CAN_DATAFRAME</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="mh">0x1234567</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">rtr_mask</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">id_mask</span> <span class="o">=</span> <span class="n">CAN_EXT_ID_MASK</span>
+<span class="p">};</span>
+<span class="n">CAN_MSGQ_DEFINE</span><span class="p">(</span><span class="n">my_can_msgq</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="k">struct</span> <span class="nc">zcan_frame</span> <span class="n">rx_frame</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">filter_id</span><span class="p">;</span>
+<span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">can_dev</span><span class="p">;</span>
+
+<span class="n">can_dev</span> <span class="o">=</span> <span class="n">device_get_binding</span><span class="p">(</span><span class="s">&quot;CAN_0&quot;</span><span class="p">);</span>
+
+<span class="n">filter_id</span> <span class="o">=</span> <span class="n">can_add_rx_filter_msgq</span><span class="p">(</span><span class="n">can_dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_can_msgq</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_filter</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">filter_id</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">LOG_ERR</span><span class="p">(</span><span class="s">&quot;Unable to add rx msgq [%d]&quot;</span><span class="p">,</span> <span class="n">filter_id</span><span class="p">);</span>
+  <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">k_msgq_get</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_can_msgq</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rx_frame</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+  <span class="p">...</span> <span class="k">do</span> <span class="n">something</span> <span class="n">with</span> <span class="n">the</span> <span class="n">frame</span> <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#c.can_remove_rx_filter" title="can_remove_rx_filter"><code class="xref c c-func docutils literal notranslate"><span class="pre">can_remove_rx_filter()</span></code></a> removes the given filter.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">can_remove_rx_filter</span><span class="p">(</span><span class="n">can_dev</span><span class="p">,</span> <span class="n">filter_id</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-the-bitrate">
+<h2><a class="toc-backref" href="#id4">Setting the bitrate</a><a class="headerlink" href="#setting-the-bitrate" title="Permalink to this headline">¶</a></h2>
+<p>The bitrate and sampling point is initially set at runtime. To change it from
+the application, one can use the <a class="reference internal" href="#c.can_set_timing" title="can_set_timing"><code class="xref c c-func docutils literal notranslate"><span class="pre">can_set_timing()</span></code></a> API. This function
+takes three arguments. The first timing parameter sets the timing for classic
+CAN and arbitration phase for CAN-FD. The second parameter sets the timing of
+the data phase for CAN-FD. For classic CAN, you can use only the first
+parameter and put NULL to the second one. The <a class="reference internal" href="#c.can_calc_timing" title="can_calc_timing"><code class="xref c c-func docutils literal notranslate"><span class="pre">can_calc_timing()</span></code></a>
+function can calculate timing from a bitrate and sampling point in permille.
+The following example sets the bitrate to 250k baud with the sampling point at
+87.5%.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">can_timing</span> <span class="n">timing</span><span class="p">;</span>
+<span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">can_dev</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+
+<span class="n">can_dev</span> <span class="o">=</span> <span class="n">device_get_binding</span><span class="p">(</span><span class="s">&quot;CAN_0&quot;</span><span class="p">);</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">can_calc_timing</span><span class="p">(</span><span class="n">can_dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">timing</span><span class="p">,</span> <span class="mi">250000</span><span class="p">,</span> <span class="mi">875</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">LOG_INF</span><span class="p">(</span><span class="s">&quot;Sample-Point error: %d&quot;</span><span class="p">,</span> <span class="n">ret</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">LOG_ERR</span><span class="p">(</span><span class="s">&quot;Failed to calc a valid timing&quot;</span><span class="p">);</span>
+  <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">can_set_timing</span><span class="p">(</span><span class="n">can_dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">timing</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">LOG_ERR</span><span class="p">(</span><span class="s">&quot;Failed to set timing&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="socketcan">
+<h2><a class="toc-backref" href="#id5">SocketCAN</a><a class="headerlink" href="#socketcan" title="Permalink to this headline">¶</a></h2>
+<p>Zephyr additionally supports SocketCAN, a BSD socket implementation of the
+Zephyr CAN API.
+SocketCAN brings the convenience of the well-known BSD Socket API to
+Controller Area Networks. It is compatible with the Linux SocketCAN
+implementation, where many other high-level CAN projects build on top.
+Note that frames are routed to the network stack instead of passed directly,
+which adds some computation and memory overhead.</p>
+</div>
+<div class="section" id="samples">
+<h2><a class="toc-backref" href="#id6">Samples</a><a class="headerlink" href="#samples" title="Permalink to this headline">¶</a></h2>
+<p>We have two ready-to-build samples demonstrating use of the Zephyr CAN API
+<a class="reference internal" href="../../samples/drivers/can/README.html#can-sample"><span class="std std-ref">Zephyr CAN sample</span></a> and
+<a class="reference internal" href="../../samples/net/sockets/can/README.html#socket-can-sample"><span class="std std-ref">SocketCAN sample</span></a>.</p>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id7">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__can__interface"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">can_interface</span></span></dt>
+<dd><p>CAN Interface. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-linux-socketcan-compatibility">Linux SocketCAN compatibility</p>
+<p>The following structures and functions provide compatibility with the CAN frame and CAN filter formats used by Linux SocketCAN. </p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.canid_t">
+<span class="target" id="group__can__interface_1gaf1c86d266c4de5b8fb79e12ff38def1f"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">canid_t</span></span></span><a class="headerlink" href="#c.canid_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>CAN Identifier structure for Linux SocketCAN compatibility.</p>
+<p>The fields in this type are:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+------+--------------------------------------------------------------+</span>
+<span class="o">|</span> <span class="n">Bits</span> <span class="o">|</span> <span class="n">Description</span>                                                  <span class="o">|</span>
+<span class="o">+======+==============================================================+</span>
+<span class="o">|</span> <span class="mi">0</span><span class="o">-</span><span class="mi">28</span> <span class="o">|</span> <span class="n">CAN</span> <span class="n">identifier</span> <span class="p">(</span><span class="mi">11</span><span class="o">/</span><span class="mi">29</span> <span class="n">bit</span><span class="p">)</span>                                   <span class="o">|</span>
+<span class="o">+------+--------------------------------------------------------------+</span>
+<span class="o">|</span>  <span class="mi">29</span>  <span class="o">|</span> <span class="n">Error</span> <span class="n">message</span> <span class="n">frame</span> <span class="n">flag</span> <span class="p">(</span><span class="mi">0</span> <span class="o">=</span> <span class="n">data</span> <span class="n">frame</span><span class="p">,</span> <span class="mi">1</span> <span class="o">=</span> <span class="n">error</span> <span class="n">message</span><span class="p">)</span> <span class="o">|</span>
+<span class="o">+------+--------------------------------------------------------------+</span>
+<span class="o">|</span>  <span class="mi">30</span>  <span class="o">|</span> <span class="n">Remote</span> <span class="n">transmission</span> <span class="n">request</span> <span class="n">flag</span> <span class="p">(</span><span class="mi">1</span> <span class="o">=</span> <span class="n">RTR</span> <span class="n">frame</span><span class="p">)</span>             <span class="o">|</span>
+<span class="o">+------+--------------------------------------------------------------+</span>
+<span class="o">|</span>  <span class="mi">31</span>  <span class="o">|</span> <span class="n">Frame</span> <span class="nb">format</span> <span class="n">flag</span> <span class="p">(</span><span class="mi">0</span> <span class="o">=</span> <span class="n">standard</span> <span class="mi">11</span> <span class="n">bit</span><span class="p">,</span> <span class="mi">1</span> <span class="o">=</span> <span class="n">extended</span> <span class="mi">29</span> <span class="n">bit</span><span class="p">)</span> <span class="o">|</span>
+<span class="o">+------+--------------------------------------------------------------+</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_copy_frame_to_zframe">
+<span class="target" id="group__can__interface_1gaf561048ea56449c778ede63b30fe5c6e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_copy_frame_to_zframe</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.can_frame" title="can_frame"><span class="n"><span class="pre">can_frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">frame</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zcan_frame" title="zcan_frame"><span class="n"><span class="pre">zcan_frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zframe</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_copy_frame_to_zframe" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Translate a <em><a class="reference internal" href="#structcan__frame"><span class="std std-ref">can_frame</span></a></em> struct to a <em><a class="reference internal" href="#structzcan__frame"><span class="std std-ref">zcan_frame</span></a></em> struct. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">frame</span></code>: Pointer to <a class="reference internal" href="#structcan__frame"><span class="std std-ref">can_frame</span></a> struct. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zframe</span></code>: Pointer to <a class="reference internal" href="#structzcan__frame"><span class="std std-ref">zcan_frame</span></a> struct. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_copy_zframe_to_frame">
+<span class="target" id="group__can__interface_1gad458a27a19ac09bf23444615b2c8c407"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_copy_zframe_to_frame</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zcan_frame" title="zcan_frame"><span class="n"><span class="pre">zcan_frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zframe</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.can_frame" title="can_frame"><span class="n"><span class="pre">can_frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">frame</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_copy_zframe_to_frame" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Translate a <em><a class="reference internal" href="#structzcan__frame"><span class="std std-ref">zcan_frame</span></a></em> struct to a <em><a class="reference internal" href="#structcan__frame"><span class="std std-ref">can_frame</span></a></em> struct. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zframe</span></code>: Pointer to <a class="reference internal" href="#structzcan__frame"><span class="std std-ref">zcan_frame</span></a> struct. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frame</span></code>: Pointer to <a class="reference internal" href="#structcan__frame"><span class="std std-ref">can_frame</span></a> struct. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_copy_filter_to_zfilter">
+<span class="target" id="group__can__interface_1gaf9a168f41ae3bef27e61e99ee8fcde27"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_copy_filter_to_zfilter</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.can_filter" title="can_filter"><span class="n"><span class="pre">can_filter</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">filter</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zcan_filter" title="zcan_filter"><span class="n"><span class="pre">zcan_filter</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zfilter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_copy_filter_to_zfilter" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Translate a <em><a class="reference internal" href="#structcan__filter"><span class="std std-ref">can_filter</span></a></em> struct to a <em><a class="reference internal" href="#structzcan__filter"><span class="std std-ref">zcan_filter</span></a></em> struct. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">filter</span></code>: Pointer to <a class="reference internal" href="#structcan__filter"><span class="std std-ref">can_filter</span></a> struct. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zfilter</span></code>: Pointer to <a class="reference internal" href="#structzcan__filter"><span class="std std-ref">zcan_filter</span></a> struct. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_copy_zfilter_to_filter">
+<span class="target" id="group__can__interface_1gae89c9ae16f965d838595866f2ffea2e2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_copy_zfilter_to_filter</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zcan_filter" title="zcan_filter"><span class="n"><span class="pre">zcan_filter</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zfilter</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.can_filter" title="can_filter"><span class="n"><span class="pre">can_filter</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">filter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_copy_zfilter_to_filter" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Translate a <em><a class="reference internal" href="#structzcan__filter"><span class="std std-ref">zcan_filter</span></a></em> struct to a <em><a class="reference internal" href="#structcan__filter"><span class="std std-ref">can_filter</span></a></em> struct. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zfilter</span></code>: Pointer to <a class="reference internal" href="#structzcan__filter"><span class="std std-ref">zcan_filter</span></a> struct. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filter</span></code>: Pointer to <a class="reference internal" href="#structcan__filter"><span class="std std-ref">can_filter</span></a> struct. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-can-controller-configuration">CAN controller configuration</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_get_core_clock">
+<span class="target" id="group__can__interface_1ga4af6d0d9ab72b195909f511ac65cb8fa"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_get_core_clock</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rate</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_get_core_clock" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the CAN core clock rate. </p>
+<p>Returns the CAN core clock rate. One time quantum is 1/(core clock rate).</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, or a negative error code on error </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">rate</span></code>: CAN core clock rate in Hz.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_calc_timing">
+<span class="target" id="group__can__interface_1gac27fe64142603f0d32d422594356b2d7"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_calc_timing</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.can_timing" title="can_timing"><span class="n"><span class="pre">can_timing</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">res</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">bitrate</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">sample_pnt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_calc_timing" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Calculate timing parameters from bitrate and sample point. </p>
+<p>Calculate the timing parameters from a given bitrate in bits/s and the sampling point in permill (1/1000) of the entire bit time. The bitrate must alway match perfectly. If no result can be reached for the given parameters, -EINVAL is returned.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>The requested <code class="docutils literal notranslate"><span class="pre">sample_pnt</span></code> will not always be matched perfectly. The algorithm calculates the best possible match.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">res</span></code>: Result is written into the <em><a class="reference internal" href="#structcan__timing"><span class="std std-ref">can_timing</span></a></em> struct provided. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bitrate</span></code>: Target bitrate in bits/s. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sample_pnt</span></code>: Sampling point in permill of the entire bit time.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: or positive sample point error on success. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: if there is no solution for the desired values. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: if <em><a class="reference internal" href="#group__can__interface_1ga4af6d0d9ab72b195909f511ac65cb8fa"><span class="std std-ref">can_get_core_clock()</span></a></em> is not available. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_calc_timing_data">
+<span class="target" id="group__can__interface_1ga358cd73ed59c2099f4b2c6ceb397ca11"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_calc_timing_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.can_timing" title="can_timing"><span class="n"><span class="pre">can_timing</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">res</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">bitrate</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">sample_pnt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_calc_timing_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Calculate timing parameters for the data phase. </p>
+<p>Same as <em><a class="reference internal" href="#group__can__interface_1gac27fe64142603f0d32d422594356b2d7"><span class="std std-ref">can_calc_timing()</span></a></em> but with the maximum and minimum values from the data phase.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../kconfig.html#CONFIG_CAN_FD_MODE" title="CONFIG_CAN_FD_MODE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_CAN_FD_MODE</span></code></a> </span> must be selected for this function to be available.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">res</span></code>: Result is written into the <em><a class="reference internal" href="#structcan__timing"><span class="std std-ref">can_timing</span></a></em> struct provided. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bitrate</span></code>: Target bitrate for the data phase in bits/s </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sample_pnt</span></code>: Sampling point for the data phase in permille of the entire bit time.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: or positive sample point error on success. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: if there is no solution for the desired values. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: if <em><a class="reference internal" href="#group__can__interface_1ga4af6d0d9ab72b195909f511ac65cb8fa"><span class="std std-ref">can_get_core_clock()</span></a></em> is not available. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_calc_prescaler">
+<span class="target" id="group__can__interface_1ga7ee7a3296995c09c7f35f54029ed26cd"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_calc_prescaler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.can_timing" title="can_timing"><span class="n"><span class="pre">can_timing</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">timing</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">bitrate</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_calc_prescaler" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Fill in the prescaler value for a given bitrate and timing. </p>
+<p>Fill the prescaler value in the timing struct. The sjw, prop_seg, phase_seg1 and phase_seg2 must be given.</p>
+<p>The returned bitrate error is reminder of the devision of the clock rate by the bitrate times the timing segments.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timing</span></code>: Result is written into the <a class="reference internal" href="#structcan__timing"><span class="std std-ref">can_timing</span></a> struct provided. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bitrate</span></code>: Target bitrate.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: or positive bitrate error. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Negative</span></code>: error code on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_set_timing">
+<span class="target" id="group__can__interface_1gae8d117c765b9e0cd1d08e7d63e6ce47b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_set_timing</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.can_timing" title="can_timing"><span class="n"><span class="pre">can_timing</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">timing</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.can_timing" title="can_timing"><span class="n"><span class="pre">can_timing</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">timing_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_set_timing" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Configure the bus timing of a CAN controller. </p>
+<p>If the sjw equals CAN_SJW_NO_CHANGE, the sjw parameter is not changed.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>The parameter <code class="docutils literal notranslate"><span class="pre">timing_data</span></code> is only relevant for CAN-FD. If the controller does not support CAN-FD or if<span> <a class="reference internal" href="../../kconfig.html#CONFIG_CAN_FD_MODE" title="CONFIG_CAN_FD_MODE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_CAN_FD_MODE</span></code></a> </span> is not selected, the value of this parameter is ignored.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timing</span></code>: Bus timings. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timing_data</span></code>: Bus timings for data phase (CAN-FD only).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input/output error, failed to configure device. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_set_mode">
+<span class="target" id="group__can__interface_1ga10ed56841a7d2c53ef20bdfa732f9043"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_set_mode</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.can_mode" title="can_mode"><span class="n"><span class="pre">can_mode</span></span></a><span class="w"> </span><span class="n"><span class="pre">mode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_set_mode" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the CAN controller to the given operation mode. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mode</span></code>: Operation mode.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input/output error, failed to configure device. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_set_bitrate">
+<span class="target" id="group__can__interface_1gae0c862e57610ad80727c767fab690d93"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_set_bitrate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">bitrate</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">bitrate_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_set_bitrate" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the bitrate of the CAN controller. </p>
+<p>The sample point is set to the CiA DS 301 recommended value of 87.5%.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>The parameter <code class="docutils literal notranslate"><span class="pre">bitrate_data</span></code> is only relevant for CAN-FD. If the controller does not support CAN-FD or if<span> <a class="reference internal" href="../../kconfig.html#CONFIG_CAN_FD_MODE" title="CONFIG_CAN_FD_MODE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_CAN_FD_MODE</span></code></a> </span> is not selected, the value of this parameter is ignored.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bitrate</span></code>: Desired arbitration phase bitrate. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bitrate_data</span></code>: Desired data phase bitrate.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: bitrate cannot be met. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input/output error, failed to set bitrate. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_SJW_NO_CHANGE">
+<span class="target" id="group__can__interface_1ga3f7eefd33eb0cb074e5d742c5097554a"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_SJW_NO_CHANGE</span></span></span><a class="headerlink" href="#c.CAN_SJW_NO_CHANGE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Synchronization Jump Width (SJW) value to indicate that the SJW should not be changed by the timing calculation. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-transmitting-can-frames">Transmitting CAN frames</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_send">
+<span class="target" id="group__can__interface_1ga1bf5353bf15ffc252726e71ace9f5372"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_send</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zcan_frame" title="zcan_frame"><span class="n"><span class="pre">zcan_frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">frame</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span>, <a class="reference internal" href="#c.can_tx_callback_t" title="can_tx_callback_t"><span class="n"><span class="pre">can_tx_callback_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_send" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Queue a CAN frame for transmission on the CAN bus. </p>
+<p>Queue a CAN frame for transmission on the CAN bus with optional timeout and completion callback function.</p>
+<p>Queued CAN frames are transmitted in order according to the their priority:<ul class="simple">
+<li><p>The lower the CAN-ID, the higher the priority.</p></li>
+<li><p>Data frames have higher priority than Remote Transmission Request (RTR) frames with identical CAN-IDs.</p></li>
+<li><p>Frames with standard (11-bit) identifiers have higher priority than frames with extended (29-bit) identifiers with identical base IDs (the higher 11 bits of the extended identifier).</p></li>
+<li><p>Transmission order for queued frames with the same priority is hardware dependent.</p></li>
+</ul>
+</p>
+<p><p>By default, the CAN controller will automatically retry transmission in case of lost bus arbitration or missing acknowledge. Some CAN controllers support disabling automatic retransmissions (“one-shot” mode) via a devicetree property.</p>
+<dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>If transmitting segmented messages spanning multiple CAN frames with identical CAN-IDs, the sender must ensure to only queue one frame at a time if FIFO order is required.</p>
+</dd>
+</dl>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frame</span></code>: CAN frame to transmit. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Timeout waiting for a empty TX mailbox or <code class="docutils literal notranslate"><span class="pre">K_FOREVER</span></code>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback</span></code>: Optional callback for when the frame was sent or a transmission error occurred. If <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, this function is blocking until frame is sent. The callback must be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if called from user mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User data to pass to callback function.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: if successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: if an invalid parameter was passed to the function. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENETDOWN</span></code>: if the CAN controller is in bus-off state. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: if CAN bus arbitration was lost (only applicable if automatic retransmissions are disabled). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: if a general transmit error occurred (e.g. missing ACK if automatic retransmissions are disabled). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: on timeout. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-receiving-can-frames">Receiving CAN frames</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_add_rx_filter">
+<span class="target" id="group__can__interface_1gad3137bf27e64de3a550baf7e66641481"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_add_rx_filter</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.can_rx_callback_t" title="can_rx_callback_t"><span class="n"><span class="pre">can_rx_callback_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zcan_filter" title="zcan_filter"><span class="n"><span class="pre">zcan_filter</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">filter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_add_rx_filter" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add a callback function for a given CAN filter. </p>
+<p>Add a callback to CAN identifiers specified by a filter. When a recevied CAN frame matching the filter is received by the CAN controller, the callback function is called in interrupt context.</p>
+<p>If a frame matches more than one attached filter, the priority of the match is hardware dependent.</p>
+<p>The same callback function can be used for multiple filters.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback</span></code>: This function is called by the CAN controller driver whenever a frame matching the filter is received. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User data to pass to callback function. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filter</span></code>: Pointer to a <em><a class="reference internal" href="#structzcan__filter"><span class="std std-ref">zcan_filter</span></a></em> structure defining the filter.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">filter_id</span></code>: on success. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSPC</span></code>: if there are no free filters. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_add_rx_filter_msgq">
+<span class="target" id="group__can__interface_1ga2feb41b89c8c172f02fd48fb3f6276de"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_add_rx_filter_msgq</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../kernel/data_passing/message_queues.html#c.k_msgq" title="k_msgq"><span class="n"><span class="pre">k_msgq</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">msgq</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zcan_filter" title="zcan_filter"><span class="n"><span class="pre">zcan_filter</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">filter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_add_rx_filter_msgq" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Wrapper function for adding a message queue for a given filter. </p>
+<p>Wrapper function for <em><a class="reference internal" href="#group__can__interface_1gad3137bf27e64de3a550baf7e66641481"><span class="std std-ref">can_add_rx_filter()</span></a></em> which puts received CAN frames matching the filter in a message queue instead of calling a callback.</p>
+<p>If a frame matches more than one attached filter, the priority of the match is hardware dependent.</p>
+<p>The same message queue can be used for multiple filters.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>The message queue must be initialized before calling this function and the caller must have appropriate permissions on it.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msgq</span></code>: Pointer to the already initialized <em><a class="reference internal" href="../kernel/data_passing/message_queues.html#structk__msgq"><span class="std std-ref">k_msgq</span></a></em> struct. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filter</span></code>: Pointer to a <em><a class="reference internal" href="#structzcan__filter"><span class="std std-ref">zcan_filter</span></a></em> structure defining the filter.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">filter_id</span></code>: on success. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSPC</span></code>: if there are no free filters. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_remove_rx_filter">
+<span class="target" id="group__can__interface_1ga822aa3142ea01582d5cfb8b478fb2847"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_remove_rx_filter</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">filter_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_remove_rx_filter" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remove a CAN RX filter. </p>
+<p>This routine removes a CAN RX filter based on the filter ID returned by <em><a class="reference internal" href="#group__can__interface_1gad3137bf27e64de3a550baf7e66641481"><span class="std std-ref">can_add_rx_filter()</span></a></em> or <em><a class="reference internal" href="#group__can__interface_1ga2feb41b89c8c172f02fd48fb3f6276de"><span class="std std-ref">can_add_rx_filter_msgq()</span></a></em>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filter_id</span></code>: Filter ID </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_get_max_filters">
+<span class="target" id="group__can__interface_1gaace06471f995959bb2e91f04bb9c4d68"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_get_max_filters</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.can_ide" title="can_ide"><span class="n"><span class="pre">can_ide</span></span></a><span class="w"> </span><span class="n"><span class="pre">id_type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_get_max_filters" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get maximum number of RX filters. </p>
+<p>Get the maximum number of concurrent RX filters for the CAN controller.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id_type</span></code>: CAN identifier type (standard or extended).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Positive</span></code>: number of maximum concurrent filters. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input/output error. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented by the driver. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_MSGQ_DEFINE">
+<span class="target" id="group__can__interface_1ga7af0acdfbdad07fc3eba4cbd29bc090b"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_MSGQ_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">max_frames</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CAN_MSGQ_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define and initialize a CAN RX message queue. </p>
+<p>The message queue’s ring buffer contains space for <em>max_frames</em> CAN frames.</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__can__interface_1ga2feb41b89c8c172f02fd48fb3f6276de"><span class="std std-ref">can_add_rx_filter_msgq()</span></a></p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the message queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_frames</span></code>: Maximum number of CAN frames that can be queued. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-can-bus-error-reporting-and-handling">CAN bus error reporting and handling</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_get_state">
+<span class="target" id="group__can__interface_1gab98c121578c8349d9dfb41d60f356857"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_get_state</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.can_state" title="can_state"><span class="n"><span class="pre">can_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.can_bus_err_cnt" title="can_bus_err_cnt"><span class="n"><span class="pre">can_bus_err_cnt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">err_cnt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_get_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get current CAN controller state. </p>
+<p>Returns the current state and optionally the error counter values of the CAN controller.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">state</span></code>: Pointer to the state destination enum or NULL. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">err_cnt</span></code>: Pointer to the err_cnt destination structure or NULL.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input/output error, failed to get state. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_recover">
+<span class="target" id="group__can__interface_1gac474e56a50685736a1c25dca277aab5e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_recover</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_recover" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Recover from bus-off state. </p>
+<p>Recover the CAN controller from bus-off state to error-active state.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../kconfig.html#CONFIG_CAN_AUTO_BUS_OFF_RECOVERY" title="CONFIG_CAN_AUTO_BUS_OFF_RECOVERY"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_CAN_AUTO_BUS_OFF_RECOVERY</span></code></a> </span> must be deselected for this function to be available.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Timeout for waiting for the recovery or <code class="docutils literal notranslate"><span class="pre">K_FOREVER</span></code>.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: on timeout. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_set_state_change_callback">
+<span class="target" id="group__can__interface_1gad322da0dad328abb50de23bef6882d8e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_set_state_change_callback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.can_state_change_callback_t" title="can_state_change_callback_t"><span class="n"><span class="pre">can_state_change_callback_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_set_state_change_callback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set a callback for CAN controller state change events. </p>
+<p>Set the callback for CAN controller state change events. The callback function will be called in interrupt context.</p>
+<p>Only one callback can be registered per controller. Calling this function again overrides any previously registered callback.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback</span></code>: Callback function. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User data to pass to callback function. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-can-utility-functions">CAN utility functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_dlc_to_bytes">
+<span class="target" id="group__can__interface_1gaa1d866167c0c23f8d5c0c15385589601"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_dlc_to_bytes</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">dlc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_dlc_to_bytes" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert from Data Length Code (DLC) to the number of data bytes. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dlc</span></code>: Data Length Code (DLC).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Number</span></code>: of bytes. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.can_bytes_to_dlc">
+<span class="target" id="group__can__interface_1ga8314716fe2b66d567b3fd377b8ee9dc3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_bytes_to_dlc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.can_bytes_to_dlc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert from number of bytes to Data Length Code (DLC) </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">num_bytes</span></code>: Number of bytes.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Data</span></code>: Length Code (DLC). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-can-frame-definitions">CAN frame definitions</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_STD_ID_MASK">
+<span class="target" id="group__can__interface_1ga4cd8ce34887b90baeeaa6a4aa048b398"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_STD_ID_MASK</span></span></span><a class="headerlink" href="#c.CAN_STD_ID_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Bit mask for a standard (11-bit) CAN identifier. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_MAX_STD_ID">
+<span class="target" id="group__can__interface_1ga7987c1d4089742f87a7ac611add1a286"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_MAX_STD_ID</span></span></span><a class="headerlink" href="#c.CAN_MAX_STD_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum value for a standard (11-bit) CAN identifier. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_EXT_ID_MASK">
+<span class="target" id="group__can__interface_1ga15ee71e8abcf51008925585049125986"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_EXT_ID_MASK</span></span></span><a class="headerlink" href="#c.CAN_EXT_ID_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Bit mask for an extended (29-bit) CAN identifier. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_MAX_EXT_ID">
+<span class="target" id="group__can__interface_1ga0f3572940065f8f6d54099e7a4175f8f"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_MAX_EXT_ID</span></span></span><a class="headerlink" href="#c.CAN_MAX_EXT_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum value for an extended (29-bit) CAN identifier. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_MAX_DLC">
+<span class="target" id="group__can__interface_1gadc209a027ee700faf10461e2417bee50"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_MAX_DLC</span></span></span><a class="headerlink" href="#c.CAN_MAX_DLC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum data length code for CAN 2.0A/2.0B. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CANFD_MAX_DLC">
+<span class="target" id="group__can__interface_1gad4b7310536c7e3252c2056abe64c0333"></span><span class="sig-name descname"><span class="n"><span class="pre">CANFD_MAX_DLC</span></span></span><a class="headerlink" href="#c.CANFD_MAX_DLC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum data length code for CAN-FD. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_STATS_BIT0_ERROR_INC">
+<span class="target" id="group__can__interface_1ga120a37d5ae5064dcbf116e488f733764"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_STATS_BIT0_ERROR_INC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dev_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CAN_STATS_BIT0_ERROR_INC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Increment the bit0 error counter for a CAN device. </p>
+<p>The bit0 error counter is incremented when the CAN controller is unable to transmit a dominant bit.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_</span></code>: Pointer to the device structure for the driver instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_STATS_BIT1_ERROR_INC">
+<span class="target" id="group__can__interface_1ga678b74039632302efcb5ef80f0e3a90b"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_STATS_BIT1_ERROR_INC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dev_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CAN_STATS_BIT1_ERROR_INC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Increment the bit1 (recessive) error counter for a CAN device. </p>
+<p>The bit1 error counter is incremented when the CAN controller is unable to transmit a recessive bit.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_</span></code>: Pointer to the device structure for the driver instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_STATS_STUFF_ERROR_INC">
+<span class="target" id="group__can__interface_1gae4146843944b7ffb1c96636e889282f7"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_STATS_STUFF_ERROR_INC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dev_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CAN_STATS_STUFF_ERROR_INC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Increment the stuffing error counter for a CAN device. </p>
+<p>The stuffing error counter is incremented when the CAN controller detects a bit stuffing error.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_</span></code>: Pointer to the device structure for the driver instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_STATS_CRC_ERROR_INC">
+<span class="target" id="group__can__interface_1ga125ce05d40881476f5f156ad5e28c664"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_STATS_CRC_ERROR_INC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dev_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CAN_STATS_CRC_ERROR_INC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Increment the CRC error counter for a CAN device. </p>
+<p>The CRC error counter is incremented when the CAN controller detects a frame with an invalid CRC.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_</span></code>: Pointer to the device structure for the driver instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_STATS_FORM_ERROR_INC">
+<span class="target" id="group__can__interface_1gac5809b3f5e1a463822e76921cddc9909"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_STATS_FORM_ERROR_INC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dev_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CAN_STATS_FORM_ERROR_INC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Increment the form error counter for a CAN device. </p>
+<p>The form error counter is incremented when the CAN controller detects a fixed-form bit field containing illegal bits.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_</span></code>: Pointer to the device structure for the driver instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_STATS_ACK_ERROR_INC">
+<span class="target" id="group__can__interface_1ga15f7ca18badbbe2fe24be68cacce6171"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_STATS_ACK_ERROR_INC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dev_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CAN_STATS_ACK_ERROR_INC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Increment the acknowledge error counter for a CAN device. </p>
+<p>The acknowledge error counter is incremented when the CAN controller does not monitor a dominant bit in the ACK slot.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_</span></code>: Pointer to the device structure for the driver instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_DEVICE_DT_DEFINE">
+<span class="target" id="group__can__interface_1ga6c93ae9a5c48ec78045a6a64cfc0f81b"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_DEVICE_DT_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span>, <span class="n"><span class="pre">init_fn</span></span>, <span class="n"><span class="pre">pm_device</span></span>, <span class="n"><span class="pre">data_ptr</span></span>, <span class="n"><span class="pre">cfg_ptr</span></span>, <span class="n"><span class="pre">level</span></span>, <span class="n"><span class="pre">prio</span></span>, <span class="n"><span class="pre">api_ptr</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CAN_DEVICE_DT_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Like <a class="reference internal" href="../drivers/index.html#group__device__model_1gaac590af7705a3223968164406a483548"><span class="std std-ref">DEVICE_DT_DEFINE()</span></a> with CAN device specifics. </p>
+<p>Defines a device which implements the CAN API. May generate a custom <a class="reference internal" href="../drivers/index.html#structdevice__state"><span class="std std-ref">device_state</span></a> container struct and init_fn wrapper when needed depending on <span> <a class="reference internal" href="../../kconfig.html#CONFIG_CAN_STATS" title="CONFIG_CAN_STATS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_CAN_STATS</span></code></a> </span>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: The devicetree node identifier. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">init_fn</span></code>: Name of the init function of the driver. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pm_device</span></code>: PM device resources reference (NULL if device does not use PM). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_ptr</span></code>: Pointer to the device’s private data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cfg_ptr</span></code>: The address to the structure containing the configuration information for this instance of the driver. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">level</span></code>: The initialization level. See <a class="reference internal" href="../drivers/index.html#group__device__model_1ga1e50fdff086356a75b0e91179952cc8d"><span class="std std-ref">SYS_INIT()</span></a> for details. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prio</span></code>: Priority within the selected initialization level. See <a class="reference internal" href="../drivers/index.html#group__device__model_1ga1e50fdff086356a75b0e91179952cc8d"><span class="std std-ref">SYS_INIT()</span></a> for details. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">api_ptr</span></code>: Provides an initial pointer to the API function struct used by the driver. Can be NULL. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CAN_DEVICE_DT_INST_DEFINE">
+<span class="target" id="group__can__interface_1ga20266dc5e962922144e078b85ccb8351"></span><span class="sig-name descname"><span class="n"><span class="pre">CAN_DEVICE_DT_INST_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">inst</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.CAN_DEVICE_DT_INST_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Like <a class="reference internal" href="#group__can__interface_1ga6c93ae9a5c48ec78045a6a64cfc0f81b"><span class="std std-ref">CAN_DEVICE_DT_DEFINE()</span></a> for an instance of a DT_DRV_COMPAT compatible. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">inst</span></code>: Instance number. This is replaced by <code class="docutils literal notranslate"><span class="pre">DT_DRV_COMPAT(inst)</span></code> in the call to <a class="reference internal" href="#group__can__interface_1ga6c93ae9a5c48ec78045a6a64cfc0f81b"><span class="std std-ref">CAN_DEVICE_DT_DEFINE()</span></a>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code>: Other parameters as expected by <a class="reference internal" href="#group__can__interface_1ga6c93ae9a5c48ec78045a6a64cfc0f81b"><span class="std std-ref">CAN_DEVICE_DT_DEFINE()</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.can_tx_callback_t">
+<span class="target" id="group__can__interface_1ga3973b4d5f1c8078eba566c8f0e2c01f1"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">can_tx_callback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.can_tx_callback_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Defines the application callback handler function signature. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">error</span></code>: Status of the performed send operation. See the list of return values for <em><a class="reference internal" href="#group__can__interface_1ga1bf5353bf15ffc252726e71ace9f5372"><span class="std std-ref">can_send()</span></a></em> for value descriptions. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User data provided when the frame was sent. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.can_rx_callback_t">
+<span class="target" id="group__can__interface_1gaaa6db2ee486884116a801a797af844ba"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">can_rx_callback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.zcan_frame" title="zcan_frame"><span class="n"><span class="pre">zcan_frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.can_rx_callback_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Defines the application callback handler function signature for receiving. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">frame</span></code>: Received frame. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User data provided when the filter was added. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.can_state_change_callback_t">
+<span class="target" id="group__can__interface_1gab0cdbcc4aed49681cd4cf62b28302190"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">can_state_change_callback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.can_state" title="can_state"><span class="n"><span class="pre">can_state</span></span></a><span class="w"> </span><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.can_bus_err_cnt" title="can_bus_err_cnt"><span class="n"><span class="pre">can_bus_err_cnt</span></span></a><span class="w"> </span><span class="n"><span class="pre">err_cnt</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.can_state_change_callback_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Defines the state change callback handler function signature. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">state</span></code>: State of the CAN controller. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">err_cnt</span></code>: CAN controller error counter values. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User data provided the callback was set. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.can_mode">
+<span class="target" id="group__can__interface_1ga4e8ab343dc079bfda049496e42e29399"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_mode</span></span></span><a class="headerlink" href="#c.can_mode" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Defines the mode of the CAN controller. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_mode.CAN_NORMAL_MODE">
+<span class="target" id="group__can__interface_1gga4e8ab343dc079bfda049496e42e29399a9944f5fd8ed24faf280e44e4e3f5219e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_NORMAL_MODE</span></span></span><a class="headerlink" href="#c.can_mode.CAN_NORMAL_MODE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Normal mode. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_mode.CAN_SILENT_MODE">
+<span class="target" id="group__can__interface_1gga4e8ab343dc079bfda049496e42e29399a2e0dc39460eadc2ea32ecb074fbcf2cd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_SILENT_MODE</span></span></span><a class="headerlink" href="#c.can_mode.CAN_SILENT_MODE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Controller is not allowed to send dominant bits. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_mode.CAN_LOOPBACK_MODE">
+<span class="target" id="group__can__interface_1gga4e8ab343dc079bfda049496e42e29399a3458b98e050a41c783fa4341a805ff44"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_LOOPBACK_MODE</span></span></span><a class="headerlink" href="#c.can_mode.CAN_LOOPBACK_MODE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Controller is in loopback mode (receives own frames). </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_mode.CAN_SILENT_LOOPBACK_MODE">
+<span class="target" id="group__can__interface_1gga4e8ab343dc079bfda049496e42e29399af686c5f96a736d2499678623bbe5001e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_SILENT_LOOPBACK_MODE</span></span></span><a class="headerlink" href="#c.can_mode.CAN_SILENT_LOOPBACK_MODE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Combination of loopback and silent modes. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.can_state">
+<span class="target" id="group__can__interface_1gac7ec472c26c564dd7067c49f67c8d2f7"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_state</span></span></span><a class="headerlink" href="#c.can_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Defines the state of the CAN bus. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_state.CAN_ERROR_ACTIVE">
+<span class="target" id="group__can__interface_1ggac7ec472c26c564dd7067c49f67c8d2f7a82f59a5c7e9b15a5a36a5690ebca78ab"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_ERROR_ACTIVE</span></span></span><a class="headerlink" href="#c.can_state.CAN_ERROR_ACTIVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Error-active state (RX/TX error count &lt; 96). </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_state.CAN_ERROR_WARNING">
+<span class="target" id="group__can__interface_1ggac7ec472c26c564dd7067c49f67c8d2f7a52c0f7a5f6f7239264af075db4ee0dca"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_ERROR_WARNING</span></span></span><a class="headerlink" href="#c.can_state.CAN_ERROR_WARNING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Error-warning state (RX/TX error count &lt; 128). </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_state.CAN_ERROR_PASSIVE">
+<span class="target" id="group__can__interface_1ggac7ec472c26c564dd7067c49f67c8d2f7a69f2f1a5bb6e1abe4898069586701ef8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_ERROR_PASSIVE</span></span></span><a class="headerlink" href="#c.can_state.CAN_ERROR_PASSIVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Error-passive state (RX/TX error count &lt; 256). </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_state.CAN_BUS_OFF">
+<span class="target" id="group__can__interface_1ggac7ec472c26c564dd7067c49f67c8d2f7ac8cadafe6fe9deff8a983e28190042b1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_BUS_OFF</span></span></span><a class="headerlink" href="#c.can_state.CAN_BUS_OFF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Bus-off state (RX/TX error count &gt;= 256). </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.can_ide">
+<span class="target" id="group__can__interface_1ga9a30b6abfaf14193f0c41b1c46d6f50a"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_ide</span></span></span><a class="headerlink" href="#c.can_ide" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Defines if the CAN frame has a standard (11-bit) or extended (29-bit) CAN identifier. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_ide.CAN_STANDARD_IDENTIFIER">
+<span class="target" id="group__can__interface_1gga9a30b6abfaf14193f0c41b1c46d6f50aa8c54cc658223f3fe1101eab57307cb7d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_STANDARD_IDENTIFIER</span></span></span><a class="headerlink" href="#c.can_ide.CAN_STANDARD_IDENTIFIER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Standard (11-bit) CAN identifier. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_ide.CAN_EXTENDED_IDENTIFIER">
+<span class="target" id="group__can__interface_1gga9a30b6abfaf14193f0c41b1c46d6f50aa3088f4e06b83c20398199e48b93bb939"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_EXTENDED_IDENTIFIER</span></span></span><a class="headerlink" href="#c.can_ide.CAN_EXTENDED_IDENTIFIER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Extended (29-bit) CAN identifier. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.can_rtr">
+<span class="target" id="group__can__interface_1ga888b0994e8c3cdfb80f9a638dd148303"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_rtr</span></span></span><a class="headerlink" href="#c.can_rtr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Defines if the CAN frame is a data frame or a Remote Transmission Request (RTR) frame. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_rtr.CAN_DATAFRAME">
+<span class="target" id="group__can__interface_1gga888b0994e8c3cdfb80f9a638dd148303a9d88cf6e242528a2caf7d2a28c1040e5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_DATAFRAME</span></span></span><a class="headerlink" href="#c.can_rtr.CAN_DATAFRAME" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data frame. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.can_rtr.CAN_REMOTEREQUEST">
+<span class="target" id="group__can__interface_1gga888b0994e8c3cdfb80f9a638dd148303afcfc7be1a45d2af3826db5041028f69e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAN_REMOTEREQUEST</span></span></span><a class="headerlink" href="#c.can_rtr.CAN_REMOTEREQUEST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remote Transmission Request (RTR) frame. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.zcan_frame">
+<span class="target" id="structzcan__frame"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zcan_frame</span></span></span><a class="headerlink" href="#c.zcan_frame" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;can.h&gt;</em><p>CAN frame structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_frame.id">
+<span class="target" id="structzcan__frame_1af326efea16d6ab730f7a751e12061481"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.zcan_frame.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Standard (11-bit) or extended (29-bit) CAN identifier. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_frame.fd">
+<span class="target" id="structzcan__frame_1ae6ea39eeee344cbb47d7b0ecb0a76c44"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fd</span></span></span><a class="headerlink" href="#c.zcan_frame.fd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Frame is in the CAN-FD frame format if set to true. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_frame.rtr">
+<span class="target" id="structzcan__frame_1a8e9f2c868df24c592ebf88080d6bd41e"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rtr</span></span></span><a class="headerlink" href="#c.zcan_frame.rtr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remote Transmission Request (RTR) flag. Use <em>can_rtr</em> enum for assignment. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_frame.id_type">
+<span class="target" id="structzcan__frame_1a64316d4196481a83b6c2f91ad012278c"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id_type</span></span></span><a class="headerlink" href="#c.zcan_frame.id_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>CAN identifier type (standard or extended). Use <em>can_ide</em> enum for assignment. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_frame.dlc">
+<span class="target" id="structzcan__frame_1a01b604502c9e700848a172cab3922555"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dlc</span></span></span><a class="headerlink" href="#c.zcan_frame.dlc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data Length Code (DLC) indicating data length in bytes. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_frame.brs">
+<span class="target" id="structzcan__frame_1abe397683c95ec71f7f19e83eb0ae5d06"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">brs</span></span></span><a class="headerlink" href="#c.zcan_frame.brs" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Baud Rate Switch (BRS). Only valid for CAN-FD. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_frame.timestamp">
+<span class="target" id="structzcan__frame_1a8f1e1acf5623c45b7da061dddfa8efac"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">timestamp</span></span></span><a class="headerlink" href="#c.zcan_frame.timestamp" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Captured value of the free-running timer in the CAN controller when this frame was received. The timer is incremented every bit time and captured at the start of frame bit (SOF).</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><span> <a class="reference internal" href="../../kconfig.html#CONFIG_CAN_RX_TIMESTAMP" title="CONFIG_CAN_RX_TIMESTAMP"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_CAN_RX_TIMESTAMP</span></code></a> </span> must be selected for this field to be available. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_frame.&#64;111">
+<span class="target" id="structzcan__frame_1a05fd2316354d282b8bea0163d8675bfc"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><a class="reference internal" href="#c.zcan_frame" title="zcan_frame"><span class="n"><span class="pre">zcan_frame</span></span></a><span class="p"><span class="pre">.</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#c.zcan_frame.@111" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The frame payload data. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.zcan_filter">
+<span class="target" id="structzcan__filter"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zcan_filter</span></span></span><a class="headerlink" href="#c.zcan_filter" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;can.h&gt;</em><p>CAN filter structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_filter.id">
+<span class="target" id="structzcan__filter_1ae4c5433585d0252366ebb007e5970fe7"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.zcan_filter.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>CAN identifier to match. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_filter.rtr">
+<span class="target" id="structzcan__filter_1a368e36f8b6ce814af3a5b2d0332e8e8e"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rtr</span></span></span><a class="headerlink" href="#c.zcan_filter.rtr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Match data frame or Remote Transmission Request (RTR) frame. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_filter.id_type">
+<span class="target" id="structzcan__filter_1ad01197a2e69b57a5491a242ad62685ba"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id_type</span></span></span><a class="headerlink" href="#c.zcan_filter.id_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Standard or extended CAN identifier. Use <em>can_ide</em> enum for assignment. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_filter.id_mask">
+<span class="target" id="structzcan__filter_1a185e1f83c4e3039312a1b95676975d68"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id_mask</span></span></span><a class="headerlink" href="#c.zcan_filter.id_mask" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>CAN identifier matching mask. If a bit in this mask is 0, the value of the corresponding bit in the <code class="docutils literal notranslate"><span class="pre">id</span></code> field is ignored by the filter. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.zcan_filter.rtr_mask">
+<span class="target" id="structzcan__filter_1a6dc87417d9e68995cf5ec11ee1519167"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rtr_mask</span></span></span><a class="headerlink" href="#c.zcan_filter.rtr_mask" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data frame/Remote Transmission Request (RTR) bit matching mask. If this bit is 0, the value of the <code class="docutils literal notranslate"><span class="pre">rtr</span></code> field is ignored by the filter. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.can_bus_err_cnt">
+<span class="target" id="structcan__bus__err__cnt"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_bus_err_cnt</span></span></span><a class="headerlink" href="#c.can_bus_err_cnt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;can.h&gt;</em><p>CAN controller error counters. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_bus_err_cnt.tx_err_cnt">
+<span class="target" id="structcan__bus__err__cnt_1a01bb2cb16656d0fd4f99cfbfa1f30e98"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx_err_cnt</span></span></span><a class="headerlink" href="#c.can_bus_err_cnt.tx_err_cnt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Value of the CAN controller transmit error counter. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_bus_err_cnt.rx_err_cnt">
+<span class="target" id="structcan__bus__err__cnt_1a6be6ce6b592641ba0dce36fe1cd8902a"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rx_err_cnt</span></span></span><a class="headerlink" href="#c.can_bus_err_cnt.rx_err_cnt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Value of the CAN controller receive error counter. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.can_timing">
+<span class="target" id="structcan__timing"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_timing</span></span></span><a class="headerlink" href="#c.can_timing" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;can.h&gt;</em><p>CAN bus timing structure. </p>
+<p>This struct is used to pass bus timing values to the configuration and bitrate calculation functions.</p>
+<p>The propagation segment represents the time of the signal propagation. Phase segment 1 and phase segment 2 define the sampling point. The <code class="docutils literal notranslate"><span class="pre">prop_seg</span></code> and <code class="docutils literal notranslate"><span class="pre">phase_seg1</span></code> values affect the sampling point in the same way and some controllers only have a register for the sum of those two. The sync segment always has a length of 1 time quantum (see below).</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------+----------+------------+------------+</span>
+<span class="o">|</span><span class="n">sync_seg</span> <span class="o">|</span> <span class="n">prop_seg</span> <span class="o">|</span> <span class="n">phase_seg1</span> <span class="o">|</span> <span class="n">phase_seg2</span> <span class="o">|</span>
+<span class="o">+---------+----------+------------+------------+</span>
+                                  <span class="o">^</span>
+                            <span class="n">Sampling</span><span class="o">-</span><span class="n">Point</span>
+</pre></div>
+</div>
+</p>
+<p>1 time quantum (tq) has the length of 1/(core_clock / prescaler). The bitrate is defined by the core clock divided by the prescaler and the sum of the segments:</p>
+<p>br = (core_clock / prescaler) / (1 + prop_seg + phase_seg1 + phase_seg2)</p>
+<p>The Synchronization Jump Width (SJW) defines the amount of time quanta the sample point can be moved. The sample point is moved when resynchronization is needed. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_timing.sjw">
+<span class="target" id="structcan__timing_1a5af76a4ee9c741642ec19265a47fceb5"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sjw</span></span></span><a class="headerlink" href="#c.can_timing.sjw" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Synchronisation jump width. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_timing.prop_seg">
+<span class="target" id="structcan__timing_1ac009d40fee9788b663963978498b2ee9"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">prop_seg</span></span></span><a class="headerlink" href="#c.can_timing.prop_seg" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Propagation segment. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_timing.phase_seg1">
+<span class="target" id="structcan__timing_1a9941688e79fa4ce01c4b498433319089"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">phase_seg1</span></span></span><a class="headerlink" href="#c.can_timing.phase_seg1" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Phase segment 1. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_timing.phase_seg2">
+<span class="target" id="structcan__timing_1a6ca0caf618d28a761c3c8859ed3a68d6"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">phase_seg2</span></span></span><a class="headerlink" href="#c.can_timing.phase_seg2" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Phase segment 2. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_timing.prescaler">
+<span class="target" id="structcan__timing_1a74fb8341cbb6d97721c9d0afbc7e1f3a"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">prescaler</span></span></span><a class="headerlink" href="#c.can_timing.prescaler" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Prescaler value. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.can_device_state">
+<span class="target" id="structcan__device__state"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_device_state</span></span></span><a class="headerlink" href="#c.can_device_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;can.h&gt;</em><p>CAN specific device state which allows for CAN device class specific additions. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.can_frame">
+<span class="target" id="structcan__frame"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_frame</span></span></span><a class="headerlink" href="#c.can_frame" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;can.h&gt;</em><p>CAN frame for Linux SocketCAN compatibility. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_frame.can_id">
+<span class="target" id="structcan__frame_1ac6aeb5fbc99596a37fe1519f3aa8410a"></span><a class="reference internal" href="#c.canid_t" title="canid_t"><span class="n"><span class="pre">canid_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_id</span></span></span><a class="headerlink" href="#c.can_frame.can_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>32-bit CAN ID + EFF/RTR/ERR flags. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_frame.can_dlc">
+<span class="target" id="structcan__frame_1aa055f09fd81b299201618396b7dc9314"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_dlc</span></span></span><a class="headerlink" href="#c.can_frame.can_dlc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The data length code (DLC). </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_frame.data">
+<span class="target" id="structcan__frame_1ac4b43443b2a338d35f0e1d3ef8355960"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">CAN_MAX_DLEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.can_frame.data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The payload data. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.can_filter">
+<span class="target" id="structcan__filter"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_filter</span></span></span><a class="headerlink" href="#c.can_filter" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;can.h&gt;</em><p>CAN filter for Linux SocketCAN compatibility. </p>
+<p>A filter is considered a match when <code class="docutils literal notranslate"><span class="pre">received_can_id</span> <span class="pre">&amp;</span> <span class="pre">mask</span> <span class="pre">==</span> <span class="pre">can_id</span> <span class="pre">&amp;</span> <span class="pre">can_mask</span></code>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_filter.can_id">
+<span class="target" id="structcan__filter_1a5fccaff73b647ddc50fb712f936f0b33"></span><a class="reference internal" href="#c.canid_t" title="canid_t"><span class="n"><span class="pre">canid_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_id</span></span></span><a class="headerlink" href="#c.can_filter.can_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The CAN identifier to match. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.can_filter.can_mask">
+<span class="target" id="structcan__filter_1a072a474e675c07a4d36bf9c940e8c571"></span><a class="reference internal" href="#c.canid_t" title="canid_t"><span class="n"><span class="pre">canid_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_mask</span></span></span><a class="headerlink" href="#c.can_filter.can_mask" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The mask applied to <em>can_id</em> for matching. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="isotp.html" class="btn btn-neutral float-right" title="ISO-TP Transport Protocol" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Controller Area Network (CAN)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

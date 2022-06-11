@@ -1,0 +1,1367 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Building, Flashing and Debugging &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Signing Binaries" href="sign.html" />
+    <link rel="prev" title="Extensions" href="extensions.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">West (Zephyr’s meta-tool)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="install.html">Installing west</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-notes.html">West Release Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="troubleshooting.html">Troubleshooting West</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="built-in.html">Built-in commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workspaces.html">Workspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="manifest.html">West Manifests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="extensions.html">Extensions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Building, Flashing and Debugging</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building-west-build">Building: <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flashing-west-flash">Flashing: <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debugging-west-debug-west-debugserver">Debugging: <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debug</span></code>, <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debugserver</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flash-and-debug-runners">Flash and debug runners</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hacking">Hacking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#doing-it-by-hand">Doing it By Hand</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sign.html">Signing Binaries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zephyr-cmds.html">Additional Zephyr extension commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="why.html">History and Motivation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moving-to-west.html">Moving to West</a></li>
+<li class="toctree-l3"><a class="reference internal" href="without-west.html">Using Zephyr without west</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">West (Zephyr’s meta-tool)</a> &raquo;</li>
+        
+      <li>Building, Flashing and Debugging</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/west/build-flash-debug.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="building-flashing-and-debugging">
+<span id="west-build-flash-debug"></span><h1>Building, Flashing and Debugging<a class="headerlink" href="#building-flashing-and-debugging" title="Permalink to this headline">¶</a></h1>
+<p>Zephyr provides several <a class="reference internal" href="extensions.html#west-extensions"><span class="std std-ref">west extension commands</span></a> for
+building, flashing, and interacting with Zephyr programs running on a board:
+<code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">flash</span></code>, <code class="docutils literal notranslate"><span class="pre">debug</span></code>, <code class="docutils literal notranslate"><span class="pre">debugserver</span></code> and <code class="docutils literal notranslate"><span class="pre">attach</span></code>.</p>
+<p>For information on adding board support for the flashing and debugging
+commands, see <a class="reference internal" href="../porting/board_porting.html#flash-and-debug-support"><span class="std std-ref">Flash and debug support</span></a> in the board porting guide.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#building-west-build" id="id6">Building: <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#basics" id="id7">Basics</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id8">Examples</a></p>
+<ul>
+<li><p><a class="reference internal" href="#forcing-cmake-to-run-again" id="id9">Forcing CMake to Run Again</a></p></li>
+<li><p><a class="reference internal" href="#setting-a-default-board" id="id10">Setting a Default Board</a></p></li>
+<li><p><a class="reference internal" href="#setting-source-and-build-directories" id="id11">Setting Source and Build Directories</a></p></li>
+<li><p><a class="reference internal" href="#setting-the-build-system-target" id="id12">Setting the Build System Target</a></p></li>
+<li><p><a class="reference internal" href="#pristine-builds" id="id13">Pristine Builds</a></p></li>
+<li><p><a class="reference internal" href="#verbose-builds" id="id14">Verbose Builds</a></p></li>
+<li><p><a class="reference internal" href="#one-time-cmake-arguments" id="id15">One-Time CMake Arguments</a></p></li>
+<li><p><a class="reference internal" href="#permanent-cmake-arguments" id="id16">Permanent CMake Arguments</a></p></li>
+<li><p><a class="reference internal" href="#build-tool-arguments" id="id17">Build tool arguments</a></p></li>
+<li><p><a class="reference internal" href="#build-parallelism" id="id18">Build parallelism</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#configuration-options" id="id19">Configuration Options</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#flashing-west-flash" id="id20">Flashing: <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id21">Basics</a></p></li>
+<li><p><a class="reference internal" href="#choosing-a-runner" id="id22">Choosing a Runner</a></p></li>
+<li><p><a class="reference internal" href="#configuration-overrides" id="id23">Configuration Overrides</a></p></li>
+<li><p><a class="reference internal" href="#runner-specific-overrides" id="id24">Runner-Specific Overrides</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#debugging-west-debug-west-debugserver" id="id25">Debugging: <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debug</span></code>, <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debugserver</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#id2" id="id26">Basics</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id27">Choosing a Runner</a></p></li>
+<li><p><a class="reference internal" href="#id4" id="id28">Configuration Overrides</a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id29">Runner-Specific Overrides</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#flash-and-debug-runners" id="id30">Flash and debug runners</a></p></li>
+<li><p><a class="reference internal" href="#hacking" id="id31">Hacking</a></p></li>
+<li><p><a class="reference internal" href="#doing-it-by-hand" id="id32">Doing it By Hand</a></p></li>
+</ul>
+</div>
+<div class="section" id="building-west-build">
+<span id="west-building"></span><h2><a class="toc-backref" href="#id6">Building: <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code></a><a class="headerlink" href="#building-west-build" title="Permalink to this headline">¶</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Run <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span> <span class="pre">-h</span></code> for a quick overview.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">build</span></code> command helps you build Zephyr applications from source. You can
+use <a class="reference internal" href="config.html#west-config-cmd"><span class="std std-ref">west config</span></a> to configure its behavior.</p>
+<p>Its default behavior tries to “do what you mean”:</p>
+<ul class="simple">
+<li><p>If there is a Zephyr build directory named <code class="file docutils literal notranslate"><span class="pre">build</span></code> in your current
+working directory, it is incrementally re-compiled. The same is true if you
+run <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> from a Zephyr build directory.</p></li>
+<li><p>Otherwise, if you run <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> from a Zephyr application’s source
+directory and no build directory is found, a new one is created and the
+application is compiled in it.</p></li>
+</ul>
+<div class="section" id="basics">
+<h3><a class="toc-backref" href="#id7">Basics</a><a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h3>
+<p>The easiest way to use <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> is to go to an application’s root
+directory (i.e. the folder containing the application’s <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>)
+and then run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="n">BOARD</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;BOARD&gt;</span></code> is the name of the board you want to build for. This is
+exactly the same name you would supply to CMake if you were to invoke it with:
+<code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-DBOARD=&lt;BOARD&gt;</span></code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can use the <a class="reference internal" href="zephyr-cmds.html#west-boards"><span class="std std-ref">west boards</span></a> command to list all
+supported boards.</p>
+</div>
+<p>A build directory named <code class="file docutils literal notranslate"><span class="pre">build</span></code> will be created, and the application will
+be compiled there after <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> runs CMake to create a build system in
+that directory. If <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> finds an existing build directory, the
+application is incrementally re-compiled there without re-running CMake. You
+can force CMake to run again with <code class="docutils literal notranslate"><span class="pre">--cmake</span></code>.</p>
+<p>You don’t need to use the <code class="docutils literal notranslate"><span class="pre">--board</span></code> option if you’ve already got an existing
+build directory; <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> can figure out the board from the CMake cache.
+For new builds, the <code class="docutils literal notranslate"><span class="pre">--board</span></code> option, <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BOARD</span></code> environment variable,
+or <code class="docutils literal notranslate"><span class="pre">build.board</span></code> configuration option are checked (in that order).</p>
+</div>
+<div class="section" id="examples">
+<h3><a class="toc-backref" href="#id8">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>Here are some <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> usage examples, grouped by area.</p>
+<div class="section" id="forcing-cmake-to-run-again">
+<h4><a class="toc-backref" href="#id9">Forcing CMake to Run Again</a><a class="headerlink" href="#forcing-cmake-to-run-again" title="Permalink to this headline">¶</a></h4>
+<p>To force a CMake re-run, use the <code class="docutils literal notranslate"><span class="pre">--cmake</span></code> (or <code class="docutils literal notranslate"><span class="pre">-c</span></code>) option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-a-default-board">
+<h4><a class="toc-backref" href="#id10">Setting a Default Board</a><a class="headerlink" href="#setting-a-default-board" title="Permalink to this headline">¶</a></h4>
+<p>To configure <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> to build for the <code class="docutils literal notranslate"><span class="pre">reel_board</span></code> by default:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">config</span> <span class="n">build</span><span class="o">.</span><span class="n">board</span> <span class="n">reel_board</span>
+</pre></div>
+</div>
+<p>(You can use any other board supported by Zephyr here; it doesn’t have to be
+<code class="docutils literal notranslate"><span class="pre">reel_board</span></code>.)</p>
+</div>
+<div class="section" id="setting-source-and-build-directories">
+<span id="west-building-dirs"></span><h4><a class="toc-backref" href="#id11">Setting Source and Build Directories</a><a class="headerlink" href="#setting-source-and-build-directories" title="Permalink to this headline">¶</a></h4>
+<p>To set the application source directory explicitly, give its path as a
+positional argument:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="n">BOARD</span><span class="o">&gt;</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="n">directory</span>
+</pre></div>
+</div>
+<p>To set the build directory explicitly, use <code class="docutils literal notranslate"><span class="pre">--build-dir</span></code> (or <code class="docutils literal notranslate"><span class="pre">-d</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="n">BOARD</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">build</span><span class="o">-</span><span class="nb">dir</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span>
+</pre></div>
+</div>
+<p>To change the default build directory from <code class="file docutils literal notranslate"><span class="pre">build</span></code>, use the
+<code class="docutils literal notranslate"><span class="pre">build.dir-fmt</span></code> configuration option. This lets you name build
+directories using format strings, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">config</span> <span class="n">build</span><span class="o">.</span><span class="n">dir</span><span class="o">-</span><span class="n">fmt</span> <span class="s2">&quot;build/</span><span class="si">{board}</span><span class="s2">/</span><span class="si">{app}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>With the above, running <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span> <span class="pre">-b</span> <span class="pre">reel_board</span> <span class="pre">samples/hello_world</span></code> will
+use build directory <code class="file docutils literal notranslate"><span class="pre">build/reel_board/hello_world</span></code>.  See
+<a class="reference internal" href="#west-building-config"><span class="std std-ref">Configuration Options</span></a> for more details on this option.</p>
+</div>
+<div class="section" id="setting-the-build-system-target">
+<h4><a class="toc-backref" href="#id12">Setting the Build System Target</a><a class="headerlink" href="#setting-the-build-system-target" title="Permalink to this headline">¶</a></h4>
+<p>To specify the build system target to run, use <code class="docutils literal notranslate"><span class="pre">--target</span></code> (or <code class="docutils literal notranslate"><span class="pre">-t</span></code>).</p>
+<p>For example, on host platforms with QEMU, you can use the <code class="docutils literal notranslate"><span class="pre">run</span></code> target to
+build and run the <a class="reference internal" href="../../samples/hello_world/README.html#hello-world"><span class="std std-ref">Hello World</span></a> sample for the emulated <a class="reference internal" href="../../boards/x86/qemu_x86/doc/index.html#qemu-x86"><span class="std std-ref">qemu_x86</span></a> board in one command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">qemu_x86</span> <span class="o">-</span><span class="n">t</span> <span class="n">run</span> <span class="n">samples</span><span class="o">/</span><span class="n">hello_world</span>
+</pre></div>
+</div>
+<p>As another example, to use <code class="docutils literal notranslate"><span class="pre">-t</span></code> to list all build system targets:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">help</span>
+</pre></div>
+</div>
+<p>As a final example, to use <code class="docutils literal notranslate"><span class="pre">-t</span></code> to run the <code class="docutils literal notranslate"><span class="pre">pristine</span></code> target, which deletes
+all the files in the build directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">pristine</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pristine-builds">
+<span id="west-building-pristine"></span><h4><a class="toc-backref" href="#id13">Pristine Builds</a><a class="headerlink" href="#pristine-builds" title="Permalink to this headline">¶</a></h4>
+<p>A <em>pristine</em> build directory is essentially a new build directory. All
+byproducts from previous builds have been removed.</p>
+<p>To force <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> make the build directory pristine before re-running
+CMake to generate a build system, use the <code class="docutils literal notranslate"><span class="pre">--pristine=always</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">-p=always</span></code>) option.</p>
+<p>Giving <code class="docutils literal notranslate"><span class="pre">--pristine</span></code> or <code class="docutils literal notranslate"><span class="pre">-p</span></code> without a value has the same effect as giving
+it the value <code class="docutils literal notranslate"><span class="pre">always</span></code>. For example, these commands are equivalent:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">p</span> <span class="o">-</span><span class="n">b</span> <span class="n">reel_board</span> <span class="n">samples</span><span class="o">/</span><span class="n">hello_world</span>
+<span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">p</span><span class="o">=</span><span class="n">always</span> <span class="o">-</span><span class="n">b</span> <span class="n">reel_board</span> <span class="n">samples</span><span class="o">/</span><span class="n">hello_world</span>
+</pre></div>
+</div>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> applies a heuristic to detect if the build directory
+needs to be made pristine. This is the same as using <code class="docutils literal notranslate"><span class="pre">--pristine=auto</span></code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can run <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">config</span> <span class="pre">build.pristine</span> <span class="pre">always</span></code> to always do a pristine
+build, or <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">config</span> <span class="pre">build.pristine</span> <span class="pre">never</span></code> to disable the heuristic.
+See the <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> <a class="reference internal" href="#west-building-config"><span class="std std-ref">Configuration Options</span></a> for details.</p>
+</div>
+</div>
+<div class="section" id="verbose-builds">
+<span id="west-building-verbose"></span><h4><a class="toc-backref" href="#id14">Verbose Builds</a><a class="headerlink" href="#verbose-builds" title="Permalink to this headline">¶</a></h4>
+<p>To print the CMake and compiler commands run by <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code>, use the global
+west verbosity option, <code class="docutils literal notranslate"><span class="pre">-v</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="o">-</span><span class="n">v</span> <span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">reel_board</span> <span class="n">samples</span><span class="o">/</span><span class="n">hello_world</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="one-time-cmake-arguments">
+<span id="west-building-cmake-args"></span><span id="west-building-generator"></span><h4><a class="toc-backref" href="#id15">One-Time CMake Arguments</a><a class="headerlink" href="#one-time-cmake-arguments" title="Permalink to this headline">¶</a></h4>
+<p>To pass additional arguments to the CMake invocation performed by <code class="docutils literal notranslate"><span class="pre">west</span>
+<span class="pre">build</span></code>, pass them after a <code class="docutils literal notranslate"><span class="pre">--</span></code> at the end of the command line.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Passing additional CMake arguments like this forces <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> to re-run
+CMake, even if a build system has already been generated.</p>
+<p>After using <code class="docutils literal notranslate"><span class="pre">--</span></code> once to generate the build directory, use <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span> <span class="pre">-d</span>
+<span class="pre">&lt;build-dir&gt;</span></code> on subsequent runs to do incremental builds.</p>
+</div>
+<p>For example, to use the Unix Makefiles CMake generator instead of Ninja (which
+<code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> uses by default), run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">reel_board</span> <span class="o">--</span> <span class="o">-</span><span class="n">G</span><span class="s1">&#39;Unix Makefiles&#39;</span>
+</pre></div>
+</div>
+<p>To use Unix Makefiles and set <a class="reference external" href="https://cmake.org/cmake/help/latest/variable/CMAKE_VERBOSE_MAKEFILE.html">CMAKE_VERBOSE_MAKEFILE</a> to <code class="docutils literal notranslate"><span class="pre">ON</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">reel_board</span> <span class="o">--</span> <span class="o">-</span><span class="n">G</span><span class="s1">&#39;Unix Makefiles&#39;</span> <span class="o">-</span><span class="n">DCMAKE_VERBOSE_MAKEFILE</span><span class="o">=</span><span class="n">ON</span>
+</pre></div>
+</div>
+<p>Notice how the <code class="docutils literal notranslate"><span class="pre">--</span></code> only appears once, even though multiple CMake arguments
+are given. All command-line arguments to <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> after a <code class="docutils literal notranslate"><span class="pre">--</span></code> are
+passed to CMake.</p>
+<p id="west-building-dtc-overlay-file">To set <a class="reference internal" href="../../application/index.html#important-build-vars"><span class="std std-ref">DTC_OVERLAY_FILE</span></a> to
+<code class="file docutils literal notranslate"><span class="pre">enable-modem.overlay</span></code>, using that file as a
+<a class="reference internal" href="../dts/index.html#dt-guide"><span class="std std-ref">devicetree overlay</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">reel_board</span> <span class="o">--</span> <span class="o">-</span><span class="n">DDTC_OVERLAY_FILE</span><span class="o">=</span><span class="n">enable</span><span class="o">-</span><span class="n">modem</span><span class="o">.</span><span class="n">overlay</span>
+</pre></div>
+</div>
+<p>To merge the <code class="file docutils literal notranslate"><span class="pre">file.conf</span></code> Kconfig fragment into your build’s
+<code class="file docutils literal notranslate"><span class="pre">.config</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">--</span> <span class="o">-</span><span class="n">DOVERLAY_CONFIG</span><span class="o">=</span><span class="n">file</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="permanent-cmake-arguments">
+<span id="west-building-cmake-config"></span><h4><a class="toc-backref" href="#id16">Permanent CMake Arguments</a><a class="headerlink" href="#permanent-cmake-arguments" title="Permalink to this headline">¶</a></h4>
+<p>The previous section describes how to add CMake arguments for a single <code class="docutils literal notranslate"><span class="pre">west</span>
+<span class="pre">build</span></code> command. If you want to save CMake arguments for <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> to use
+every time it generates a new build system instead, you should use the
+<code class="docutils literal notranslate"><span class="pre">build.cmake-args</span></code> configuration option. Whenever <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> runs CMake
+to generate a build system, it splits this option’s value according to shell
+rules and includes the results in the <code class="docutils literal notranslate"><span class="pre">cmake</span></code> command line.</p>
+<p>Remember that, by default, <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> <strong>tries to avoid generating a new
+build system if one is present</strong> in your build directory. Therefore, you need
+to either delete any existing build directories or do a <a class="reference internal" href="#west-building-pristine"><span class="std std-ref">pristine build</span></a> after setting <code class="docutils literal notranslate"><span class="pre">build.cmake-args</span></code> to make sure it
+will take effect.</p>
+<p>For example, to always enable <strong class="makevar">CMAKE_EXPORT_COMPILE_COMMANDS</strong>, you can
+run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">config</span> <span class="n">build</span><span class="o">.</span><span class="n">cmake</span><span class="o">-</span><span class="n">args</span> <span class="o">--</span> <span class="o">-</span><span class="n">DCMAKE_EXPORT_COMPILE_COMMANDS</span><span class="o">=</span><span class="n">ON</span>
+</pre></div>
+</div>
+<p>(The extra <code class="docutils literal notranslate"><span class="pre">--</span></code> is used to force the rest of the command to be treated as a
+positional argument. Without it, <a class="reference internal" href="config.html#west-config-cmd"><span class="std std-ref">west config</span></a> would
+treat the <code class="docutils literal notranslate"><span class="pre">-DVAR=VAL</span></code> syntax as a use of its <code class="docutils literal notranslate"><span class="pre">-D</span></code> option.)</p>
+<p>To enable <strong class="makevar">CMAKE_VERBOSE_MAKEFILE</strong>, so CMake always produces a verbose
+build system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">config</span> <span class="n">build</span><span class="o">.</span><span class="n">cmake</span><span class="o">-</span><span class="n">args</span> <span class="o">--</span> <span class="o">-</span><span class="n">DCMAKE_VERBOSE_MAKEFILE</span><span class="o">=</span><span class="n">ON</span>
+</pre></div>
+</div>
+<p>To save more than one argument in <code class="docutils literal notranslate"><span class="pre">build.cmake-args</span></code>, use a single string
+whose value can be split into distinct arguments (<code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> uses the
+Python function <a class="reference external" href="https://docs.python.org/3/library/shlex.html#shlex.split">shlex.split()</a> internally to split the value).</p>
+<p>For example, to enable both <strong class="makevar">CMAKE_EXPORT_COMPILE_COMMANDS</strong> and
+<strong class="makevar">CMAKE_VERBOSE_MAKEFILE</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">config</span> <span class="n">build</span><span class="o">.</span><span class="n">cmake</span><span class="o">-</span><span class="n">args</span> <span class="o">--</span> <span class="s2">&quot;-DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_VERBOSE_MAKEFILE=ON&quot;</span>
+</pre></div>
+</div>
+<p>If you want to save your CMake arguments in a separate file instead, you can
+combine CMake’s <code class="docutils literal notranslate"><span class="pre">-C</span> <span class="pre">&lt;initial-cache&gt;</span></code> option with <code class="docutils literal notranslate"><span class="pre">build.cmake-args</span></code>. For
+instance, another way to set the options used in the previous example is to
+create a file named <code class="file docutils literal notranslate"><span class="pre">~/my-cache.cmake</span></code> with the following contents:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_EXPORT_COMPILE_COMMANDS</span> <span class="s">ON</span> <span class="s">CACHE</span> <span class="s">BOOL</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_VERBOSE_MAKEFILE</span> <span class="s">ON</span> <span class="s">CACHE</span> <span class="s">BOOL</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">config</span> <span class="n">build</span><span class="o">.</span><span class="n">cmake</span><span class="o">-</span><span class="n">args</span> <span class="s2">&quot;-C ~/my-cache.cmake&quot;</span>
+</pre></div>
+</div>
+<p>See the <a class="reference external" href="https://cmake.org/cmake/help/latest/manual/cmake.1.html">cmake(1) manual page</a> and the <a class="reference external" href="https://cmake.org/cmake/help/latest/command/set.html">set() command</a> documentation for
+more details.</p>
+</div>
+<div class="section" id="build-tool-arguments">
+<h4><a class="toc-backref" href="#id17">Build tool arguments</a><a class="headerlink" href="#build-tool-arguments" title="Permalink to this headline">¶</a></h4>
+<p>Use <code class="docutils literal notranslate"><span class="pre">-o</span></code> to pass options to the underlying build tool.</p>
+<p>This works with both <code class="docutils literal notranslate"><span class="pre">ninja</span></code> (<a class="reference internal" href="#west-building-generator"><span class="std std-ref">the default</span></a>)
+and <code class="docutils literal notranslate"><span class="pre">make</span></code> based build systems.</p>
+<p>For example, to pass <code class="docutils literal notranslate"><span class="pre">-dexplain</span></code> to <code class="docutils literal notranslate"><span class="pre">ninja</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">o</span><span class="o">=-</span><span class="n">dexplain</span>
+</pre></div>
+</div>
+<p>As another example, to pass <code class="docutils literal notranslate"><span class="pre">--keep-going</span></code> to <code class="docutils literal notranslate"><span class="pre">make</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">o</span><span class="o">=--</span><span class="n">keep</span><span class="o">-</span><span class="n">going</span>
+</pre></div>
+</div>
+<p>Note that using <code class="docutils literal notranslate"><span class="pre">-o=--foo</span></code> instead of <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">--foo</span></code> is required to prevent
+<code class="docutils literal notranslate"><span class="pre">--foo</span></code> from being treated as a <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> option.</p>
+</div>
+<div class="section" id="build-parallelism">
+<h4><a class="toc-backref" href="#id18">Build parallelism</a><a class="headerlink" href="#build-parallelism" title="Permalink to this headline">¶</a></h4>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">ninja</span></code> uses all of your cores to build, while <code class="docutils literal notranslate"><span class="pre">make</span></code> uses only
+one. You can control this explicitly with the <code class="docutils literal notranslate"><span class="pre">-j</span></code> option supported by both
+tools.</p>
+<p>For example, to build with 4 cores:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">build</span> <span class="o">-</span><span class="n">o</span><span class="o">=-</span><span class="n">j4</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">-o</span></code> option is described further in the previous section.</p>
+</div>
+</div>
+<div class="section" id="configuration-options">
+<span id="west-building-config"></span><h3><a class="toc-backref" href="#id19">Configuration Options</a><a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h3>
+<p>You can <a class="reference internal" href="config.html#west-config-cmd"><span class="std std-ref">configure</span></a> <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> using these options.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">build.board</span></code></p></td>
+<td><p>String. If given, this the board used by <a class="reference internal" href="#west-building"><span class="std std-ref">west build</span></a> when <code class="docutils literal notranslate"><span class="pre">--board</span></code> is not given and <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BOARD</span></code>
+is unset in the environment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">build.board_warn</span></code></p></td>
+<td><p>Boolean, default <code class="docutils literal notranslate"><span class="pre">true</span></code>. If <code class="docutils literal notranslate"><span class="pre">false</span></code>, disables warnings when
+<code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> can’t figure out the target board.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">build.cmake-args</span></code></p></td>
+<td><p>String. If present, the value will be split according to shell rules and
+passed to CMake whenever a new build system is generated. See
+<a class="reference internal" href="#west-building-cmake-config"><span class="std std-ref">Permanent CMake Arguments</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">build.dir-fmt</span></code></p></td>
+<td><p>String, default <code class="docutils literal notranslate"><span class="pre">build</span></code>. The build folder format string, used by
+west whenever it needs to create or locate a build folder. The currently
+available arguments are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">board</span></code>: The board name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source_dir</span></code>: The relative path from the current working directory
+to the source directory. If the current working directory is inside
+the source directory this will be set to an empty string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">app</span></code>: The name of the source directory.</p></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">build.generator</span></code></p></td>
+<td><p>String, default <code class="docutils literal notranslate"><span class="pre">Ninja</span></code>. The <a class="reference external" href="https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html">CMake Generator</a> to use to create a
+build system. (To set a generator for a single build, see the
+<a class="reference internal" href="#west-building-generator"><span class="std std-ref">above example</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">build.guess-dir</span></code></p></td>
+<td><p>String, instructs west whether to try to guess what build folder to use
+when <code class="docutils literal notranslate"><span class="pre">build.dir-fmt</span></code> is in use and not enough information is available
+to resolve the build folder name. Can take these values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">never</span></code> (default): Never try to guess, bail out instead and
+require the user to provide a build folder with <code class="docutils literal notranslate"><span class="pre">-d</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">runners</span></code>: Try to guess the folder when using any of the ‘runner’
+commands.  These are typically all commands that invoke an external
+tool, such as <code class="docutils literal notranslate"><span class="pre">flash</span></code> and <code class="docutils literal notranslate"><span class="pre">debug</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">build.pristine</span></code></p></td>
+<td><p>String. Controls the way in which <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> may clean the build
+folder before building. Can take the following values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">never</span></code> (default): Never automatically make the build folder
+pristine.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">auto</span></code>:  <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> will automatically make the build folder
+pristine before building, if a build system is present and the build
+would fail otherwise (e.g. the user has specified a different board
+or application from the one previously used to make the build
+directory).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">always</span></code>: Always make the build folder pristine before building, if
+a build system is present.</p></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="flashing-west-flash">
+<span id="west-flashing"></span><h2><a class="toc-backref" href="#id20">Flashing: <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span></code></a><a class="headerlink" href="#flashing-west-flash" title="Permalink to this headline">¶</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Run <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span> <span class="pre">-h</span></code> for additional help.</p>
+</div>
+<div class="section" id="id1">
+<h3><a class="toc-backref" href="#id21">Basics</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>From a Zephyr build directory, re-build the binary and flash it to
+your board:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">flash</span>
+</pre></div>
+</div>
+<p>Without options, the behavior is the same as <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">flash</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">flash</span></code>, etc.).</p>
+<p>To specify the build directory, use <code class="docutils literal notranslate"><span class="pre">--build-dir</span></code> (or <code class="docutils literal notranslate"><span class="pre">-d</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">flash</span> <span class="o">--</span><span class="n">build</span><span class="o">-</span><span class="nb">dir</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span>
+</pre></div>
+</div>
+<p>If you don’t specify the build directory, <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span></code> searches for one in
+<code class="file docutils literal notranslate"><span class="pre">build</span></code>, then the current working directory. If you set the
+<code class="docutils literal notranslate"><span class="pre">build.dir-fmt</span></code> configuration option (see <a class="reference internal" href="#west-building-dirs"><span class="std std-ref">Setting Source and Build Directories</span></a>), <code class="docutils literal notranslate"><span class="pre">west</span>
+<span class="pre">flash</span></code> searches there instead of <code class="file docutils literal notranslate"><span class="pre">build</span></code>.</p>
+</div>
+<div class="section" id="choosing-a-runner">
+<h3><a class="toc-backref" href="#id22">Choosing a Runner</a><a class="headerlink" href="#choosing-a-runner" title="Permalink to this headline">¶</a></h3>
+<p>If your board’s Zephyr integration supports flashing with multiple
+programs, you can specify which one to use using the <code class="docutils literal notranslate"><span class="pre">--runner</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">-r</span></code>) option. For example, if West flashes your board with
+<code class="docutils literal notranslate"><span class="pre">nrfjprog</span></code> by default, but it also supports JLink, you can override
+the default with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">flash</span> <span class="o">--</span><span class="n">runner</span> <span class="n">jlink</span>
+</pre></div>
+</div>
+<p>You can override the default flash runner at build time by using the
+<code class="docutils literal notranslate"><span class="pre">BOARD_FLASH_RUNNER</span></code> CMake variable, and the debug runner with
+<code class="docutils literal notranslate"><span class="pre">BOARD_DEBUG_RUNNER</span></code>.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the default runner to &quot;jlink&quot;, overriding the board&#39;s</span>
+<span class="c1"># usual default.</span>
+<span class="n">west</span> <span class="n">build</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">--</span> <span class="o">-</span><span class="n">DBOARD_FLASH_RUNNER</span><span class="o">=</span><span class="n">jlink</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="#west-building-cmake-args"><span class="std std-ref">One-Time CMake Arguments</span></a> and <a class="reference internal" href="#west-building-cmake-config"><span class="std std-ref">Permanent CMake Arguments</span></a> for
+more information on setting CMake arguments.</p>
+<p>See <a class="reference internal" href="#west-runner"><span class="std std-ref">Flash and debug runners</span></a> below for more information on the <code class="docutils literal notranslate"><span class="pre">runner</span></code>
+library used by West. The list of runners which support flashing can
+be obtained with <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span> <span class="pre">-H</span></code>; if run from a build directory or
+with <code class="docutils literal notranslate"><span class="pre">--build-dir</span></code>, this will print additional information on
+available runners for your board.</p>
+</div>
+<div class="section" id="configuration-overrides">
+<h3><a class="toc-backref" href="#id23">Configuration Overrides</a><a class="headerlink" href="#configuration-overrides" title="Permalink to this headline">¶</a></h3>
+<p>The CMake cache contains default values West uses while flashing, such
+as where the board directory is on the file system, the path to the
+zephyr binaries to flash in several formats, and more. You can
+override any of this configuration at runtime with additional options.</p>
+<p>For example, to override the HEX file containing the Zephyr image to
+flash (assuming your runner expects a HEX file), but keep other
+flash configuration at default values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">flash</span> <span class="o">--</span><span class="nb">hex</span><span class="o">-</span><span class="n">file</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">some</span><span class="o">/</span><span class="n">other</span><span class="o">.</span><span class="n">hex</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span> <span class="pre">-h</span></code> output includes a complete list of overrides
+supported by all runners.</p>
+</div>
+<div class="section" id="runner-specific-overrides">
+<h3><a class="toc-backref" href="#id24">Runner-Specific Overrides</a><a class="headerlink" href="#runner-specific-overrides" title="Permalink to this headline">¶</a></h3>
+<p>Each runner may support additional options related to flashing. For
+example, some runners support an <code class="docutils literal notranslate"><span class="pre">--erase</span></code> flag, which mass-erases
+the flash storage on your board before flashing the Zephyr image.</p>
+<p>To view all of the available options for the runners your board
+supports, as well as their usage information, use <code class="docutils literal notranslate"><span class="pre">--context</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">-H</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">flash</span> <span class="o">--</span><span class="n">context</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Note the capital H in the short option name. This re-runs the build
+in order to ensure the information displayed is up to date!</p>
+</div>
+<p>When running West outside of a build directory, <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span> <span class="pre">-H</span></code> just
+prints a list of runners. You can use <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">flash</span> <span class="pre">-H</span> <span class="pre">-r</span>
+<span class="pre">&lt;runner-name&gt;</span></code> to print usage information for options supported by
+that runner.</p>
+<p>For example, to print usage information about the <code class="docutils literal notranslate"><span class="pre">jlink</span></code> runner:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">flash</span> <span class="o">-</span><span class="n">H</span> <span class="o">-</span><span class="n">r</span> <span class="n">jlink</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="debugging-west-debug-west-debugserver">
+<span id="west-debugging"></span><h2><a class="toc-backref" href="#id25">Debugging: <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debug</span></code>, <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debugserver</span></code></a><a class="headerlink" href="#debugging-west-debug-west-debugserver" title="Permalink to this headline">¶</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Run <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debug</span> <span class="pre">-h</span></code> or <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debugserver</span> <span class="pre">-h</span></code> for additional help.</p>
+</div>
+<div class="section" id="id2">
+<h3><a class="toc-backref" href="#id26">Basics</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>From a Zephyr build directory, to attach a debugger to your board and
+open up a debug console (e.g. a GDB session):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>To attach a debugger to your board and open up a local network port
+you can connect a debugger to (e.g. an IDE debugger):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">debugserver</span>
+</pre></div>
+</div>
+<p>Without options, the behavior is the same as <code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">debug</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ninja</span> <span class="pre">debugserver</span></code> (or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">debug</span></code>, etc.).</p>
+<p>To specify the build directory, use <code class="docutils literal notranslate"><span class="pre">--build-dir</span></code> (or <code class="docutils literal notranslate"><span class="pre">-d</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">debug</span> <span class="o">--</span><span class="n">build</span><span class="o">-</span><span class="nb">dir</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span>
+<span class="n">west</span> <span class="n">debugserver</span> <span class="o">--</span><span class="n">build</span><span class="o">-</span><span class="nb">dir</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span>
+</pre></div>
+</div>
+<p>If you don’t specify the build directory, these commands search for one in
+<code class="file docutils literal notranslate"><span class="pre">build</span></code>, then the current working directory. If you set the
+<code class="docutils literal notranslate"><span class="pre">build.dir-fmt</span></code> configuration option (see <a class="reference internal" href="#west-building-dirs"><span class="std std-ref">Setting Source and Build Directories</span></a>), <code class="docutils literal notranslate"><span class="pre">west</span>
+<span class="pre">debug</span></code> searches there instead of <code class="file docutils literal notranslate"><span class="pre">build</span></code>.</p>
+</div>
+<div class="section" id="id3">
+<h3><a class="toc-backref" href="#id27">Choosing a Runner</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>If your board’s Zephyr integration supports debugging with multiple
+programs, you can specify which one to use using the <code class="docutils literal notranslate"><span class="pre">--runner</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">-r</span></code>) option. For example, if West debugs your board with
+<code class="docutils literal notranslate"><span class="pre">pyocd-gdbserver</span></code> by default, but it also supports JLink, you can
+override the default with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">debug</span> <span class="o">--</span><span class="n">runner</span> <span class="n">jlink</span>
+<span class="n">west</span> <span class="n">debugserver</span> <span class="o">--</span><span class="n">runner</span> <span class="n">jlink</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="#west-runner"><span class="std std-ref">Flash and debug runners</span></a> below for more information on the <code class="docutils literal notranslate"><span class="pre">runner</span></code>
+library used by West. The list of runners which support debugging can
+be obtained with <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debug</span> <span class="pre">-H</span></code>; if run from a build directory or
+with <code class="docutils literal notranslate"><span class="pre">--build-dir</span></code>, this will print additional information on
+available runners for your board.</p>
+</div>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id28">Configuration Overrides</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>The CMake cache contains default values West uses for debugging, such
+as where the board directory is on the file system, the path to the
+zephyr binaries containing symbol tables, and more. You can override
+any of this configuration at runtime with additional options.</p>
+<p>For example, to override the ELF file containing the Zephyr binary and
+symbol tables (assuming your runner expects an ELF file), but keep
+other debug configuration at default values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">debug</span> <span class="o">--</span><span class="n">elf</span><span class="o">-</span><span class="n">file</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">some</span><span class="o">/</span><span class="n">other</span><span class="o">.</span><span class="n">elf</span>
+<span class="n">west</span> <span class="n">debugserver</span> <span class="o">--</span><span class="n">elf</span><span class="o">-</span><span class="n">file</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">some</span><span class="o">/</span><span class="n">other</span><span class="o">.</span><span class="n">elf</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debug</span> <span class="pre">-h</span></code> output includes a complete list of overrides
+supported by all runners.</p>
+</div>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id29">Runner-Specific Overrides</a><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>Each runner may support additional options related to debugging. For
+example, some runners support flags which allow you to set the network
+ports used by debug servers.</p>
+<p>To view all of the available options for the runners your board
+supports, as well as their usage information, use <code class="docutils literal notranslate"><span class="pre">--context</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">-H</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">debug</span> <span class="o">--</span><span class="n">context</span>
+</pre></div>
+</div>
+<p>(The command <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debugserver</span> <span class="pre">--context</span></code> will print the same output.)</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Note the capital H in the short option name. This re-runs the build
+in order to ensure the information displayed is up to date!</p>
+</div>
+<p>When running West outside of a build directory, <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debug</span> <span class="pre">-H</span></code> just
+prints a list of runners. You can use <code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">debug</span> <span class="pre">-H</span> <span class="pre">-r</span>
+<span class="pre">&lt;runner-name&gt;</span></code> to print usage information for options supported by
+that runner.</p>
+<p>For example, to print usage information about the <code class="docutils literal notranslate"><span class="pre">jlink</span></code> runner:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">west</span> <span class="n">debug</span> <span class="o">-</span><span class="n">H</span> <span class="o">-</span><span class="n">r</span> <span class="n">jlink</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="flash-and-debug-runners">
+<span id="west-runner"></span><h2><a class="toc-backref" href="#id30">Flash and debug runners</a><a class="headerlink" href="#flash-and-debug-runners" title="Permalink to this headline">¶</a></h2>
+<p>The flash and debug commands use Python wrappers around various
+<a class="reference internal" href="../flash_debug/host-tools.html#flash-debug-host-tools"><span class="std std-ref">Flash &amp; Debug Host Tools</span></a>. These wrappers are all defined in a Python
+library at <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/scripts/west_commands/runners">scripts/west_commands/runners</a>. Each wrapper is
+called a <em>runner</em>. Runners can flash and/or debug Zephyr programs.</p>
+<p>The central abstraction within this library is <code class="docutils literal notranslate"><span class="pre">ZephyrBinaryRunner</span></code>, an
+abstract class which represents runners. The set of available runners is
+determined by the imported subclasses of <code class="docutils literal notranslate"><span class="pre">ZephyrBinaryRunner</span></code>.
+<code class="docutils literal notranslate"><span class="pre">ZephyrBinaryRunner</span></code> is available in the <code class="docutils literal notranslate"><span class="pre">runners.core</span></code> module; individual
+runner implementations are in other submodules, such as <code class="docutils literal notranslate"><span class="pre">runners.nrfjprog</span></code>,
+<code class="docutils literal notranslate"><span class="pre">runners.openocd</span></code>, etc.</p>
+</div>
+<div class="section" id="hacking">
+<h2><a class="toc-backref" href="#id31">Hacking</a><a class="headerlink" href="#hacking" title="Permalink to this headline">¶</a></h2>
+<p>This section documents the <code class="docutils literal notranslate"><span class="pre">runners.core</span></code> module used by the
+flash and debug commands. This is the core abstraction used to implement
+support for these features.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>These APIs are provided for reference, but they are more “shared code” used
+to implement multiple extension commands than a stable API.</p>
+</div>
+<p>Developers can add support for new ways to flash and debug Zephyr programs by
+implementing additional runners. To get this support into upstream Zephyr, the
+runner should be added into a new or existing <code class="docutils literal notranslate"><span class="pre">runners</span></code> module, and imported
+from <code class="file docutils literal notranslate"><span class="pre">runners/__init__.py</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The test cases in <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/scripts/west_commands/tests">scripts/west_commands/tests</a> add unit test
+coverage for the runners package and individual runner classes.</p>
+<p>Please try to add tests when adding new runners. Note that if your
+changes break existing test cases, CI testing on upstream pull
+requests will fail.</p>
+</div>
+<span class="target" id="module-runners.core"></span><p>Zephyr binary runner core interfaces</p>
+<p>This provides the core ZephyrBinaryRunner class meant for public use,
+as well as some other helpers for concrete runner classes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="runners.core.BuildConfiguration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">runners.core.</span></span><span class="sig-name descname"><span class="pre">BuildConfiguration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.BuildConfiguration" title="Permalink to this definition">¶</a></dt>
+<dd><p>This helper class provides access to build-time configuration.</p>
+<p>Configuration options can be read as if the object were a dict,
+either object[‘CONFIG_FOO’] or object.get(‘CONFIG_FOO’).</p>
+<p>Kconfig configuration values are available (parsed from .config).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.BuildConfiguration.getboolean">
+<span class="sig-name descname"><span class="pre">getboolean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.BuildConfiguration.getboolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a boolean option is explicitly set to y or n,
+returns its value. Otherwise, falls back to False.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="runners.core.DeprecatedAction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">runners.core.</span></span><span class="sig-name descname"><span class="pre">DeprecatedAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option_strings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">const</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metavar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.DeprecatedAction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="runners.core.MissingProgram">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">runners.core.</span></span><span class="sig-name descname"><span class="pre">MissingProgram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.MissingProgram" title="Permalink to this definition">¶</a></dt>
+<dd><p>FileNotFoundError subclass for missing program dependencies.</p>
+<p>No significant changes from the parent FileNotFoundError; this is
+useful for explicitly signaling that the file in question is a
+program that some class requires to proceed.</p>
+<p>The filename attribute contains the missing program.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="runners.core.NetworkPortHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">runners.core.</span></span><span class="sig-name descname"><span class="pre">NetworkPortHelper</span></span><a class="headerlink" href="#runners.core.NetworkPortHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper class for dealing with local IP network ports.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.NetworkPortHelper.get_unused_ports">
+<span class="sig-name descname"><span class="pre">get_unused_ports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starting_from</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.NetworkPortHelper.get_unused_ports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find unused network ports, starting at given values.</p>
+<p>starting_from is an iterable of ports the caller would like to use.</p>
+<p>The return value is an iterable of ports, in the same order, using
+the given values if they were unused, or the next sequentially
+available unused port otherwise.</p>
+<p>Ports may be bound between this call’s check and actual usage, so
+callers still need to handle errors involving returned ports.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="runners.core.RunnerCaps">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">runners.core.</span></span><span class="sig-name descname"><span class="pre">RunnerCaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">commands</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'attach',</span> <span class="pre">'debug',</span> <span class="pre">'debugserver',</span> <span class="pre">'flash'}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flash_addr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">erase</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.RunnerCaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a runner class’s capabilities.</p>
+<p>Each capability is represented as an attribute with the same
+name. Flag attributes are True or False.</p>
+<p>Available capabilities:</p>
+<ul class="simple">
+<li><p>commands: set of supported commands; default is {‘flash’,
+‘debug’, ‘debugserver’, ‘attach’}.</p></li>
+<li><p>dev_id: whether the runner supports device identifiers, in the form of an
+-i, –dev-id option. This is useful when the user has multiple debuggers
+connected to a single computer, in order to select which one will be used
+with the command provided.</p></li>
+<li><p>flash_addr: whether the runner supports flashing to an
+arbitrary address. Default is False. If true, the runner
+must honor the –dt-flash option.</p></li>
+<li><p>erase: whether the runner supports an –erase option, which
+does a mass-erase of the entire addressable flash on the target
+before flashing. On multi-core SoCs, this may only erase portions of
+flash specific the actual target core. (This option can be useful for
+things like clearing out old settings values or other subsystem state
+that may affect the behavior of the zephyr image. It is also sometimes
+needed by SoCs which have flash-like areas that can’t be sector
+erased by the underlying tool before flashing; UICR on nRF SoCs
+is one example.)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="runners.core.RunnerConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">runners.core.</span></span><span class="sig-name descname"><span class="pre">RunnerConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elf_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hex_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gdb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">openocd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">openocd_search</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.RunnerConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runner execution-time configuration.</p>
+<p>This is a common object shared by all runners. Individual runners
+can register specific configuration options using their
+do_add_parser() hooks.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="runners.core.RunnerConfig.bin_file">
+<span class="sig-name descname"><span class="pre">bin_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#runners.core.RunnerConfig.bin_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="runners.core.RunnerConfig.board_dir">
+<span class="sig-name descname"><span class="pre">board_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#runners.core.RunnerConfig.board_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="runners.core.RunnerConfig.build_dir">
+<span class="sig-name descname"><span class="pre">build_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#runners.core.RunnerConfig.build_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="runners.core.RunnerConfig.elf_file">
+<span class="sig-name descname"><span class="pre">elf_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#runners.core.RunnerConfig.elf_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="runners.core.RunnerConfig.gdb">
+<span class="sig-name descname"><span class="pre">gdb</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#runners.core.RunnerConfig.gdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="runners.core.RunnerConfig.hex_file">
+<span class="sig-name descname"><span class="pre">hex_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#runners.core.RunnerConfig.hex_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="runners.core.RunnerConfig.openocd">
+<span class="sig-name descname"><span class="pre">openocd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#runners.core.RunnerConfig.openocd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 6</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="runners.core.RunnerConfig.openocd_search">
+<span class="sig-name descname"><span class="pre">openocd_search</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#runners.core.RunnerConfig.openocd_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 7</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">runners.core.</span></span><span class="sig-name descname"><span class="pre">ZephyrBinaryRunner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#runners.core.RunnerConfig" title="runners.core.RunnerConfig"><span class="pre">runners.core.RunnerConfig</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract superclass for binary runners (flashers, debuggers).</p>
+<p><strong>Note</strong>: this class’s API has changed relatively rarely since it
+as added, but it is not considered a stable Zephyr API, and may change
+without notice.</p>
+<p>With some exceptions, boards supported by Zephyr must provide
+generic means to be flashed (have a Zephyr firmware binary
+permanently installed on the device for running) and debugged
+(have a breakpoint debugger and program loader on a host
+workstation attached to a running target).</p>
+<p>This is supported by four top-level commands managed by the
+Zephyr build system:</p>
+<ul class="simple">
+<li><p>‘flash’: flash a previously configured binary to the board,
+start execution on the target, then return.</p></li>
+<li><p>‘debug’: connect to the board via a debugging protocol, program
+the flash, then drop the user into a debugger interface with
+symbol tables loaded from the current binary, and block until it
+exits.</p></li>
+<li><p>‘debugserver’: connect via a board-specific debugging protocol,
+then reset and halt the target. Ensure the user is now able to
+connect to a debug server with symbol tables loaded from the
+binary.</p></li>
+<li><p>‘attach’: connect to the board via a debugging protocol, then drop
+the user into a debugger interface with symbol tables loaded from
+the current binary, and block until it exits. Unlike ‘debug’, this
+command does not program the flash.</p></li>
+</ul>
+<p>This class provides an API for these commands. Every subclass is
+called a ‘runner’ for short. Each runner has a name (like
+‘pyocd’), and declares commands it can handle (like
+‘flash’). Boards (like ‘nrf52dk_nrf52832’) declare which runner(s)
+are compatible with them to the Zephyr build system, along with
+information on how to configure the runner to work with the board.</p>
+<p>The build system will then place enough information in the build
+directory to create and use runners with this class’s create()
+method, which provides a command line argument parsing API. You
+can also create runners by instantiating subclasses directly.</p>
+<p>In order to define your own runner, you need to:</p>
+<ol class="arabic simple">
+<li><p>Define a ZephyrBinaryRunner subclass, and implement its
+abstract methods. You may need to override capabilities().</p></li>
+<li><p>Make sure the Python module defining your runner class is
+imported, e.g. by editing this package’s __init__.py (otherwise,
+get_runners() won’t work).</p></li>
+<li><p>Give your runner’s name to the Zephyr build system in your
+board’s board.cmake.</p></li>
+</ol>
+<p>Additional advice:</p>
+<ul class="simple">
+<li><p>If you need to import any non-standard-library modules, make sure
+to catch ImportError and defer complaints about it to a RuntimeError
+if one is missing. This avoids affecting users that don’t require your
+runner, while still making it clear what went wrong to users that do
+require it that don’t have the necessary modules installed.</p></li>
+<li><p>If you need to ask the user something (e.g. using input()), do it
+in your create() classmethod, not do_run(). That ensures your
+__init__() really has everything it needs to call do_run(), and also
+avoids calling input() when not instantiating within a command line
+application.</p></li>
+<li><p>Use self.logger to log messages using the standard library’s
+logging API; your logger is named “runner.&lt;your-runner-name()&gt;”</p></li>
+</ul>
+<p>For command-line invocation from the Zephyr build system, runners
+define their own argparse-based interface through the common
+add_parser() (and runner-specific do_add_parser() it delegates
+to), and provide a way to create instances of themselves from
+a RunnerConfig and parsed runner-specific arguments via create().</p>
+<p>Runners use a variety of host tools and configuration values, the
+user interface to which is abstracted by this class. Each runner
+subclass should take any values it needs to execute one of these
+commands in its constructor.  The actual command execution is
+handled in the run() method.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.add_parser">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.add_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a sub-command parser for this runner.</p>
+<p>The given object, parser, is a sub-command parser from the
+argparse module. For more details, refer to the documentation
+for argparse.ArgumentParser.add_subparsers().</p>
+<p>The lone common optional argument is:</p>
+<ul class="simple">
+<li><p>–dt-flash (if the runner capabilities includes flash_addr)</p></li>
+</ul>
+<p>Runner-specific options are added through the do_add_parser()
+hook.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.build_conf">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_conf</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#runners.core.BuildConfiguration" title="runners.core.BuildConfiguration"><span class="pre">runners.core.BuildConfiguration</span></a></em><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.build_conf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a BuildConfiguration for the build directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclass subprocess.call() wrapper.</p>
+<p>Subclasses should use this method to run command in a
+subprocess and get its return code, rather than
+using subprocess directly, to keep accurate debug logs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.capabilities">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">capabilities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#runners.core.RunnerCaps" title="runners.core.RunnerCaps"><span class="pre">runners.core.RunnerCaps</span></a></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.capabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a RunnerCaps representing this runner’s capabilities.</p>
+<p>This implementation returns the default capabilities.</p>
+<p>Subclasses should override appropriately if needed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.cfg">
+<span class="sig-name descname"><span class="pre">cfg</span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.cfg" title="Permalink to this definition">¶</a></dt>
+<dd><p>RunnerConfig for this instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.check_call">
+<span class="sig-name descname"><span class="pre">check_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.check_call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclass subprocess.check_call() wrapper.</p>
+<p>Subclasses should use this method to run command in a
+subprocess and check that it executed correctly, rather than
+using subprocess directly, to keep accurate debug logs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.check_output">
+<span class="sig-name descname"><span class="pre">check_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.check_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclass subprocess.check_output() wrapper.</p>
+<p>Subclasses should use this method to run command in a
+subprocess and check that it executed correctly, rather than
+using subprocess directly, to keep accurate debug logs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.create">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#runners.core.RunnerConfig" title="runners.core.RunnerConfig"><span class="pre">runners.core.RunnerConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">argparse.Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#runners.core.ZephyrBinaryRunner" title="runners.core.ZephyrBinaryRunner"><span class="pre">runners.core.ZephyrBinaryRunner</span></a></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance from command-line arguments.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cfg</span></code>: runner configuration (pass to superclass __init__)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">args</span></code>: arguments parsed from execution environment, as
+specified by <code class="docutils literal notranslate"><span class="pre">add_parser()</span></code>.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.dev_id_help">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dev_id_help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.dev_id_help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ArgParse help text for the –dev-id option.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.do_add_parser">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">do_add_parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.do_add_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook for adding runner-specific options.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.do_create">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">do_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#runners.core.RunnerConfig" title="runners.core.RunnerConfig"><span class="pre">runners.core.RunnerConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">argparse.Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#runners.core.ZephyrBinaryRunner" title="runners.core.ZephyrBinaryRunner"><span class="pre">runners.core.ZephyrBinaryRunner</span></a></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.do_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook for instance creation from command line arguments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.do_run">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">do_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.do_run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concrete runner; run() delegates to this. Implement in subclasses.</p>
+<p>In case of an unsupported command, raise a ValueError.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.ensure_output">
+<span class="sig-name descname"><span class="pre">ensure_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.ensure_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensure self.cfg has a particular output artifact.</p>
+<p>For example, ensure_output(‘bin’) ensures that self.cfg.bin_file
+refers to an existing file. Errors out if it’s missing or undefined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output_type</strong> – string naming the output type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.flash_address_from_build_conf">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flash_address_from_build_conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#runners.core.BuildConfiguration" title="runners.core.BuildConfiguration"><span class="pre">runners.core.BuildConfiguration</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.flash_address_from_build_conf" title="Permalink to this definition">¶</a></dt>
+<dd><p>If CONFIG_HAS_FLASH_LOAD_OFFSET is n in build_conf,
+return the CONFIG_FLASH_BASE_ADDRESS value. Otherwise, return
+CONFIG_FLASH_BASE_ADDRESS + CONFIG_FLASH_LOAD_OFFSET.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.get_flash_address">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_flash_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">argparse.Namespace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">build_conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#runners.core.BuildConfiguration" title="runners.core.BuildConfiguration"><span class="pre">runners.core.BuildConfiguration</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.get_flash_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method for extracting a flash address.</p>
+<p>If args.dt_flash is true, returns the address obtained from
+ZephyrBinaryRunner.flash_address_from_build_conf(build_conf).</p>
+<p>Otherwise (when args.dt_flash is False), the default value is
+returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.get_runners">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_runners</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#runners.core.ZephyrBinaryRunner" title="runners.core.ZephyrBinaryRunner"><span class="pre">runners.core.ZephyrBinaryRunner</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.get_runners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of all currently defined runner classes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>logging.Logger for this instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.name">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return this runner’s user-visible name.</p>
+<p>When choosing a name, pick something short and lowercase,
+based on the name of the tool (like openocd, jlink, etc.) or
+the target architecture/board (like xtensa etc.).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.popen_ignore_int">
+<span class="sig-name descname"><span class="pre">popen_ignore_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">subprocess.Popen</span></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.popen_ignore_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawn a child command, ensuring it ignores SIGINT.</p>
+<p>The returned subprocess.Popen object must be manually terminated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.require">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">require</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.require" title="Permalink to this definition">¶</a></dt>
+<dd><p>Require that a program is installed before proceeding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>program</strong> – name of the program that is required,
+or path to a program binary.</p>
+</dd>
+</dl>
+<p>If <code class="docutils literal notranslate"><span class="pre">program</span></code> is an absolute path to an existing program
+binary, this call succeeds. Otherwise, try to find the program
+by name on the system PATH.</p>
+<p>If the program can be found, its path is returned.
+Otherwise, raises MissingProgram.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs command (‘flash’, ‘debug’, ‘debugserver’, ‘attach’).</p>
+<p>This is the main entry point to this runner.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.run_client">
+<span class="sig-name descname"><span class="pre">run_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.run_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a client that handles SIGINT.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.run_server_and_client">
+<span class="sig-name descname"><span class="pre">run_server_and_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.run_server_and_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a server that ignores SIGINT, and a client that handles it.</p>
+<p>This routine portably:</p>
+<ul class="simple">
+<li><p>creates a Popen object for the <code class="docutils literal notranslate"><span class="pre">server</span></code> command which ignores
+SIGINT</p></li>
+<li><p>runs <code class="docutils literal notranslate"><span class="pre">client</span></code> in a subprocess while temporarily ignoring SIGINT</p></li>
+<li><p>cleans up the server after the client exits.</p></li>
+</ul>
+<p>It’s useful to e.g. open a GDB server and client.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="runners.core.ZephyrBinaryRunner.thread_info_enabled">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">thread_info_enabled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#runners.core.ZephyrBinaryRunner.thread_info_enabled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if self.build_conf has
+CONFIG_DEBUG_THREAD_INFO enabled.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="doing-it-by-hand">
+<h2><a class="toc-backref" href="#id32">Doing it By Hand</a><a class="headerlink" href="#doing-it-by-hand" title="Permalink to this headline">¶</a></h2>
+<p>If you prefer not to use West to flash or debug your board, simply
+inspect the build directory for the binaries output by the build
+system. These will be named something like <code class="docutils literal notranslate"><span class="pre">zephyr/zephyr.elf</span></code>,
+<code class="docutils literal notranslate"><span class="pre">zephyr/zephyr.hex</span></code>, etc., depending on your board’s build system
+integration. These binaries may be flashed to a board using
+alternative tools of your choice, or used for debugging as needed,
+e.g. as a source of symbol tables.</p>
+<p>By default, these West commands rebuild binaries before flashing and
+debugging. This can of course also be accomplished using the usual
+targets provided by Zephyr’s build system (in fact, that’s how these
+commands do it).</p>
+<p class="rubric">Footnotes</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sign.html" class="btn btn-neutral float-right" title="Signing Binaries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="extensions.html" class="btn btn-neutral" title="Extensions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

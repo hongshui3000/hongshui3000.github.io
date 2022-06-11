@@ -1,0 +1,659 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Zephyr Audio DSP Development on Chromebooks &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../../copyright.html" />
+    <link rel="next" title="Intel S1000 CRB" href="../../intel_s1000_crb/doc/index.html" />
+    <link rel="prev" title="Up Squared Audio DSP" href="../../intel_adsp_cavs15/doc/index.html" />
+  <link rel="shortcut icon" href="../../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Supported Boards</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../x86/index.html">x86 Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arm/index.html">ARM Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arm64/index.html">ARM64 Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arc/index.html">ARC Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../mips/index.html">MIPS Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nios2/index.html">NIOS II Boards</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">XTENSA Boards</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../esp32/doc/index.html">ESP32</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../esp32s2_saola/doc/index.html">ESP32-S2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../esp_wrover_kit/doc/index.html">ESP-WROVER-KIT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../heltec_wifi_lora32_v2/doc/index.html">Heltec WiFi LoRa 32 (V2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../intel_adsp_cavs15/doc/index.html">Up Squared Audio DSP</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Zephyr Audio DSP Development on Chromebooks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initial-tgl-chromebook-setup">Initial TGL Chromebook Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#install-crouton">Install Crouton</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-and-installing-a-custom-kernel">Building and Installing a Custom Kernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-and-run-a-zephyr-application">Build and Run a Zephyr Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#misc-references">Misc References</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../intel_s1000_crb/doc/index.html">Intel S1000 CRB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../odroid_go/doc/index.html">ODROID-GO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qemu_xtensa/doc/index.html">Xtensa Emulation (QEMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xt-sim/doc/index.html">Xtensa simulator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../posix/index.html">POSIX/NATIVE Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../riscv/index.html">RISCV Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sparc/index.html">SPARC Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../shields/index.html">Shields</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Supported Boards</a> &raquo;</li>
+        
+          <li><a href="../../index.html">XTENSA Boards</a> &raquo;</li>
+        
+      <li>Zephyr Audio DSP Development on Chromebooks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/boards/xtensa/intel_adsp_cavs25/doc/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="zephyr-audio-dsp-development-on-chromebooks">
+<span id="id1"></span><h1>Zephyr Audio DSP Development on Chromebooks<a class="headerlink" href="#zephyr-audio-dsp-development-on-chromebooks" title="Permalink to this headline">¶</a></h1>
+<p>The Audio DSP on Intel Chromebooks is configured to use the SOF
+“Community” key for firmware signing, and can therefore accept
+arbitrary user-developed firmware like Zephyr applications (of which
+SOF is one), including the Zephyr samples and test suite.</p>
+<div class="section" id="initial-tgl-chromebook-setup">
+<h2>Initial TGL Chromebook Setup<a class="headerlink" href="#initial-tgl-chromebook-setup" title="Permalink to this headline">¶</a></h2>
+<p>(These instructions were written specifically to the Asus Flip CX5
+device code named “delbin”.  But they should be reasonably applicable
+to any recent Intel device.)</p>
+<p>Power the device on and connect it to a wireless network.  It will
+likely want to download a firmware update (mine did).  Let this finish
+first, to ensure you have two working OS images.</p>
+<div class="section" id="enable-developer-mode">
+<h3>Enable Developer Mode<a class="headerlink" href="#enable-developer-mode" title="Permalink to this headline">¶</a></h3>
+<p>Power the device off (menu in lower right, or hold the power button
+on the side)</p>
+<p>Hold Esc + Refresh (the arrow-in-a-circle “reload” key above “3”) and
+hit the power key to enter recovery mode.  Note: the touchscreen and
+pad don’t work in recovery mode, use the arrow keys to navigate.</p>
+<p>Select “Advanced Options”, then “Enable Developer Mode” and confirm
+that you really mean it.  Select “Boot from Internal Storage” at the
+bootloader screen.  You will see this screen every time the machine
+boots now, telling you that the boot is unverified.</p>
+<p>Wait while the device does the required data wipe.  My device takes
+about 15 minutes to completely write the stateful partition.  On
+reboot, select “Boot from Internal Storage” again and set it up
+(again) with Google account.</p>
+</div>
+<div class="section" id="make-a-recovery-drive">
+<h3>Make a Recovery Drive<a class="headerlink" href="#make-a-recovery-drive" title="Permalink to this headline">¶</a></h3>
+<p>You will at some point wreck your device and need a recovery stick.
+Install the Chromebook Recovery Utility from the Google Web Store and
+make one.</p>
+<p>You can actually do this on any machine (and any OS) with Chrome
+installed, but it’s easiest on the Chromebook because it knows its
+device ID (for example “DELBIN-XHVI D4B-H4D-G4G-Q9A-A9P” for the Asus
+Tiger Lake board).  Note that recovery, when it happens, will not
+affect developer mode or firmware settings but it <strong>will wipe out the
+root filesystem and /usr/local customizations you have made</strong>.  So
+plan on a strategy that can tolerate data loss on the device you’re
+messing with!</p>
+</div>
+<div class="section" id="make-the-root-filesystem-writable">
+<h3>Make the root filesystem writable<a class="headerlink" href="#make-the-root-filesystem-writable" title="Permalink to this headline">¶</a></h3>
+<p>For security, ChromeOS signs and cryptographically verifies (using
+Linux’s dm-verity feature) all access to the read-only root
+filesystem.  Mucking with the rootfs (for example, to install modules
+for a custom kernel) requires that the dm-verity layer be turned off:</p>
+<p>First open a terminal with Ctrl-Alt-T.  Then at the “crosh&gt; ” prompt
+issue the “shell” command to get a shell running as the “chronos”
+user.  Finally (in developer mode) a simple “sudo su -” will get you a
+root prompt.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">crosh&gt; shell</span>
+<span class="gp">chronos@localhost / $ </span>sudo su -
+<span class="go">localhost ~ #</span>
+</pre></div>
+</div>
+<p>Now you need to turn of signature verification in the bootloader
+(because obviously we’ll be breaking whatever signature existed).
+Note that signature verification is something done by the ROM
+bootloader, not the OS, and this setting is a (developer-mode-only)
+directive to that code:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cros# crossystem dev_boot_signed_only=0</span>
+</pre></div>
+</div>
+<p>(<em>Note: for clarity, commands in this document entered at the ChromeOS
+core shell will be prefixed with a hostname of cros.</em>)</p>
+<p>Next you disable the validation step:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cros# /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification</span>
+</pre></div>
+</div>
+<p><strong>THIS COMMAND WILL FAIL</strong>, give you an error that you are changing
+the setting for the entire running system, and suggest an alternative
+“–paritions X” argument to use that modifies only the currently used
+partition.  Run that modified command, then reboot.</p>
+<p>After rebooting, you will notice that your chromebook boots with the
+raw storage device (e.g. /dev/nvme0n1p5) mounted as root and not the
+“dm-0” verity device, and that the rootfs is read-write.</p>
+<p>Note: What this command actually does is modify the command line of
+the installed kernel image (it saves a backup in
+/mnt/stateful_partition/cros_sign_backups) so that it specifies
+“root=&lt;guid&gt;” and not “root=dm-0”.  It does seem to leave the other
+verity configuration in place though, it just doesn’t try to mount the
+resulting (now-invalid!) partition.</p>
+<p>Metanote: The astute will note that we’re probably going to throw this
+kernel out, and that we could probably have just editted the command
+line of the new kernel instead of flashing and rebooting into this
+modified one.  But that’s too many balls to juggle at once for me.</p>
+</div>
+<div class="section" id="enable-chromeos-ssh">
+<h3>Enable ChromeOS SSH<a class="headerlink" href="#enable-chromeos-ssh" title="Permalink to this headline">¶</a></h3>
+<p>Once you are booted with a writable partition, you can turn on the
+built-in ssh server with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cros# /usr/libexec/debugd/helpers/dev_features_ssh</span>
+</pre></div>
+</div>
+<p>By default neither the “chronos” user nor root accounts have
+passwords, so unless you want to type a ssh key in by hand, you
+probably want to set a password for the first login (before you run
+ssh-copy-id, of course):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cros# passwd</span>
+</pre></div>
+</div>
+<p>Now ssh into the chromebook and add your key to
+<code class="docutils literal notranslate"><span class="pre">.ssh/authorized_keys</span></code> as you do for any Linux system.</p>
+</div>
+</div>
+<div class="section" id="install-crouton">
+<h2>Install Crouton<a class="headerlink" href="#install-crouton" title="Permalink to this headline">¶</a></h2>
+<p>The Zephyr integration tools require a proper Linux environment and
+won’t run on ChromeOS’s minimal distro.  So we need to install a Linux
+personality.  <strong>DO NOT</strong> bother installing the “Linux Development
+Environment” (Crostini) from the ChromeOS Developer settings.  This
+personality runs inside a VM, where our tools need access to the real
+kernel running on the real hardware.  Instead install Crouton
+(<a class="reference external" href="https://github.com/dnschneid/crouton">https://github.com/dnschneid/crouton</a>), which is a community
+chroot-based personality that preserves access to the real hardware
+sysfs and /dev filesystem.  These instructions install the “cli-extra”
+package list, there are X11-enabled ones available too if you prefer
+to work on the device screen directly.  See the project page, etc…</p>
+<p>At a root shell, grab the installer and run it (note: /usr/local is
+the only writable filesystem without noexec, you must place the binary
+there for it to run!):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cros# mkdir -p /usr/local/bin</span>
+<span class="go">cros# curl -L https://github.com/dnschneid/crouton/raw/master/installer/crouton \</span>
+<span class="go">              &gt; /usr/local/bin/crouton</span>
+<span class="go">cros# chmod 755 /usr/local/bin/crouton</span>
+<span class="go">cros# crouton -r focal -t cli-extra</span>
+</pre></div>
+</div>
+<p>Start the Crouton chroot environment:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cros# startcli</span>
+</pre></div>
+</div>
+<p>Now you are typing commands into the Ubuntu environment.  Enable
+inbound ssh on Crouton, but on a port other than 22 (which is used for
+the native ChromeOS ssh server).  I’m using 222 here (which is easy to
+remember, and not a registered port in /etc/services):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">crouton# apt install iptables openssh-server</span>
+<span class="go">crouton# echo &quot;Port 222&quot; &gt;&gt; /etc/ssh/sshd_config</span>
+<span class="go">crouton# mkdir /run/sshd</span>
+<span class="go">crouton# iptables -I INPUT -p tcp --dport 222 -j ACCEPT</span>
+<span class="go">crouton# /usr/sbin/sshd</span>
+</pre></div>
+</div>
+<p>(<em>As above: note that we have introduced a hostname of “crouton” to
+refer to the separate Linux personality.</em>)</p>
+<p>NOTE: the mkdir, iptables and sshd commands need to be run every time
+the chroot is restarted.  You can put them in /etc/rc.local for
+convenience.  Crouton doesn’t run systemd (because it can’t – it
+doesn’t own the system!) so Ubuntu services like openssh-server don’t
+know how to start themselves.</p>
+</div>
+<div class="section" id="building-and-installing-a-custom-kernel">
+<h2>Building and Installing a Custom Kernel<a class="headerlink" href="#building-and-installing-a-custom-kernel" title="Permalink to this headline">¶</a></h2>
+<p>On your build host, grab a copy of the ChromeOS kernel tree.  The
+shipping device is using a 5.4 kernel, but the 5.10 tree works for me
+and seems to have been backporting upstream drivers such that its main
+hardware is all quite recent (5-6 weeks behind mainline or so).  We
+place it in the home directory here for simplicity:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dev$ cd $HOME</span>
+<span class="go">dev$ git clone https://chromium.googlesource.com/chromiumos/third_party/kernel</span>
+<span class="go">dev$ cd kernel</span>
+<span class="go">dev$ git checkout chromeos-5.10</span>
+</pre></div>
+</div>
+<p>(<em>Once again, we are typing into a different shell.  We introduce the
+hostname “dev” here to represent the development machine on which you
+are building kernels and Zephyr apps. It is possible to do this on the
+chromebook directly, but not advisable.  Remember the discussion above
+about requiring a drive wipe on system recovery!</em>)</p>
+<p>Note: you probably have an existing Linux tree somewhere already.  If
+you do it’s much faster to add this as a remote there and just fetch
+the deltas – ChromeOS tracks upstream closely.</p>
+<p>Now you need a .config file.  The Chromebook kernel ships with the
+“configs” module built which exposes this in the running kernel.  You
+just have to load the module and read the file.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dev$ cd /path/to/kernel</span>
+<span class="go">dev$ ssh root@cros modprobe configs</span>
+<span class="go">dev$ ssh root@cros zcat /proc/config.gz &gt; .config</span>
+</pre></div>
+</div>
+<p>You will need to set some custom configuration variables differently
+from ChromeOS defaults (you can edit .config directly, or use
+menuconfig, etc…):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_HUGETLBFS=y</span></code> - The Zephyr loader tool requires this</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CONFIG_EXTRA_FIRMWARE_DIR=n</span></code> - This refers to a build directory</dt><dd><p>in Google’s build environment that we will not have.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CONFIG_SECURITY_LOADPIN=n</span></code> - Pins modules such that they will</dt><dd><p>only load from one filesystem.  Annoying restriction for custom
+kernels.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CONFIG_MODVERSIONS=n</span></code> - Allow modules to be built and installed</dt><dd><p>from modified “dirty” build trees.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Now build your kernel just as you would any other:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dev$ make olddefconfig     # Or otherwise update .config</span>
+<span class="go">dev$ make bzImage modules  # Probably want -j&lt;whatever&gt; for parallel build</span>
+</pre></div>
+</div>
+<p>The modules you can copy directly to the (now writable) rootfs on the
+device.  Note that this filesystem has very limited space (it’s
+intended to be read only), so the INSTALL_MOD_STRIP=1 is absolutely
+required, and you may find you need to regularly prune modules from
+older kernels to make space:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dev$ make INSTALL_MOD_PATH=mods INSTALL_MOD_STRIP=1 modules_install</span>
+<span class="go">dev$ (cd mods/lib/modules; tar cf - .) | ssh root@cros &#39;(cd /lib/modules; tar xfv -)&#39;</span>
+</pre></div>
+</div>
+<div class="section" id="pack-and-install-chromeos-kernel-image">
+<h3>Pack and Install ChromeOS Kernel Image<a class="headerlink" href="#pack-and-install-chromeos-kernel-image" title="Permalink to this headline">¶</a></h3>
+<p>The kernel bzImage file itself needs to be signed and packaged into a
+ChromeOS vboot package and written directly to the kernel partition.
+Thankfully the tools to do this are shipped in Debian/Ubuntu
+repositories already:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt install vboot-utils vboot-kernel-utils
+</pre></div>
+</div>
+<p>Find the current kernel partition on the device.  You can get this by
+comparing the “kernel_guid” command line parameter (passed by the
+bootloader) with the partition table of the boot drive, for example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dev$ KPART=`ssh root@cros &#39;fdisk -l -o UUID,Device /dev/nvme0n1 | \</span>
+<span class="go">                           grep -i $(sed &quot;s/.*kern_guid=//&quot; /proc/cmdline \</span>
+<span class="go">                                     | sed &quot;s/ .*//&quot;) \</span>
+<span class="go">                           | sed &quot;s/.* //&quot;&#39;`</span>
+<span class="go">dev$ echo $KPART</span>
+<span class="go">/dev/nvme0n1p4</span>
+</pre></div>
+</div>
+<p>Extract the command line from that image into a local file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dev$ ssh root@cros vbutil_kernel --verify /dev/$KPART | tail -1 &gt; cmdline.txt</span>
+</pre></div>
+</div>
+<p>Now you can pack a new kernel image using the vboot tooling.  Most of
+these arguments are boilerplate and always the same.  The keys are
+there because the boot requires a valid signature, even though as
+configured it won’t use it.  Note the cannot-actually-be-empty dummy
+file passed as a “bootloader”, which is a holdover from previous ROM
+variants which needed an EFI stub.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dev$ echo dummy &gt; dummy.efi</span>
+<span class="go">dev$ vbutil_kernel --pack kernel.img --config cmdline.txt \</span>
+<span class="go">       --vmlinuz arch/x86_64/boot/bzImage \</span>
+<span class="go">       --keyblock /usr/share/vboot/devkeys/kernel.keyblock \</span>
+<span class="go">       --signprivate /usr/share/vboot/devkeys/kernel_data_key.vbprivk \</span>
+<span class="go">       --version 1 --bootloader dummy.efi --arch x86_64</span>
+</pre></div>
+</div>
+<p>You can verify this image if you like with “vbutil_kernel –verify”.</p>
+<p>Now just copy up the file and write it to the partition on the device:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>scp kernel.img root@cros:/tmp
+<span class="gp">$ </span>ssh root@cros dd <span class="k">if</span><span class="o">=</span>/tmp/kernel.img <span class="nv">of</span><span class="o">=</span>/dev/nvme0n1p4
+</pre></div>
+</div>
+<p>Now reboot, and if all goes well you will find yourself running in
+your new kernel.</p>
+</div>
+<div class="section" id="wifi-firmware-fixup">
+<h3>Wifi Firmware Fixup<a class="headerlink" href="#wifi-firmware-fixup" title="Permalink to this headline">¶</a></h3>
+<p>On the Tiger Lake Chromebook, the /lib/firmware tree is a bit stale
+relative to the current 5.10 kernel.  The iwlwifi driver requests a
+firmware file that doesn’t exist, leading to a device with no network.
+It’s a simple problem, but a catastrophic drawback if uncorrected.  It
+seems to be sufficient just to link the older version to the new name.
+(It would probably be better to copy the proper version from
+/lib/firmware from a recent kernel.org checkout.):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cros# cd /lib/firmware</span>
+<span class="go">cros# ln -s iwlwifi-QuZ-a0-hr-b0-62.ucode iwlwifi-QuZ-a0-hr-b0-64.ucode</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="build-and-run-a-zephyr-application">
+<h2>Build and Run a Zephyr Application<a class="headerlink" href="#build-and-run-a-zephyr-application" title="Permalink to this headline">¶</a></h2>
+<p>Finally, with your new kernel booted, you are ready to run Zephyr
+code.</p>
+<div class="section" id="build-rimage-signing-tool">
+<h3>Build rimage Signing Tool<a class="headerlink" href="#build-rimage-signing-tool" title="Permalink to this headline">¶</a></h3>
+<p>First download and build a copy of the Sound Open Firmware “rimage”
+tool (these instructions put it in your home directory for clarity,
+but anywhere is acceptable):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dev$ cd $HOME</span>
+<span class="go">dev$ git clone https://github.com/thesofproject/rimage</span>
+<span class="go">dev$ cd rimage/</span>
+<span class="go">dev$ git submodule init</span>
+<span class="go">dev$ git submodule update</span>
+<span class="go">dev$ cmake .</span>
+<span class="go">dev$ make</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="copy-integration-scripting-to-chromebook">
+<h3>Copy Integration Scripting to Chromebook<a class="headerlink" href="#copy-integration-scripting-to-chromebook" title="Permalink to this headline">¶</a></h3>
+<p>There are two python scripts needed on the device, to be run inside
+the Crouton environment installed above.  Copy them:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dev$ scp boards/xtensa/intel_adsp_cavs15/tools/cavs-fw-v25.py root@crouton:</span>
+<span class="go">dev$ scp boards/xtensa/intel_adsp_cavs15/tools/adsplog.py root@crouton:</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-and-sign-zephyr-app">
+<h3>Build and Sign Zephyr App<a class="headerlink" href="#build-and-sign-zephyr-app" title="Permalink to this headline">¶</a></h3>
+<p>Zephyr applications build conventionally for this platform, and are
+signed with “west flash” with just a few extra arguments.  Note that
+the key in use for the Tiger Lake DSP is the “3k” key from SOF, not
+the original that is used with older hardware.  The output artifact is
+a “zephyr.ri” file to be copied to the device.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dev$ west build -b intel_adsp_cavs25 samples/hello_world</span>
+<span class="go">dev$ west sign --tool-data=~/rimage/config -t ~/rimage/rimage -- \</span>
+<span class="go">            -k $ZEPHYR_BASE/../modules/audio/sof/keys/otc_private_key_3k.pem</span>
+<span class="go">dev$ scp build/zephyr/zephyr.ri root@crouton:</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-it">
+<h3>Run it!<a class="headerlink" href="#run-it" title="Permalink to this headline">¶</a></h3>
+<p>The loader script takes the signed rimage file as its argument.  Once
+it reports success, the application begins running immediately and its
+console output (in the SOF shared memory trace buffer) can be read by
+the logging script.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">crouton# ./cavs-fw-v25.py zephyr.ri</span>
+<span class="go">crouton# ./adsplog.py</span>
+<span class="go">Hello World! intel_adsp_cavs25</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="misc-references">
+<h2>Misc References<a class="headerlink" href="#misc-references" title="Permalink to this headline">¶</a></h2>
+<p>Upstream documentation from which these instructions were drawn:</p>
+<p>This page has the best reference for the boot process:</p>
+<p><a class="reference external" href="http://www.chromium.org/chromium-os/chromiumos-design-docs/disk-format">http://www.chromium.org/chromium-os/chromiumos-design-docs/disk-format</a></p>
+<p>This is great too, with an eye toward booting things other than ChromeOS:</p>
+<p><a class="reference external" href="https://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices/custom-firmware">https://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices/custom-firmware</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../intel_s1000_crb/doc/index.html" class="btn btn-neutral float-right" title="Intel S1000 CRB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../intel_adsp_cavs15/doc/index.html" class="btn btn-neutral" title="Up Squared Audio DSP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

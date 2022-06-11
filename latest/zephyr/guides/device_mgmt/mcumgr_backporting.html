@@ -1,0 +1,468 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Fixing and backporting fixes to Zephyr v2.7 MCUmgr &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="SMP Protocol Specification" href="smp_protocol.html" />
+    <link rel="prev" title="MCUmgr" href="mcumgr.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Device Management</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mcumgr.html">MCUmgr</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Fixing and backporting fixes to Zephyr v2.7 MCUmgr</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#possible-origins-of-a-code-change">Possible origins of a code change</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#applying-fixes-to-previous-versions-of-mcumgr">Applying fixes to previous versions of MCUmgr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-management">Configuration management</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="smp_protocol.html">SMP Protocol Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dfu.html">Device Firmware Upgrade</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html">Over-the-Air Update</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Device Management</a> &raquo;</li>
+        
+      <li>Fixing and backporting fixes to Zephyr v2.7 MCUmgr</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/device_mgmt/mcumgr_backporting.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fixing-and-backporting-fixes-to-zephyr-v2-7-mcumgr">
+<span id="management-fixing-prev-mcumgr"></span><h1>Fixing and backporting fixes to Zephyr v2.7 MCUmgr<a class="headerlink" href="#fixing-and-backporting-fixes-to-zephyr-v2-7-mcumgr" title="Permalink to this headline">¶</a></h1>
+<p>The processes described in this document apply to both the zephyr repository itself and the MCUmgr <a class="reference internal" href="../modules.html#modules"><span class="std std-ref">module</span></a> defined in <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/west.yml">west.yml</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently, the backporting process, described in this document, is required only when providing
+changes to Zephyr version 2.7 LTS</p>
+</div>
+<p>There are two different processes: one for issues that have also been fixed in the current
+version of Zephyr (backports), and one for issues that are being fixed only in a previous version.</p>
+<p>The upstream MCUmgr repository is located <a class="reference external" href="https://github.com/apache/mynewt-mcumgr">in this page</a>.
+The Zephyr fork used in version 2.7 and earlier is <a class="reference external" href="https://github.com/zephyrproject-rtos/mcumgr">located here</a>.
+Versions of Zephyr past 2.7 use the MCUmgr library that is <a class="reference external" href="https://github.com/zephyrproject-rtos/zephyr/tree/main/subsys/mgmt/mcumgr/lib">part of the Zephyr code base</a>.</p>
+<div class="section" id="possible-origins-of-a-code-change">
+<h2>Possible origins of a code change<a class="headerlink" href="#possible-origins-of-a-code-change" title="Permalink to this headline">¶</a></h2>
+<p>In Zephyr version 2.7 and earlier, you must first apply the fix
+to the upstream repository of MCUmgr and then bring it to Zephyr with snapshot updates.</p>
+<p>As such, there are four possible ways to apply a change to the 2.7 branch:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The fix, done directly to the Zephyr held code of the MCUmgr library, is backported to the <code class="docutils literal notranslate"><span class="pre">v2.7-branch</span></code>.</p></li>
+<li><p>The fix, ported to the Zephyr held code from the upstream repository, is backported to the <code class="docutils literal notranslate"><span class="pre">v2.7-branch</span></code>.</p></li>
+<li><dl class="simple">
+<dt>The fix, done upstream and no longer relevant to the current version, is directly backported</dt><dd><p>to the <code class="docutils literal notranslate"><span class="pre">v2.7-branch</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The fix, not present upstream and not relevant for the current version of Zephyr, is</dt><dd><p>directly applied to the <code class="docutils literal notranslate"><span class="pre">v2.7-branch</span></code>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>The first three cases are cases of <em>backports</em> , the last one is a case of a <em>new fix</em> and has no
+corresponding fix in the current version.</p>
+</div>
+<div class="section" id="applying-fixes-to-previous-versions-of-mcumgr">
+<span id="management-fixing-prev-mcumgr-submit"></span><h2>Applying fixes to previous versions of MCUmgr<a class="headerlink" href="#applying-fixes-to-previous-versions-of-mcumgr" title="Permalink to this headline">¶</a></h2>
+<p>This section indicates how to apply fixes to previous versions of MCUmgr.</p>
+<div class="section" id="creating-a-bug-report">
+<h3>Creating a bug report<a class="headerlink" href="#creating-a-bug-report" title="Permalink to this headline">¶</a></h3>
+<p>Every proposed fix requires a bug report submitted for the specified version of Zephyr affected by the bug.</p>
+<p>In case the reported bug in a previous version has already been fixed in the current version, the description
+of the bug must be copied with the following:</p>
+<ul class="simple">
+<li><p>Additional references to the bug in the current version</p></li>
+<li><p>The PR for the current version</p></li>
+<li><p>The SHAs of the commits, if the PR has already been merged</p></li>
+</ul>
+<p>You must also apply the <code class="docutils literal notranslate"><span class="pre">backport</span> <span class="pre">v2.7-branch</span></code> label to the bug report.</p>
+</div>
+<div class="section" id="creating-the-pull-request-for-the-fix">
+<h3>Creating the pull request for the fix<a class="headerlink" href="#creating-the-pull-request-for-the-fix" title="Permalink to this headline">¶</a></h3>
+<p>You can either create a <em>backport pull request</em> or a <em>new-fix pull request</em>.</p>
+<div class="section" id="creating-backport-pull-requests">
+<h4>Creating backport pull requests<a class="headerlink" href="#creating-backport-pull-requests" title="Permalink to this headline">¶</a></h4>
+<p>Backporting a fix means that some or all of the fix commits, as they exist in the current version,
+are ported to a previous version.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Backporting requires the fix for the current version to be already merged.</p>
+</div>
+<p>To create a backport pull request, do the following:</p>
+<ol class="arabic simple">
+<li><p>Port the fix commits from the current version to the previous version.
+Even if some of the commits require changes, keep the commit messages of all the ported commits
+as close to the ones in the original commits as possible, adding the following line:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&quot;Backporting commit &lt;sha&gt;&quot;
+
+``&lt;sha&gt;`` indicates the SHA of the commit after it has been already merged in the current version.
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Create the pull request selecting <code class="docutils literal notranslate"><span class="pre">v2.7-branch</span></code> as the merge target.</p></li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">west.yml</span></code> within Zephyr, creating a pull-request to update the MCUmgr library referenced in
+Zephyr 2.7.</p></li>
+</ol>
+</div>
+<div class="section" id="creating-new-fix-pull-requests">
+<h4>Creating new-fix pull requests<a class="headerlink" href="#creating-new-fix-pull-requests" title="Permalink to this headline">¶</a></h4>
+<p>When the fix needed does not have a corresponding fix in the current version, the bug report
+must follow the ordinary process.</p>
+<ol class="arabic simple">
+<li><p>Create the pull request selecting <code class="docutils literal notranslate"><span class="pre">v2.7-branch</span></code> as the merge target.</p></li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">west.yml</span></code> within Zephyr, creating a pull-request to update the MCUmgr library referenced in
+Zephyr 2.7.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="configuration-management">
+<h2>Configuration management<a class="headerlink" href="#configuration-management" title="Permalink to this headline">¶</a></h2>
+<p>This chapter describes the maintainers’ side of accepting and merging fixes and backports.</p>
+<div class="section" id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h3>
+<p>As a maintainer, these are the steps required before proceeding with the merge process:</p>
+<p>1. Check if the author has followed the correct steps that are required to apply the fix, as described in
+<a class="reference internal" href="#management-fixing-prev-mcumgr-submit"><span class="std std-ref">Applying fixes to previous versions of MCUmgr</span></a>.</p>
+<ol class="arabic simple">
+<li><p>Ensure that the author of the fix has also provided the <code class="docutils literal notranslate"><span class="pre">west.yml</span></code> update for Zephyr 2.7.</p></li>
+</ol>
+<p>The specific merging process depends on where the fix comes from and whether it is a <em>backport</em> or a <em>new
+fix</em>.</p>
+</div>
+<div class="section" id="merging-a-backported-fix">
+<h3>Merging a backported fix<a class="headerlink" href="#merging-a-backported-fix" title="Permalink to this headline">¶</a></h3>
+<p>There are two possible sources of backports:</p>
+<ul class="simple">
+<li><p>The Zephyr code base</p></li>
+<li><p>A direct fix from upstream</p></li>
+</ul>
+<p>Both cases are similar and differ only in the branch name.</p>
+<p>To merge a backported fix after the pull request for the fix has gone through the review process,
+as a maintainer, do the following:</p>
+<ol class="arabic">
+<li><p>Create a branch named as follow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">backport</span><span class="o">-&lt;</span><span class="n">source</span><span class="o">&gt;-&lt;</span><span class="n">pr_num</span><span class="o">&gt;-</span><span class="n">to_v2</span><span class="mf">.7</span><span class="o">-</span><span class="n">branch</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;source&gt;</span></code> can be one of the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">upstream</span></code> - if the fix has originally been merged to the upstream repository.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zephyr</span></code> - if the fix has been applied to the Zephyr internal MCUmgr library (past 2.7 versions).</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;pr_num&gt;</span></code> is the number of the original pull request that has already been merged.</p>
+<p>For example, a branch named <code class="docutils literal notranslate"><span class="pre">backport-upstream-137-to-v2.7-branch</span></code> indicates a backport of pull
+request 137, which has already been merged to the upstream repository of MCUmgr.</p>
+</li>
+<li><p>Push the reviewed pull-request branch to the newly created branch and merge the backport branch
+to <code class="docutils literal notranslate"><span class="pre">v2.7-branch</span></code>.</p></li>
+</ol>
+</div>
+<div class="section" id="merging-a-new-fix">
+<h3>Merging a new fix<a class="headerlink" href="#merging-a-new-fix" title="Permalink to this headline">¶</a></h3>
+<p>Merging a new fix, that is not a backport of either any upstream or Zephyr fix, does not require any special
+treatment. Apply the fix directly at the top of <code class="docutils literal notranslate"><span class="pre">v2.7-branch</span></code>.</p>
+</div>
+<div class="section" id="merge-west-yml">
+<h3>Merge west.yml<a class="headerlink" href="#merge-west-yml" title="Permalink to this headline">¶</a></h3>
+<p>As an MCUmgr maintainer, you may not be able to merge the <code class="docutils literal notranslate"><span class="pre">west.yml</span></code> update, to introduce the fix to Zephyr.
+However, you are responsible for such a merge to happen as soon as possible after the MCUmgr fixes have been
+applied to the <code class="docutils literal notranslate"><span class="pre">v2.7-branch</span></code> of the MCUmgr.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="smp_protocol.html" class="btn btn-neutral float-right" title="SMP Protocol Specification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mcumgr.html" class="btn btn-neutral" title="MCUmgr" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

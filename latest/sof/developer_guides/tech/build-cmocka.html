@@ -1,0 +1,430 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Build Cmocka for Xtensa &mdash; SOF Project 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/sof.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Build on Windows 10 with WSL" href="compile_wsl.html" />
+    <link rel="prev" title="Test Audio Quality" href="../testbench/test_audio_quality.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SOF Project
+          
+
+          
+            
+            <img src="../../_static/logo_sof_white_200w.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://sofproject.org">SOF project website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction to the SOF Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architectures/index.html">Supported Architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/index.html">Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algos/index.html">Algorithms</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../unit_tests.html">Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xtrun/index.html">Xtensa Simulator (xt-run)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/topology.html">SOF Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../uuid/index.html">UUID Usage in SOF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugability/index.html">Debugability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tuning/sof-ctl.html">Runtime Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rimage/index.html">Rimage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_driver/index.html">SOF Linux Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/virtualization.html">SOF VirtIO design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/running.html">Run SOF VirtIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fuzzing/index.html">Fuzzing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testbench/index.html">Testbench</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#technical-notes">Technical Notes</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Build Cmocka for Xtensa</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cmocka-fork">Cmocka fork</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#simple-build-on-linux">Simple build on Linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cross-platform-build">Cross-platform build</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="compile_wsl.html">Build on Windows 10 with WSL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../release.html">Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contributing to the Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tsc/index.html">Technical Steering Committee (TSC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maintainers/index.html">SOF admin, maintainers and code owners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../presentations/index.html">Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SOF Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Developer Guides</a> &raquo;</li>
+        
+      <li>Build Cmocka for Xtensa</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/developer_guides/tech/build-cmocka.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="build-cmocka-for-xtensa">
+<span id="build-cmocka"></span><h1>Build Cmocka for Xtensa<a class="headerlink" href="#build-cmocka-for-xtensa" title="Permalink to this headline">¶</a></h1>
+<p>Cmocka for SOF is built automatically by default, however you may need a prebuilt version that can be used with <a class="reference internal" href="../firmware/cmake.html#cmocka-directory-label"><span class="std std-ref">CMOCKA_DIRECTORY</span></a>.</p>
+<p>This article exaplains how to build Cmocka manually.
+Please note that it currently works only for Xtensa xt-* toolchain.
+Xtensa GCC toolchain is not supported yet.</p>
+<div class="section" id="cmocka-fork">
+<h2>Cmocka fork<a class="headerlink" href="#cmocka-fork" title="Permalink to this headline">¶</a></h2>
+<p>We use our Cmocka fork that adds some options for embedded compilers:</p>
+<dl class="simple">
+<dt>WITH_POSITION_INDEPENDENT_CODE</dt><dd><p>Some compilers cannot compile CMake’s test program with PIC,
+so you can disable it with this option.</p>
+</dd>
+<dt>WITH_TINY_CONFIG</dt><dd><p>Usually compiler checks are cheap, so configuration is quick.
+However many compilers are expensive to call,
+so this option can be used to minimize checks count.</p>
+</dd>
+<dt>WITH_SHARED_LIB</dt><dd><p>For compilers that cannot build shared libs and still want to
+use make / make install for making prebuilt libs</p>
+</dd>
+</dl>
+<p>All changes made to Cmocka are enabled with these options, without them it works just like vanilla Cmocka.</p>
+<p>Clone repo and enter its directory, because all examples will be executed there:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/thesofproject/cmocka
+<span class="nb">cd</span> cmocka
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-build-on-linux">
+<h2>Simple build on Linux<a class="headerlink" href="#simple-build-on-linux" title="Permalink to this headline">¶</a></h2>
+<p>On any system that CMake identifies as <a class="reference external" href="https://cmake.org/cmake/help/latest/variable/UNIX.html">UNIX</a>, you can just call following
+commands and it should work:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> build
+cmake <span class="se">\</span>
+   -DCMAKE_C_COMPILER<span class="o">=</span>xt-xcc <span class="se">\</span>
+   -DWITH_STATIC_LIB<span class="o">=</span>ON <span class="se">\</span>
+   -DWITH_SHARED_LIB<span class="o">=</span>OFF <span class="se">\</span>
+   -DWITH_EXAMPLES<span class="o">=</span>OFF <span class="se">\</span>
+   -DWITH_POSITION_INDEPENDENT_CODE<span class="o">=</span>OFF <span class="se">\</span>
+   -DCMAKE_INSTALL_PREFIX<span class="o">=</span>install <span class="se">\</span>
+   ..
+make install
+</pre></div>
+</div>
+<p>Arguments used:</p>
+<dl class="simple">
+<dt>CMAKE_C_COMPILER</dt><dd><p>We specify “xt-xcc” as compiler that CMake should use
+to compile C files.</p>
+</dd>
+<dt>WITH_STATIC_LIB</dt><dd><p>By default static lib for Cmocka is not built,
+so we enable it.</p>
+</dd>
+<dt>WITH_SHARED_LIB</dt><dd><p>By default Cmocka builds shared lib, but we don’t want that.</p>
+</dd>
+<dt>WITH_EXAMPLES</dt><dd><p>Examples don’t work without shared lib, so we disable them.</p>
+</dd>
+<dt>WITH_POSITION_INDEPENDENT_CODE</dt><dd><p>PIC will make CMake’s testing programs
+to fail, so disable it.</p>
+</dd>
+<dt>CMAKE_INSTALL_PREFIX</dt><dd><p>By default, it will go to host system binary files
+(for example /usr/bin), we change it to “install”, so <strong>make install</strong>, will
+place output to <strong>build/install</strong> directory. This is the directory that you
+can use as input for <a class="reference internal" href="../firmware/cmake.html#cmocka-directory-label"><span class="std std-ref">CMOCKA_DIRECTORY</span></a> in SOF build system.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="cross-platform-build">
+<h2>Cross-platform build<a class="headerlink" href="#cross-platform-build" title="Permalink to this headline">¶</a></h2>
+<p>In order to build Cmocka for generic system, you need to use
+<a class="reference external" href="https://cmake.org/cmake/help/latest/variable/CMAKE_TOOLCHAIN_FILE.html">CMAKE_TOOLCHAIN_FILE</a>.</p>
+<p>Create <strong>xt-toolchain-for-cmocka.cmake</strong> file with following contents:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Generic because we build for embedded system</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_SYSTEM_NAME</span> <span class="s">Generic</span><span class="p">)</span>
+<span class="c"># It should be always set when CMAKE_SYSTEM_NAME is changed</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_SYSTEM_VERSION</span> <span class="s">1</span><span class="p">)</span>
+
+<span class="c"># Make CMake use &quot;xt-xcc&quot; for compiling C files</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span> <span class="s">xt-xcc</span><span class="p">)</span>
+<span class="c"># Override ar and ranlib tools that CMake should use for linking lib</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_AR</span> <span class="s">xt-ar</span> <span class="s">CACHE</span> <span class="s">STRING</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_RANLIB</span>     <span class="s">xt-ranlib</span> <span class="s">CACHE</span> <span class="s">STRING</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="c"># Cmocka is written in C99, but for some reason it sets this flag, only on Posix</span>
+<span class="c"># We set up it here, because our system is Generic</span>
+<span class="nb">add_definitions</span><span class="p">(</span><span class="s2">&quot;-std=gnu99&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now you can build Cmocka using file above (use correct path to your toolchain file):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> build
+cmake <span class="se">\</span>
+   -DCMAKE_TOOLCHAIN_FILE<span class="o">=</span>/path/to/xt-toolchain-for-cmocka.cmake <span class="se">\</span>
+   -DWITH_STATIC_LIB<span class="o">=</span>ON <span class="se">\</span>
+   -DWITH_SHARED_LIB<span class="o">=</span>OFF <span class="se">\</span>
+   -DWITH_EXAMPLES<span class="o">=</span>OFF <span class="se">\</span>
+   -DWITH_POSITION_INDEPENDENT_CODE<span class="o">=</span>OFF <span class="se">\</span>
+   -DCMAKE_INSTALL_PREFIX<span class="o">=</span>install <span class="se">\</span>
+   ..
+make install
+</pre></div>
+</div>
+<p>After these commands are successfully completed, the Cmocka’s static lib and
+headers should be in <strong>build/install</strong>.</p>
+<p>Please note that commands above were for CMake’s Make generator.
+If you are using Windows and want to use Ninja, your commands will
+look more like:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> build
+cmake <span class="se">\</span>
+   -DCMAKE_TOOLCHAIN_FILE<span class="o">=</span>/path/to/xt-toolchain-for-cmocka.cmake <span class="se">\</span>
+   -DWITH_STATIC_LIB<span class="o">=</span>ON <span class="se">\</span>
+   -DWITH_SHARED_LIB<span class="o">=</span>OFF <span class="se">\</span>
+   -DWITH_EXAMPLES<span class="o">=</span>OFF <span class="se">\</span>
+   -DWITH_POSITION_INDEPENDENT_CODE<span class="o">=</span>OFF <span class="se">\</span>
+   -DCMAKE_INSTALL_PREFIX<span class="o">=</span>install <span class="se">\</span>
+   -GNinja <span class="se">\</span>
+   ..
+ninja install
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can use -DWITH_TINY_CONFIG=ON, if configuration step takes too much time.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="compile_wsl.html" class="btn btn-neutral float-right" title="Build on Windows 10 with WSL" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../testbench/test_audio_quality.html" class="btn btn-neutral" title="Test Audio Quality" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; Copyright 2021, SOF Project..
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> SOF Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version zephyr">
+        <a href="../../../zephyr/index.html">Zephyr Project</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

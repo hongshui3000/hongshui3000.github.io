@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>UUID Usage in SOF &mdash; SOF Project 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/sof.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Debugability" href="../debugability/index.html" />
+    <link rel="prev" title="SOF Topology" href="../topology/topology.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SOF Project
+          
+
+          
+            
+            <img src="../../_static/logo_sof_white_200w.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://sofproject.org">SOF project website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction to the SOF Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architectures/index.html">Supported Architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/index.html">Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algos/index.html">Algorithms</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../unit_tests.html">Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xtrun/index.html">Xtensa Simulator (xt-run)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/topology.html">SOF Topology</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">UUID Usage in SOF</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#why-uuids">Why UUIDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uuid-allocation">UUID allocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uuid-in-topology">UUID in topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux-topology-driver">Linux topology driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uuid-arrays-stored-section">UUID arrays stored section</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uuid-to-component-driver-mapping">UUID to component driver mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abi-alignment-for-uuid-support">ABI alignment for UUID support</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../debugability/index.html">Debugability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tuning/sof-ctl.html">Runtime Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rimage/index.html">Rimage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_driver/index.html">SOF Linux Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/virtualization.html">SOF VirtIO design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/running.html">Run SOF VirtIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fuzzing/index.html">Fuzzing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testbench/index.html">Testbench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#technical-notes">Technical Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../release.html">Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contributing to the Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tsc/index.html">Technical Steering Committee (TSC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maintainers/index.html">SOF admin, maintainers and code owners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../presentations/index.html">Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SOF Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Developer Guides</a> &raquo;</li>
+        
+      <li>UUID Usage in SOF</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/developer_guides/uuid/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="uuid-usage-in-sof">
+<span id="uuid"></span><h1>UUID Usage in SOF<a class="headerlink" href="#uuid-usage-in-sof" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="why-uuids">
+<h2>Why UUIDs<a class="headerlink" href="#why-uuids" title="Permalink to this headline">¶</a></h2>
+<p>A new audio signal processing component is typically developed by
+implementing the component driver with a newly introduced, unique component
+type. The pain points with this method include keeping the ABI (Application
+Binary Interface) aligned for the topology file, the driver, and the
+firmware. If unaligned, how can we make them backwards compatible. For
+example, a new component can have 8 combinations of topology/driver/firmware
+versions where the new component may or may not be supported in each
+topology/driver/firmware part. Additionally, if the enumerated type is used
+for the component type and the sequence in the enumerated list
+(the value) is changed during an update, a component type collision can
+occur if the versions are not aligned.</p>
+<p>UUIDs (Universally Unique Identifiers) provide a more scalable and
+collision-free way of component identification. UUIDs are used as the
+standard interface by all users of the SOF firmware, including the
+tracing subsystem, the topology .m4 files, and the Linux topology
+driver.</p>
+<p>Allocate a new UUID for a newly added component since it will replace the
+component type in the IPC structures in the future. For the entire SOF stack, follow these UUID usage rules:</p>
+</div>
+<div class="section" id="uuid-allocation">
+<h2>UUID allocation<a class="headerlink" href="#uuid-allocation" title="Permalink to this headline">¶</a></h2>
+<p>The UUID of a specific component uses random generation (version 4; see
+<a class="reference external" href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID wikipedia</a> for a description)
+and the value is declared in the firmware component driver with
+<code class="docutils literal notranslate"><span class="pre">DECLARE_SOF_RT_UUID</span></code>. For details, refer to the <a class="reference internal" href="../../api/uuid-api.html#uuid-api"><span class="std std-ref">UUID API</span></a> documentation.</p>
+</div>
+<div class="section" id="uuid-in-topology">
+<h2>UUID in topology<a class="headerlink" href="#uuid-in-topology" title="Permalink to this headline">¶</a></h2>
+<p>Use the same UUID in the topology .m4 file for a newly added
+widget (corresponding to the newly added component). Since we have
+implemented a macro to help handle the conversion task, just use the
+same macro <code class="docutils literal notranslate"><span class="pre">DECLARE_SOF_RT_UUID</span></code> as depicted in the firmware
+source. For the SRC component, for example, the below shall be added to the
+topology .m4 tools/topology/m4/src.m4:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DECLARE_SOF_RT_UUID(&quot;host&quot;, host_uuid, 0x8b9d100c, 0x6d78, 0x418f,
+     0x90, 0xa3, 0xe0, 0xe8, 0x05, 0xd0, 0x85, 0x2b);
+</pre></div>
+</div>
+</div>
+<div class="section" id="linux-topology-driver">
+<h2>Linux topology driver<a class="headerlink" href="#linux-topology-driver" title="Permalink to this headline">¶</a></h2>
+<p>The topology driver parses the 16-byte UUID token, appends it to the
+extended data of the IPC struct, and sends it to the firmware in the
+component creation stage <strong>for all components</strong>.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/* Component extended tokens */
+static const struct sof_topology_token comp_ext_tokens[] = {
+ {SOF_TKN_COMP_UUID,
+     SND_SOC_TPLG_TUPLE_TYPE_UUID, get_token_uuid,
+     offsetof(struct sof_ipc_comp_new_ext, uuid), 0},
+};
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int sof_widget_ready(struct snd_soc_component *scomp, int index,
+                            struct snd_soc_dapm_widget *w,
+                            struct snd_soc_tplg_dapm_widget *tw)
+{
+...
+        ret = sof_parse_tokens(scomp, &amp;swidget-&gt;comp_ext, comp_ext_tokens,
+                               ARRAY_SIZE(comp_ext_tokens), tw-&gt;priv.array,
+                               le32_to_cpu(tw-&gt;priv.size));
+...
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="uuid-arrays-stored-section">
+<h2>UUID arrays stored section<a class="headerlink" href="#uuid-arrays-stored-section" title="Permalink to this headline">¶</a></h2>
+<p>Only the UUID arrays for component types used in the topology file are
+stored to the .rodata section as static data, for limited memory
+footprint purposees. For example, 19 component types * 16 Bytes/component type = 304 Bytes.</p>
+</div>
+<div class="section" id="uuid-to-component-driver-mapping">
+<h2>UUID to component driver mapping<a class="headerlink" href="#uuid-to-component-driver-mapping" title="Permalink to this headline">¶</a></h2>
+<p>The firmware uses a UUID byte array to match the component driver if
+it is provided from the Linux driver side. Otherwise, fallback to the
+traditional component type for backwards-compatible behavior.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static const struct comp_driver *get_drv(struct sof_ipc_comp *comp)
+{
+     ...
+     /* validate the extended data */
+     ...
+     /* use UUID to match the driver if UUID is provided */
+     if (comp-&gt;ext_data_offset) {
+         /* use component type if old tplg without UUID used */
+         if (sof_is_uuid_nil(comp_ext-&gt;uuid))
+             goto comp_type_match;
+
+         /* search driver list with UUID */
+         ...
+         /* matched, return drv */
+         return drv;
+
+         /* not found, failed */
+         return NULL;
+     }
+
+comp_type_match:
+     /* search driver list for driver type */
+     ...
+     /* return the component type matched driver */
+     return drv;
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="abi-alignment-for-uuid-support">
+<h2>ABI alignment for UUID support<a class="headerlink" href="#abi-alignment-for-uuid-support" title="Permalink to this headline">¶</a></h2>
+<p>In general, use UUIDs only for all FW/topologies/drivers whose ABI version
+equals or is greater than 3.17. Otherwise, use component type.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../debugability/index.html" class="btn btn-neutral float-right" title="Debugability" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../topology/topology.html" class="btn btn-neutral" title="SOF Topology" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; Copyright 2021, SOF Project..
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> SOF Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version zephyr">
+        <a href="../../../zephyr/index.html">Zephyr Project</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

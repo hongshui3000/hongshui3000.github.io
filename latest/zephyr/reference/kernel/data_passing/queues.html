@@ -1,0 +1,665 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Queues &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="FIFOs" href="fifos.html" />
+    <link rel="prev" title="Symmetric Multiprocessing" href="../smp/smp.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Kernel Services</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#scheduling-interrupts-and-synchronization">Scheduling, Interrupts, and Synchronization</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#data-passing">Data Passing</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fifos.html">FIFOs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lifos.html">LIFOs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stacks.html">Stacks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="message_queues.html">Message Queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mailboxes.html">Mailboxes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pipes.html">Pipes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#memory-management">Memory Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#timing">Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Kernel Services</a> &raquo;</li>
+        
+      <li>Queues</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/kernel/data_passing/queues.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="queues">
+<span id="id1"></span><h1>Queues<a class="headerlink" href="#queues" title="Permalink to this headline">¶</a></h1>
+<p>A Queue in Zephyr is a kernel object that implements a traditional queue, allowing
+threads and ISRs to add and remove data items of any size. The queue is similar
+to a FIFO and serves as the underlying implementation for both <a class="reference internal" href="fifos.html#fifos-v2"><span class="std std-ref">k_fifo</span></a> and <a class="reference internal" href="lifos.html#lifos-v2"><span class="std std-ref">k_lifo</span></a>. For more information on usage see
+<a class="reference internal" href="fifos.html#fifos-v2"><span class="std std-ref">k_fifo</span></a>.</p>
+<div class="section" id="configuration-options">
+<h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__queue__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">queue_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_QUEUE_DEFINE">
+<span class="target" id="group__queue__apis_1gacd0bc309f0147d4669f65fafa87e0e70"></span><span class="sig-name descname"><span class="n"><span class="pre">K_QUEUE_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_QUEUE_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define and initialize a queue. </p>
+<p>The queue can be accessed outside the module where it is defined using:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extern</span> <span class="n">struct</span> <span class="n">k_queue</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">;</span> 
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the queue. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_init">
+<span class="target" id="group__queue__apis_1ga0236222d42768c2bf00942f328146c21"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a queue. </p>
+<p>This routine initializes a queue object, prior to its first use.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_cancel_wait">
+<span class="target" id="group__queue__apis_1ga7c39d86cc6509f59ff9223cac3ea5071"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_cancel_wait</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_cancel_wait" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Cancel waiting on a queue. </p>
+<p>This routine causes first thread pending on <em>queue</em>, if any, to return from <a class="reference internal" href="#group__queue__apis_1gadb14739bf78e5322a47edba9ed2eb3b2"><span class="std std-ref">k_queue_get()</span></a> call with NULL value (as if timeout expired). If the queue is being waited on by <a class="reference internal" href="../other/polling.html#group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"><span class="std std-ref">k_poll()</span></a>, it will return with -EINTR and K_POLL_STATE_CANCELLED state (and per above, subsequent <a class="reference internal" href="#group__queue__apis_1gadb14739bf78e5322a47edba9ed2eb3b2"><span class="std std-ref">k_queue_get()</span></a> will return NULL).</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_append">
+<span class="target" id="group__queue__apis_1gaa84522a5ace6e7f8ba61033baca6972f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_append</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_append" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Append an element to the end of a queue. </p>
+<p>This routine appends a data item to <em>queue</em>. A queue data item must be aligned on a word boundary, and the first word of the item is reserved for the kernel’s use.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of the data item. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_alloc_append">
+<span class="target" id="group__queue__apis_1ga690f3a1450e946d75f31b3e499d1d06a"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_alloc_append</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_alloc_append" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Append an element to a queue. </p>
+<p>This routine appends a data item to <em>queue</em>. There is an implicit memory allocation to create an additional temporary bookkeeping data structure from the calling thread’s resource pool, which is automatically freed when the item is removed. The data itself is not copied.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of the data item.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOMEM</span></code>: if there isn’t sufficient RAM in the caller’s resource pool </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_prepend">
+<span class="target" id="group__queue__apis_1ga8ce013d8a037d4be5078797e0050e9c6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_prepend</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_prepend" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Prepend an element to a queue. </p>
+<p>This routine prepends a data item to <em>queue</em>. A queue data item must be aligned on a word boundary, and the first word of the item is reserved for the kernel’s use.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of the data item. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_alloc_prepend">
+<span class="target" id="group__queue__apis_1gacf3dba40125073c11075e5a134919f88"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_alloc_prepend</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_alloc_prepend" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Prepend an element to a queue. </p>
+<p>This routine prepends a data item to <em>queue</em>. There is an implicit memory allocation to create an additional temporary bookkeeping data structure from the calling thread’s resource pool, which is automatically freed when the item is removed. The data itself is not copied.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of the data item.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOMEM</span></code>: if there isn’t sufficient RAM in the caller’s resource pool </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_insert">
+<span class="target" id="group__queue__apis_1gad47336f27e433a52600a3b67ab89556a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_insert</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">prev</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_insert" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Inserts an element to a queue. </p>
+<p>This routine inserts a data item to <em>queue</em> after previous item. A queue data item must be aligned on a word boundary, and the first word of the item is reserved for the kernel’s use.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prev</span></code>: Address of the previous data item. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of the data item. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_append_list">
+<span class="target" id="group__queue__apis_1ga91d1a144fc2aeb3dd655accc94ca43aa"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_append_list</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">head</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tail</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_append_list" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Atomically append a list of elements to a queue. </p>
+<p>This routine adds a list of data items to <em>queue</em> in one operation. The data items must be in a singly-linked list, with the first word in each data item pointing to the next data item; the list must be NULL-terminated.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">head</span></code>: Pointer to first node in singly-linked list. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tail</span></code>: Pointer to last node in singly-linked list.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: on invalid supplied data </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_merge_slist">
+<span class="target" id="group__queue__apis_1ga4eee0da7442d60572b05d60a9996e69d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_merge_slist</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span>, <span class="n"><span class="pre">sys_slist_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">list</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_merge_slist" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Atomically add a list of elements to a queue. </p>
+<p>This routine adds a list of data items to <em>queue</em> in one operation. The data items must be in a singly-linked list implemented using a sys_slist_t object. Upon completion, the original list is empty.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list</span></code>: Pointer to sys_slist_t object.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: on success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: on invalid data </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_get">
+<span class="target" id="group__queue__apis_1gadb14739bf78e5322a47edba9ed2eb3b2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span>, <a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get an element from a queue. </p>
+<p>This routine removes first data item from <em>queue</em>. The first word of the data item is reserved for the kernel’s use.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><em>timeout</em> must be set to K_NO_WAIT if called from ISR.</p>
+</dd>
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Address of the data item if successful; NULL if returned without waiting, or waiting period timed out. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Non-negative waiting period to obtain a data item or one of the special values K_NO_WAIT and K_FOREVER.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_remove">
+<span class="target" id="group__queue__apis_1ga4bff929ed1d366a06e00865a5bbe2544"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_remove</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_remove" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remove an element from a queue. </p>
+<p>This routine removes data item from <em>queue</em>. The first word of the data item is reserved for the kernel’s use. Removing elements from k_queue rely on sys_slist_find_and_remove which is not a constant time operation.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><em>timeout</em> must be set to K_NO_WAIT if called from ISR.</p>
+</dd>
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>true if data item was removed </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of the data item.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_unique_append">
+<span class="target" id="group__queue__apis_1ga287a2d81e2e3041be1cd45164e72f127"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_unique_append</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_unique_append" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Append an element to a queue only if it’s not present already. </p>
+<p>This routine appends data item to <em>queue</em>. The first word of the data item is reserved for the kernel’s use. Appending elements to k_queue relies on sys_slist_is_node_in_list which is not a constant time operation.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>true if data item was added, false if not </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of the data item.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_is_empty">
+<span class="target" id="group__queue__apis_1gadb2bb8088868b3c5801c72b320389ca9"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_is_empty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_is_empty" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Query a queue to see if it has data available. </p>
+<p>Note that the data might be already gone by the time this function returns if other threads are also trying to read from the queue.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Non-zero if the queue is empty. </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>0 if data is available. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_peek_head">
+<span class="target" id="group__queue__apis_1ga03ee82febe88d2e30fb3db764c7cea2b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_peek_head</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_peek_head" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Peek element at the head of queue. </p>
+<p>Return element from the head of queue without removing it.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Head element, or NULL if queue is empty. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_queue_peek_tail">
+<span class="target" id="group__queue__apis_1ga08eccd1bf6ce68aa7c3c6d837e95f28a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_queue_peek_tail</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_queue</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">queue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_queue_peek_tail" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Peek element at the tail of queue. </p>
+<p>Return element from the tail of queue without removing it.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Tail element, or NULL if queue is empty. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">queue</span></code>: Address of the queue.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fifos.html" class="btn btn-neutral float-right" title="FIFOs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../smp/smp.html" class="btn btn-neutral" title="Symmetric Multiprocessing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,512 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Shared Multi Heap &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Memory Blocks Allocator" href="sys_mem_blocks.html" />
+    <link rel="prev" title="Demand Paging" href="demand_paging.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Memory Management</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="demand_paging.html">Demand Paging</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Shared Multi Heap</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#special-handling-for-mmu-mpu">Special handling for MMU/MPU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-new-attributes">Adding new attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sys_mem_blocks.html">Memory Blocks Allocator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Memory Management</a> &raquo;</li>
+        
+      <li>Shared Multi Heap</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/memory_management/shared_multi_heap.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="shared-multi-heap">
+<span id="memory-management-shared-multi-heap"></span><h1>Shared Multi Heap<a class="headerlink" href="#shared-multi-heap" title="Permalink to this headline">¶</a></h1>
+<p>The shared multi-heap memory pool manager uses the multi-heap allocator to
+manage a set of reserved memory regions with different capabilities /
+attributes (cacheable, non-cacheable, etc…) defined in the DT.</p>
+<p>The user can request allocation from the shared pool specifying the capability
+/ attribute of interest for the memory (cacheable / non-cacheable memory,
+etc…).</p>
+<p>The different heaps with their attributes available in the shared pool are
+defined into the DT file leveraging the <code class="docutils literal notranslate"><span class="pre">reserved-memory</span></code> nodes.</p>
+<p>This is a DT example declaring three different memory regions with different
+cacheability attributes: <code class="docutils literal notranslate"><span class="pre">cacheable</span></code> and <code class="docutils literal notranslate"><span class="pre">non-cacheable</span></code></p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
+     <span class="nf">reserved-memory</span><span class="cm"> </span><span class="p">{</span>
+             <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;reserved-memory&quot;</span><span class="p">;</span>
+             <span class="kr">#address-cells</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+             <span class="kr">#size-cells</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+
+             <span class="nl">res0</span><span class="p">:</span> <span class="nf">reserved</span><span class="o">@</span><span class="mi">42000000</span><span class="cm"> </span><span class="p">{</span>
+                     <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;shared-multi-heap&quot;</span><span class="p">;</span>
+                     <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x42000000</span> <span class="mh">0x1000</span><span class="o">&gt;</span><span class="p">;</span>
+                     <span class="n">capability</span> <span class="o">=</span> <span class="s">&quot;cacheable&quot;</span><span class="p">;</span>
+                     <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;res0&quot;</span><span class="p">;</span>
+             <span class="p">};</span>
+
+             <span class="nl">res1</span><span class="p">:</span> <span class="nf">reserved</span><span class="o">@</span><span class="mi">43000000</span><span class="cm"> </span><span class="p">{</span>
+                     <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;shared-multi-heap&quot;</span><span class="p">;</span>
+                     <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x43000000</span> <span class="mh">0x2000</span><span class="o">&gt;</span><span class="p">;</span>
+                     <span class="n">capability</span> <span class="o">=</span> <span class="s">&quot;non-cacheable&quot;</span><span class="p">;</span>
+                     <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;res1&quot;</span><span class="p">;</span>
+             <span class="p">};</span>
+
+             <span class="nl">res2</span><span class="p">:</span> <span class="nf">reserved2</span><span class="o">@</span><span class="mi">44000000</span><span class="cm"> </span><span class="p">{</span>
+                     <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;shared-multi-heap&quot;</span><span class="p">;</span>
+                     <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x44000000</span> <span class="mh">0x3000</span><span class="o">&gt;</span><span class="p">;</span>
+                     <span class="n">capability</span> <span class="o">=</span> <span class="s">&quot;cacheable&quot;</span><span class="p">;</span>
+                     <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;res2&quot;</span><span class="p">;</span>
+             <span class="p">};</span>
+     <span class="p">};</span>
+</pre></div>
+</div>
+<p>The user can then request 4K from heap memory <code class="docutils literal notranslate"><span class="pre">cacheable</span></code> or
+<code class="docutils literal notranslate"><span class="pre">non-cacheable</span></code> using the provided APIs:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Allocate 4K from cacheable memory</span>
+<span class="n">shared_multi_heap_alloc</span><span class="p">(</span><span class="n">SMH_REG_ATTR_CACHEABLE</span><span class="p">,</span> <span class="mh">0x1000</span><span class="p">);</span>
+
+<span class="c1">// Allocate 4K from non-cacheable</span>
+<span class="n">shared_multi_heap_alloc</span><span class="p">(</span><span class="n">SMH_REG_ATTR_NON_CACHEABLE</span><span class="p">,</span> <span class="mh">0x1000</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The backend implementation will allocate the memory region from the heap with
+the correct attribute and using the region able to accommodate the required size.</p>
+<div class="section" id="special-handling-for-mmu-mpu">
+<h2>Special handling for MMU/MPU<a class="headerlink" href="#special-handling-for-mmu-mpu" title="Permalink to this headline">¶</a></h2>
+<p>For MMU/MPU enabled platform sometimes it is required to setup and configure
+the memory regions before these are added to the managed pool. This is done at
+init time using the <a class="reference internal" href="#c.shared_multi_heap_pool_init" title="shared_multi_heap_pool_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">shared_multi_heap_pool_init()</span></code></a> function that is
+accepting a <a class="reference internal" href="#c.smh_init_reg_fn_t" title="smh_init_reg_fn_t"><code class="xref c c-type docutils literal notranslate"><span class="pre">smh_init_reg_fn_t</span></code></a> callback function. This callback will
+be called for each memory region at init time and it can be used to correctly
+map the region before this is considered valid and accessible.</p>
+</div>
+<div class="section" id="adding-new-attributes">
+<h2>Adding new attributes<a class="headerlink" href="#adding-new-attributes" title="Permalink to this headline">¶</a></h2>
+<p>Currently only two memory attributes are supported: <code class="docutils literal notranslate"><span class="pre">cacheable</span></code> and
+<code class="docutils literal notranslate"><span class="pre">non-cacheable</span></code>. To add a new attribute:</p>
+<ol class="arabic simple">
+<li><p>Add the new <code class="docutils literal notranslate"><span class="pre">enum</span></code> for the attribute in the <a class="reference internal" href="#c.smh_reg_attr" title="smh_reg_attr"><code class="xref c c-enum docutils literal notranslate"><span class="pre">smh_reg_attr</span></code></a></p></li>
+<li><p>Add the corresponding attribute name in <code class="file docutils literal notranslate"><span class="pre">shared-multi-heap.yaml</span></code></p></li>
+</ol>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__shared__multi__heap"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">shared_multi_heap</span></span></dt>
+<dd><p>Shared multi-heap interface. </p>
+<p>The shared multi-heap manager uses the multi-heap allocator to manage a set of reserved memory regions with different capabilities / attributes (cacheable, non-cacheable, etc…) defined in the DT.</p>
+<p>The user can request allocation from the shared pool specifying the capability / attribute of interest for the memory (cacheable / non-cacheable memory, etc…) </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.smh_init_reg_fn_t">
+<span class="target" id="group__shared__multi__heap_1ga88c9661dd24b8b6e974ee4ca2762d201"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">smh_init_reg_fn_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.shared_multi_heap_region" title="shared_multi_heap_region"><span class="n"><span class="pre">shared_multi_heap_region</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">reg</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">v_addr</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.smh_init_reg_fn_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Region init function. </p>
+<p>This is a user-provided function whose responsibility is to setup or initialize the memory region passed in input before this is added to the heap pool by the shared multi-heap manager. This function can be used by architectures using MMU / MPU that must correctly map the region before this is considered valid and accessible.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>True if the region is ready to be added to the heap pool. False if the region must be skipped. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reg</span></code>: Pointer to the SMH region structure. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v_addr</span></code>: Virtual address obtained after mapping. For non-MMU architectures this value is the physical address of the region. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of the region after mapping.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.smh_reg_attr">
+<span class="target" id="group__shared__multi__heap_1gad3617533a50c35c71f7c476b13061ae1"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">smh_reg_attr</span></span></span><a class="headerlink" href="#c.smh_reg_attr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Memory region attributes / capabilities. </p>
+<p>** This list needs to be kept in sync with shared-multi-heap.yaml ** </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.smh_reg_attr.SMH_REG_ATTR_CACHEABLE">
+<span class="target" id="group__shared__multi__heap_1ggad3617533a50c35c71f7c476b13061ae1afb2e0bb04859ff231dee953279b8bf3a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SMH_REG_ATTR_CACHEABLE</span></span></span><a class="headerlink" href="#c.smh_reg_attr.SMH_REG_ATTR_CACHEABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>cacheable </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.smh_reg_attr.SMH_REG_ATTR_NON_CACHEABLE">
+<span class="target" id="group__shared__multi__heap_1ggad3617533a50c35c71f7c476b13061ae1a2625b9b8aea429ab748f9e39d55f0dff"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SMH_REG_ATTR_NON_CACHEABLE</span></span></span><a class="headerlink" href="#c.smh_reg_attr.SMH_REG_ATTR_NON_CACHEABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>non-cacheable </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.smh_reg_attr.SMH_REG_ATTR_NUM">
+<span class="target" id="group__shared__multi__heap_1ggad3617533a50c35c71f7c476b13061ae1a0a41317e94fcdf459708be4a78b74c91"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SMH_REG_ATTR_NUM</span></span></span><a class="headerlink" href="#c.smh_reg_attr.SMH_REG_ATTR_NUM" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>must be the last item </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.shared_multi_heap_pool_init">
+<span class="target" id="group__shared__multi__heap_1ga59c5c0d6bb27c49bf58d31485bb23e04"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shared_multi_heap_pool_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.smh_init_reg_fn_t" title="smh_init_reg_fn_t"><span class="n"><span class="pre">smh_init_reg_fn_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">smh_init_reg_fn</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.shared_multi_heap_pool_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Init the pool. </p>
+<p>Initialize the shared multi-heap pool and hook-up the region init function.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">smh_init_reg_fn</span></code>: The function pointer to the region init function. Can be NULL for non-MPU / non-MMU architectures. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.shared_multi_heap_alloc">
+<span class="target" id="group__shared__multi__heap_1ga44cbb4a2abb7be7201417d094d5f6c3c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">shared_multi_heap_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.smh_reg_attr" title="smh_reg_attr"><span class="n"><span class="pre">smh_reg_attr</span></span></a><span class="w"> </span><span class="n"><span class="pre">attr</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.shared_multi_heap_alloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate memory from the memory shared multi-heap pool. </p>
+<p>Allocate a block of memory of the specified size in bytes and with a specified capability / attribute.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>A valid pointer to heap memory or NULL if no memory is available. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">attr</span></code>: Capability / attribute requested for the memory block. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: Requested size of the allocation in bytes.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.shared_multi_heap_free">
+<span class="target" id="group__shared__multi__heap_1gab968bf26483d22939aaa7c2b1b6743ad"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shared_multi_heap_free</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">block</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.shared_multi_heap_free" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Free memory from the shared multi-heap pool. </p>
+<p>Free the passed block of memory.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">block</span></code>: Block to free. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.shared_multi_heap_region">
+<span class="target" id="structshared__multi__heap__region"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shared_multi_heap_region</span></span></span><a class="headerlink" href="#c.shared_multi_heap_region" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;shared_multi_heap.h&gt;</em><p>SMH region struct. </p>
+<p>This struct is carrying information about the memory region to be added in the multi-heap pool. This is filled by the manager with the information coming from the reserved memory children nodes in the DT. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sys_mem_blocks.html" class="btn btn-neutral float-right" title="Memory Blocks Allocator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="demand_paging.html" class="btn btn-neutral" title="Demand Paging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

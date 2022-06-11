@@ -1,0 +1,1385 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>I2C &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="IPM" href="ipm.html" />
+    <link rel="prev" title="I2C EEPROM Slave" href="i2c_eeprom_slave.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Peripherals</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="adc.html">ADC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="counter.html">Counter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clock_control.html">Clock Control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dac.html">DAC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dma.html">DMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ec_host_cmd_periph.html">EC Host Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eeprom.html">EEPROM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entropy.html">Entropy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flash.html">Flash</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gna.html">GNA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpio.html">GPIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hwinfo.html">Hardware Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c_eeprom_slave.html">I2C EEPROM Slave</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">I2C</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-options">Configuration Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ipm.html">IPM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kscan.html">KSCAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="led.html">LED</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbox.html">MBOX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pinmux.html">Pinmux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pwm.html">PWM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ps2.html">PS/2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="peci.html">PECI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="regulators.html">Regulators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rtc.html">RTC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sensor.html">Sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spi.html">SPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcpc.html">TCPC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uart.html">UART</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdio.html">MDIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchdog.html">Watchdog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video.html">Video</a></li>
+<li class="toctree-l3"><a class="reference internal" href="espi.html">eSPI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Peripherals</a> &raquo;</li>
+        
+      <li>I2C</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/peripherals/i2c.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="i2c">
+<span id="i2c-api"></span><h1>I2C<a class="headerlink" href="#i2c" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Zephyr recognizes the need to change the terms “master” and “slave”
+used in the current <a class="reference external" href="i2c-specification">I2C Specification</a>.  This
+will be done when the conditions identified in
+<a class="reference internal" href="../../contribute/coding_guidelines/index.html#coding-guideline-inclusive-language"><span class="std std-ref">Rule A.2: Inclusive Language</span></a> have been met.  Existing
+documentation, data structures, functions, and value symbols in code
+are likely to change at that point.</p>
+</div>
+<p><a class="reference external" href="i2c-specification">I2C</a> (Inter-Integrated Circuit, pronounced “eye
+squared see”) is a commonly-used two-signal shared peripheral interface
+bus.  Many system-on-chip solutions provide controllers that communicate
+on an I2C bus.  Devices on the bus can operate in two roles: as a
+“master” that initiates transactions and controls the clock, or as a
+“slave” that responds to transaction commands.  A I2C controller on a
+given SoC will generally support the master role, and some will also
+support the slave mode.  Zephyr has API for both roles.</p>
+<div class="section" id="i2c-master-api">
+<span id="id2"></span><h3>I2C Master API<a class="headerlink" href="#i2c-master-api" title="Permalink to this headline">¶</a></h3>
+<p>Zephyr’s I2C master API is used when an I2C peripheral controls the bus,
+in particularly the start and stop conditions and the clock.  This is
+the most common mode, used to interact with I2C devices like sensors and
+serial memory.</p>
+<p>This API is supported in all in-tree I2C peripheral drivers and is
+considered stable.</p>
+</div>
+<div class="section" id="i2c-slave-api">
+<span id="id3"></span><h3>I2C Slave API<a class="headerlink" href="#i2c-slave-api" title="Permalink to this headline">¶</a></h3>
+<p>Zephyr’s I2C slave API is used when an I2C peripheral responds to
+transactions initiated by a different controller on the bus.  It might
+be used for a Zephyr application with transducer roles that are
+controlled by another device such as a host processor.</p>
+<p>This API is supported in very few in-tree I2C peripheral drivers.  The
+API is considered experimental, as it is not compatible with the
+capabilities of all I2C peripherals supported in master mode.</p>
+</div>
+</div>
+<div class="section" id="configuration-options">
+<h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_I2C" title="CONFIG_I2C"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_I2C</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__i2c__interface"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">i2c_interface</span></span></dt>
+<dd><p>I2C Interface. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_SPEED_STANDARD">
+<span class="target" id="group__i2c__interface_1ga5ca8c5fbb2caa99ab0b7007ce2c11633"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_SPEED_STANDARD</span></span></span><a class="headerlink" href="#c.I2C_SPEED_STANDARD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>I2C Standard Speed: 100 kHz </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_SPEED_FAST">
+<span class="target" id="group__i2c__interface_1gaef9d097ed2b58676498a33f3cf76f38d"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_SPEED_FAST</span></span></span><a class="headerlink" href="#c.I2C_SPEED_FAST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>I2C Fast Speed: 400 kHz </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_SPEED_FAST_PLUS">
+<span class="target" id="group__i2c__interface_1ga9c867195c4a99615ed9c0011293a2155"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_SPEED_FAST_PLUS</span></span></span><a class="headerlink" href="#c.I2C_SPEED_FAST_PLUS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>I2C Fast Plus Speed: 1 MHz </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_SPEED_HIGH">
+<span class="target" id="group__i2c__interface_1gac7bce1bbfb422a123d3228e97e2cbb71"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_SPEED_HIGH</span></span></span><a class="headerlink" href="#c.I2C_SPEED_HIGH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>I2C High Speed: 3.4 MHz </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_SPEED_ULTRA">
+<span class="target" id="group__i2c__interface_1ga213468d14d1241632c957873cf2d9628"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_SPEED_ULTRA</span></span></span><a class="headerlink" href="#c.I2C_SPEED_ULTRA" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>I2C Ultra Fast Speed: 5 MHz </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_SPEED_SHIFT">
+<span class="target" id="group__i2c__interface_1ga6d0aaaec30d1e64e1b4ad674423d131f"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_SPEED_SHIFT</span></span></span><a class="headerlink" href="#c.I2C_SPEED_SHIFT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_SPEED_SET">
+<span class="target" id="group__i2c__interface_1ga6d64fdac5a2d9008e7856e670b3c4305"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_SPEED_SET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">speed</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.I2C_SPEED_SET" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_SPEED_MASK">
+<span class="target" id="group__i2c__interface_1gade41614d9cb3efd61b22eda9c1715e4c"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_SPEED_MASK</span></span></span><a class="headerlink" href="#c.I2C_SPEED_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_SPEED_GET">
+<span class="target" id="group__i2c__interface_1ga0eda328bb70285895d09154f9a828040"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_SPEED_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">cfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.I2C_SPEED_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_ADDR_10_BITS">
+<span class="target" id="group__i2c__interface_1ga66836d37196ce866681f506c44c8766d"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_ADDR_10_BITS</span></span></span><a class="headerlink" href="#c.I2C_ADDR_10_BITS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Use 10-bit addressing. DEPRECATED - Use I2C_MSG_ADDR_10_BITS instead. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_MODE_MASTER">
+<span class="target" id="group__i2c__interface_1gaf5b67041f761d0c4b62d6827239418e2"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_MODE_MASTER</span></span></span><a class="headerlink" href="#c.I2C_MODE_MASTER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Controller to act as Master. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_DT_SPEC_GET">
+<span class="target" id="group__i2c__interface_1gabb3ae5225cea677f3f3b36e4477ed045"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_DT_SPEC_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.I2C_DT_SPEC_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Structure initializer for <a class="reference internal" href="#structi2c__dt__spec"><span class="std std-ref">i2c_dt_spec</span></a> from devicetree. </p>
+<p>This helper macro expands to a static initializer for a <code class="docutils literal notranslate"><span class="pre">struct</span> <a class="reference internal" href="#structi2c__dt__spec"><span class="std std-ref"><span class="pre">i2c_dt_spec</span></span></a></code> by reading the relevant bus and address data from the devicetree.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: Devicetree node identifier for the I2C device whose struct <a class="reference internal" href="#structi2c__dt__spec"><span class="std std-ref">i2c_dt_spec</span></a> to create an initializer for </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_DT_SPEC_INST_GET">
+<span class="target" id="group__i2c__interface_1ga2197cbc5122f0d8b2e0788113bcb5963"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_DT_SPEC_INST_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">inst</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.I2C_DT_SPEC_INST_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Structure initializer for <a class="reference internal" href="#structi2c__dt__spec"><span class="std std-ref">i2c_dt_spec</span></a> from devicetree instance. </p>
+<p>This is equivalent to <code class="docutils literal notranslate"><a class="reference internal" href="#group__i2c__interface_1gabb3ae5225cea677f3f3b36e4477ed045"><span class="std std-ref"><span class="pre">I2C_DT_SPEC_GET(DT_DRV_INST(inst))</span></span></a></code>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">inst</span></code>: Devicetree instance number </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_MSG_WRITE">
+<span class="target" id="group__i2c__interface_1gaf622d3c4aa1c832f90fff7200bb33732"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_MSG_WRITE</span></span></span><a class="headerlink" href="#c.I2C_MSG_WRITE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write message to I2C bus. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_MSG_READ">
+<span class="target" id="group__i2c__interface_1ga6c3042e882e6a817a6498b7a4e1f0a95"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_MSG_READ</span></span></span><a class="headerlink" href="#c.I2C_MSG_READ" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read message from I2C bus. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_MSG_STOP">
+<span class="target" id="group__i2c__interface_1gaad55262ad277ee60b786372c71f217aa"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_MSG_STOP</span></span></span><a class="headerlink" href="#c.I2C_MSG_STOP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send STOP after this message. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_MSG_RESTART">
+<span class="target" id="group__i2c__interface_1ga8c6cf7be2a04979fdb9d0b7dd9c4f831"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_MSG_RESTART</span></span></span><a class="headerlink" href="#c.I2C_MSG_RESTART" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>RESTART I2C transaction for this message.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Not all I2C drivers have or require explicit support for this feature. Some drivers require this be present on a read message that follows a write, or vice-versa. Some drivers will merge adjacent fragments into a single transaction using this flag; some will not. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_MSG_ADDR_10_BITS">
+<span class="target" id="group__i2c__interface_1ga5569e8a3e4f6660928dfe443067c472c"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_MSG_ADDR_10_BITS</span></span></span><a class="headerlink" href="#c.I2C_MSG_ADDR_10_BITS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Use 10-bit addressing for this message.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Not all SoC I2C implementations support this feature. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_SLAVE_FLAGS_ADDR_10_BITS">
+<span class="target" id="group__i2c__interface_1gad751db45cf2dec40137ffdd088352a4a"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_SLAVE_FLAGS_ADDR_10_BITS</span></span></span><a class="headerlink" href="#c.I2C_SLAVE_FLAGS_ADDR_10_BITS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Slave device responds to 10-bit addressing. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_DEVICE_DT_DEFINE">
+<span class="target" id="group__i2c__interface_1gaf550b2d134994f1f5b0249a591fac1ec"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_DEVICE_DT_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span>, <span class="n"><span class="pre">init_fn</span></span>, <span class="n"><span class="pre">pm_device</span></span>, <span class="n"><span class="pre">data_ptr</span></span>, <span class="n"><span class="pre">cfg_ptr</span></span>, <span class="n"><span class="pre">level</span></span>, <span class="n"><span class="pre">prio</span></span>, <span class="n"><span class="pre">api_ptr</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.I2C_DEVICE_DT_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Like <a class="reference internal" href="../drivers/index.html#group__device__model_1gaac590af7705a3223968164406a483548"><span class="std std-ref">DEVICE_DT_DEFINE()</span></a> with I2C specifics. </p>
+<p>Defines a device which implements the I2C API. May generate a custom <a class="reference internal" href="../drivers/index.html#structdevice__state"><span class="std std-ref">device_state</span></a> container struct and init_fn wrapper when needed depending on I2C<span> <a class="reference internal" href="../../kconfig.html#CONFIG_I2C_STATS" title="CONFIG_I2C_STATS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_I2C_STATS</span></code></a> </span>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: The devicetree node identifier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">init_fn</span></code>: Name of the init function of the driver.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pm_device</span></code>: PM device resources reference (NULL if device does not use PM).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_ptr</span></code>: Pointer to the device’s private data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cfg_ptr</span></code>: The address to the structure containing the configuration information for this instance of the driver.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">level</span></code>: The initialization level. See <a class="reference internal" href="../drivers/index.html#group__device__model_1ga1e50fdff086356a75b0e91179952cc8d"><span class="std std-ref">SYS_INIT()</span></a> for details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prio</span></code>: Priority within the selected initialization level. See <a class="reference internal" href="../drivers/index.html#group__device__model_1ga1e50fdff086356a75b0e91179952cc8d"><span class="std std-ref">SYS_INIT()</span></a> for details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">api_ptr</span></code>: Provides an initial pointer to the API function struct used by the driver. Can be NULL. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_DEVICE_DT_INST_DEFINE">
+<span class="target" id="group__i2c__interface_1gabfd94bccb99bd1a958cd8d7902b2072a"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_DEVICE_DT_INST_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">inst</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.I2C_DEVICE_DT_INST_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Like <a class="reference internal" href="#group__i2c__interface_1gaf550b2d134994f1f5b0249a591fac1ec"><span class="std std-ref">I2C_DEVICE_DT_DEFINE()</span></a> for an instance of a DT_DRV_COMPAT compatible. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">inst</span></code>: instance number. This is replaced by <code class="docutils literal notranslate"><span class="pre">DT_DRV_COMPAT(inst)</span></code> in the call to <a class="reference internal" href="#group__i2c__interface_1gaf550b2d134994f1f5b0249a591fac1ec"><span class="std std-ref">I2C_DEVICE_DT_DEFINE()</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code>: other parameters as expected by <a class="reference internal" href="#group__i2c__interface_1gaf550b2d134994f1f5b0249a591fac1ec"><span class="std std-ref">I2C_DEVICE_DT_DEFINE()</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_DECLARE_CLIENT_CONFIG">
+<span class="target" id="group__i2c__interface_1ga1ea3a529bda7d896262c97bf305641ac"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_DECLARE_CLIENT_CONFIG</span></span></span><a class="headerlink" href="#c.I2C_DECLARE_CLIENT_CONFIG" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_CLIENT">
+<span class="target" id="group__i2c__interface_1ga29d683222a96276b7aee09ddab034af7"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_CLIENT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_master</span></span>, <span class="n"><span class="pre">_addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.I2C_CLIENT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_GET_MASTER">
+<span class="target" id="group__i2c__interface_1ga2b42e3f282659da16ae5a8a6e569e8d9"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_GET_MASTER</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_conf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.I2C_GET_MASTER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.I2C_GET_ADDR">
+<span class="target" id="group__i2c__interface_1gae26008d851b43232e04b32b1eb1c0dba"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_GET_ADDR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_conf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.I2C_GET_ADDR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.i2c_slave_write_requested_cb_t">
+<span class="target" id="group__i2c__interface_1ga6634657eae50c6316cd39dcf154308ee"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">i2c_slave_write_requested_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_slave_config" title="i2c_slave_config"><span class="n"><span class="pre">i2c_slave_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.i2c_slave_write_requested_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function called when a write to the device is initiated. </p>
+<p>This function is invoked by the controller when the bus completes a start condition for a write operation to the address associated with a particular device.</p>
+<p>A success return shall cause the controller to ACK the next byte received. An error return shall cause the controller to NACK the next byte received.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 if the write is accepted, or a negative error code. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: the configuration structure associated with the device to which the operation is addressed.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.i2c_slave_write_received_cb_t">
+<span class="target" id="group__i2c__interface_1gac126848d8d110e3f91441043ae04bf92"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">i2c_slave_write_received_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_slave_config" title="i2c_slave_config"><span class="n"><span class="pre">i2c_slave_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.i2c_slave_write_received_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function called when a write to the device is continued. </p>
+<p>This function is invoked by the controller when it completes reception of a byte of data in an ongoing write operation to the device.</p>
+<p>A success return shall cause the controller to ACK the next byte received. An error return shall cause the controller to NACK the next byte received.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 if more data can be accepted, or a negative error code. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: the configuration structure associated with the device to which the operation is addressed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">val</span></code>: the byte received by the controller.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.i2c_slave_read_requested_cb_t">
+<span class="target" id="group__i2c__interface_1ga2fcb4c6f2cf5d72406715ce00af621a2"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">i2c_slave_read_requested_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_slave_config" title="i2c_slave_config"><span class="n"><span class="pre">i2c_slave_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.i2c_slave_read_requested_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function called when a read from the device is initiated. </p>
+<p>This function is invoked by the controller when the bus completes a start condition for a read operation from the address associated with a particular device.</p>
+<p>The value returned in <code class="docutils literal notranslate"><span class="pre">*val</span></code> will be transmitted. A success return shall cause the controller to react to additional read operations. An error return shall cause the controller to ignore bus operations until a new start condition is received.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 if more data can be requested, or a negative error code. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: the configuration structure associated with the device to which the operation is addressed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">val</span></code>: pointer to storage for the first byte of data to return for the read request.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.i2c_slave_read_processed_cb_t">
+<span class="target" id="group__i2c__interface_1ga6a5f74bc6673f7d88e01457818ac2c74"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">i2c_slave_read_processed_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_slave_config" title="i2c_slave_config"><span class="n"><span class="pre">i2c_slave_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.i2c_slave_read_processed_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function called when a read from the device is continued. </p>
+<p>This function is invoked by the controller when the bus is ready to provide additional data for a read operation from the address associated with the device device.</p>
+<p>The value returned in <code class="docutils literal notranslate"><span class="pre">*val</span></code> will be transmitted. A success return shall cause the controller to react to additional read operations. An error return shall cause the controller to ignore bus operations until a new start condition is received.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 if data has been provided, or a negative error code. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: the configuration structure associated with the device to which the operation is addressed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">val</span></code>: pointer to storage for the next byte of data to return for the read request.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.i2c_slave_stop_cb_t">
+<span class="target" id="group__i2c__interface_1ga76cd96ad8d9109151f544fc5ecaa6d36"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">i2c_slave_stop_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_slave_config" title="i2c_slave_config"><span class="n"><span class="pre">i2c_slave_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.i2c_slave_stop_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Function called when a stop condition is observed after a start condition addressed to a particular device. </p>
+<p>This function is invoked by the controller when the bus is ready to provide additional data for a read operation from the address associated with the device device. After the function returns the controller shall enter a state where it is ready to react to new start conditions.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Ignored. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: the configuration structure associated with the device to which the operation is addressed.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_xfer_stats">
+<span class="target" id="group__i2c__interface_1gab2a84398805e2be7662e9ae9cd4f9299"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_xfer_stats</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_msg" title="i2c_msg"><span class="n"><span class="pre">i2c_msg</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">msgs</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_msgs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_xfer_stats" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Updates the i2c stats for i2c transfers. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: I2C device to update stats for </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msgs</span></code>: Array of struct <a class="reference internal" href="#structi2c__msg"><span class="std std-ref">i2c_msg</span></a> </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_msgs</span></code>: Number of i2c_msgs </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_configure">
+<span class="target" id="group__i2c__interface_1ga75326a6f38c011d35df9f3e72f2259e9"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_configure</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">dev_config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_configure" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Configure operation of a host controller. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_config</span></code>: Bit-packed 32-bit value to the device runtime configuration for the I2C controller.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error, failed to configure device. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_get_config">
+<span class="target" id="group__i2c__interface_1ga6858e0f1a942b22964105135c334baed"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_get_config</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev_config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_get_config" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get configuration of a host controller. </p>
+<p>This routine provides a way to get current configuration. It is allowed to call the function before i2c_configure, because some I2C ports can be configured during init process. However, if the I2C port is not configured, i2c_get_config returns an error.</p>
+<p>i2c_get_config can return cached config or probe hardware, but it has to be up to date with current configuration.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the driver instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_config</span></code>: Pointer to return bit-packed 32-bit value of the I2C controller configuration.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ERANGE</span></code>: Configured I2C frequency is invalid. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If get config is not implemented </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_transfer">
+<span class="target" id="group__i2c__interface_1ga2958e6fe92ffb17851052d5c9a5c058e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_transfer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_msg" title="i2c_msg"><span class="n"><span class="pre">i2c_msg</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">msgs</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_msgs</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_transfer" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Perform data transfer to another I2C device in master mode. </p>
+<p>This routine provides a generic interface to perform data transfer to another I2C device synchronously. Use <a class="reference internal" href="#group__i2c__interface_1ga935d1fdcbf9a40c9a673aa8977048ee7"><span class="std std-ref">i2c_read()</span></a>/i2c_write() for simple read or write.</p>
+<p>The array of message <em>msgs</em> must not be NULL. The number of message <em>num_msgs</em> may be zero,in which case no transfer occurs.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Not all scatter/gather transactions can be supported by all drivers. As an example, a gather write (multiple consecutive <code class="docutils literal notranslate"><a class="reference internal" href="#structi2c__msg"><span class="std std-ref"><span class="pre">i2c_msg</span></span></a></code> buffers all configured for <code class="docutils literal notranslate"><span class="pre">I2C_MSG_WRITE</span></code>) may be packed into a single transaction by some drivers, but others may emit each fragment as a distinct write transaction, which will not produce the same behavior. See the documentation of <code class="docutils literal notranslate"><span class="pre">struct</span> <a class="reference internal" href="#structi2c__msg"><span class="std std-ref"><span class="pre">i2c_msg</span></span></a></code> for limitations on support for multi-message bus transactions.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in master mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msgs</span></code>: Array of messages to transfer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_msgs</span></code>: Number of messages to transfer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Address of the I2C target device.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_transfer_dt">
+<span class="target" id="group__i2c__interface_1ga8dce931e2dd637d811ff651062cec17b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_transfer_dt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_dt_spec" title="i2c_dt_spec"><span class="n"><span class="pre">i2c_dt_spec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">spec</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_msg" title="i2c_msg"><span class="n"><span class="pre">i2c_msg</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">msgs</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_msgs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_transfer_dt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Perform data transfer to another I2C device in master mode. </p>
+<p>This is equivalent to: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i2c_transfer</span><span class="p">(</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">bus</span><span class="p">,</span> <span class="n">msgs</span><span class="p">,</span> <span class="n">num_msgs</span><span class="p">,</span> <span class="n">spec</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">);</span>
+</pre></div>
+</div>
+ <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a value from <a class="reference internal" href="#group__i2c__interface_1ga2958e6fe92ffb17851052d5c9a5c058e"><span class="std std-ref">i2c_transfer()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">spec</span></code>: I2C specification from devicetree. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msgs</span></code>: Array of messages to transfer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_msgs</span></code>: Number of messages to transfer.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_recover_bus">
+<span class="target" id="group__i2c__interface_1ga93117c531c39259d89ab69d52bbde85c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_recover_bus</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_recover_bus" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Recover the I2C bus. </p>
+<p>Attempt to recover the I2C bus.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in master mode. </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: If bus is not clear after recovery attempt. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If bus recovery is not implemented </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_slave_register">
+<span class="target" id="group__i2c__interface_1ga2b3b52d19b1fe12c6c693bef6f2106ce"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_slave_register</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_slave_config" title="i2c_slave_config"><span class="n"><span class="pre">i2c_slave_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_slave_register" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Registers the provided config as Slave device of a controller. </p>
+<p>Enable I2C slave mode for the ‘dev’ I2C bus driver using the provided ‘config’ struct containing the functions and parameters to send bus events. The I2C slave will be registered at the address provided as ‘address’ struct member. Addressing mode - 7 or 10 bit - depends on the ‘flags’ struct member. Any I2C bus events related to the slave mode will be passed onto I2C slave device driver via a set of callback functions provided in the ‘callbacks’ struct member.</p>
+<p>Most of the existing hardware allows simultaneous support for master and slave mode. This is however not guaranteed.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in slave mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cfg</span></code>: Config struct with functions and parameters used by the I2C driver to send bus events</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Is successful </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: If parameters are invalid </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If slave mode is not implemented </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_slave_unregister">
+<span class="target" id="group__i2c__interface_1gaee67eefa3f8cb078c14ff0a3aab2527c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_slave_unregister</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_slave_config" title="i2c_slave_config"><span class="n"><span class="pre">i2c_slave_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_slave_unregister" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unregisters the provided config as Slave device. </p>
+<p>This routine disables I2C slave mode for the ‘dev’ I2C bus driver using the provided ‘config’ struct containing the functions and parameters to send bus events.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in slave mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cfg</span></code>: Config struct with functions and parameters used by the I2C driver to send bus events</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Is successful </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: If parameters are invalid </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If slave mode is not implemented </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_slave_driver_register">
+<span class="target" id="group__i2c__interface_1gab8f2b9e19ceb0ebc15fdd8fc2bf304a1"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_slave_driver_register</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_slave_driver_register" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Instructs the I2C Slave device to register itself to the I2C Controller. </p>
+<p>This routine instructs the I2C Slave device to register itself to the I2C Controller via its parent controller’s <a class="reference internal" href="#group__i2c__interface_1ga2b3b52d19b1fe12c6c693bef6f2106ce"><span class="std std-ref">i2c_slave_register()</span></a> API.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the I2C slave device (not itself an I2C controller).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Is successful </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: If parameters are invalid </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_slave_driver_unregister">
+<span class="target" id="group__i2c__interface_1ga5fce9f78a267f638b111c19cac242278"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_slave_driver_unregister</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_slave_driver_unregister" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Instructs the I2C Slave device to unregister itself from the I2C Controller. </p>
+<p>This routine instructs the I2C Slave device to unregister itself from the I2C Controller via its parent controller’s <a class="reference internal" href="#group__i2c__interface_1ga2b3b52d19b1fe12c6c693bef6f2106ce"><span class="std std-ref">i2c_slave_register()</span></a> API.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the I2C slave device (not itself an I2C controller).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Is successful </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: If parameters are invalid </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_write">
+<span class="target" id="group__i2c__interface_1ga2cc5f49493dce89e128ccbfa9d6149a0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_write</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_bytes</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_write" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write a set amount of data to an I2C device. </p>
+<p>This routine writes a set amount of data synchronously.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in master mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Memory pool from which the data is transferred. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_bytes</span></code>: Number of bytes to write. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Address to the target I2C device for writing.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_write_dt">
+<span class="target" id="group__i2c__interface_1ga2d17b714ba6ebe47d7bdfcb1cf97e44f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_write_dt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_dt_spec" title="i2c_dt_spec"><span class="n"><span class="pre">i2c_dt_spec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">spec</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_write_dt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write a set amount of data to an I2C device. </p>
+<p>This is equivalent to: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i2c_write</span><span class="p">(</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">bus</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">num_bytes</span><span class="p">,</span> <span class="n">spec</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">);</span>
+</pre></div>
+</div>
+ <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a value from <a class="reference internal" href="#group__i2c__interface_1ga2cc5f49493dce89e128ccbfa9d6149a0"><span class="std std-ref">i2c_write()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">spec</span></code>: I2C specification from devicetree. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Memory pool from which the data is transferred. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_bytes</span></code>: Number of bytes to write.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_read">
+<span class="target" id="group__i2c__interface_1ga935d1fdcbf9a40c9a673aa8977048ee7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_read</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_bytes</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_read" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read a set amount of data from an I2C device. </p>
+<p>This routine reads a set amount of data synchronously.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in master mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Memory pool that stores the retrieved data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_bytes</span></code>: Number of bytes to read. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Address of the I2C device being read.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_read_dt">
+<span class="target" id="group__i2c__interface_1ga5cf80d20dca0d5f1d16e16c151f57ef6"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_read_dt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_dt_spec" title="i2c_dt_spec"><span class="n"><span class="pre">i2c_dt_spec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">spec</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_read_dt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read a set amount of data from an I2C device. </p>
+<p>This is equivalent to: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i2c_read</span><span class="p">(</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">bus</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">num_bytes</span><span class="p">,</span> <span class="n">spec</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">);</span>
+</pre></div>
+</div>
+ <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a value from <a class="reference internal" href="#group__i2c__interface_1ga935d1fdcbf9a40c9a673aa8977048ee7"><span class="std std-ref">i2c_read()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">spec</span></code>: I2C specification from devicetree. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Memory pool that stores the retrieved data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_bytes</span></code>: Number of bytes to read.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_write_read">
+<span class="target" id="group__i2c__interface_1ga1273a9f8bdb002e0d6ece3a8c893a709"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_write_read</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">write_buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_write</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">read_buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_read</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_write_read" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write then read data from an I2C device. </p>
+<p><p>This supports the common operation “this is what I want”, “now give</p>
+<p>it to me” transaction pair through a combined write-then-read bus transaction.</p>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in master mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Address of the I2C device </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">write_buf</span></code>: Pointer to the data to be written </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_write</span></code>: Number of bytes to write </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">read_buf</span></code>: Pointer to storage for read data </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_read</span></code>: Number of bytes to read</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: if successful </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">negative</span></code>: on error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_write_read_dt">
+<span class="target" id="group__i2c__interface_1ga301733586dcc2a353bdf149b49df5758"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_write_read_dt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_dt_spec" title="i2c_dt_spec"><span class="n"><span class="pre">i2c_dt_spec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">spec</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">write_buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_write</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">read_buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_read</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_write_read_dt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write then read data from an I2C device. </p>
+<p>This is equivalent to: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i2c_write_read</span><span class="p">(</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">bus</span><span class="p">,</span> <span class="n">spec</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span>
+               <span class="n">write_buf</span><span class="p">,</span> <span class="n">num_write</span><span class="p">,</span>
+               <span class="n">read_buf</span><span class="p">,</span> <span class="n">num_read</span><span class="p">);</span>
+</pre></div>
+</div>
+ <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a value from <a class="reference internal" href="#group__i2c__interface_1ga1273a9f8bdb002e0d6ece3a8c893a709"><span class="std std-ref">i2c_write_read()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">spec</span></code>: I2C specification from devicetree. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">write_buf</span></code>: Pointer to the data to be written </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_write</span></code>: Number of bytes to write </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">read_buf</span></code>: Pointer to storage for read data </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_read</span></code>: Number of bytes to read</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_burst_read">
+<span class="target" id="group__i2c__interface_1ga4bbb79898f53d0a2fad1bd302369ae9e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_burst_read</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">dev_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">start_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_burst_read" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read multiple bytes from an internal address of an I2C device. </p>
+<p>This routine reads multiple bytes from an internal address of an I2C device synchronously.</p>
+<p>Instances of this may be replaced by <a class="reference internal" href="#group__i2c__interface_1ga1273a9f8bdb002e0d6ece3a8c893a709"><span class="std std-ref">i2c_write_read()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in master mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_addr</span></code>: Address of the I2C device for reading. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_addr</span></code>: Internal address from which the data is being read. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Memory pool that stores the retrieved data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_bytes</span></code>: Number of bytes being read.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_burst_read_dt">
+<span class="target" id="group__i2c__interface_1ga9d2654bbf80f4d253532adaec8566fc3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_burst_read_dt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_dt_spec" title="i2c_dt_spec"><span class="n"><span class="pre">i2c_dt_spec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">spec</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">start_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_burst_read_dt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read multiple bytes from an internal address of an I2C device. </p>
+<p>This is equivalent to: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i2c_burst_read</span><span class="p">(</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">bus</span><span class="p">,</span> <span class="n">spec</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span> <span class="n">start_addr</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">num_bytes</span><span class="p">);</span>
+</pre></div>
+</div>
+ <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a value from <a class="reference internal" href="#group__i2c__interface_1ga4bbb79898f53d0a2fad1bd302369ae9e"><span class="std std-ref">i2c_burst_read()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">spec</span></code>: I2C specification from devicetree. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_addr</span></code>: Internal address from which the data is being read. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Memory pool that stores the retrieved data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_bytes</span></code>: Number of bytes to read.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_burst_write">
+<span class="target" id="group__i2c__interface_1gaf995812f31e7bf1ea7f203905db13822"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_burst_write</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">dev_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">start_addr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_burst_write" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write multiple bytes to an internal address of an I2C device. </p>
+<p>This routine writes multiple bytes to an internal address of an I2C device synchronously.</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>The combined write synthesized by this API may not be supported on all I2C devices. Uses of this API may be made more portable by replacing them with calls to <a class="reference internal" href="#group__i2c__interface_1ga2cc5f49493dce89e128ccbfa9d6149a0"><span class="std std-ref">i2c_write()</span></a> passing a buffer containing the combined address and data.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in master mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_addr</span></code>: Address of the I2C device for writing. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_addr</span></code>: Internal address to which the data is being written. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Memory pool from which the data is transferred. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_bytes</span></code>: Number of bytes being written.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_burst_write_dt">
+<span class="target" id="group__i2c__interface_1ga0e590c99d3b9c1a7dd8174a318ee5a7d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_burst_write_dt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_dt_spec" title="i2c_dt_spec"><span class="n"><span class="pre">i2c_dt_spec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">spec</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">start_addr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_burst_write_dt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write multiple bytes to an internal address of an I2C device. </p>
+<p>This is equivalent to: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i2c_burst_write</span><span class="p">(</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">bus</span><span class="p">,</span> <span class="n">spec</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span> <span class="n">start_addr</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">num_bytes</span><span class="p">);</span>
+</pre></div>
+</div>
+ <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a value from <a class="reference internal" href="#group__i2c__interface_1gaf995812f31e7bf1ea7f203905db13822"><span class="std std-ref">i2c_burst_write()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">spec</span></code>: I2C specification from devicetree. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_addr</span></code>: Internal address to which the data is being written. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Memory pool from which the data is transferred. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_bytes</span></code>: Number of bytes being written.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_reg_read_byte">
+<span class="target" id="group__i2c__interface_1gaf8d1722ff4ebe97122293aef6ccf332a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_reg_read_byte</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">dev_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">reg_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_reg_read_byte" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read internal register of an I2C device. </p>
+<p>This routine reads the value of an 8-bit internal register of an I2C device synchronously.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in master mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_addr</span></code>: Address of the I2C device for reading. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reg_addr</span></code>: Address of the internal register being read. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: Memory pool that stores the retrieved register value.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_reg_read_byte_dt">
+<span class="target" id="group__i2c__interface_1ga6fc14d75c41b8c8d9dd2f77c59533640"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_reg_read_byte_dt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_dt_spec" title="i2c_dt_spec"><span class="n"><span class="pre">i2c_dt_spec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">spec</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">reg_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_reg_read_byte_dt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read internal register of an I2C device. </p>
+<p>This is equivalent to: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i2c_reg_read_byte</span><span class="p">(</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">bus</span><span class="p">,</span> <span class="n">spec</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span> <span class="n">reg_addr</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+ <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a value from <a class="reference internal" href="#group__i2c__interface_1gaf8d1722ff4ebe97122293aef6ccf332a"><span class="std std-ref">i2c_reg_read_byte()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">spec</span></code>: I2C specification from devicetree. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reg_addr</span></code>: Address of the internal register being read. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: Memory pool that stores the retrieved register value.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_reg_write_byte">
+<span class="target" id="group__i2c__interface_1ga687a0da74c22b299b66db8198c6fdcb1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_reg_write_byte</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">dev_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">reg_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_reg_write_byte" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write internal register of an I2C device. </p>
+<p>This routine writes a value to an 8-bit internal register of an I2C device synchronously.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This function internally combines the register and value into a single bus transaction.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in master mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_addr</span></code>: Address of the I2C device for writing. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reg_addr</span></code>: Address of the internal register being written. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: Value to be written to internal register.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_reg_write_byte_dt">
+<span class="target" id="group__i2c__interface_1ga664cd76bf4fae0dba848f5c284699a04"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_reg_write_byte_dt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_dt_spec" title="i2c_dt_spec"><span class="n"><span class="pre">i2c_dt_spec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">spec</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">reg_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_reg_write_byte_dt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write internal register of an I2C device. </p>
+<p>This is equivalent to: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i2c_reg_write_byte</span><span class="p">(</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">bus</span><span class="p">,</span> <span class="n">spec</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span> <span class="n">reg_addr</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+ <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a value from <a class="reference internal" href="#group__i2c__interface_1ga687a0da74c22b299b66db8198c6fdcb1"><span class="std std-ref">i2c_reg_write_byte()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">spec</span></code>: I2C specification from devicetree. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reg_addr</span></code>: Address of the internal register being written. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: Value to be written to internal register.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_reg_update_byte">
+<span class="target" id="group__i2c__interface_1gad07710d37bf6bd4fa6ccfe62be625eb4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_reg_update_byte</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">dev_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">reg_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">mask</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_reg_update_byte" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Update internal register of an I2C device. </p>
+<p>This routine updates the value of a set of bits from an 8-bit internal register of an I2C device synchronously.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>If the calculated new register value matches the value that was read this function will not generate a write operation.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for an I2C controller driver configured in master mode. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_addr</span></code>: Address of the I2C device for updating. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reg_addr</span></code>: Address of the internal register being updated. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mask</span></code>: Bitmask for updating internal register. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: Value for updating internal register.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>: General input / output error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_reg_update_byte_dt">
+<span class="target" id="group__i2c__interface_1ga5000c5e49eabe712b5fd532d3842c3f5"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_reg_update_byte_dt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_dt_spec" title="i2c_dt_spec"><span class="n"><span class="pre">i2c_dt_spec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">spec</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">reg_addr</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">mask</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_reg_update_byte_dt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Update internal register of an I2C device. </p>
+<p>This is equivalent to: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i2c_reg_update_byte</span><span class="p">(</span><span class="n">spec</span><span class="o">-&gt;</span><span class="n">bus</span><span class="p">,</span> <span class="n">spec</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span> <span class="n">reg_addr</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+ <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a value from <a class="reference internal" href="#group__i2c__interface_1gad07710d37bf6bd4fa6ccfe62be625eb4"><span class="std std-ref">i2c_reg_update_byte()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">spec</span></code>: I2C specification from devicetree. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reg_addr</span></code>: Address of the internal register being updated. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mask</span></code>: Bitmask for updating internal register. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: Value for updating internal register.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.i2c_dump_msgs">
+<span class="target" id="group__i2c__interface_1ga685640115771a60564ae1c53c3308c5c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_dump_msgs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_msg" title="i2c_msg"><span class="n"><span class="pre">i2c_msg</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">msgs</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">num_msgs</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_dump_msgs" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Dump out an I2C message. </p>
+<p>Dumps out a list of I2C messages. For any that are writes (W), the data is displayed in hex.</p>
+<p>It looks something like this (with name “testing”):</p>
+<p>D: I2C msg: testing, addr=56 D: W len=01: D: contents: D: 06 |. D: W len=0e: D: contents: D: 00 01 02 03 04 05 06 07 |…….. D: 08 09 0a 0b 0c 0d |……</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of this dump, displayed at the top. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msgs</span></code>: Array of messages to dump. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_msgs</span></code>: Number of messages to dump. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: Address of the I2C target device. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.i2c_dt_spec">
+<span class="target" id="structi2c__dt__spec"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_dt_spec</span></span></span><a class="headerlink" href="#c.i2c_dt_spec" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;i2c.h&gt;</em><p>Complete I2C DT information. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bus</span></code>: is the I2C bus </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addr</span></code>: is the slave address </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.i2c_msg">
+<span class="target" id="structi2c__msg"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_msg</span></span></span><a class="headerlink" href="#c.i2c_msg" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;i2c.h&gt;</em><p>One I2C Message. </p>
+<p>This defines one I2C message to transact on the I2C bus.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Some of the configurations supported by this API may not be supported by specific SoC I2C hardware implementations, in particular features related to bus transactions intended to read or write data from different buffers within a single transaction. Invocations of <a class="reference internal" href="#group__i2c__interface_1ga2958e6fe92ffb17851052d5c9a5c058e"><span class="std std-ref">i2c_transfer()</span></a> may not indicate an error when an unsupported configuration is encountered. In some cases drivers will generate separate transactions for each message fragment, with or without presence of <a class="reference internal" href="#group__i2c__interface_1ga8c6cf7be2a04979fdb9d0b7dd9c4f831"><span class="std std-ref">I2C_MSG_RESTART</span></a> in <a class="reference internal" href="#structi2c__msg_1ae6f9dc8a50b611adbca38e29b529ab9c"><span class="std std-ref">flags</span></a>. </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.i2c_msg.buf">
+<span class="target" id="structi2c__msg_1ac4aa590487270589a51964b38f853a37"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">buf</span></span></span><a class="headerlink" href="#c.i2c_msg.buf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Data buffer in bytes </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.i2c_msg.len">
+<span class="target" id="structi2c__msg_1ae122c36d1fdc0829321fa116921d7a52"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">len</span></span></span><a class="headerlink" href="#c.i2c_msg.len" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Length of buffer in bytes </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.i2c_msg.flags">
+<span class="target" id="structi2c__msg_1ae6f9dc8a50b611adbca38e29b529ab9c"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flags</span></span></span><a class="headerlink" href="#c.i2c_msg.flags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flags for this message </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.i2c_slave_callbacks">
+<span class="target" id="structi2c__slave__callbacks"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_slave_callbacks</span></span></span><a class="headerlink" href="#c.i2c_slave_callbacks" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;i2c.h&gt;</em><p>Structure providing callbacks to be implemented for devices that supports the I2C slave API. </p>
+<p>This structure may be shared by multiple devices that implement the same API at different addresses on the bus. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.i2c_slave_config">
+<span class="target" id="structi2c__slave__config"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_slave_config</span></span></span><a class="headerlink" href="#c.i2c_slave_config" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;i2c.h&gt;</em><p>Structure describing a device that supports the I2C slave API. </p>
+<p>Instances of this are passed to the <a class="reference internal" href="#group__i2c__interface_1ga2b3b52d19b1fe12c6c693bef6f2106ce"><span class="std std-ref">i2c_slave_register()</span></a> and <a class="reference internal" href="#group__i2c__interface_1gaee67eefa3f8cb078c14ff0a3aab2527c"><span class="std std-ref">i2c_slave_unregister()</span></a> functions to indicate addition and removal of a slave device, respective.</p>
+<p>Fields other than <code class="docutils literal notranslate"><span class="pre">node</span></code> must be initialized by the module that implements the device behavior prior to passing the object reference to <a class="reference internal" href="#group__i2c__interface_1ga2b3b52d19b1fe12c6c693bef6f2106ce"><span class="std std-ref">i2c_slave_register()</span></a>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.i2c_slave_config.node">
+<span class="target" id="structi2c__slave__config_1a51fef7fbd17c8a1bc461a8123fad4406"></span><span class="n"><span class="pre">sys_snode_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">node</span></span></span><a class="headerlink" href="#c.i2c_slave_config.node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Private, do not modify </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.i2c_slave_config.flags">
+<span class="target" id="structi2c__slave__config_1a0671f34c262e3d115bfcfcf9acd9da1c"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flags</span></span></span><a class="headerlink" href="#c.i2c_slave_config.flags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flags for the slave device defined by I2C_SLAVE_FLAGS_* constants </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.i2c_slave_config.address">
+<span class="target" id="structi2c__slave__config_1ab37059ea24d2cccfb390bf24d08d9e2a"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">address</span></span></span><a class="headerlink" href="#c.i2c_slave_config.address" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Address for this slave device </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.i2c_slave_config.callbacks">
+<span class="target" id="structi2c__slave__config_1a1f1d179e79cb53b977ec7bf89633a1be"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_slave_callbacks" title="i2c_slave_callbacks"><span class="n"><span class="pre">i2c_slave_callbacks</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">callbacks</span></span></span><a class="headerlink" href="#c.i2c_slave_config.callbacks" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback functions </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.i2c_device_state">
+<span class="target" id="structi2c__device__state"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_device_state</span></span></span><a class="headerlink" href="#c.i2c_device_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;i2c.h&gt;</em><p>I2C specific device state which allows for i2c device class specific additions. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.i2c_client_config">
+<span class="target" id="structi2c__client__config"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_client_config</span></span></span><a class="headerlink" href="#c.i2c_client_config" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;i2c.h&gt;</em></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ipm.html" class="btn btn-neutral float-right" title="IPM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="i2c_eeprom_slave.html" class="btn btn-neutral" title="I2C EEPROM Slave" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,882 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>MCUmgr &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/tabs.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Fixing and backporting fixes to Zephyr v2.7 MCUmgr" href="mcumgr_backporting.html" />
+    <link rel="prev" title="Device Management" href="index.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Device Management</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">MCUmgr</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command-line-tool">Command-line Tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-the-transport">Configuring the transport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#saving-the-connection-config">Saving the connection config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#general-options">General options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-of-commands">List of Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#image-management">Image Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#statistics-management">Statistics Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filesystem-management">Filesystem Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bootloader-integration">Bootloader integration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mcumgr_backporting.html">Fixing and backporting fixes to Zephyr v2.7 MCUmgr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="smp_protocol.html">SMP Protocol Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dfu.html">Device Firmware Upgrade</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota.html">Over-the-Air Update</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Device Management</a> &raquo;</li>
+        
+      <li>MCUmgr</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/device_mgmt/mcumgr.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mcumgr">
+<span id="mcu-mgr"></span><h1>MCUmgr<a class="headerlink" href="#mcumgr" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The management subsystem allows remote management of Zephyr-enabled devices.
+The following management operations are available:</p>
+<ul class="simple">
+<li><p>Image management</p></li>
+<li><p>File System management</p></li>
+<li><p>Log management (currently disabled)</p></li>
+<li><p>OS management</p></li>
+<li><p>Shell management</p></li>
+</ul>
+<p>over the following transports:</p>
+<ul class="simple">
+<li><p>BLE (Bluetooth Low Energy)</p></li>
+<li><p>Serial (UART)</p></li>
+<li><p>UDP over IP</p></li>
+</ul>
+<p>The management subsystem is based on the Simple Management Protocol (SMP)
+provided by <a class="reference external" href="https://github.com/apache/mynewt-mcumgr">MCUmgr</a>, an open source project that provides a
+management subsystem that is portable across multiple real-time operating
+systems.</p>
+<p>The management subsystem is split in two different locations in the Zephyr tree:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/zephyrproject-rtos/mcumgr">zephyrproject-rtos/mcumgr repo</a>
+contains a clean import of the MCUmgr project</p></li>
+<li><p><a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/subsys/mgmt/">subsys/mgmt/</a> contains the Zephyr-specific bindings to MCUmgr</p></li>
+</ul>
+<p>Additionally there is a <a class="reference internal" href="../../samples/subsys/mgmt/mcumgr/smp_svr/README.html#smp-svr-sample"><span class="std std-ref">sample</span></a> that provides management
+functionality over BLE and serial.</p>
+</div>
+<div class="section" id="command-line-tool">
+<span id="mcumgr-cli"></span><h2>Command-line Tool<a class="headerlink" href="#command-line-tool" title="Permalink to this headline">¶</a></h2>
+<p>MCUmgr provides a command-line tool, <code class="file docutils literal notranslate"><span class="pre">mcumgr</span></code>, for managing remote devices.
+The tool is written in the Go programming language.</p>
+<p>To install the tool:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">go</span> <span class="n">get</span> <span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">apache</span><span class="o">/</span><span class="n">mynewt</span><span class="o">-</span><span class="n">mcumgr</span><span class="o">-</span><span class="n">cli</span><span class="o">/</span><span class="n">mcumgr</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-the-transport">
+<h2>Configuring the transport<a class="headerlink" href="#configuring-the-transport" title="Permalink to this headline">¶</a></h2>
+<p>There are two command-line options that are responsible for setting and configuring
+the transport layer to use when communicating with managed device:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--conntype</span></code> is used to choose the transport used, and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--connstring</span></code> is used to pass a comma separated list of options in the
+<code class="docutils literal notranslate"><span class="pre">key=value</span></code> format, where each valid <code class="docutils literal notranslate"><span class="pre">key</span></code> depends on the particular
+<code class="docutils literal notranslate"><span class="pre">conntype</span></code>.</p></li>
+</ul>
+<p>Valid transports for <code class="docutils literal notranslate"><span class="pre">--conntype</span></code> are <code class="docutils literal notranslate"><span class="pre">serial</span></code>, <code class="docutils literal notranslate"><span class="pre">ble</span></code> and <code class="docutils literal notranslate"><span class="pre">udp</span></code>. Each
+transport expects a different set of key/value options:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-c2VyaWFs" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-c2VyaWFs" name="c2VyaWFs" role="tab" tabindex="0">serial</button><button aria-controls="panel-0-Ymxl" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-Ymxl" name="Ymxl" role="tab" tabindex="-1">ble</button><button aria-controls="panel-0-dWRw" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-dWRw" name="dWRw" role="tab" tabindex="-1">udp</button></div><div aria-labelledby="tab-0-c2VyaWFs" class="sphinx-tabs-panel group-tab" id="panel-0-c2VyaWFs" name="c2VyaWFs" role="tabpanel" tabindex="0"><p><code class="docutils literal notranslate"><span class="pre">--connstring</span></code> accepts the following <code class="docutils literal notranslate"><span class="pre">key</span></code> values:</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 86%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dev</span></code></p></td>
+<td><p>the device name for the OS <code class="docutils literal notranslate"><span class="pre">mcumgr</span></code> is running on (eg, <code class="docutils literal notranslate"><span class="pre">/dev/ttyUSB0</span></code>, <code class="docutils literal notranslate"><span class="pre">/dev/tty.usbserial</span></code>, <code class="docutils literal notranslate"><span class="pre">COM1</span></code>, etc).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">baud</span></code></p></td>
+<td><p>the communication speed; must match the baudrate of the server.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mtu</span></code></p></td>
+<td><p>aka Maximum Transmission Unit, the maximum protocol packet size.</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-0-Ymxl" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-Ymxl" name="Ymxl" role="tabpanel" tabindex="0"><p><code class="docutils literal notranslate"><span class="pre">--connstring</span></code> accepts the following <code class="docutils literal notranslate"><span class="pre">key</span></code> values:</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 86%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ctlr_name</span></code></p></td>
+<td><p>an OS specific string for the controller name.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">own_addr_type</span></code></p></td>
+<td><p>can be one of <code class="docutils literal notranslate"><span class="pre">public</span></code>, <code class="docutils literal notranslate"><span class="pre">random</span></code>, <code class="docutils literal notranslate"><span class="pre">rpa_pub</span></code>, <code class="docutils literal notranslate"><span class="pre">rpa_rnd</span></code>, where <code class="docutils literal notranslate"><span class="pre">random</span></code> is the default.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">peer_name</span></code></p></td>
+<td><p>the name the peer BLE device advertises, this should match the configuration specified with <a class="reference internal" href="../../kconfig.html#CONFIG_BT_DEVICE_NAME" title="CONFIG_BT_DEVICE_NAME"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_DEVICE_NAME</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">peer_id</span></code></p></td>
+<td><p>the peer BLE device address or UUID. Only required when <code class="docutils literal notranslate"><span class="pre">peer_name</span></code> was not given. The format depends on the OS where <code class="docutils literal notranslate"><span class="pre">mcumgr</span></code> is run, it is a 6 bytes hexadecimal string separated by colons on Linux, or a 128-bit UUID on macOS.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">conn_timeout</span></code></p></td>
+<td><p>a float number representing the connection timeout in seconds.</p></td>
+</tr>
+</tbody>
+</table>
+</div><div aria-labelledby="tab-0-dWRw" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-dWRw" name="dWRw" role="tabpanel" tabindex="0"><p><code class="docutils literal notranslate"><span class="pre">--connstring</span></code> takes the form <code class="docutils literal notranslate"><span class="pre">[addr]:port</span></code> where:</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 86%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">addr</span></code></p></td>
+<td><p>can be a DNS name (if it can be resolved to the device IP), IPv4 addr (app must be built with <a class="reference internal" href="../../kconfig.html#CONFIG_MCUMGR_SMP_UDP_IPV4" title="CONFIG_MCUMGR_SMP_UDP_IPV4"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MCUMGR_SMP_UDP_IPV4</span></code></a>), or IPv6 addr (app must be built with <a class="reference internal" href="../../kconfig.html#CONFIG_MCUMGR_SMP_UDP_IPV6" title="CONFIG_MCUMGR_SMP_UDP_IPV6"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MCUMGR_SMP_UDP_IPV6</span></code></a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">port</span></code></p></td>
+<td><p>any valid UDP port.</p></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="section" id="saving-the-connection-config">
+<h2>Saving the connection config<a class="headerlink" href="#saving-the-connection-config" title="Permalink to this headline">¶</a></h2>
+<p>The transport configuration can be managed with the <code class="docutils literal notranslate"><span class="pre">conn</span></code> sub-command and
+later used with <code class="docutils literal notranslate"><span class="pre">--conn</span></code> (or <code class="docutils literal notranslate"><span class="pre">-c</span></code>) parameter to skip typing both <code class="docutils literal notranslate"><span class="pre">--conntype</span></code>
+and <code class="docutils literal notranslate"><span class="pre">--connstring</span></code>. For example a new config for a serial device that would
+require typing <code class="docutils literal notranslate"><span class="pre">mcumgr</span> <span class="pre">--conntype</span> <span class="pre">serial</span> <span class="pre">--connstring</span> <span class="pre">dev=/dev/ttyACM0,baud=115200,mtu=512</span></code>
+can be saved with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mcumgr</span> <span class="n">conn</span> <span class="n">add</span> <span class="n">acm0</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;serial&quot;</span> <span class="n">connstring</span><span class="o">=</span><span class="s2">&quot;dev=/dev/ttyACM0,baud=115200,mtu=512&quot;</span>
+</pre></div>
+</div>
+<p>Accessing this port can now be done with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mcumgr</span> <span class="o">-</span><span class="n">c</span> <span class="n">acm0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="general-options">
+<span id="id1"></span><h2>General options<a class="headerlink" href="#general-options" title="Permalink to this headline">¶</a></h2>
+<p>Some options work for every <code class="docutils literal notranslate"><span class="pre">mcumgr</span></code> command and might be helpful to debug and fix
+issues with the communication, among them the following deserve special mention:</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 86%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">&lt;log-level&gt;</span></code></p></td>
+<td><p>Configures the log level, which can be one of <code class="docutils literal notranslate"><span class="pre">critical</span></code>, <code class="docutils literal notranslate"><span class="pre">error</span></code>,
+<code class="docutils literal notranslate"><span class="pre">warn</span></code>, <code class="docutils literal notranslate"><span class="pre">info</span></code> or <code class="docutils literal notranslate"><span class="pre">debug</span></code>, from less to most verbose. When there are
+communication issues, <code class="docutils literal notranslate"><span class="pre">-lDEBUG</span></code> might be useful to dump the packets for
+later inspection.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">&lt;timeout&gt;</span></code></p></td>
+<td><p>Changes the timeout waiting for a response from the default of 10s to a
+given value. Some commands might take a long time of processing, eg, the
+erase before an image upload, and might need incrementing the timeout to
+a larger value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-r</span> <span class="pre">&lt;tries&gt;</span></code></p></td>
+<td><p>Changes the number of retries on timeout from the default of 1 to a given
+value.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="list-of-commands">
+<h2>List of Commands<a class="headerlink" href="#list-of-commands" title="Permalink to this headline">¶</a></h2>
+<p>Not all commands defined by <code class="docutils literal notranslate"><span class="pre">mcumgr</span></code> (and SMP protocol) are currently supported
+on Zephyr. The ones that are supported are described in the following table:</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Running <code class="docutils literal notranslate"><span class="pre">mcumgr</span></code> with no parameters, or <code class="docutils literal notranslate"><span class="pre">-h</span></code> will display the list
+of commands.</p>
+</div>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">echo</span></code></p></td>
+<td><p>Send data to a device and display the echoed back data. This command is
+part of the <code class="docutils literal notranslate"><span class="pre">OS</span></code> group, which must be enabled by setting
+<a class="reference internal" href="../../kconfig.html#CONFIG_MCUMGR_CMD_OS_MGMT" title="CONFIG_MCUMGR_CMD_OS_MGMT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MCUMGR_CMD_OS_MGMT</span></code></a>. The <code class="docutils literal notranslate"><span class="pre">echo</span></code> command itself can be
+enabled by setting <a class="reference internal" href="../../kconfig.html#CONFIG_OS_MGMT_ECHO" title="CONFIG_OS_MGMT_ECHO"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_OS_MGMT_ECHO</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fs</span></code></p></td>
+<td><p>Access files on a device. More info in <a class="reference internal" href="#fs-mgmt"><span class="std std-ref">Filesystem Management</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">image</span></code></p></td>
+<td><p>Manage images on a device. More info in <a class="reference internal" href="#image-mgmt"><span class="std std-ref">Image Management</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reset</span></code></p></td>
+<td><p>Perform a soft reset of a device. This command is part of the <code class="docutils literal notranslate"><span class="pre">OS</span></code>
+group, which must be enabled by setting <a class="reference internal" href="../../kconfig.html#CONFIG_MCUMGR_CMD_OS_MGMT" title="CONFIG_MCUMGR_CMD_OS_MGMT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MCUMGR_CMD_OS_MGMT</span></code></a>.
+The <code class="docutils literal notranslate"><span class="pre">reset</span></code> command itself is always enabled and the time taken for a
+reset to happen can be set with <a class="reference internal" href="../../kconfig.html#CONFIG_OS_MGMT_RESET_MS" title="CONFIG_OS_MGMT_RESET_MS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_OS_MGMT_RESET_MS</span></code></a> (in ms).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shell</span></code></p></td>
+<td><p>Execute a command in the remote shell. This option is disabled by default
+and can be enabled with <a class="reference internal" href="../../kconfig.html#CONFIG_MCUMGR_CMD_SHELL_MGMT" title="CONFIG_MCUMGR_CMD_SHELL_MGMT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MCUMGR_CMD_SHELL_MGMT</span></code></a> = <code class="docutils literal notranslate"><span class="pre">y</span></code>.
+To know more about the shell in Zephyr check <a class="reference internal" href="../../reference/shell/index.html#shell-api"><span class="std std-ref">Shell</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stat</span></code></p></td>
+<td><p>Read statistics from a device. More info in <a class="reference internal" href="#stats-mgmt"><span class="std std-ref">Statistics Management</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taskstat</span></code></p></td>
+<td><p>Read task statistics from a device. This command is part of the <code class="docutils literal notranslate"><span class="pre">OS</span></code>
+group, which must be enabled by setting <a class="reference internal" href="../../kconfig.html#CONFIG_MCUMGR_CMD_OS_MGMT" title="CONFIG_MCUMGR_CMD_OS_MGMT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MCUMGR_CMD_OS_MGMT</span></code></a>.
+The <code class="docutils literal notranslate"><span class="pre">taskstat</span></code> command itself can be enabled by setting
+<a class="reference internal" href="../../kconfig.html#CONFIG_OS_MGMT_TASKSTAT" title="CONFIG_OS_MGMT_TASKSTAT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_OS_MGMT_TASKSTAT</span></code></a>. <a class="reference internal" href="../../kconfig.html#CONFIG_THREAD_MONITOR" title="CONFIG_THREAD_MONITOR"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_THREAD_MONITOR</span></code></a> also
+needs to be enabled otherwise a <code class="docutils literal notranslate"><span class="pre">-8</span></code> (<code class="docutils literal notranslate"><span class="pre">MGMT_ERR_ENOTSUP</span></code>) will be
+returned.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><code class="docutils literal notranslate"><span class="pre">taskstat</span></code> has a few options that might require tweaking. The
+<a class="reference internal" href="../../kconfig.html#CONFIG_THREAD_NAME" title="CONFIG_THREAD_NAME"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_THREAD_NAME</span></code></a> must be set to display the task names, otherwise
+the priority is displayed. Since the <code class="docutils literal notranslate"><span class="pre">taskstat</span></code> packets are large, they
+might need increasing the <a class="reference internal" href="../../kconfig.html#CONFIG_MCUMGR_BUF_SIZE" title="CONFIG_MCUMGR_BUF_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MCUMGR_BUF_SIZE</span></code></a> option.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To display the correct stack size in the <code class="docutils literal notranslate"><span class="pre">taskstat</span></code> command, the
+<a class="reference internal" href="../../kconfig.html#CONFIG_THREAD_STACK_INFO" title="CONFIG_THREAD_STACK_INFO"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_THREAD_STACK_INFO</span></code></a> option must be set.
+To display the correct stack usage in the <code class="docutils literal notranslate"><span class="pre">taskstat</span></code> command, both
+<a class="reference internal" href="../../kconfig.html#CONFIG_THREAD_STACK_INFO" title="CONFIG_THREAD_STACK_INFO"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_THREAD_STACK_INFO</span></code></a> and <a class="reference internal" href="../../kconfig.html#CONFIG_INIT_STACKS" title="CONFIG_INIT_STACKS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_INIT_STACKS</span></code></a> options
+must be set.</p>
+</div>
+</div>
+<div class="section" id="image-management">
+<span id="image-mgmt"></span><h2>Image Management<a class="headerlink" href="#image-management" title="Permalink to this headline">¶</a></h2>
+<p>The image management provided by <code class="docutils literal notranslate"><span class="pre">mcumgr</span></code> is  based on the image format defined
+by MCUboot. For more details on the internals see <a class="reference external" href="https://github.com/mcu-tools/mcuboot/blob/main/docs/design.md">MCUboot design</a> and <a class="reference internal" href="../west/sign.html#west-sign"><span class="std std-ref">Signing Binaries</span></a>.</p>
+<p>To list available images in a device:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mcumgr</span> <span class="o">&lt;</span><span class="n">connection</span><span class="o">-</span><span class="n">options</span><span class="o">&gt;</span> <span class="n">image</span> <span class="nb">list</span>
+</pre></div>
+</div>
+<p>This should result in an output similar to this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mcumgr -c acm0 image list
+Images:
+  image=0 slot=0
+    version: 1.0.0
+    bootable: true
+    flags: active confirmed
+    hash: 86dca73a3439112b310b5e033d811ec2df728d2264265f2046fced5a9ed00cc7
+Split status: N/A (0)
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">image</span></code> is the number of the image pair in a multi-image system, and slot
+is the number of the slot where the image is stored, <code class="docutils literal notranslate"><span class="pre">0</span></code> for primary and <code class="docutils literal notranslate"><span class="pre">1</span></code> for
+secondary. This image being <code class="docutils literal notranslate"><span class="pre">active</span></code> and <code class="docutils literal notranslate"><span class="pre">confirmed</span></code> means it will run again on
+next reset. Also relevant is the <code class="docutils literal notranslate"><span class="pre">hash</span></code>, which is used by other commands to
+refer to this specific image when performing operations.</p>
+<p>An image can be manually erased using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mcumgr</span> <span class="o">&lt;</span><span class="n">connection</span><span class="o">-</span><span class="n">options</span><span class="o">&gt;</span> <span class="n">image</span> <span class="n">erase</span>
+</pre></div>
+</div>
+<p>The behavior of <code class="docutils literal notranslate"><span class="pre">erase</span></code> is defined by the server (<code class="docutils literal notranslate"><span class="pre">mcumgr</span></code> in the device).
+The current implementation is limited to erasing the image in the secondary
+partition.</p>
+<p>To upload a new image:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mcumgr</span> <span class="o">&lt;</span><span class="n">connection</span><span class="o">-</span><span class="n">options</span><span class="o">&gt;</span> <span class="n">image</span> <span class="n">upload</span> <span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">e</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">w</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">signed</span><span class="o">-</span><span class="nb">bin</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-n</span></code>: This option allows uploading a new image to a specific set of images
+in a multi-image system, and is currently only supported by MCUboot when the
+CONFIG_MCUBOOT_SERIAL option is enabled.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-e</span></code>: This option avoids performing a full erase of the partition before
+starting a new upload.</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-e</span></code> option should always be passed in because the <code class="docutils literal notranslate"><span class="pre">upload</span></code> command
+already checks if an erase is required, respecting the
+<a class="reference internal" href="../../kconfig.html#CONFIG_IMG_ERASE_PROGRESSIVELY" title="CONFIG_IMG_ERASE_PROGRESSIVELY"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_IMG_ERASE_PROGRESSIVELY</span></code></a> setting.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">upload</span></code> command times out while waiting for a response from the
+device, <code class="docutils literal notranslate"><span class="pre">-t</span></code> might be used to increase the wait time to something larger
+than the default of 10s. See <a class="reference internal" href="#general-options">general_options</a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">mcumgr</span></code> does not understand .hex files, when uploading a new image always
+use the .bin file.</p>
+</div>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-u</span></code>: This option allows upgrading only to newer image version.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-w</span></code>: This option allows setting the maximum size for the window of outstanding chunks in transit.
+It is set to 5 by default.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the option is set to a value lower than the default one, for example <code class="docutils literal notranslate"><span class="pre">-w</span> <span class="pre">1</span></code>, less chunks are transmitted on the window,
+resulting in lower risk of errors. Conversely, setting a value higher than 5 increases risk of errors and may impact performance.</p>
+</div>
+</li>
+</ul>
+<p>After an image upload is finished, a new <code class="docutils literal notranslate"><span class="pre">image</span> <span class="pre">list</span></code> would now have an output
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mcumgr -c acm0 image upload -e build/zephyr/zephyr.signed.bin
+  35.69 KiB / 92.92 KiB [==========&gt;---------------]  38.41% 2.97 KiB/s 00m19
+</pre></div>
+</div>
+<p>Now listing the images again:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mcumgr -c acm0 image list
+Images:
+ image=0 slot=0
+  version: 1.0.0
+  bootable: true
+  flags: active confirmed
+  hash: 86dca73a3439112b310b5e033d811ec2df728d2264265f2046fced5a9ed00cc7
+ image=0 slot=1
+  version: 1.1.0
+  bootable: true
+  flags:
+  hash: e8cf0dcef3ec8addee07e8c4d5dc89e64ba3fae46a2c5267fc4efbea4ca0e9f4
+Split status: N/A (0)
+</pre></div>
+</div>
+<p>To test a new upgrade image the <code class="docutils literal notranslate"><span class="pre">test</span></code> command is used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mcumgr</span> <span class="o">&lt;</span><span class="n">connection</span><span class="o">-</span><span class="n">options</span><span class="o">&gt;</span> <span class="n">image</span> <span class="n">test</span> <span class="o">&lt;</span><span class="nb">hash</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This command should mark a <code class="docutils literal notranslate"><span class="pre">test</span></code> upgrade, which means that after the next
+reboot the bootloader will execute the upgrade and jump into the new image. If no
+other image operations are executed on the newly running image, it will <code class="docutils literal notranslate"><span class="pre">revert</span></code>
+back to the image that was previously running on the device on the subsequent reset.
+When a <code class="docutils literal notranslate"><span class="pre">test</span></code> is requested, <code class="docutils literal notranslate"><span class="pre">flags</span></code> will be updated with <code class="docutils literal notranslate"><span class="pre">pending</span></code> to inform
+that a new image will be run after a reset:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mcumgr -c acm0 image test e8cf0dcef3ec8addee07e8c4d5dc89e64ba3fae46a2c5267fc4efbea4ca0e9f4
+Images:
+ image=0 slot=0
+  version: 1.0.0
+  bootable: true
+  flags: active confirmed
+  hash: 86dca73a3439112b310b5e033d811ec2df728d2264265f2046fced5a9ed00cc7
+ image=0 slot=1
+  version: 1.1.0
+  bootable: true
+  flags: pending
+  hash: e8cf0dcef3ec8addee07e8c4d5dc89e64ba3fae46a2c5267fc4efbea4ca0e9f4
+Split status: N/A (0)
+</pre></div>
+</div>
+<p>After a reset the output with change to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mcumgr -c acm0 image list
+Images:
+ image=0 slot=0
+  version: 1.1.0
+  bootable: true
+  flags: active
+  hash: e8cf0dcef3ec8addee07e8c4d5dc89e64ba3fae46a2c5267fc4efbea4ca0e9f4
+ image=0 slot=1
+  version: 1.0.0
+  bootable: true
+  flags: confirmed
+  hash: 86dca73a3439112b310b5e033d811ec2df728d2264265f2046fced5a9ed00cc7
+Split status: N/A (0)
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>It’s important to mention that an upgrade only ever happens if the image is
+valid. The first thing MCUboot does when an upgrade is requested is to
+validate the image, using the SHA-256 and/or the signature (depending on
+the configuration). So before uploading an image, one way to be sure it is
+valid is to run <code class="docutils literal notranslate"><span class="pre">imgtool</span> <span class="pre">verify</span> <span class="pre">-k</span> <span class="pre">&lt;your-signature-key&gt;</span> <span class="pre">&lt;your-image&gt;</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">-k</span> <span class="pre">&lt;your-signature-key</span></code> can be skipped if no signature validation
+was enabled.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">confirmed</span></code> flag in the secondary slot tells that after the next reset a
+revert upgrade will be perfomed to switch back to the original layout.</p>
+<p>The command used to confirm that an image is OK and no revert should happen
+(no <code class="docutils literal notranslate"><span class="pre">hash</span></code> required) is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mcumgr</span> <span class="o">&lt;</span><span class="n">connection</span><span class="o">-</span><span class="n">options</span><span class="o">&gt;</span> <span class="n">image</span> <span class="n">confirm</span> <span class="p">[</span><span class="nb">hash</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">confirm</span></code> command can also be run passing in a <code class="docutils literal notranslate"><span class="pre">hash</span></code> so that instead of
+doing a <code class="docutils literal notranslate"><span class="pre">test</span></code>/<code class="docutils literal notranslate"><span class="pre">revert</span></code> procedure, the image in the secondary partition is
+directly upgraded to.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The whole <code class="docutils literal notranslate"><span class="pre">test</span></code>/<code class="docutils literal notranslate"><span class="pre">revert</span></code> cycle does not need to be done using only the
+<code class="docutils literal notranslate"><span class="pre">mcumgr</span></code> command-line tool. A better alternative is to perform a <code class="docutils literal notranslate"><span class="pre">test</span></code>
+and allow the new running image to self-confirm after any checks by calling
+<code class="xref c c-func docutils literal notranslate"><span class="pre">boot_write_img_confirmed()</span></code>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The maximum size of a chunk communicated between the client and server is set
+with <a class="reference internal" href="../../kconfig.html#CONFIG_IMG_MGMT_UL_CHUNK_SIZE" title="CONFIG_IMG_MGMT_UL_CHUNK_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_IMG_MGMT_UL_CHUNK_SIZE</span></code></a>. The default is 512 but can be
+decreased for systems with low amount of RAM downto 128. When this value is
+changed, the <code class="docutils literal notranslate"><span class="pre">mtu</span></code> of the port must be smaller than or equal to this value.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Building with <a class="reference internal" href="../../kconfig.html#CONFIG_IMG_MGMT_VERBOSE_ERR" title="CONFIG_IMG_MGMT_VERBOSE_ERR"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_IMG_MGMT_VERBOSE_ERR</span></code></a> enables better error
+messages when failures happen (but increases the application size).</p>
+</div>
+</div>
+<div class="section" id="statistics-management">
+<span id="stats-mgmt"></span><h2>Statistics Management<a class="headerlink" href="#statistics-management" title="Permalink to this headline">¶</a></h2>
+<p>Statistics are used for troubleshooting, maintenance, and usage monitoring; it
+consists basically of user-defined counters which are tightly connected to
+<code class="docutils literal notranslate"><span class="pre">mcumgr</span></code> and can be used to track any information for easy retrieval. The
+available sub-commands are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mcumgr</span> <span class="o">&lt;</span><span class="n">connection</span><span class="o">-</span><span class="n">options</span><span class="o">&gt;</span> <span class="n">stat</span> <span class="nb">list</span>
+<span class="n">mcumgr</span> <span class="o">&lt;</span><span class="n">connection</span><span class="o">-</span><span class="n">options</span><span class="o">&gt;</span> <span class="n">stat</span> <span class="o">&lt;</span><span class="n">section</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Statistics are organized in sections (also called groups), and each section can
+be individually queried. Defining new statistics sections is done by using macros
+available under <code class="docutils literal notranslate"><span class="pre">&lt;stats/stats.h&gt;</span></code>. Each section consists of multiple variables
+(or counters), all with the same size (16, 32 or 64 bits).</p>
+<p>To create a new section <code class="docutils literal notranslate"><span class="pre">my_stats</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">STATS_SECT_START</span><span class="p">(</span><span class="n">my_stats</span><span class="p">)</span>
+  <span class="n">STATS_SECT_ENTRY</span><span class="p">(</span><span class="n">my_stat_counter1</span><span class="p">)</span>
+  <span class="n">STATS_SECT_ENTRY</span><span class="p">(</span><span class="n">my_stat_counter2</span><span class="p">)</span>
+  <span class="n">STATS_SECT_ENTRY</span><span class="p">(</span><span class="n">my_stat_counter3</span><span class="p">)</span>
+<span class="n">STATS_SECT_END</span><span class="p">;</span>
+
+<span class="n">STATS_SECT_DECL</span><span class="p">(</span><span class="n">my_stats</span><span class="p">)</span> <span class="n">my_stats</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Each entry can be declared with <code class="docutils literal notranslate"><span class="pre">STATS_SECT_ENTRY</span></code> (or the equivalent
+<code class="docutils literal notranslate"><span class="pre">STATS_SECT_ENTRY32</span></code>), <code class="docutils literal notranslate"><span class="pre">STATS_SECT_ENTRY16</span></code> or <code class="docutils literal notranslate"><span class="pre">STATS_SECT_ENTRY64</span></code>.
+All statistics in a section must be declared with the same size.</p>
+<p>The statistics counters can either have names or not, depending on the setting
+of the <a class="reference internal" href="../../kconfig.html#CONFIG_STATS_NAMES" title="CONFIG_STATS_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_STATS_NAMES</span></code></a> option. Using names requires an extra
+declaration step:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">STATS_NAME_START</span><span class="p">(</span><span class="n">my_stats</span><span class="p">)</span>
+  <span class="n">STATS_NAME</span><span class="p">(</span><span class="n">my_stats</span><span class="p">,</span> <span class="n">my_stat_counter1</span><span class="p">)</span>
+  <span class="n">STATS_NAME</span><span class="p">(</span><span class="n">my_stats</span><span class="p">,</span> <span class="n">my_stat_counter2</span><span class="p">)</span>
+  <span class="n">STATS_NAME</span><span class="p">(</span><span class="n">my_stats</span><span class="p">,</span> <span class="n">my_stat_counter3</span><span class="p">)</span>
+<span class="n">STATS_NAME_END</span><span class="p">(</span><span class="n">my_stats</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Disabling <a class="reference internal" href="../../kconfig.html#CONFIG_STATS_NAMES" title="CONFIG_STATS_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_STATS_NAMES</span></code></a> will free resources. When this option
+is disabled the <code class="docutils literal notranslate"><span class="pre">STATS_NAME*</span></code> macros output nothing, so adding them in the
+code does not increase the binary size.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><a class="reference internal" href="../../kconfig.html#CONFIG_STAT_MGMT_MAX_NAME_LEN" title="CONFIG_STAT_MGMT_MAX_NAME_LEN"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_STAT_MGMT_MAX_NAME_LEN</span></code></a> sets the maximum length of a section
+name that can can be accepted as parameter for showing the section data, and
+might require tweaking for long section names.</p>
+</div>
+<p>The final steps to use a statistics section is to initialize and register it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rc</span> <span class="o">=</span> <span class="n">STATS_INIT_AND_REG</span><span class="p">(</span><span class="n">my_stats</span><span class="p">,</span> <span class="n">STATS_SIZE_32</span><span class="p">,</span> <span class="s2">&quot;my_stats&quot;</span><span class="p">);</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">rc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In the running code a statistics counter can be incremented by 1 using
+<code class="docutils literal notranslate"><span class="pre">STATS_INC</span></code>, by N using <code class="docutils literal notranslate"><span class="pre">STATS_INCN</span></code> or reset with <code class="docutils literal notranslate"><span class="pre">STATS_CLEAR</span></code>.</p>
+<p>Let’s suppose we want to increment those counters by <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code> and <code class="docutils literal notranslate"><span class="pre">3</span></code>
+every second. To get a list of stats:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mcumgr --conn acm0 stat list
+stat groups:
+  my_stats
+</pre></div>
+</div>
+<p>To get the current value of the counters in <code class="docutils literal notranslate"><span class="pre">my_stats</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mcumgr --conn acm0 stat my_stats
+stat group: my_stats
+      13 my_stat_counter1
+      26 my_stat_counter2
+      39 my_stat_counter3
+
+$ mcumgr --conn acm0 stat my_stats
+stat group: my_stats
+      16 my_stat_counter1
+      32 my_stat_counter2
+      48 my_stat_counter3
+</pre></div>
+</div>
+<p>When <a class="reference internal" href="../../kconfig.html#CONFIG_STATS_NAMES" title="CONFIG_STATS_NAMES"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_STATS_NAMES</span></code></a> is disabled the output will look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mcumgr --conn acm0 stat my_stats
+stat group: my_stats
+       8 s0
+      16 s1
+      24 s2
+</pre></div>
+</div>
+</div>
+<div class="section" id="filesystem-management">
+<span id="fs-mgmt"></span><h2>Filesystem Management<a class="headerlink" href="#filesystem-management" title="Permalink to this headline">¶</a></h2>
+<p>The filesystem module is disabled by default due to security concerns:
+because of a lack of access control every file in the FS will be accessible,
+including secrets, etc. To enable it <a class="reference internal" href="../../kconfig.html#CONFIG_MCUMGR_CMD_FS_MGMT" title="CONFIG_MCUMGR_CMD_FS_MGMT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_MCUMGR_CMD_FS_MGMT</span></code></a> must
+be set (<code class="docutils literal notranslate"><span class="pre">y</span></code>). Once enabled the following sub-commands can be used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mcumgr</span> <span class="o">&lt;</span><span class="n">connection</span><span class="o">-</span><span class="n">options</span><span class="o">&gt;</span> <span class="n">fs</span> <span class="n">download</span> <span class="o">&lt;</span><span class="n">remote</span><span class="o">-</span><span class="n">file</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">local</span><span class="o">-</span><span class="n">file</span><span class="o">&gt;</span>
+<span class="n">mcumgr</span> <span class="o">&lt;</span><span class="n">connection</span><span class="o">-</span><span class="n">options</span><span class="o">&gt;</span> <span class="n">fs</span> <span class="n">upload</span> <span class="o">&lt;</span><span class="n">local</span><span class="o">-</span><span class="n">file</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">remote</span><span class="o">-</span><span class="n">file</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">fs</span></code> command, requires <a class="reference internal" href="../../kconfig.html#CONFIG_FILE_SYSTEM" title="CONFIG_FILE_SYSTEM"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_FILE_SYSTEM</span></code></a> to be enabled,
+and that some particular filesystem is enabled and properly mounted by the running
+application, eg for littefs this would mean enabling
+<a class="reference internal" href="../../kconfig.html#CONFIG_FILE_SYSTEM_LITTLEFS" title="CONFIG_FILE_SYSTEM_LITTLEFS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_FILE_SYSTEM_LITTLEFS</span></code></a>, defining a storage partition <a class="reference internal" href="../../reference/storage/flash_map/flash_map.html#flash-map-api"><span class="std std-ref">Flash map</span></a>
+and mounting the filesystem in the startup (<a class="reference internal" href="../../reference/file_system/index.html#c.fs_mount" title="fs_mount"><code class="xref c c-func docutils literal notranslate"><span class="pre">fs_mount()</span></code></a>).</p>
+<p>Uploading a new file to a littlefs storage, mounted under <code class="docutils literal notranslate"><span class="pre">/lfs</span></code>, can be done with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mcumgr -c acm0 fs upload foo.txt /lfs/foo.txt
+25
+Done
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">25</span></code> is the size of the file.</p>
+<p>For downloading a file, let’s first use the <code class="docutils literal notranslate"><span class="pre">fs</span></code> command
+(<a class="reference internal" href="../../kconfig.html#CONFIG_FILE_SYSTEM_SHELL" title="CONFIG_FILE_SYSTEM_SHELL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_FILE_SYSTEM_SHELL</span></code></a> must be enabled) in a remote shell to create
+a new file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>uart:~$ fs write /lfs/bar.txt 41 42 43 44 31 32 33 34 0a
+uart:~$ fs read /lfs/bar.txt
+File size: 9
+00000000  41 42 43 44 31 32 33 34 0A                       ABCD1234.
+</pre></div>
+</div>
+<p>Now it can be downloaded using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mcumgr -c acm0 fs download /lfs/bar.txt bar.txt
+0
+9
+Done
+$ cat bar.txt
+ABCD1234
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">0</span></code> is the return code, and <code class="docutils literal notranslate"><span class="pre">9</span></code> is the size of the file.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The commands might exhaust the system workqueue, if its size is not large
+enough, so increasing <a class="reference internal" href="../../kconfig.html#CONFIG_SYSTEM_WORKQUEUE_STACK_SIZE" title="CONFIG_SYSTEM_WORKQUEUE_STACK_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SYSTEM_WORKQUEUE_STACK_SIZE</span></code></a> might be
+required for correct behavior.</p>
+</div>
+<p>The size of the stack allocated buffer used to store the blocks, while transffering
+a file can be adjusted with <a class="reference internal" href="../../kconfig.html#CONFIG_FS_MGMT_DL_CHUNK_SIZE" title="CONFIG_FS_MGMT_DL_CHUNK_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_FS_MGMT_DL_CHUNK_SIZE</span></code></a>; this allows
+saving RAM resources.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><a class="reference internal" href="../../kconfig.html#CONFIG_FS_MGMT_PATH_SIZE" title="CONFIG_FS_MGMT_PATH_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_FS_MGMT_PATH_SIZE</span></code></a> sets the maximum PATH accepted for a file
+name. It might require tweaking for longer file names.</p>
+</div>
+</div>
+<div class="section" id="bootloader-integration">
+<h2>Bootloader integration<a class="headerlink" href="#bootloader-integration" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="dfu.html#dfu"><span class="std std-ref">Device Firmware Upgrade</span></a> subsystem integrates the management subsystem with the
+bootloader, providing the ability to send and upgrade a Zephyr image to a
+device.</p>
+<p>Currently only the MCUboot bootloader is supported. See <a class="reference internal" href="dfu.html#mcuboot"><span class="std std-ref">MCUboot</span></a> for more
+information.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mcumgr_backporting.html" class="btn btn-neutral float-right" title="Fixing and backporting fixes to Zephyr v2.7 MCUmgr" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Device Management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

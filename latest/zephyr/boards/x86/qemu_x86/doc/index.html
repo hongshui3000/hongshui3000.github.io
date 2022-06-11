@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>X86 Emulation (QEMU) &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../../copyright.html" />
+    <link rel="next" title="UP Squared" href="../../up_squared/doc/index.html" />
+    <link rel="prev" title="Elkhart Lake CRB" href="../../ehl_crb/doc/index.html" />
+  <link rel="shortcut icon" href="../../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Supported Boards</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">x86 Boards</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../acrn/doc/index.html">Building and Running Zephyr with ACRN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ehl_crb/doc/index.html">Elkhart Lake CRB</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">X86 Emulation (QEMU)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware">Hardware</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#programming-and-debugging">Programming and Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../up_squared/doc/index.html">UP Squared</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arm/index.html">ARM Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arm64/index.html">ARM64 Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arc/index.html">ARC Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../mips/index.html">MIPS Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nios2/index.html">NIOS II Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../xtensa/index.html">XTENSA Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../posix/index.html">POSIX/NATIVE Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../riscv/index.html">RISCV Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sparc/index.html">SPARC Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../shields/index.html">Shields</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Supported Boards</a> &raquo;</li>
+        
+          <li><a href="../../index.html">x86 Boards</a> &raquo;</li>
+        
+      <li>X86 Emulation (QEMU)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/boards/x86/qemu_x86/doc/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="x86-emulation-qemu">
+<span id="qemu-x86"></span><h1>X86 Emulation (QEMU)<a class="headerlink" href="#x86-emulation-qemu" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The X86 QEMU board configuration is used to emulate the X86 architecture.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../../../../_images/qemu_x86.png"><img alt="Qemu" src="../../../../_images/qemu_x86.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 48 </span><span class="caption-text">Qemu (Credit: qemu.org)</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>This board configuration provides support for an x86 Minute IA (Lakemont) CPU
+and the following devices:</p>
+<ul class="simple">
+<li><p>HPET</p></li>
+<li><p>Advanced Programmable Interrupt Controller (APIC)</p></li>
+<li><p>NS16550 UART</p></li>
+</ul>
+</div>
+<div class="section" id="hardware">
+<h2>Hardware<a class="headerlink" href="#hardware" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="supported-features">
+<h3>Supported Features<a class="headerlink" href="#supported-features" title="Permalink to this headline">¶</a></h3>
+<p>This configuration supports the following hardware features:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 24%" />
+<col style="width: 47%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
+<th class="head"><p>Controller</p></th>
+<th class="head"><p>Driver/Component</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HPET</p></td>
+<td><p>on-chip</p></td>
+<td><p>system clock</p></td>
+</tr>
+<tr class="row-odd"><td><p>APIC</p></td>
+<td><p>on-chip</p></td>
+<td><p>interrupt controller</p></td>
+</tr>
+<tr class="row-even"><td><p>NS16550
+UART</p></td>
+<td><p>on-chip</p></td>
+<td><p>serial port</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="devices">
+<h3>Devices<a class="headerlink" href="#devices" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="hpet-system-clock-support">
+<h4>HPET System Clock Support<a class="headerlink" href="#hpet-system-clock-support" title="Permalink to this headline">¶</a></h4>
+<p>The configuration uses an HPET clock frequency of 25 MHz.</p>
+</div>
+<div class="section" id="serial-port">
+<h4>Serial Port<a class="headerlink" href="#serial-port" title="Permalink to this headline">¶</a></h4>
+<p>The board configuration uses a single serial communication channel that
+uses the NS16550 serial driver operating in polling mode. To override, enable
+the UART_INTERRUPT_DRIVEN Kconfig option, which allows the system to be
+interrupt-driven.</p>
+<p>If SLIP networking is enabled (see below), an additional serial port will be
+used for it.</p>
+</div>
+</div>
+<div class="section" id="known-problems-or-limitations">
+<h3>Known Problems or Limitations<a class="headerlink" href="#known-problems-or-limitations" title="Permalink to this headline">¶</a></h3>
+<p>The following platform features are unsupported:</p>
+<ul class="simple">
+<li><p>Isolated Memory Regions</p></li>
+<li><p>Serial port in Direct Memory Access (DMA) mode</p></li>
+<li><p>Serial Peripheral Interface (SPI) flash</p></li>
+<li><p>General-Purpose Input/Output (GPIO)</p></li>
+<li><p>Inter-Integrated Circuit (I2C)</p></li>
+<li><p>Ethernet</p></li>
+<li><p>Supervisor Mode Execution Protection (SMEP)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="programming-and-debugging">
+<h2>Programming and Debugging<a class="headerlink" href="#programming-and-debugging" title="Permalink to this headline">¶</a></h2>
+<p>Applications for the <code class="docutils literal notranslate"><span class="pre">qemu_x86</span></code> board configuration can be built and run in
+the usual way for emulated boards (see <a class="reference internal" href="../../../../application/index.html#build-an-application"><span class="std std-ref">Building an Application</span></a> and
+<a class="reference internal" href="../../../../application/index.html#application-run"><span class="std std-ref">Run an Application</span></a> for more details).</p>
+<div class="section" id="flashing">
+<h3>Flashing<a class="headerlink" href="#flashing" title="Permalink to this headline">¶</a></h3>
+<p>While this board is emulated and you can’t “flash” it, you can use this
+configuration to run basic Zephyr applications and kernel tests in the QEMU
+emulated environment. For example, with the <a class="reference internal" href="../../../../samples/synchronization/README.html#synchronization-sample"><span class="std std-ref">Synchronization Sample</span></a>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>From the root of the zephyr repository
+<span class="go">west build -b qemu_x86 samples/synchronization</span>
+<span class="go">west build -t run</span>
+</pre></div>
+</div>
+<p>This will build an image with the synchronization sample app, boot it using
+QEMU, and display the following console output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">***** BOOTING ZEPHYR OS v1.8.99 - BUILD: Jun 27 2017 13:09:26 *****</span>
+<span class="go">threadA: Hello World from x86!</span>
+<span class="go">threadB: Hello World from x86!</span>
+<span class="go">threadA: Hello World from x86!</span>
+<span class="go">threadB: Hello World from x86!</span>
+<span class="go">threadA: Hello World from x86!</span>
+<span class="go">threadB: Hello World from x86!</span>
+<span class="go">threadA: Hello World from x86!</span>
+<span class="go">threadB: Hello World from x86!</span>
+<span class="go">threadA: Hello World from x86!</span>
+<span class="go">threadB: Hello World from x86!</span>
+</pre></div>
+</div>
+<p>Exit QEMU by pressing <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">CTRL</kbd>+<kbd class="kbd docutils literal notranslate">A</kbd></kbd> <kbd class="kbd docutils literal notranslate">x</kbd>.</p>
+<p>For qemu_x86_64 platform, it also supports to use UEFI bootable method
+to run Zephyr applications and kernel tests, but you need to set up
+some environemnt configurations as follows:</p>
+<ul class="simple">
+<li><p>Please install uefi-run in your system environment according to this
+reference link <a class="reference external" href="https://github.com/Richard-W/uefi-run">https://github.com/Richard-W/uefi-run</a>.</p></li>
+<li><p>Please install OVMF in your system environment according to this
+reference link <a class="reference external" href="https://github.com/tianocore/tianocore.github.io/wiki/OVMF">https://github.com/tianocore/tianocore.github.io/wiki/OVMF</a>.</p></li>
+<li><p>Set system environment variable OVMF_FD_PATH,
+for example: export OVMF_FD_PATH=/usr/share/edk2.git/ovmf-x64/OVMF_CODE-pure-efi.fd</p></li>
+</ul>
+<p>For example, with the test “sample.basic.helloworld.uefi”:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export OVMF_FD_PATH=/usr/share/edk2.git/ovmf-x64/OVMF_CODE-pure-efi.fd</span>
+<span class="go">west build -b qemu_x86_64 -p auto samples/hello_world/ -DCONF_FILE=prj_uefi.conf</span>
+<span class="go">west build -t run</span>
+</pre></div>
+</div>
+<p>This will build an image with the hello_world sample app, boot it on
+qemu_x86_64 using UEFI, and display the following console output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">UEFI Interactive Shell v2.2</span>
+<span class="go">EDK II</span>
+<span class="go">UEFI v2.70 (EDK II, 0x00010000)</span>
+<span class="go">Mapping table</span>
+<span class="go">      FS0: Alias(s):F0a:;BLK0:</span>
+<span class="go">          PciRoot(0x0)/Pci(0x1,0x1)/Ata(0x0)</span>
+<span class="go">     BLK1: Alias(s):</span>
+<span class="go">          PciRoot(0x0)/Pci(0x1,0x1)/Ata(0x0)</span>
+<span class="go">Press ESC in 1 seconds to skip startup.nsh or any other key to continue.</span>
+<span class="go">Starting UEFI application...</span>
+<span class="go">*** Zephyr EFI Loader ***</span>
+<span class="go">Zeroing 524544 bytes of memory at 0x105000</span>
+<span class="go">Copying 32768 data bytes to 0x1000 from image offset</span>
+<span class="go">Copying 20480 data bytes to 0x100000 from image offset 32768</span>
+<span class="go">Copying 540416 data bytes to 0x185100 from image offset 53248</span>
+<span class="go">Jumping to Entry Point: 0x112b (48 31 c0 48 31 d2 48)</span>
+<span class="go">*** Booting Zephyr OS build zephyr-v2.6.0-1472-g61810ec36d28  ***</span>
+<span class="go">Hello World! qemu_x86_64</span>
+</pre></div>
+</div>
+<p>Exit QEMU by pressing <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">CTRL</kbd>+<kbd class="kbd docutils literal notranslate">A</kbd></kbd> <kbd class="kbd docutils literal notranslate">x</kbd>.</p>
+</div>
+<div class="section" id="debugging">
+<h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
+<p>Refer to the detailed overview about <a class="reference internal" href="../../../../application/index.html#application-debugging"><span class="std std-ref">Application Debugging</span></a>.</p>
+</div>
+<div class="section" id="networking">
+<h3>Networking<a class="headerlink" href="#networking" title="Permalink to this headline">¶</a></h3>
+<p>The board supports SLIP networking over an emulated serial port
+(<code class="docutils literal notranslate"><span class="pre">CONFIG_NET_SLIP_TAP=y</span></code>). The detailed setup is described in
+<a class="reference internal" href="../../../../guides/networking/qemu_setup.html#networking-with-qemu"><span class="std std-ref">Networking with QEMU</span></a>.</p>
+<p>It is also possible to use the QEMU built-in Ethernet adapter to connect
+to the host system. This is faster than using SLIP and is also the preferred
+way. See <a class="reference internal" href="../../../../guides/networking/qemu_eth_setup.html#networking-with-eth-qemu"><span class="std std-ref">Networking with QEMU Ethernet</span></a> for details.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../up_squared/doc/index.html" class="btn btn-neutral float-right" title="UP Squared" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../ehl_crb/doc/index.html" class="btn btn-neutral" title="Elkhart Lake CRB" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

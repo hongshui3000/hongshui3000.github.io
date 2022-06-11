@@ -1,0 +1,536 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Balanced Red/Black Tree &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Ring Buffers" href="ring_buffers.html" />
+    <link rel="prev" title="Multi Producer Single Consumer Packet Buffer" href="mpsc_pbuf.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Structures</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="slist.html">Single-linked List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dlist.html">Double-linked List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpsc_pbuf.html">Multi Producer Single Consumer Packet Buffer</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Balanced Red/Black Tree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tree-internals">Tree Internals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#red-black-tree-api-reference">Red/Black Tree API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ring_buffers.html">Ring Buffers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Data Structures</a> &raquo;</li>
+        
+      <li>Balanced Red/Black Tree</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/data_structures/rbtree.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="balanced-red-black-tree">
+<span id="rbtree-api"></span><h1>Balanced Red/Black Tree<a class="headerlink" href="#balanced-red-black-tree" title="Permalink to this headline">¶</a></h1>
+<p>For circumstances where sorted containers may become large at runtime,
+a list becomes problematic due to algorithmic costs of searching it.
+For these situations, Zephyr provides a balanced tree implementation
+which has runtimes on search and removal operations bounded at
+O(log2(N)) for a tree of size N.  This is implemented using a
+conventional red/black tree as described by multiple academic sources.</p>
+<p>The <a class="reference internal" href="#c.rbtree" title="rbtree"><code class="xref c c-struct docutils literal notranslate"><span class="pre">rbtree</span></code></a> tracking struct for a rbtree may be initialized
+anywhere in user accessible memory.  It should contain only zero bits
+before first use.  No specific initialization API is needed or
+required.</p>
+<p>Unlike a list, where position is explicit, the ordering of nodes
+within an rbtree must be provided as a predicate function by the user.
+A function of type <a class="reference internal" href="#c.rb_lessthan_t" title="rb_lessthan_t"><code class="xref c c-func docutils literal notranslate"><span class="pre">rb_lessthan_t()</span></code></a> should be assigned to the
+<code class="docutils literal notranslate"><span class="pre">lessthan_fn</span></code> field of the :c:struct`rbtree` struct before any tree
+operations are attempted.  This function should, as its name suggests,
+return a boolean True value if the first node argument is “less than”
+the second in the ordering desired by the tree.  Note that “equal” is
+not allowed, nodes within a tree must have a single fixed order for
+the algorithm to work correctly.</p>
+<p>As with the slist and dlist containers, nodes within an rbtree are
+represented as a <code class="xref c c-struct docutils literal notranslate"><span class="pre">rbnode</span></code> structure which exists in
+user-managed memory, typically embedded within the the data structure
+being tracked in the tree.  Unlike the list code, the data within an
+rbnode is entirely opaque.  It is not possible for the user to extract
+the binary tree topology and “manually” traverse the tree as it is for
+a list.</p>
+<p>Nodes can be inserted into a tree with <a class="reference internal" href="#c.rb_insert" title="rb_insert"><code class="xref c c-func docutils literal notranslate"><span class="pre">rb_insert()</span></code></a> and removed
+with <a class="reference internal" href="#c.rb_remove" title="rb_remove"><code class="xref c c-func docutils literal notranslate"><span class="pre">rb_remove()</span></code></a>.  Access to the “first” and “last” nodes within a
+tree (in the sense of the order defined by the comparison function) is
+provided by <a class="reference internal" href="#c.rb_get_min" title="rb_get_min"><code class="xref c c-func docutils literal notranslate"><span class="pre">rb_get_min()</span></code></a> and <a class="reference internal" href="#c.rb_get_max" title="rb_get_max"><code class="xref c c-func docutils literal notranslate"><span class="pre">rb_get_max()</span></code></a>.  There is also a
+predicate, <a class="reference internal" href="#c.rb_contains" title="rb_contains"><code class="xref c c-func docutils literal notranslate"><span class="pre">rb_contains()</span></code></a>, which returns a boolean True if the
+provided node pointer exists as an element within the tree.  As
+described above, all of these routines are guaranteed to have at most
+log time complexity in the size of the tree.</p>
+<p>There are two mechanisms provided for enumerating all elements in an
+rbtree.  The first, <a class="reference internal" href="#c.rb_walk" title="rb_walk"><code class="xref c c-func docutils literal notranslate"><span class="pre">rb_walk()</span></code></a>, is a simple callback implementation
+where the caller specifies a C function pointer and an untyped
+argument to be passed to it, and the tree code calls that function for
+each node in order.  This has the advantage of a very simple
+implementation, at the cost of a somewhat more cumbersome API for the
+user (not unlike ISO C’s <code class="xref c c-func docutils literal notranslate"><span class="pre">bsearch()</span></code> routine).  It is a recursive
+implementation, however, and is thus not always available in
+environments that forbid the use of unbounded stack techniques like
+recursion.</p>
+<p>There is also a <a class="reference internal" href="#c.RB_FOR_EACH" title="RB_FOR_EACH"><code class="xref c c-macro docutils literal notranslate"><span class="pre">RB_FOR_EACH</span></code></a> iterator provided, which, like the
+similar APIs for the lists, works to iterate over a list in a more
+natural way, using a nested code block instead of a callback.  It is
+also nonrecursive, though it requires log-sized space on the stack by
+default (however, this can be configured to use a fixed/maximally size
+buffer instead where needed to avoid the dynamic allocation).  As with
+the lists, this is also available in a <a class="reference internal" href="#c.RB_FOR_EACH_CONTAINER" title="RB_FOR_EACH_CONTAINER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">RB_FOR_EACH_CONTAINER</span></code></a>
+variant which enumerates using a pointer to a container field and not
+the raw node pointer.</p>
+<div class="section" id="tree-internals">
+<h2>Tree Internals<a class="headerlink" href="#tree-internals" title="Permalink to this headline">¶</a></h2>
+<p>As described, the Zephyr rbtree implementation is a conventional
+red/black tree as described pervasively in academic sources.  Low
+level details about the algorithm are out of scope for this document,
+as they match existing conventions.  This discussion will be limited
+to details notable or specific to the Zephyr implementation.</p>
+<p>The core invariant guaranteed by the tree is that the path from the root of
+the tree to any leaf is no more than twice as long as the path to any
+other leaf.  This is achieved by associating one bit of “color” with
+each node, either red or black, and enforcing a rule that no red child
+can be a child of another red child (i.e. that the number of black
+nodes on any path to the root must be the same, and that no more than
+that number of “extra” red nodes may be present).  This rule is
+enforced by a set of rotation rules used to “fix” trees following
+modification.</p>
+<div class="align-center figure" id="id1">
+<img alt="rbtree example" src="../../_images/rbtree.png" />
+<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">A maximally unbalanced rbtree with a black height of two.  No more
+nodes can be added underneath the rightmost node without
+rebalancing.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>These rotations are conceptually implemented on top of a primitive
+that “swaps” the position of one node with another in the list.
+Typical implementations effect this by simply swapping the nodes
+internal “data” pointers, but because the Zephyr <code class="xref c c-struct docutils literal notranslate"><span class="pre">rbnode</span></code> is
+intrusive, that cannot work.  Zephyr must include somewhat more
+elaborate code to handle the edge cases (for example, one swapped node
+can be the root, or the two may already be parent/child).</p>
+<p>The <code class="xref c c-struct docutils literal notranslate"><span class="pre">rbnode</span></code> struct for a Zephyr rbtree contains only two
+pointers, representing the “left”, and “right” children of a node
+within the binary tree.  Traversal of a tree for rebalancing following
+modification, however, routinely requires the ability to iterate
+“upwards” from a node as well.  It is very common for red/black trees
+in the industry to store a third “parent” pointer for this purpose.
+Zephyr avoids this requirement by building a “stack” of node pointers
+locally as it traverses downward thorugh the tree and updating it
+appropriately as modifications are made.  So a Zephyr rbtree can be
+implemented with no more runtime storage overhead than a dlist.</p>
+<p>These properties, of a balanced tree data structure that works with
+only two pointers of data per node and that works without any need for
+a memory allocation API, are quite rare in the industry and are
+somewhat unique to Zephyr.</p>
+</div>
+<div class="section" id="red-black-tree-api-reference">
+<h2>Red/Black Tree API Reference<a class="headerlink" href="#red-black-tree-api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__rbtree__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">rbtree_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.RB_FOR_EACH">
+<span class="target" id="group__rbtree__apis_1gaa0a518139442a69865881f6b460b03df"></span><span class="sig-name descname"><span class="n"><span class="pre">RB_FOR_EACH</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">tree</span></span>, <span class="n"><span class="pre">node</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.RB_FOR_EACH" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Walk a tree in-order without recursing. </p>
+<p>While <a class="reference internal" href="#group__rbtree__apis_1ga79e7c341ee876f1e6f6adaf8b1162995"><span class="std std-ref">rb_walk()</span></a> is very simple, recursing on the C stack can be clumsy for some purposes and on some architectures wastes significant memory in stack frames. This macro implements a non-recursive “foreach” loop that can iterate directly on the tree, at a moderate cost in code size.</p>
+<p>Note that the resulting loop is not safe against modifications to the tree. Changes to the tree structure during the loop will produce incorrect results, as nodes may be skipped or duplicated. Unlike linked lists, no _SAFE variant exists.</p>
+<p>Note also that the macro expands its arguments multiple times, so they should not be expressions with side effects.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tree</span></code>: A pointer to a struct rbtree to walk </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">node</span></code>: The symbol name of a local struct rbnode* variable to use as the iterator </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.RB_FOR_EACH_CONTAINER">
+<span class="target" id="group__rbtree__apis_1gab03a8af066d5110cda6b7522f342b168"></span><span class="sig-name descname"><span class="n"><span class="pre">RB_FOR_EACH_CONTAINER</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">tree</span></span>, <span class="n"><span class="pre">node</span></span>, <span class="n"><span class="pre">field</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.RB_FOR_EACH_CONTAINER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Loop over rbtree with implicit container field logic. </p>
+<p>As for <a class="reference internal" href="#group__rbtree__apis_1gaa0a518139442a69865881f6b460b03df"><span class="std std-ref">RB_FOR_EACH()</span></a>, but “node” can have an arbitrary type containing a struct rbnode.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tree</span></code>: A pointer to a struct rbtree to walk </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">node</span></code>: The symbol name of a local iterator </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">field</span></code>: The field name of a struct rbnode inside node </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.rb_lessthan_t">
+<span class="target" id="group__rbtree__apis_1ga18188fbcd2ffda5a2bc2697118d56cea"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">rb_lessthan_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">rbnode</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">rbnode</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.rb_lessthan_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Red/black tree comparison predicate. </p>
+<p>Compares the two nodes and returns true if node A is strictly less than B according to the tree’s sorting criteria, false otherwise.</p>
+<p>Note that during insert, the new node being inserted will always be “A”, where “B” is the existing node within the tree against which it is being compared. This trait can be used (with care!) to implement “most/least recently added” semantics between nodes which would otherwise compare as equal. </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.rb_visit_t">
+<span class="target" id="group__rbtree__apis_1ga27e6996e6ed57aabb2791662960beca0"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">rb_visit_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">rbnode</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cookie</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.rb_visit_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.rb_insert">
+<span class="target" id="group__rbtree__apis_1ga6b2c6d796f333fb03e316afc42336ecf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rb_insert</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.rbtree" title="rbtree"><span class="n"><span class="pre">rbtree</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tree</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">rbnode</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">node</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.rb_insert" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Insert node into tree. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.rb_remove">
+<span class="target" id="group__rbtree__apis_1ga8de6504411a0dbd8f4a43e9e18c53919"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rb_remove</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.rbtree" title="rbtree"><span class="n"><span class="pre">rbtree</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tree</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">rbnode</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">node</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.rb_remove" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remove node from tree. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.rb_get_min">
+<span class="target" id="group__rbtree__apis_1gadd7f6d6fd49797b1ffa2627ea01d0474"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">rbnode</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">rb_get_min</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.rbtree" title="rbtree"><span class="n"><span class="pre">rbtree</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tree</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.rb_get_min" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the lowest-sorted member of the tree. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.rb_get_max">
+<span class="target" id="group__rbtree__apis_1ga675580f55b1da4c7c6913c97b83e5278"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">rbnode</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">rb_get_max</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.rbtree" title="rbtree"><span class="n"><span class="pre">rbtree</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tree</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.rb_get_max" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the highest-sorted member of the tree. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.rb_contains">
+<span class="target" id="group__rbtree__apis_1ga918cb502c4b636f49a73906735612b91"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rb_contains</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.rbtree" title="rbtree"><span class="n"><span class="pre">rbtree</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tree</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">rbnode</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">node</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.rb_contains" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns true if the given node is part of the tree. </p>
+<p>Note that this does not internally dereference the node pointer (though the tree’s lessthan callback might!), it just tests it for equality with items in the tree. So it’s feasible to use this to implement a “set” construct by simply testing the pointer value itself. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.rb_walk">
+<span class="target" id="group__rbtree__apis_1ga79e7c341ee876f1e6f6adaf8b1162995"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rb_walk</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.rbtree" title="rbtree"><span class="n"><span class="pre">rbtree</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tree</span></span>, <a class="reference internal" href="#c.rb_visit_t" title="rb_visit_t"><span class="n"><span class="pre">rb_visit_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">visit_fn</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cookie</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.rb_walk" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Walk/enumerate a rbtree. </p>
+<p>Very simple recursive enumeration. Low code size, but requiring a separate function can be clumsy for the user and there is no way to break out of the loop early. See RB_FOR_EACH for an iterative implementation. </p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.rbtree">
+<span class="target" id="structrbtree"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rbtree</span></span></span><a class="headerlink" href="#c.rbtree" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;rb.h&gt;</em></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ring_buffers.html" class="btn btn-neutral float-right" title="Ring Buffers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mpsc_pbuf.html" class="btn btn-neutral" title="Multi Producer Single Consumer Packet Buffer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

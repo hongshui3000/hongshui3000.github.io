@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Trusted Firmware-M Integration &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Test Suites" href="testsuites.html" />
+    <link rel="prev" title="TF-M Build System" href="build.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Trusted Firmware-M</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Trusted Firmware-M Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="requirements.html">TF-M Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build.html">TF-M Build System</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Trusted Firmware-M Integration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#board-definitions">Board Definitions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="testsuites.html">Test Suites</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Trusted Firmware-M</a> &raquo;</li>
+        
+      <li>Trusted Firmware-M Integration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/tfm/integration.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="trusted-firmware-m-integration">
+<h1>Trusted Firmware-M Integration<a class="headerlink" href="#trusted-firmware-m-integration" title="Permalink to this headline">¶</a></h1>
+<p>The Trusted Firmware-M (TF-M) section contains information about the
+integration between TF-M and Zephyr RTOS. Use this information to help
+understand how to integrate TF-M with Zephyr for Cortex-M platforms and make
+use of its secure run-time services in Zephyr applications.</p>
+<div class="section" id="board-definitions">
+<h2>Board Definitions<a class="headerlink" href="#board-definitions" title="Permalink to this headline">¶</a></h2>
+<p>TF-M will be built for the secure processing environment along with Zephyr if
+the <a class="reference internal" href="../../kconfig.html#CONFIG_BUILD_WITH_TFM" title="CONFIG_BUILD_WITH_TFM"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BUILD_WITH_TFM</span></code></a> flag is set to <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+<p>Generally, this value should never be set at the application level, however,
+and all config flags required for TF-M should be set in a board variant with
+the <code class="docutils literal notranslate"><span class="pre">_ns</span></code> suffix.</p>
+<p>This board variant must define an appropriate flash, SRAM and peripheral
+configuration that takes into account the initialisation process in the secure
+processing environment. <a class="reference internal" href="../../kconfig.html#CONFIG_TFM_BOARD" title="CONFIG_TFM_BOARD"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TFM_BOARD</span></code></a> must also be set via
+<a class="reference external" href="https://github.com/zephyrproject-rtos/zephyr/blob/main/modules/trusted-firmware-m/Kconfig.tfm">modules/trusted-firmware-m/Kconfig.tfm</a>
+to the board name that TF-M expects for this target, so that it knows which
+target to build for the secure processing environment.</p>
+<div class="section" id="example-mps2-an521-ns">
+<h3>Example: <code class="docutils literal notranslate"><span class="pre">mps2_an521_ns</span></code><a class="headerlink" href="#example-mps2-an521-ns" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">mps2_an521</span></code> target is a dual-core Arm Cortex-M33 evaluation board that,
+when using the default board variant, would generate a secure Zephyr binary.</p>
+<p>The optional <code class="docutils literal notranslate"><span class="pre">mps2_an521_ns</span></code> target, however, sets these additional
+kconfig flags that indicate that Zephyr should be built as a
+non-secure image, linked with TF-M as an external project, and optionally the
+secure bootloader:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_TRUSTED_EXECUTION_NONSECURE" title="CONFIG_TRUSTED_EXECUTION_NONSECURE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TRUSTED_EXECUTION_NONSECURE</span></code></a> <code class="docutils literal notranslate"><span class="pre">y</span></code></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_ARM_TRUSTZONE_M" title="CONFIG_ARM_TRUSTZONE_M"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_ARM_TRUSTZONE_M</span></code></a> <code class="docutils literal notranslate"><span class="pre">y</span></code></p></li>
+</ul>
+<p>Comparing the <code class="docutils literal notranslate"><span class="pre">mps2_an521.dts</span></code> and <code class="docutils literal notranslate"><span class="pre">mps2_an521_ns.dts</span></code> files, we can see
+that the <code class="docutils literal notranslate"><span class="pre">_ns</span></code> version defines offsets in flash and SRAM memory, which leave
+the required space for TF-M and the secure bootloader:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reserved</span><span class="o">-</span><span class="n">memory</span> <span class="p">{</span>
+            <span class="c1">#address-cells = &lt;1&gt;;</span>
+            <span class="c1">#size-cells = &lt;1&gt;;</span>
+            <span class="n">ranges</span><span class="p">;</span>
+
+            <span class="o">/*</span> <span class="n">The</span> <span class="n">memory</span> <span class="n">regions</span> <span class="n">defined</span> <span class="n">below</span> <span class="n">must</span> <span class="n">match</span> <span class="n">what</span> <span class="n">the</span> <span class="n">TF</span><span class="o">-</span><span class="n">M</span>
+             <span class="o">*</span> <span class="n">project</span> <span class="n">has</span> <span class="n">defined</span> <span class="k">for</span> <span class="n">that</span> <span class="n">board</span> <span class="o">-</span> <span class="n">a</span> <span class="n">single</span> <span class="n">image</span> <span class="n">boot</span> <span class="ow">is</span>
+             <span class="o">*</span> <span class="n">assumed</span><span class="o">.</span> <span class="n">Please</span> <span class="n">see</span> <span class="n">the</span> <span class="n">memory</span> <span class="n">layout</span> <span class="ow">in</span><span class="p">:</span>
+             <span class="o">*</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">trustedfirmware</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">TF</span><span class="o">-</span><span class="n">M</span><span class="o">/</span><span class="n">trusted</span><span class="o">-</span><span class="n">firmware</span><span class="o">-</span><span class="n">m</span><span class="o">.</span><span class="n">git</span><span class="o">/</span><span class="n">tree</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">ext</span><span class="o">/</span><span class="n">target</span><span class="o">/</span><span class="n">mps2</span><span class="o">/</span><span class="n">an521</span><span class="o">/</span><span class="n">partition</span><span class="o">/</span><span class="n">flash_layout</span><span class="o">.</span><span class="n">h</span>
+             <span class="o">*/</span>
+
+            <span class="n">code</span><span class="p">:</span> <span class="n">memory</span><span class="o">@</span><span class="mi">100000</span> <span class="p">{</span>
+                    <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x00100000</span> <span class="n">DT_SIZE_K</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+            <span class="p">};</span>
+
+            <span class="n">ram</span><span class="p">:</span> <span class="n">memory</span><span class="o">@</span><span class="mi">28100000</span> <span class="p">{</span>
+                    <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x28100000</span> <span class="n">DT_SIZE_M</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+            <span class="p">};</span>
+    <span class="p">};</span>
+</pre></div>
+</div>
+<p>This reserves 1 MB of code memory and 1 MB of RAM for secure boot and TF-M,
+such that our non-secure Zephyr application code will start at 0x10000, with
+RAM at 0x28100000. 512 KB code memory is available for the NS zephyr image,
+along with 1 MB of RAM.</p>
+<p>This matches the flash memory layout we see in <code class="docutils literal notranslate"><span class="pre">flash_layout.h</span></code> in TF-M:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="mh">0x0000_0000</span> <span class="n">BL2</span> <span class="o">-</span> <span class="n">MCUBoot</span> <span class="p">(</span><span class="mf">0.5</span> <span class="n">MB</span><span class="p">)</span>
+<span class="o">*</span> <span class="mh">0x0008_0000</span> <span class="n">Secure</span> <span class="n">image</span>     <span class="n">primary</span> <span class="n">slot</span> <span class="p">(</span><span class="mf">0.5</span> <span class="n">MB</span><span class="p">)</span>
+<span class="o">*</span> <span class="mh">0x0010_0000</span> <span class="n">Non</span><span class="o">-</span><span class="n">secure</span> <span class="n">image</span> <span class="n">primary</span> <span class="n">slot</span> <span class="p">(</span><span class="mf">0.5</span> <span class="n">MB</span><span class="p">)</span>
+<span class="o">*</span> <span class="mh">0x0018_0000</span> <span class="n">Secure</span> <span class="n">image</span>     <span class="n">secondary</span> <span class="n">slot</span> <span class="p">(</span><span class="mf">0.5</span> <span class="n">MB</span><span class="p">)</span>
+<span class="o">*</span> <span class="mh">0x0020_0000</span> <span class="n">Non</span><span class="o">-</span><span class="n">secure</span> <span class="n">image</span> <span class="n">secondary</span> <span class="n">slot</span> <span class="p">(</span><span class="mf">0.5</span> <span class="n">MB</span><span class="p">)</span>
+<span class="o">*</span> <span class="mh">0x0028_0000</span> <span class="n">Scratch</span> <span class="n">area</span> <span class="p">(</span><span class="mf">0.5</span> <span class="n">MB</span><span class="p">)</span>
+<span class="o">*</span> <span class="mh">0x0030_0000</span> <span class="n">Protected</span> <span class="n">Storage</span> <span class="n">Area</span> <span class="p">(</span><span class="mi">20</span> <span class="n">KB</span><span class="p">)</span>
+<span class="o">*</span> <span class="mh">0x0030_5000</span> <span class="n">Internal</span> <span class="n">Trusted</span> <span class="n">Storage</span> <span class="n">Area</span> <span class="p">(</span><span class="mi">16</span> <span class="n">KB</span><span class="p">)</span>
+<span class="o">*</span> <span class="mh">0x0030_9000</span> <span class="n">NV</span> <span class="n">counters</span> <span class="n">area</span> <span class="p">(</span><span class="mi">4</span> <span class="n">KB</span><span class="p">)</span>
+<span class="o">*</span> <span class="mh">0x0030_A000</span> <span class="n">Unused</span> <span class="p">(</span><span class="mi">984</span> <span class="n">KB</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">mps2/an521</span></code> will be passed in to Tf-M as the board target, specified via
+<a class="reference internal" href="../../kconfig.html#CONFIG_TFM_BOARD" title="CONFIG_TFM_BOARD"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TFM_BOARD</span></code></a>.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="testsuites.html" class="btn btn-neutral float-right" title="Test Suites" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="build.html" class="btn btn-neutral" title="TF-M Build System" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

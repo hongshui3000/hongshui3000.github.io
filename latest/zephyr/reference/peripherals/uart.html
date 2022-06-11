@@ -1,0 +1,1631 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>UART &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="MDIO" href="mdio.html" />
+    <link rel="prev" title="TCPC" href="tcpc.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Peripherals</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="adc.html">ADC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="counter.html">Counter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clock_control.html">Clock Control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dac.html">DAC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dma.html">DMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ec_host_cmd_periph.html">EC Host Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eeprom.html">EEPROM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entropy.html">Entropy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flash.html">Flash</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gna.html">GNA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpio.html">GPIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hwinfo.html">Hardware Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c_eeprom_slave.html">I2C EEPROM Slave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c.html">I2C</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ipm.html">IPM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kscan.html">KSCAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="led.html">LED</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbox.html">MBOX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pinmux.html">Pinmux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pwm.html">PWM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ps2.html">PS/2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="peci.html">PECI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="regulators.html">Regulators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rtc.html">RTC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sensor.html">Sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spi.html">SPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcpc.html">TCPC</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">UART</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-options">Configuration Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mdio.html">MDIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchdog.html">Watchdog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video.html">Video</a></li>
+<li class="toctree-l3"><a class="reference internal" href="espi.html">eSPI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Peripherals</a> &raquo;</li>
+        
+      <li>UART</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/peripherals/uart.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="uart">
+<span id="uart-api"></span><h1>UART<a class="headerlink" href="#uart" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Zephyr provides three different ways to access the UART peripheral. Depending
+on the method, different API functions are used according to below sections:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#uart-polling-api"><span class="std std-ref">Polling API</span></a></p></li>
+<li><p><a class="reference internal" href="#uart-interrupt-api"><span class="std std-ref">Interrupt-driven API</span></a></p></li>
+<li><p><a class="reference internal" href="#uart-async-api"><span class="std std-ref">Asynchronous API</span></a> using <a class="reference internal" href="dma.html#dma-api"><span class="std std-ref">DMA</span></a></p></li>
+</ol>
+<p>Polling is the most basic method to access the UART peripheral. The functions
+are blocking and the thread waits until a character is sent or received.</p>
+<p>With the Interrupt-driven API, possibly slow communication can happen in the
+background while the thread continues with other tasks. The Kernel’s
+<a class="reference internal" href="../kernel/index.html#kernel-data-passing-api"><span class="std std-ref">Data Passing</span></a> features can be used to communicate between
+the thread and the UART driver.</p>
+<p>The Asynchronous API allows to read and write data in the background using DMA
+without interrupting the MCU at all. However, the setup is more complex
+than the other methods.</p>
+</div>
+<div class="section" id="configuration-options">
+<h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Most importantly, the Kconfig options define whether the polling API (default),
+the interrupt-driven API or the asynchronous API can be used. Only enable the
+features you need in order to minimize memory footprint.</p>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_SERIAL" title="CONFIG_SERIAL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SERIAL</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_UART_INTERRUPT_DRIVEN" title="CONFIG_UART_INTERRUPT_DRIVEN"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_UART_INTERRUPT_DRIVEN</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_UART_ASYNC_API" title="CONFIG_UART_ASYNC_API"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_UART_ASYNC_API</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_UART_WIDE_DATA" title="CONFIG_UART_WIDE_DATA"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_UART_WIDE_DATA</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_UART_USE_RUNTIME_CONFIGURE" title="CONFIG_UART_USE_RUNTIME_CONFIGURE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_UART_USE_RUNTIME_CONFIGURE</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_UART_LINE_CTRL" title="CONFIG_UART_LINE_CTRL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_UART_LINE_CTRL</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_UART_DRV_CMD" title="CONFIG_UART_DRV_CMD"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_UART_DRV_CMD</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__uart__interface"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">uart_interface</span></span></dt>
+<dd><p>UART Interface. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.uart_line_ctrl">
+<span class="target" id="group__uart__interface_1ga02552532e171e789efc1b000917a9be0"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_line_ctrl</span></span></span><a class="headerlink" href="#c.uart_line_ctrl" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Line control signals. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_line_ctrl.UART_LINE_CTRL_BAUD_RATE">
+<span class="target" id="group__uart__interface_1gga02552532e171e789efc1b000917a9be0a3fdd02679f4f103190f3c12ab3cda00b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_LINE_CTRL_BAUD_RATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../util/index.html#c.BIT" title="BIT"><span class="n"><span class="pre">BIT</span></span></a><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_line_ctrl.UART_LINE_CTRL_BAUD_RATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_line_ctrl.UART_LINE_CTRL_RTS">
+<span class="target" id="group__uart__interface_1gga02552532e171e789efc1b000917a9be0a205d22bd797ab1c55323dc1ffda75f0d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_LINE_CTRL_RTS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../util/index.html#c.BIT" title="BIT"><span class="n"><span class="pre">BIT</span></span></a><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_line_ctrl.UART_LINE_CTRL_RTS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_line_ctrl.UART_LINE_CTRL_DTR">
+<span class="target" id="group__uart__interface_1gga02552532e171e789efc1b000917a9be0a19e76af9901fc0274a9e27ff40e29e23"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_LINE_CTRL_DTR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../util/index.html#c.BIT" title="BIT"><span class="n"><span class="pre">BIT</span></span></a><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_line_ctrl.UART_LINE_CTRL_DTR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_line_ctrl.UART_LINE_CTRL_DCD">
+<span class="target" id="group__uart__interface_1gga02552532e171e789efc1b000917a9be0a6d2c438044dd64f5cef07bbe4c6b3e97"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_LINE_CTRL_DCD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../util/index.html#c.BIT" title="BIT"><span class="n"><span class="pre">BIT</span></span></a><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_line_ctrl.UART_LINE_CTRL_DCD" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_line_ctrl.UART_LINE_CTRL_DSR">
+<span class="target" id="group__uart__interface_1gga02552532e171e789efc1b000917a9be0a87d8bedb5c918c182b271884ee42d75c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_LINE_CTRL_DSR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../util/index.html#c.BIT" title="BIT"><span class="n"><span class="pre">BIT</span></span></a><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_line_ctrl.UART_LINE_CTRL_DSR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.uart_rx_stop_reason">
+<span class="target" id="group__uart__interface_1gadeba6c5485e01dfc1c8a6e1c21668a88"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_rx_stop_reason</span></span></span><a class="headerlink" href="#c.uart_rx_stop_reason" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reception stop reasons. </p>
+<p>Values that correspond to events or errors responsible for stopping receiving. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_rx_stop_reason.UART_ERROR_OVERRUN">
+<span class="target" id="group__uart__interface_1ggadeba6c5485e01dfc1c8a6e1c21668a88a442beffc51cdf265bbcb40810a9a6e54"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_ERROR_OVERRUN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="w"> </span><span class="o"><span class="pre">&lt;&lt;</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_rx_stop_reason.UART_ERROR_OVERRUN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Overrun error. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_rx_stop_reason.UART_ERROR_PARITY">
+<span class="target" id="group__uart__interface_1ggadeba6c5485e01dfc1c8a6e1c21668a88a86d38eac5a46e6659aa765164b833eb5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_ERROR_PARITY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="w"> </span><span class="o"><span class="pre">&lt;&lt;</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_rx_stop_reason.UART_ERROR_PARITY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Parity error. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_rx_stop_reason.UART_ERROR_FRAMING">
+<span class="target" id="group__uart__interface_1ggadeba6c5485e01dfc1c8a6e1c21668a88af13f72a8c615b4bc570b5a4df573407b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_ERROR_FRAMING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="w"> </span><span class="o"><span class="pre">&lt;&lt;</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_rx_stop_reason.UART_ERROR_FRAMING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Framing error. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_rx_stop_reason.UART_BREAK">
+<span class="target" id="group__uart__interface_1ggadeba6c5485e01dfc1c8a6e1c21668a88a4986147e23cc46ab8c2aa7e151d09571"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_BREAK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="w"> </span><span class="o"><span class="pre">&lt;&lt;</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_rx_stop_reason.UART_BREAK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Break interrupt. </p>
+<p>A break interrupt was received. This happens when the serial input is held at a logic ‘0’ state for longer than the sum of start time + data bits + parity + stop bits. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_rx_stop_reason.UART_ERROR_COLLISION">
+<span class="target" id="group__uart__interface_1ggadeba6c5485e01dfc1c8a6e1c21668a88aad8ca4dca9a846560293df71e6b39786"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_ERROR_COLLISION</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="w"> </span><span class="o"><span class="pre">&lt;&lt;</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_rx_stop_reason.UART_ERROR_COLLISION" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Collision error. </p>
+<p>This error is raised when transmitted data does not match received data. Typically this is useful in scenarios where the TX and RX lines maybe connected together such as RS-485 half-duplex. This error is only valid on UARTs that support collision checking. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.uart_config_parity">
+<span class="target" id="group__uart__interface_1gab2ab6aacb6e3c43bb26d4274157e5711"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_config_parity</span></span></span><a class="headerlink" href="#c.uart_config_parity" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Parity modes. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_parity.UART_CFG_PARITY_NONE">
+<span class="target" id="group__uart__interface_1ggab2ab6aacb6e3c43bb26d4274157e5711a6a23a2ef22fb3b144648b244fff82b8d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_PARITY_NONE</span></span></span><a class="headerlink" href="#c.uart_config_parity.UART_CFG_PARITY_NONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_parity.UART_CFG_PARITY_ODD">
+<span class="target" id="group__uart__interface_1ggab2ab6aacb6e3c43bb26d4274157e5711a8a618b0a531c8d62809e39eb56eaf5ed"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_PARITY_ODD</span></span></span><a class="headerlink" href="#c.uart_config_parity.UART_CFG_PARITY_ODD" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_parity.UART_CFG_PARITY_EVEN">
+<span class="target" id="group__uart__interface_1ggab2ab6aacb6e3c43bb26d4274157e5711ac3a4310efe198a1fa7d977a5531486ba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_PARITY_EVEN</span></span></span><a class="headerlink" href="#c.uart_config_parity.UART_CFG_PARITY_EVEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_parity.UART_CFG_PARITY_MARK">
+<span class="target" id="group__uart__interface_1ggab2ab6aacb6e3c43bb26d4274157e5711a5ee61c29a32447644ff70385158a11ca"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_PARITY_MARK</span></span></span><a class="headerlink" href="#c.uart_config_parity.UART_CFG_PARITY_MARK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_parity.UART_CFG_PARITY_SPACE">
+<span class="target" id="group__uart__interface_1ggab2ab6aacb6e3c43bb26d4274157e5711a8dc5306c8ca26321431bcf22ce9b036c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_PARITY_SPACE</span></span></span><a class="headerlink" href="#c.uart_config_parity.UART_CFG_PARITY_SPACE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.uart_config_stop_bits">
+<span class="target" id="group__uart__interface_1gafc1aecb863e2456d73b78a49fcbad72e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_config_stop_bits</span></span></span><a class="headerlink" href="#c.uart_config_stop_bits" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of stop bits. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_stop_bits.UART_CFG_STOP_BITS_0_5">
+<span class="target" id="group__uart__interface_1ggafc1aecb863e2456d73b78a49fcbad72ea308c660590a9fd16143806e8bef002af"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_STOP_BITS_0_5</span></span></span><a class="headerlink" href="#c.uart_config_stop_bits.UART_CFG_STOP_BITS_0_5" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_stop_bits.UART_CFG_STOP_BITS_1">
+<span class="target" id="group__uart__interface_1ggafc1aecb863e2456d73b78a49fcbad72ea73024f1618eb04385bf488214c635e58"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_STOP_BITS_1</span></span></span><a class="headerlink" href="#c.uart_config_stop_bits.UART_CFG_STOP_BITS_1" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_stop_bits.UART_CFG_STOP_BITS_1_5">
+<span class="target" id="group__uart__interface_1ggafc1aecb863e2456d73b78a49fcbad72ea1da47ec95b6a6eee65abef3d6d84f9ad"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_STOP_BITS_1_5</span></span></span><a class="headerlink" href="#c.uart_config_stop_bits.UART_CFG_STOP_BITS_1_5" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_stop_bits.UART_CFG_STOP_BITS_2">
+<span class="target" id="group__uart__interface_1ggafc1aecb863e2456d73b78a49fcbad72eae180ecebc76516e89669e1d16bfb31c6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_STOP_BITS_2</span></span></span><a class="headerlink" href="#c.uart_config_stop_bits.UART_CFG_STOP_BITS_2" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.uart_config_data_bits">
+<span class="target" id="group__uart__interface_1gab9f7de744a68a311330576d7da02c44a"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_config_data_bits</span></span></span><a class="headerlink" href="#c.uart_config_data_bits" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of data bits. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_data_bits.UART_CFG_DATA_BITS_5">
+<span class="target" id="group__uart__interface_1ggab9f7de744a68a311330576d7da02c44aa1b0545c2d1970e67d697b62510bfbe27"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_DATA_BITS_5</span></span></span><a class="headerlink" href="#c.uart_config_data_bits.UART_CFG_DATA_BITS_5" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_data_bits.UART_CFG_DATA_BITS_6">
+<span class="target" id="group__uart__interface_1ggab9f7de744a68a311330576d7da02c44aac6e0f3c0479164c34144d0e6e28298e4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_DATA_BITS_6</span></span></span><a class="headerlink" href="#c.uart_config_data_bits.UART_CFG_DATA_BITS_6" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_data_bits.UART_CFG_DATA_BITS_7">
+<span class="target" id="group__uart__interface_1ggab9f7de744a68a311330576d7da02c44aa6120eb8f668b257c8c2dd0dc9cf0c913"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_DATA_BITS_7</span></span></span><a class="headerlink" href="#c.uart_config_data_bits.UART_CFG_DATA_BITS_7" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_data_bits.UART_CFG_DATA_BITS_8">
+<span class="target" id="group__uart__interface_1ggab9f7de744a68a311330576d7da02c44aa23f55bdb24b4016c8c23c518e981df97"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_DATA_BITS_8</span></span></span><a class="headerlink" href="#c.uart_config_data_bits.UART_CFG_DATA_BITS_8" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_data_bits.UART_CFG_DATA_BITS_9">
+<span class="target" id="group__uart__interface_1ggab9f7de744a68a311330576d7da02c44aaf3b601af696d8841fe79871ca3e41e5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_DATA_BITS_9</span></span></span><a class="headerlink" href="#c.uart_config_data_bits.UART_CFG_DATA_BITS_9" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.uart_config_flow_control">
+<span class="target" id="group__uart__interface_1ga8e2f1b4a8d60d7a6c24835d1b26f99e8"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_config_flow_control</span></span></span><a class="headerlink" href="#c.uart_config_flow_control" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Hardware flow control options. </p>
+<p>With flow control set to none, any operations related to flow control signals can be managed by user with uart_line_ctrl functions. In other cases, flow control is managed by hardware/driver. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_flow_control.UART_CFG_FLOW_CTRL_NONE">
+<span class="target" id="group__uart__interface_1gga8e2f1b4a8d60d7a6c24835d1b26f99e8a546b28db6f8bfc26266e8f7d6b8ff973"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_FLOW_CTRL_NONE</span></span></span><a class="headerlink" href="#c.uart_config_flow_control.UART_CFG_FLOW_CTRL_NONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_flow_control.UART_CFG_FLOW_CTRL_RTS_CTS">
+<span class="target" id="group__uart__interface_1gga8e2f1b4a8d60d7a6c24835d1b26f99e8ad682bfe14a9f0860d1fdc3e8e9d56f86"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_FLOW_CTRL_RTS_CTS</span></span></span><a class="headerlink" href="#c.uart_config_flow_control.UART_CFG_FLOW_CTRL_RTS_CTS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_config_flow_control.UART_CFG_FLOW_CTRL_DTR_DSR">
+<span class="target" id="group__uart__interface_1gga8e2f1b4a8d60d7a6c24835d1b26f99e8a0efc5de86bf80119f750cf372814309f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_CFG_FLOW_CTRL_DTR_DSR</span></span></span><a class="headerlink" href="#c.uart_config_flow_control.UART_CFG_FLOW_CTRL_DTR_DSR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_err_check">
+<span class="target" id="group__uart__interface_1ga22ea20fd8e07153b3b71cc9416f5462f"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_err_check</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_err_check" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check whether an error was detected. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If no error was detected. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">err</span></code>: Error flags as defined in <a class="reference internal" href="#group__uart__interface_1gadeba6c5485e01dfc1c8a6e1c21668a88"><span class="std std-ref">uart_rx_stop_reason</span></a> </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If not implemented. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_configure">
+<span class="target" id="group__uart__interface_1gaa0b75777b879af10543f7e8f463ff9a2"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_configure</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.uart_config" title="uart_config"><span class="n"><span class="pre">uart_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_configure" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set UART configuration. </p>
+<p>Sets UART configuration using data from *cfg.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cfg</span></code>: UART configuration structure.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Negative errno code in case of failure. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If configuration is not supported by device or driver does not support setting configuration in runtime. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_config_get">
+<span class="target" id="group__uart__interface_1ga81dfc5f2134de8e4acb5f063512cf703"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_config_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.uart_config" title="uart_config"><span class="n"><span class="pre">uart_config</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_config_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get UART configuration. </p>
+<p>Stores current UART configuration to *cfg, can be used to retrieve initial configuration after device was initialized using data from DTS.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cfg</span></code>: UART configuration structure.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Negative errno code in case of failure. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If driver does not support getting current configuration. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_line_ctrl_set">
+<span class="target" id="group__uart__interface_1gab039414b41145dc8d31349836da91263"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_line_ctrl_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">ctrl</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">val</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_line_ctrl_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Manipulate line control for UART. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ctrl</span></code>: The line control to manipulate (see enum uart_line_ctrl). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">val</span></code>: Value to set to the line control.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno value in case of failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_line_ctrl_get">
+<span class="target" id="group__uart__interface_1gafda8a550284a54c8e1d6b6638de978e5"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_line_ctrl_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">ctrl</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">val</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_line_ctrl_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve line control for UART. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ctrl</span></code>: The line control to retrieve (see enum uart_line_ctrl). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">val</span></code>: Pointer to variable where to store the line control value.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno value in case of failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_drv_cmd">
+<span class="target" id="group__uart__interface_1gaa8683398e5d709b513509d08841ed51b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_drv_cmd</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">cmd</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_drv_cmd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send extra command to driver. </p>
+<p>Implementation and accepted commands are driver specific. Refer to the drivers for more information.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmd</span></code>: Command to driver. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p</span></code>: Parameter to the command.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno value in case of failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.uart_config">
+<span class="target" id="structuart__config"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_config</span></span></span><a class="headerlink" href="#c.uart_config" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;uart.h&gt;</em><p>UART controller configuration structure. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">baudrate</span></code>: Baudrate setting in bps </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parity</span></code>: Parity bit, use <a class="reference internal" href="#group__uart__interface_1gab2ab6aacb6e3c43bb26d4274157e5711"><span class="std std-ref">uart_config_parity</span></a> </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stop_bits</span></code>: Stop bits, use <a class="reference internal" href="#group__uart__interface_1gafc1aecb863e2456d73b78a49fcbad72e"><span class="std std-ref">uart_config_stop_bits</span></a> </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_bits</span></code>: Data bits, use <a class="reference internal" href="#group__uart__interface_1gab9f7de744a68a311330576d7da02c44a"><span class="std std-ref">uart_config_data_bits</span></a> </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flow_ctrl</span></code>: Flow control setting, use <a class="reference internal" href="#group__uart__interface_1ga8e2f1b4a8d60d7a6c24835d1b26f99e8"><span class="std std-ref">uart_config_flow_control</span></a> </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="polling-api">
+<span id="uart-polling-api"></span><h3>Polling API<a class="headerlink" href="#polling-api" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__uart__polling"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">uart_polling</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_poll_in">
+<span class="target" id="group__uart__polling_1gae81ac8cc976a20d774cfbda09e9c983d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_poll_in</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_char</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_poll_in" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Poll the device for input. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_char</span></code>: Pointer to character.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If a character arrived. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-1</span></code>: If no character was available to read (i.e. the UART input buffer was empty). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If the operation is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: If async reception was enabled using <a class="reference internal" href="#group__uart__async_1ga902e18c2a727ed2988e1b6caa6a444b8"><span class="std std-ref">uart_rx_enable</span></a> </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_poll_in_u16">
+<span class="target" id="group__uart__polling_1gaad39c1358019bfdcb919da7982743553"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_poll_in_u16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_u16</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_poll_in_u16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Poll the device for wide data input. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p_u16</span></code>: Pointer to 16-bit data.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If data arrived. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-1</span></code>: If no data was available to read (i.e., the UART input buffer was empty). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If the function is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: If async reception was enabled using <a class="reference internal" href="#group__uart__async_1ga902e18c2a727ed2988e1b6caa6a444b8"><span class="std std-ref">uart_rx_enable</span></a> </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_poll_out">
+<span class="target" id="group__uart__polling_1ga06ba27ba772a7a18462b8cdbc7f9353c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_poll_out</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">out_char</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_poll_out" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Output a character in polled mode. </p>
+<p>This routine checks if the transmitter is empty. When the transmitter is empty, it writes a character to the data register.</p>
+<p>To send a character when hardware flow control is enabled, the handshake signal CTS must be asserted.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">out_char</span></code>: Character to send. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_poll_out_u16">
+<span class="target" id="group__uart__polling_1ga8faa3f58b9098c97e288e9c5f3367fd9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_poll_out_u16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">out_u16</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_poll_out_u16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Output wide data in polled mode. </p>
+<p>This routine checks if the transmitter is empty. When the transmitter is empty, it writes a datum to the data register.</p>
+<p>To send a datum when hardware flow control is enabled, the handshake signal CTS must be asserted.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">out_u16</span></code>: Wide data to send. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="interrupt-driven-api">
+<span id="uart-interrupt-api"></span><h3>Interrupt-driven API<a class="headerlink" href="#interrupt-driven-api" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__uart__interrupt"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">uart_interrupt</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.uart_irq_callback_user_data_t">
+<span class="target" id="group__uart__interrupt_1gad7a26b1a1d6212d7d39c05c8ad4ec926"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_callback_user_data_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_irq_callback_user_data_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define the application callback function signature for <a class="reference internal" href="#group__uart__interrupt_1gaef0210c791ac400d149dc0b67420eec5"><span class="std std-ref">uart_irq_callback_user_data_set()</span></a> function. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: Arbitrary user data. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.uart_irq_config_func_t">
+<span class="target" id="group__uart__interrupt_1ga6750414923953c84fb1e19177ec74ae0"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_config_func_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_irq_config_func_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>For configuring IRQ on each individual UART device. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_fifo_fill">
+<span class="target" id="group__uart__interrupt_1gafe42e4719eada7e25904bc9ebfe87791"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_fifo_fill</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tx_data</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_fifo_fill" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Fill FIFO with data. </p>
+<p>This function is expected to be called from UART interrupt handler (ISR), if <a class="reference internal" href="#group__uart__interrupt_1ga5e126b5f19549eb7f5b785b98ebe7638"><span class="std std-ref">uart_irq_tx_ready()</span></a> returns true. Result of calling this function not from an ISR is undefined (hardware-dependent). Likewise, <em>not</em> calling this function from an ISR if <a class="reference internal" href="#group__uart__interrupt_1ga5e126b5f19549eb7f5b785b98ebe7638"><span class="std std-ref">uart_irq_tx_ready()</span></a> returns true may lead to undefined behavior, e.g. infinite interrupt loops. It’s mandatory to test return value of this function, as different hardware has different FIFO depth (oftentimes just 1).</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Number of bytes sent. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tx_data</span></code>: Data to transmit. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of bytes to send.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: if this function is not supported </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_fifo_fill_u16">
+<span class="target" id="group__uart__interrupt_1gaa89f58818d8428ad6a11abf692c54c0d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_fifo_fill_u16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tx_data</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_fifo_fill_u16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Fill FIFO with wide data. </p>
+<p>This function is expected to be called from UART interrupt handler (ISR), if <a class="reference internal" href="#group__uart__interrupt_1ga5e126b5f19549eb7f5b785b98ebe7638"><span class="std std-ref">uart_irq_tx_ready()</span></a> returns true. Result of calling this function not from an ISR is undefined (hardware-dependent). Likewise, <em>not</em> calling this function from an ISR if <a class="reference internal" href="#group__uart__interrupt_1ga5e126b5f19549eb7f5b785b98ebe7638"><span class="std std-ref">uart_irq_tx_ready()</span></a> returns true may lead to undefined behavior, e.g. infinite interrupt loops. It’s mandatory to test return value of this function, as different hardware has different FIFO depth (oftentimes just 1).</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Number of datum sent. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tx_data</span></code>: Wide data to transmit. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of datum to send.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_fifo_read">
+<span class="target" id="group__uart__interrupt_1gab10942076ac47ecff29e924098049398"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_fifo_read</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rx_data</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_fifo_read" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read data from FIFO. </p>
+<p>This function is expected to be called from UART interrupt handler (ISR), if <a class="reference internal" href="#group__uart__interrupt_1gad04073b1b8e3de13b43ae1194561377b"><span class="std std-ref">uart_irq_rx_ready()</span></a> returns true. Result of calling this function not from an ISR is undefined (hardware-dependent). It’s unspecified whether “RX ready” condition as returned by <a class="reference internal" href="#group__uart__interrupt_1gad04073b1b8e3de13b43ae1194561377b"><span class="std std-ref">uart_irq_rx_ready()</span></a> is level- or edge- triggered. That means that once <a class="reference internal" href="#group__uart__interrupt_1gad04073b1b8e3de13b43ae1194561377b"><span class="std std-ref">uart_irq_rx_ready()</span></a> is detected, <a class="reference internal" href="#group__uart__interrupt_1gab10942076ac47ecff29e924098049398"><span class="std std-ref">uart_fifo_read()</span></a> must be called until it reads all available data in the FIFO (i.e. until it returns less data than was requested).</p>
+<p>Note that the calling context only applies to physical UARTs and no to the virtual ones found in USB CDC ACM code.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Number of bytes read. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rx_data</span></code>: Data container. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Container size.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_fifo_read_u16">
+<span class="target" id="group__uart__interrupt_1ga4a3c25dad2290f1f40e4b847e3b83f64"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_fifo_read_u16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rx_data</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_fifo_read_u16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read wide data from FIFO. </p>
+<p>This function is expected to be called from UART interrupt handler (ISR), if <a class="reference internal" href="#group__uart__interrupt_1gad04073b1b8e3de13b43ae1194561377b"><span class="std std-ref">uart_irq_rx_ready()</span></a> returns true. Result of calling this function not from an ISR is undefined (hardware-dependent). It’s unspecified whether “RX ready” condition as returned by <a class="reference internal" href="#group__uart__interrupt_1gad04073b1b8e3de13b43ae1194561377b"><span class="std std-ref">uart_irq_rx_ready()</span></a> is level- or edge- triggered. That means that once <a class="reference internal" href="#group__uart__interrupt_1gad04073b1b8e3de13b43ae1194561377b"><span class="std std-ref">uart_irq_rx_ready()</span></a> is detected, <a class="reference internal" href="#group__uart__interrupt_1gab10942076ac47ecff29e924098049398"><span class="std std-ref">uart_fifo_read()</span></a> must be called until it reads all available data in the FIFO (i.e. until it returns less data than was requested).</p>
+<p>Note that the calling context only applies to physical UARTs and no to the virtual ones found in USB CDC ACM code.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Number of datum read. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rx_data</span></code>: Wide data container. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Container size.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_tx_enable">
+<span class="target" id="group__uart__interrupt_1ga9cbd6e33dce6a5b06233cf10077e19cc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_tx_enable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_tx_enable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Enable TX interrupt in IER. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_tx_disable">
+<span class="target" id="group__uart__interrupt_1gaf8a5bc26cd7c32e7bc6516c6f873c45a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_tx_disable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_tx_disable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Disable TX interrupt in IER. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_tx_ready">
+<span class="target" id="group__uart__interrupt_1ga5e126b5f19549eb7f5b785b98ebe7638"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_tx_ready</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_tx_ready" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if UART TX buffer can accept a new char. </p>
+<p>Check if UART TX buffer can accept at least one character for transmission (i.e. <a class="reference internal" href="#group__uart__interrupt_1gafe42e4719eada7e25904bc9ebfe87791"><span class="std std-ref">uart_fifo_fill()</span></a> will succeed and return non-zero). This function must be called in a UART interrupt handler, or its result is undefined. Before calling this function in the interrupt handler, <a class="reference internal" href="#group__uart__interrupt_1gac5241e000d482c40b2a4856c58c106a6"><span class="std std-ref">uart_irq_update()</span></a> must be called once per the handler invocation.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: If TX interrupt is enabled and at least one char can be written to UART. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If device is not ready to write a new byte. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_rx_enable">
+<span class="target" id="group__uart__interrupt_1ga4ec3ae3974da2b3ab94ae7b835d17bad"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_rx_enable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_rx_enable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Enable RX interrupt. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_rx_disable">
+<span class="target" id="group__uart__interrupt_1gaa759d7935fdd9ab6ca0761f161389a29"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_rx_disable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_rx_disable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Disable RX interrupt. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_tx_complete">
+<span class="target" id="group__uart__interrupt_1ga917935a13bf6a5d1e32ef34339e96455"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_tx_complete</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_tx_complete" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if UART TX block finished transmission. </p>
+<p>Check if any outgoing data buffered in UART TX block was fully transmitted and TX block is idle. When this condition is true, UART device (or whole system) can be power off. Note that this function is <em>not</em> useful to check if UART TX can accept more data, use <a class="reference internal" href="#group__uart__interrupt_1ga5e126b5f19549eb7f5b785b98ebe7638"><span class="std std-ref">uart_irq_tx_ready()</span></a> for that. This function must be called in a UART interrupt handler, or its result is undefined. Before calling this function in the interrupt handler, <a class="reference internal" href="#group__uart__interrupt_1gac5241e000d482c40b2a4856c58c106a6"><span class="std std-ref">uart_irq_update()</span></a> must be called once per the handler invocation.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: If nothing remains to be transmitted. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If transmission is not completed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_rx_ready">
+<span class="target" id="group__uart__interrupt_1gad04073b1b8e3de13b43ae1194561377b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_rx_ready</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_rx_ready" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if UART RX buffer has a received char. </p>
+<p>Check if UART RX buffer has at least one pending character (i.e. <a class="reference internal" href="#group__uart__interrupt_1gab10942076ac47ecff29e924098049398"><span class="std std-ref">uart_fifo_read()</span></a> will succeed and return non-zero). This function must be called in a UART interrupt handler, or its result is undefined. Before calling this function in the interrupt handler, <a class="reference internal" href="#group__uart__interrupt_1gac5241e000d482c40b2a4856c58c106a6"><span class="std std-ref">uart_irq_update()</span></a> must be called once per the handler invocation. It’s unspecified whether condition as returned by this function is level- or edge- triggered (i.e. if this function returns true when RX FIFO is non-empty, or when a new char was received since last call to it). See description of <a class="reference internal" href="#group__uart__interrupt_1gab10942076ac47ecff29e924098049398"><span class="std std-ref">uart_fifo_read()</span></a> for implication of this.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: If a received char is ready. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If a received char is not ready. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_err_enable">
+<span class="target" id="group__uart__interrupt_1ga7c24daae3326bc2959ea13a2be79969f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_err_enable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_err_enable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Enable error interrupt. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_err_disable">
+<span class="target" id="group__uart__interrupt_1gaaf8a88361807e204f7227fbd1d0e75b2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_err_disable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_err_disable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Disable error interrupt. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_is_pending">
+<span class="target" id="group__uart__interrupt_1ga11ccae917c8b5fd76aaabdb047125f6a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_is_pending</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_is_pending" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if any IRQs is pending. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: If an IRQ is pending. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If an IRQ is not pending. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_update">
+<span class="target" id="group__uart__interrupt_1gac5241e000d482c40b2a4856c58c106a6"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_update" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Start processing interrupts in ISR. </p>
+<p>This function should be called the first thing in the ISR. Calling <a class="reference internal" href="#group__uart__interrupt_1gad04073b1b8e3de13b43ae1194561377b"><span class="std std-ref">uart_irq_rx_ready()</span></a>, <a class="reference internal" href="#group__uart__interrupt_1ga5e126b5f19549eb7f5b785b98ebe7638"><span class="std std-ref">uart_irq_tx_ready()</span></a>, <a class="reference internal" href="#group__uart__interrupt_1ga917935a13bf6a5d1e32ef34339e96455"><span class="std std-ref">uart_irq_tx_complete()</span></a> allowed only after this.</p>
+<p>The purpose of this function is:</p>
+<p><ul class="simple">
+<li><p>For devices with auto-acknowledge of interrupt status on register read to cache the value of this register (rx_ready, etc. then use this case).</p></li>
+<li><p>For devices with explicit acknowledgment of interrupts, to ack any pending interrupts and likewise to cache the original value.</p></li>
+<li><p>For devices with implicit acknowledgment, this function will be empty. But the ISR must perform the actions needs to ack the interrupts (usually, call <a class="reference internal" href="#group__uart__interrupt_1gab10942076ac47ecff29e924098049398"><span class="std std-ref">uart_fifo_read()</span></a> on rx_ready, and <a class="reference internal" href="#group__uart__interrupt_1gafe42e4719eada7e25904bc9ebfe87791"><span class="std std-ref">uart_fifo_fill()</span></a> on tx_ready).</p></li>
+</ul>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: On success. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If this function is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_callback_user_data_set">
+<span class="target" id="group__uart__interrupt_1gaef0210c791ac400d149dc0b67420eec5"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_callback_user_data_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.uart_irq_callback_user_data_t" title="uart_irq_callback_user_data_t"><span class="n"><span class="pre">uart_irq_callback_user_data_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_callback_user_data_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the IRQ callback function pointer. </p>
+<p>This sets up the callback for IRQ. When an IRQ is triggered, the specified function will be called with specified user data. See description of <a class="reference internal" href="#group__uart__interrupt_1gac5241e000d482c40b2a4856c58c106a6"><span class="std std-ref">uart_irq_update()</span></a> for the requirements on ISR.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cb</span></code>: Pointer to the callback function. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: Data to pass to callback function. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_irq_callback_set">
+<span class="target" id="group__uart__interrupt_1gac896825681a3febf24bb3cba5178f39f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_irq_callback_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.uart_irq_callback_user_data_t" title="uart_irq_callback_user_data_t"><span class="n"><span class="pre">uart_irq_callback_user_data_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_irq_callback_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the IRQ callback function pointer (legacy). </p>
+<p>This sets up the callback for IRQ. When an IRQ is triggered, the specified function will be called with the device pointer.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cb</span></code>: Pointer to the callback function. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="asynchronous-api">
+<span id="uart-async-api"></span><h3>Asynchronous API<a class="headerlink" href="#asynchronous-api" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__uart__async"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">uart_async</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.uart_callback_t">
+<span class="target" id="group__uart__async_1ga7b90c86ad81b06e3e16dd466e29b1151"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">uart_callback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.uart_event" title="uart_event"><span class="n"><span class="pre">uart_event</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">evt</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.uart_callback_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define the application callback function signature for <a class="reference internal" href="#group__uart__async_1gad33e627ed8729409b14e92453e53459c"><span class="std std-ref">uart_callback_set()</span></a> function. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">evt</span></code>: Pointer to <a class="reference internal" href="#structuart__event"><span class="std std-ref">uart_event</span></a> instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: Pointer to data specified by user. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.uart_event_type">
+<span class="target" id="group__uart__async_1gaf0c9513cbafa36d86b4c83f2b6a03dcd"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_event_type</span></span></span><a class="headerlink" href="#c.uart_event_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Types of events passed to callback in UART_ASYNC_API. </p>
+<p>Receiving:<ol class="loweralpha simple">
+<li><p>To start receiving, uart_rx_enable has to be called with first buffer</p></li>
+<li><p>When receiving starts to current buffer, <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda0d250f372702526f1bce6d4dfe166abe"><span class="std std-ref">uart_event_type::UART_RX_BUF_REQUEST</span></a> will be generated, in response to that user can either:<ul class="simple">
+<li><p>Provide second buffer using uart_rx_buf_rsp, when first buffer is filled, receiving will automatically start to second buffer.</p></li>
+<li><p>Ignore the event, this way when current buffer is filled <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"><span class="std std-ref">uart_event_type::UART_RX_RDY</span></a> event will be generated and receiving will be stopped.</p></li>
+</ul>
+</p></li>
+<li><p>If some data was received and timeout occurred <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"><span class="std std-ref">uart_event_type::UART_RX_RDY</span></a> event will be generated. It can happen multiples times for the same buffer. RX timeout is counted from last byte received i.e. if no data was received, there won’t be any timeout event.</p></li>
+<li><p>After buffer is filled <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"><span class="std std-ref">uart_event_type::UART_RX_RDY</span></a> will be generated, immediately followed by <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdab2d152bd84f659d4fc4060df29811b48"><span class="std std-ref">uart_event_type::UART_RX_BUF_RELEASED</span></a> indicating that current buffer is no longer used.</p></li>
+<li><p>If there was second buffer provided, it will become current buffer and we start again at point 2. If no second buffer was specified receiving is stopped and <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdaa8ff5629c002a61bc3bdf5baa2ebc203"><span class="std std-ref">uart_event_type::UART_RX_DISABLED</span></a> event is generated. After that whole process can be repeated.</p></li>
+</ol>
+</p>
+<p>Any time during reception <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda05b81ddf74d208aeabace6ac90ae52dd"><span class="std std-ref">uart_event_type::UART_RX_STOPPED</span></a> event can occur. if there is any data received, <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"><span class="std std-ref">uart_event_type::UART_RX_RDY</span></a> event will be generated. It will be followed by <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdab2d152bd84f659d4fc4060df29811b48"><span class="std std-ref">uart_event_type::UART_RX_BUF_RELEASED</span></a> event for every buffer currently passed to driver and finally by <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdaa8ff5629c002a61bc3bdf5baa2ebc203"><span class="std std-ref">uart_event_type::UART_RX_DISABLED</span></a> event.</p>
+<p>Receiving can be disabled using uart_rx_disable, after calling that function, if there is any data received, <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"><span class="std std-ref">uart_event_type::UART_RX_RDY</span></a> event will be generated. <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdab2d152bd84f659d4fc4060df29811b48"><span class="std std-ref">uart_event_type::UART_RX_BUF_RELEASED</span></a> event will be generated for every buffer currently passed to driver and finally <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdaa8ff5629c002a61bc3bdf5baa2ebc203"><span class="std std-ref">uart_event_type::UART_RX_DISABLED</span></a> event will occur.</p>
+<p>Transmitting:<ol class="loweralpha simple">
+<li><p>Transmitting starts by uart_tx function.</p></li>
+<li><p>If whole buffer was transmitted <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda4b5cdf863d8b6e5cd7b58f611808a6e4"><span class="std std-ref">uart_event_type::UART_TX_DONE</span></a> is generated. If timeout occurred <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda0abcf565ba1011815285bb3845f8d5a1"><span class="std std-ref">uart_event_type::UART_TX_ABORTED</span></a> will be generated.</p></li>
+</ol>
+</p>
+<p>Transmitting can be aborted using <a class="reference internal" href="#group__uart__async_1gaa8a26d3ea685fb98030ea03613be6280"><span class="std std-ref">uart_tx_abort</span></a>, after calling that function <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda0abcf565ba1011815285bb3845f8d5a1"><span class="std std-ref">uart_event_type::UART_TX_ABORTED</span></a> event will be generated. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_event_type.UART_TX_DONE">
+<span class="target" id="group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda4b5cdf863d8b6e5cd7b58f611808a6e4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_TX_DONE</span></span></span><a class="headerlink" href="#c.uart_event_type.UART_TX_DONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Whole TX buffer was transmitted. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_event_type.UART_TX_ABORTED">
+<span class="target" id="group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda0abcf565ba1011815285bb3845f8d5a1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_TX_ABORTED</span></span></span><a class="headerlink" href="#c.uart_event_type.UART_TX_ABORTED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Transmitting aborted due to timeout or uart_tx_abort call. </p>
+<p>When flow control is enabled, there is a possibility that TX transfer won’t finish in the allotted time. Some data may have been transferred, information about it can be found in event data. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_event_type.UART_RX_RDY">
+<span class="target" id="group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_RX_RDY</span></span></span><a class="headerlink" href="#c.uart_event_type.UART_RX_RDY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Received data is ready for processing. </p>
+<p>This event is generated in the following cases:<ul class="simple">
+<li><p>When RX timeout occurred, and data was stored in provided buffer. This can happen multiple times in the same buffer.</p></li>
+<li><p>When provided buffer is full.</p></li>
+<li><p>After <a class="reference internal" href="#group__uart__async_1gafd4753bee51b230091a3c6ddb26ea734"><span class="std std-ref">uart_rx_disable()</span></a>.</p></li>
+<li><p>After stopping due to external event (<a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda05b81ddf74d208aeabace6ac90ae52dd"><span class="std std-ref">uart_event_type::UART_RX_STOPPED</span></a>). </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_event_type.UART_RX_BUF_REQUEST">
+<span class="target" id="group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda0d250f372702526f1bce6d4dfe166abe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_RX_BUF_REQUEST</span></span></span><a class="headerlink" href="#c.uart_event_type.UART_RX_BUF_REQUEST" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Driver requests next buffer for continuous reception. </p>
+<p>This event is triggered when receiving has started for a new buffer, i.e. it’s time to provide a next buffer for a seamless switchover to it. For continuous reliable receiving, user should provide another RX buffer in response to this event, using uart_rx_buf_rsp function</p>
+<p>If uart_rx_buf_rsp is not called before current buffer is filled up, receiving will stop. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_event_type.UART_RX_BUF_RELEASED">
+<span class="target" id="group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdab2d152bd84f659d4fc4060df29811b48"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_RX_BUF_RELEASED</span></span></span><a class="headerlink" href="#c.uart_event_type.UART_RX_BUF_RELEASED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Buffer is no longer used by UART driver. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_event_type.UART_RX_DISABLED">
+<span class="target" id="group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdaa8ff5629c002a61bc3bdf5baa2ebc203"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_RX_DISABLED</span></span></span><a class="headerlink" href="#c.uart_event_type.UART_RX_DISABLED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>RX has been disabled and can be reenabled. </p>
+<p>This event is generated whenever receiver has been stopped, disabled or finished its operation and can be enabled again using uart_rx_enable </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.uart_event_type.UART_RX_STOPPED">
+<span class="target" id="group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda05b81ddf74d208aeabace6ac90ae52dd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_RX_STOPPED</span></span></span><a class="headerlink" href="#c.uart_event_type.UART_RX_STOPPED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>RX has stopped due to external event. </p>
+<p>Reason is one of uart_rx_stop_reason. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_callback_set">
+<span class="target" id="group__uart__async_1gad33e627ed8729409b14e92453e53459c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_callback_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.uart_callback_t" title="uart_callback_t"><span class="n"><span class="pre">uart_callback_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_callback_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set event handler function. </p>
+<p>Since it is mandatory to set callback to use other asynchronous functions, it can be used to detect if the device supports asynchronous API. Remaining API does not have that detection.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">callback</span></code>: Event handler. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: Data to pass to event handler function.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If not supported by the device. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API not enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_tx">
+<span class="target" id="group__uart__async_1gaf99f32ce2e2d9beb32a2f2e5a26320dc"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_tx</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_tx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send given number of bytes from buffer through UART. </p>
+<p>Function returns immediately and event handler, set using <a class="reference internal" href="#group__uart__async_1gad33e627ed8729409b14e92453e53459c"><span class="std std-ref">uart_callback_set</span></a>, is called after transfer is finished.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Pointer to transmit buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Length of transmit buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Timeout in microseconds. Valid only if flow control is enabled. SYS_FOREVER_US disables timeout.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: If There is already an ongoing transfer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno value in case of failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_tx_u16">
+<span class="target" id="group__uart__async_1gab0ea611cd072fa459a6f1780ce62c9e3"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_tx_u16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_tx_u16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send given number of datum from buffer through UART. </p>
+<p>Function returns immediately and event handler, set using <a class="reference internal" href="#group__uart__async_1gad33e627ed8729409b14e92453e53459c"><span class="std std-ref">uart_callback_set</span></a>, is called after transfer is finished.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Pointer to wide data transmit buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Length of wide data transmit buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Timeout in milliseconds. Valid only if flow control is enabled. SYS_FOREVER_MS disables timeout.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: If there is already an ongoing transfer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno value in case of failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_tx_abort">
+<span class="target" id="group__uart__async_1gaa8a26d3ea685fb98030ea03613be6280"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_tx_abort</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_tx_abort" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Abort current TX transmission. </p>
+<p><a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda4b5cdf863d8b6e5cd7b58f611808a6e4"><span class="std std-ref">uart_event_type::UART_TX_DONE</span></a> event will be generated with amount of data sent.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EFAULT</span></code>: There is no active transmission. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno value in case of failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_rx_enable">
+<span class="target" id="group__uart__async_1ga902e18c2a727ed2988e1b6caa6a444b8"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_rx_enable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_rx_enable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Start receiving data through UART. </p>
+<p>Function sets given buffer as first buffer for receiving and returns immediately. After that event handler, set using <a class="reference internal" href="#group__uart__async_1gad33e627ed8729409b14e92453e53459c"><span class="std std-ref">uart_callback_set</span></a>, is called with <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"><span class="std std-ref">uart_event_type::UART_RX_RDY</span></a> or <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda0d250f372702526f1bce6d4dfe166abe"><span class="std std-ref">uart_event_type::UART_RX_BUF_REQUEST</span></a> events.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Pointer to receive buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Buffer length. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Inactivity period after receiving at least a byte which triggers <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"><span class="std std-ref">uart_event_type::UART_RX_RDY</span></a> event. Given in microseconds. SYS_FOREVER_US disables timeout. See <a class="reference internal" href="#group__uart__async_1gaf0c9513cbafa36d86b4c83f2b6a03dcd"><span class="std std-ref">uart_event_type</span></a> for details.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: RX already in progress. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno value in case of failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_rx_enable_u16">
+<span class="target" id="group__uart__async_1ga12d91846133351a85fa471fa90f2a0fd"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_rx_enable_u16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_rx_enable_u16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Start receiving wide data through UART. </p>
+<p>Function sets given buffer as first buffer for receiving and returns immediately. After that event handler, set using <a class="reference internal" href="#group__uart__async_1gad33e627ed8729409b14e92453e53459c"><span class="std std-ref">uart_callback_set</span></a>, is called with <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"><span class="std std-ref">uart_event_type::UART_RX_RDY</span></a> or <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda0d250f372702526f1bce6d4dfe166abe"><span class="std std-ref">uart_event_type::UART_RX_BUF_REQUEST</span></a> events.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Pointer to wide data receive buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Buffer length. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Inactivity period after receiving at least a byte which triggers <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"><span class="std std-ref">uart_event_type::UART_RX_RDY</span></a> event. Given in milliseconds. SYS_FOREVER_MS disables timeout. See <a class="reference internal" href="#group__uart__async_1gaf0c9513cbafa36d86b4c83f2b6a03dcd"><span class="std std-ref">uart_event_type</span></a> for details.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: RX already in progress. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno value in case of failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_rx_buf_rsp">
+<span class="target" id="group__uart__async_1ga3970fe2818e214b0814ea8b73a816a6a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_rx_buf_rsp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_rx_buf_rsp" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Provide receive buffer in response to <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda0d250f372702526f1bce6d4dfe166abe"><span class="std std-ref">uart_event_type::UART_RX_BUF_REQUEST</span></a> event. </p>
+<p>Provide pointer to RX buffer, which will be used when current buffer is filled.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Providing buffer that is already in usage by driver leads to undefined behavior. Buffer can be reused when it has been released by driver.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Pointer to receive buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Buffer length.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: Next buffer already set. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EACCES</span></code>: Receiver is already disabled (function called too late?). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno value in case of failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_rx_buf_rsp_u16">
+<span class="target" id="group__uart__async_1ga778bcfc30be853c8d320f295b34c17c0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_rx_buf_rsp_u16</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_rx_buf_rsp_u16" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Provide wide data receive buffer in response to <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda0d250f372702526f1bce6d4dfe166abe"><span class="std std-ref">uart_event_type::UART_RX_BUF_REQUEST</span></a> event. </p>
+<p>Provide pointer to RX buffer, which will be used when current buffer is filled.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Providing buffer that is already in usage by driver leads to undefined behavior. Buffer can be reused when it has been released by driver.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Pointer to wide data receive buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Buffer length.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: Next buffer already set. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EACCES</span></code>: Receiver is already disabled (function called too late?). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno value in case of failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.uart_rx_disable">
+<span class="target" id="group__uart__async_1gafd4753bee51b230091a3c6ddb26ea734"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_rx_disable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_rx_disable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Disable RX. </p>
+<p><a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdab2d152bd84f659d4fc4060df29811b48"><span class="std std-ref">uart_event_type::UART_RX_BUF_RELEASED</span></a> event will be generated for every buffer scheduled, after that <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdaa8ff5629c002a61bc3bdf5baa2ebc203"><span class="std std-ref">uart_event_type::UART_RX_DISABLED</span></a> event will be generated. Additionally, if there is any pending received data, the <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"><span class="std std-ref">uart_event_type::UART_RX_RDY</span></a> event for that data will be generated before the <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdab2d152bd84f659d4fc4060df29811b48"><span class="std std-ref">uart_event_type::UART_RX_BUF_RELEASED</span></a> events.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: UART device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If API is not enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EFAULT</span></code>: There is no active reception. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno value in case of failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.uart_event_tx">
+<span class="target" id="structuart__event__tx"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_event_tx</span></span></span><a class="headerlink" href="#c.uart_event_tx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;uart.h&gt;</em><p>UART TX event data. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event_tx.buf">
+<span class="target" id="structuart__event__tx_1a314a676a4050b2438b6f41485656bdbd"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">buf</span></span></span><a class="headerlink" href="#c.uart_event_tx.buf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pointer to current buffer. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event_tx.len">
+<span class="target" id="structuart__event__tx_1a7d844b2c0833d24accf82d58ee3408ff"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">len</span></span></span><a class="headerlink" href="#c.uart_event_tx.len" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of bytes sent. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.uart_event_rx">
+<span class="target" id="structuart__event__rx"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_event_rx</span></span></span><a class="headerlink" href="#c.uart_event_rx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;uart.h&gt;</em><p>UART RX event data. </p>
+<p>The data represented by the event is stored in rx.buf[rx.offset] to rx.buf[rx.offset+rx.len]. That is, the length is relative to the offset. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event_rx.buf">
+<span class="target" id="structuart__event__rx_1a2d9dfa9d9b25ff976cf2e937c72eb245"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">buf</span></span></span><a class="headerlink" href="#c.uart_event_rx.buf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pointer to current buffer. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event_rx.offset">
+<span class="target" id="structuart__event__rx_1aa483e719298c30b9f5e6c57d3d161281"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">offset</span></span></span><a class="headerlink" href="#c.uart_event_rx.offset" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Currently received data offset in bytes. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event_rx.len">
+<span class="target" id="structuart__event__rx_1a96414b96e63503336f8cf0d2249cd3bd"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">len</span></span></span><a class="headerlink" href="#c.uart_event_rx.len" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of new bytes received. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.uart_event_rx_buf">
+<span class="target" id="structuart__event__rx__buf"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_event_rx_buf</span></span></span><a class="headerlink" href="#c.uart_event_rx_buf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;uart.h&gt;</em><p>UART RX buffer released event data. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.uart_event_rx_stop">
+<span class="target" id="structuart__event__rx__stop"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_event_rx_stop</span></span></span><a class="headerlink" href="#c.uart_event_rx_stop" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;uart.h&gt;</em><p>UART RX stopped data. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event_rx_stop.reason">
+<span class="target" id="structuart__event__rx__stop_1a96fbae85208d9b3ea0382e7e236a932d"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.uart_rx_stop_reason" title="uart_rx_stop_reason"><span class="n"><span class="pre">uart_rx_stop_reason</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reason</span></span></span><a class="headerlink" href="#c.uart_event_rx_stop.reason" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reason why receiving stopped. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event_rx_stop.data">
+<span class="target" id="structuart__event__rx__stop_1a1b361c8b7e17d1304a475235e734db48"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.uart_event_rx" title="uart_event_rx"><span class="n"><span class="pre">uart_event_rx</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><a class="headerlink" href="#c.uart_event_rx_stop.data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Last received data. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.uart_event">
+<span class="target" id="structuart__event"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_event</span></span></span><a class="headerlink" href="#c.uart_event" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;uart.h&gt;</em><p>Structure containing information about current event. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event.type">
+<span class="target" id="structuart__event_1a2fb82a30e414a74943067cd0784f4b44"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.uart_event_type" title="uart_event_type"><span class="n"><span class="pre">uart_event_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.uart_event.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Type of event. </p>
+</dd></dl>
+
+</div>
+<dl class="c union">
+<dt class="sig sig-object c" id="c.uart_event.uart_event_data">
+<span class="target" id="unionuart__event_1_1uart__event__data"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_event_data</span></span></span><a class="headerlink" href="#c.uart_event.uart_event_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;uart.h&gt;</em><p>Event data. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event.uart_event_data.tx">
+<span class="target" id="unionuart__event_1_1uart__event__data_1a79fb6b799d5574c6aa38a211e020035f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.uart_event_tx" title="uart_event_tx"><span class="n"><span class="pre">uart_event_tx</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx</span></span></span><a class="headerlink" href="#c.uart_event.uart_event_data.tx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda4b5cdf863d8b6e5cd7b58f611808a6e4"><span class="std std-ref">uart_event_type::UART_TX_DONE</span></a> and <a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda0abcf565ba1011815285bb3845f8d5a1"><span class="std std-ref">uart_event_type::UART_TX_ABORTED</span></a> events data. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event.uart_event_data.rx">
+<span class="target" id="unionuart__event_1_1uart__event__data_1afac00624290b8fe5cf7b59516567b972"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.uart_event_rx" title="uart_event_rx"><span class="n"><span class="pre">uart_event_rx</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rx</span></span></span><a class="headerlink" href="#c.uart_event.uart_event_data.rx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda7c70c3a56f64602f3d808b46e7b047f7"><span class="std std-ref">uart_event_type::UART_RX_RDY</span></a> event data. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event.uart_event_data.rx_buf">
+<span class="target" id="unionuart__event_1_1uart__event__data_1ac03cdaeccba5f693337fa19299101863"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.uart_event_rx_buf" title="uart_event_rx_buf"><span class="n"><span class="pre">uart_event_rx_buf</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rx_buf</span></span></span><a class="headerlink" href="#c.uart_event.uart_event_data.rx_buf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcdab2d152bd84f659d4fc4060df29811b48"><span class="std std-ref">uart_event_type::UART_RX_BUF_RELEASED</span></a> event data. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.uart_event.uart_event_data.rx_stop">
+<span class="target" id="unionuart__event_1_1uart__event__data_1aad7488a2a3d91cea0ea874a08d7b88f6"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.uart_event_rx_stop" title="uart_event_rx_stop"><span class="n"><span class="pre">uart_event_rx_stop</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rx_stop</span></span></span><a class="headerlink" href="#c.uart_event.uart_event_data.rx_stop" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#group__uart__async_1ggaf0c9513cbafa36d86b4c83f2b6a03dcda05b81ddf74d208aeabace6ac90ae52dd"><span class="std std-ref">uart_event_type::UART_RX_STOPPED</span></a> event data. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mdio.html" class="btn btn-neutral float-right" title="MDIO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tcpc.html" class="btn btn-neutral" title="TCPC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

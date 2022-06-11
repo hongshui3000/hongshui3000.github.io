@@ -1,0 +1,796 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Core Dump &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="GDB stub" href="gdbstub.html" />
+    <link rel="prev" title="Thread analyzer" href="thread-analyzer.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Debugging and Tracing</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="thread-analyzer.html">Thread analyzer</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Core Dump</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-format">File Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-new-target">Adding New Target</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-documentation">API documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gdbstub.html">GDB stub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tracing/index.html">Tracing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Debugging and Tracing</a> &raquo;</li>
+        
+      <li>Core Dump</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/debug_tools/coredump.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="core-dump">
+<span id="coredump"></span><h1>Core Dump<a class="headerlink" href="#core-dump" title="Permalink to this headline">¶</a></h1>
+<p>The core dump module enables dumping the CPU registers and memory content
+for offline debugging. This module is called when a fatal error is
+encountered and prints or stores data according to which backends
+are enabled.</p>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Configure this module using the following options.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DEBUG_COREDUMP</span></code>: enable the module.</p></li>
+</ul>
+<p>Here are the options to enable output backends for core dump:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DEBUG_COREDUMP_BACKEND_LOGGING</span></code>: use log module for core dump output.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DEBUG_COREDUMP_BACKEND_NULL</span></code>: fallback core dump backend if other
+backends cannot be enabled. All output is sent to null.</p></li>
+</ul>
+<p>Here are the choices regarding memory dump:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DEBUG_COREDUMP_MEMORY_DUMP_MIN</span></code>: only dumps the stack of the exception
+thread, its thread struct, and some other bare minimal data to support
+walking the stack in the debugger. Use this only if absolute minimum of data
+dump is desired.</p></li>
+</ul>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>When the core dump module is enabled, during a fatal error, CPU registers
+and memory content are printed or stored according to which backends
+are enabled. This core dump data can fed into a custom-made GDB server as
+a remote target for GDB (and other GDB compatible debuggers). CPU registers,
+memory content and stack can be examined in the debugger.</p>
+<p>This usually involves the following steps:</p>
+<ol class="arabic simple">
+<li><p>Get the core dump log from the device depending on enabled backends.
+For example, if the log module backend is used, get the log output
+from the log module backend.</p></li>
+<li><p>Convert the core dump log into a binary format that can be parsed by
+the GDB server. For example,
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/scripts/coredump/coredump_serial_log_parser.py">scripts/coredump/coredump_serial_log_parser.py</a> can be used
+to convert the serial console log into a binary file.</p></li>
+<li><p>Start the custom GDB server using the script
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/scripts/coredump/coredump_gdbserver.py">scripts/coredump/coredump_gdbserver.py</a> with the core dump
+binary log file, and the Zephyr ELF file as parameters.</p></li>
+<li><p>Start the debugger corresponding to the target architecture.</p></li>
+</ol>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>This example uses the log module backend tied to serial console.
+This was done on <a class="reference internal" href="../../boards/x86/qemu_x86/doc/index.html#qemu-x86"><span class="std std-ref">X86 Emulation (QEMU)</span></a> where a null pointer was dereferenced.</p>
+<p>This is the core dump log from the serial console, and is stored
+in <code class="file docutils literal notranslate"><span class="pre">coredump.log</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Booting from ROM..*** Booting Zephyr OS build zephyr-v2.3.0-1840-g7bba91944a63  ***
+Hello World! qemu_x86
+E: Page fault at address 0x0 (error code 0x2)
+E: Linear address not present in page tables
+E:   PDE: 0x0000000000115827 Writable, User, Execute Enabled
+E:   PTE: Non-present
+E: EAX: 0x00000000, EBX: 0x00000000, ECX: 0x00119d74, EDX: 0x000003f8
+E: ESI: 0x00000000, EDI: 0x00101aa7, EBP: 0x00119d10, ESP: 0x00119d00
+E: EFLAGS: 0x00000206 CS: 0x0008 CR3: 0x00119000
+E: call trace:
+E: EIP: 0x00100459
+E:      0x00100477 (0x0)
+E:      0x00100492 (0x0)
+E:      0x001004c8 (0x0)
+E:      0x00105465 (0x105465)
+E:      0x00101abe (0x0)
+E: &gt;&gt;&gt; ZEPHYR FATAL ERROR 0: CPU exception on CPU 0
+E: Current thread: 0x00119080 (unknown)
+E: #CD:BEGIN#
+E: #CD:5a4501000100050000000000
+E: #CD:4101003800
+E: #CD:0e0000000200000000000000749d1100f803000000000000009d1100109d1100
+E: #CD:00000000a71a100059041000060200000800000000901100
+E: #CD:4d010080901100e0901100
+E: #CD:0100000000000000000000000180000000000000000000000000000000000000
+E: #CD:00000000000000000000000000000000e364100000000000000000004c9c1100
+E: #CD:000000000000000000000000b49911000004000000000000fc03000000000000
+E: #CD:4d0100b4991100b49d1100
+E: #CD:f8030000020000000200000002000000f8030000fd03000a02000000dc9e1100
+E: #CD:149a1160fd03000002000000dc9e1100249a110087201000049f11000a000000
+E: #CD:349a11000a4f1000049f11000a9e1100449a11000a8b10000200000002000000
+E: #CD:449a1100388b1000049f11000a000000549a1100ad201000049f11000a000000
+E: #CD:749a11000a201000049f11000a000000649a11000a201000049f11000a000000
+E: #CD:749a1100e8201000049f11000a000000949a1100890b10000a0000000a000000
+E: #CD:a49a1100890b10000a0000000a000000f8030000189b11000200000002000000
+E: #CD:f49a1100289b11000a000000189b1100049b11009b0710000a000000289b1100
+E: #CD:f49a110087201000049f110045000000f49a1100509011000a00000020901100
+E: #CD:f49a110060901100049f1100ffffffff0000000000000000049f1100ffffffff
+E: #CD:0000000000000000630b1000189b1100349b1100af0b1000630b1000289b1100
+E: #CD:55891000789b11000000000020901100549b1100480000004a891000609b1100
+E: #CD:649b1100d00b10004a891000709b110000000000609b11000a00000000000000
+E: #CD:849b1100709b11004a89100000000000949b1100794a10000000000058901100
+E: #CD:20901100c34a10000a00001734020000d001000000000000d49b110038000000
+E: #CD:c49b110078481000b49911000004000000000000000000000c9c11000c9c1100
+E: #CD:149c110000000000d49b110038000000f49b1100da481000b499110000040000
+E: #CD:0e0000000200000000000000744d0100b4991100b49d1100009d1100109d1100
+E: #CD:149c110099471000b4991100000400000800000000901100ad861000409c1100
+E: #CD:349c1100e94710008090110000000000349c1100b64710008086100045000000
+E: #CD:849c11002d53100000000000d09c11008090110020861000f5ffffff8c9c1100
+E: #CD:000000000000000000000000a71a1000a49c1100020200008090110000000000
+E: #CD:a49c1100020200000800000000000000a49c11001937100000000000d09c1100
+E: #CD:0c9d0000bc9c0000b49d1100b4991100c49c1100ae37100000000000d09c1100
+E: #CD:0800000000000000c888100000000000109d11005d031000d09c1100009d1100
+E: #CD:109d11000000000000000000a71a1000f803000000000000749d110002000000
+E: #CD:5904100008000000060200000e0000000202000002020000000000002c9d1100
+E: #CD:7704100000000000d00b1000c9881000549d110000000000489d110092041000
+E: #CD:00000000689d1100549d11000000000000000000689d1100c804100000000000
+E: #CD:c0881000000000007c9d110000000000749d11007c9d11006554100065541000
+E: #CD:00000000000000009c9d1100be1a100000000000000000000000000038041000
+E: #CD:08000000020200000000000000000000f4531000000000000000000000000000
+E: #CD:END#
+E: Halting system
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p>Run the core dump serial log converter:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./scripts/coredump/coredump_serial_log_parser.py coredump.log coredump.bin</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start the custom GDB server:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./scripts/coredump/coredump_gdbserver.py build/zephyr/zephyr.elf coredump.bin</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start GDB:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&lt;path to SDK&gt;/x86_64-zephyr-elf/bin/x86_64-zephyr-elf-gdb build/zephyr/zephyr.elf</span>
+</pre></div>
+</div>
+</li>
+<li><p>Inside GDB, connect to the GDB server via port 1234:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">target remote localhost:1234</span>
+</pre></div>
+</div>
+</li>
+<li><p>Examine the CPU registers:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">info registers</span>
+</pre></div>
+</div>
+<p>Output from GDB:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">eax</span>            <span class="mh">0x0</span>                 <span class="mi">0</span>
+<span class="n">ecx</span>            <span class="mh">0x119d74</span>            <span class="mi">1154420</span>
+<span class="n">edx</span>            <span class="mh">0x3f8</span>               <span class="mi">1016</span>
+<span class="n">ebx</span>            <span class="mh">0x0</span>                 <span class="mi">0</span>
+<span class="n">esp</span>            <span class="mh">0x119d00</span>            <span class="mh">0x119d00</span> <span class="o">&lt;</span><span class="n">z_main_stack</span><span class="o">+</span><span class="mi">844</span><span class="o">&gt;</span>
+<span class="n">ebp</span>            <span class="mh">0x119d10</span>            <span class="mh">0x119d10</span> <span class="o">&lt;</span><span class="n">z_main_stack</span><span class="o">+</span><span class="mi">860</span><span class="o">&gt;</span>
+<span class="n">esi</span>            <span class="mh">0x0</span>                 <span class="mi">0</span>
+<span class="n">edi</span>            <span class="mh">0x101aa7</span>            <span class="mi">1055399</span>
+<span class="n">eip</span>            <span class="mh">0x100459</span>            <span class="mh">0x100459</span> <span class="o">&lt;</span><span class="n">func_3</span><span class="o">+</span><span class="mi">16</span><span class="o">&gt;</span>
+<span class="n">eflags</span>         <span class="mh">0x206</span>               <span class="p">[</span> <span class="n">PF</span> <span class="n">IF</span> <span class="p">]</span>
+<span class="n">cs</span>             <span class="mh">0x8</span>                 <span class="mi">8</span>
+<span class="n">ss</span>             <span class="o">&lt;</span><span class="n">unavailable</span><span class="o">&gt;</span>
+<span class="n">ds</span>             <span class="o">&lt;</span><span class="n">unavailable</span><span class="o">&gt;</span>
+<span class="n">es</span>             <span class="o">&lt;</span><span class="n">unavailable</span><span class="o">&gt;</span>
+<span class="n">fs</span>             <span class="o">&lt;</span><span class="n">unavailable</span><span class="o">&gt;</span>
+<span class="n">gs</span>             <span class="o">&lt;</span><span class="n">unavailable</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Examine the backtrace:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(gdb)</span> <span class="go">bt</span>
+</pre></div>
+</div>
+<p>Output from GDB:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#0  0x00100459 in func_3 (addr=0x0) at zephyr/rtos/zephyr/samples/hello_world/src/main.c:14</span>
+<span class="c1">#1  0x00100477 in func_2 (addr=0x0) at zephyr/rtos/zephyr/samples/hello_world/src/main.c:21</span>
+<span class="c1">#2  0x00100492 in func_1 (addr=0x0) at zephyr/rtos/zephyr/samples/hello_world/src/main.c:28</span>
+<span class="c1">#3  0x001004c8 in main () at zephyr/rtos/zephyr/samples/hello_world/src/main.c:42</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="file-format">
+<h2>File Format<a class="headerlink" href="#file-format" title="Permalink to this headline">¶</a></h2>
+<p>The core dump binary file consists of one file header, one
+architecture-specific block, and multiple memory blocks. All numbers in
+the headers below are little endian.</p>
+<div class="section" id="file-header">
+<h3>File Header<a class="headerlink" href="#file-header" title="Permalink to this headline">¶</a></h3>
+<p>The file header consists of the following fields:</p>
+<table class="colwidths-given docutils align-default" id="id1">
+<caption><span class="caption-number">Table 26 </span><span class="caption-text">Core dump binary file header</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 10%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Data Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ID</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">char[2]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Z</span></code>, <code class="docutils literal notranslate"><span class="pre">E</span></code> as identifier of file.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Header version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint16_t</span></code></p></td>
+<td><p>Identify the version of the header. This needs to be incremented
+whenever the header struct is modified. This allows parser to
+reject older header versions so it will not incorrectly parse
+the header.</p></td>
+</tr>
+<tr class="row-even"><td><p>Target code</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint16_t</span></code></p></td>
+<td><p>Indicate which target (e.g. architecture or SoC) so the parser
+can instantiate the correct register block parser.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pointer size</p></td>
+<td><p>‘uint8_t’</p></td>
+<td><p>Size of <code class="docutils literal notranslate"><span class="pre">uintptr_t</span></code> in power of 2. (e.g. 5 for 32-bit,
+6 for 64-bit). This is needed to accommodate 32-bit and 64-bit
+target in parsing the memory block addresses.</p></td>
+</tr>
+<tr class="row-even"><td><p>Flags</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint8_t</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Fatal error reason</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span></code></p></td>
+<td><p>Reason for the fatal error, as the same in
+<code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">k_fatal_error_reason</span></code> defined in
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/fatal.h">include/fatal.h</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="architecture-specific-block">
+<h3>Architecture-specific Block<a class="headerlink" href="#architecture-specific-block" title="Permalink to this headline">¶</a></h3>
+<p>The architecture-specific block contains the byte stream of data specific
+to the target architecture (e.g. CPU registers)</p>
+<table class="colwidths-given docutils align-default" id="id2">
+<caption><span class="caption-number">Table 27 </span><span class="caption-text">Architecture-specific Block</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 10%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Data Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ID</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">char</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">A</span></code> to indiciate this is a architecture-specific block.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Header version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint16_t</span></code></p></td>
+<td><p>Identify the version of this block. To be interpreted by the target
+architecture specific block parser.</p></td>
+</tr>
+<tr class="row-even"><td><p>Number of bytes</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint16_t</span></code></p></td>
+<td><p>Number of bytes following the header which contains the byte stream
+for target data. The format of the byte stream is specific to
+the target and is only being parsed by the target parser.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Register byte stream</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint8_t[]</span></code></p></td>
+<td><p>Contains target architecture specific data.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="memory-block">
+<h3>Memory Block<a class="headerlink" href="#memory-block" title="Permalink to this headline">¶</a></h3>
+<p>The memory block contains the start and end addresses and the data within
+the memory region.</p>
+<table class="colwidths-given docutils align-default" id="id3">
+<caption><span class="caption-number">Table 28 </span><span class="caption-text">Memory Block</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 10%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Data Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ID</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">char</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">M</span></code> to indiciate this is a memory block.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Header version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint16_t</span></code></p></td>
+<td><p>Identify the version of the header. This needs to be incremented
+whenever the header struct is modified. This allows parser to
+reject older header versions so it will not incorrectly parse
+the header.</p></td>
+</tr>
+<tr class="row-even"><td><p>Start address</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uintptr_t</span></code></p></td>
+<td><p>The start address of the memory region.</p></td>
+</tr>
+<tr class="row-odd"><td><p>End address</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uintptr_t</span></code></p></td>
+<td><p>The end address of the memory region.</p></td>
+</tr>
+<tr class="row-even"><td><p>Memory byte stream</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint8_t[]</span></code></p></td>
+<td><p>Contains the memory content between the start and end addresses.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="adding-new-target">
+<h2>Adding New Target<a class="headerlink" href="#adding-new-target" title="Permalink to this headline">¶</a></h2>
+<p>The architecture-specific block is target specific and requires new
+dumping routine and parser for new targets. To add a new target,
+the following needs to be done:</p>
+<ol class="arabic simple">
+<li><p>Add a new target code to the <code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">coredump_tgt_code</span></code> in
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/debug/coredump.h">include/debug/coredump.h</a>.</p></li>
+<li><p>Implement <a class="reference internal" href="#c.arch_coredump_tgt_code_get" title="arch_coredump_tgt_code_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">arch_coredump_tgt_code_get()</span></code></a> simply to return
+the newly introducted target code.</p></li>
+<li><p>Implement <a class="reference internal" href="#c.arch_coredump_info_dump" title="arch_coredump_info_dump"><code class="xref c c-func docutils literal notranslate"><span class="pre">arch_coredump_info_dump()</span></code></a> to construct
+a target architecture block and call <a class="reference internal" href="#c.coredump_buffer_output" title="coredump_buffer_output"><code class="xref c c-func docutils literal notranslate"><span class="pre">coredump_buffer_output()</span></code></a>
+to output the block to core dump backend.</p></li>
+<li><p>Add a parser to the core dump GDB stub scripts under
+<code class="docutils literal notranslate"><span class="pre">scripts/coredump/gdbstubs/</span></code></p>
+<ol class="arabic simple">
+<li><p>Extends the <code class="docutils literal notranslate"><span class="pre">gdbstubs.gdbstub.GdbStub</span></code> class.</p></li>
+<li><p>During <code class="docutils literal notranslate"><span class="pre">__init__</span></code>, store the GDB signal corresponding to
+the exception reason in <code class="docutils literal notranslate"><span class="pre">self.gdb_signal</span></code>.</p></li>
+<li><p>Parse the architecture-specific block from
+<code class="docutils literal notranslate"><span class="pre">self.logfile.get_arch_data()</span></code>. This needs to match the format
+as implemented in step 3 (inside <a class="reference internal" href="#c.arch_coredump_info_dump" title="arch_coredump_info_dump"><code class="xref c c-func docutils literal notranslate"><span class="pre">arch_coredump_info_dump()</span></code></a>).</p></li>
+<li><p>Implement the abstract method <code class="docutils literal notranslate"><span class="pre">handle_register_group_read_packet</span></code>
+where it returns the register group as GDB expected. Refer to
+GDB’s code and documentation on what it is expecting for
+the new target.</p></li>
+<li><p>Optionally implement <code class="docutils literal notranslate"><span class="pre">handle_register_single_read_packet</span></code>
+for registers not covered in the <code class="docutils literal notranslate"><span class="pre">g</span></code> packet.</p></li>
+</ol>
+</li>
+<li><p>Extend <code class="docutils literal notranslate"><span class="pre">get_gdbstub()</span></code> in
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/scripts/coredump/gdbstubs/__init__.py">scripts/coredump/gdbstubs/__init__.py</a> to return
+the newly implemented GDB stub.</p></li>
+</ol>
+</div>
+<div class="section" id="api-documentation">
+<h2>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__coredump__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">coredump_apis</span></span></dt>
+<dd><p>Coredump APIs. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.coredump">
+<span class="target" id="group__coredump__apis_1gac8e7b27f4bbef5120b745677d5c64200"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">coredump</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">reason</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">z_arch_esf_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">esf</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../reference/kernel/threads/index.html#c.k_thread" title="k_thread"><span class="n"><span class="pre">k_thread</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">thread</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.coredump" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Perform coredump. </p>
+<p>Normally, this is called inside z_fatal_error() to generate coredump when a fatal error is encountered. This can also be called on demand whenever a coredump is desired.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reason</span></code>: Reason for the fatal error </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">esf</span></code>: Exception context </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: Thread information to dump </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.coredump_memory_dump">
+<span class="target" id="group__coredump__apis_1ga835467b2517f871b0092f0dd7757f14b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">coredump_memory_dump</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uintptr_t</span></span><span class="w"> </span><span class="n"><span class="pre">start_addr</span></span>, <span class="n"><span class="pre">uintptr_t</span></span><span class="w"> </span><span class="n"><span class="pre">end_addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.coredump_memory_dump" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Dump memory region. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">start_addr</span></code>: Start address of memory region to be dumped </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">end_addr</span></code>: End address of memory region to be dumped </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.coredump_buffer_output">
+<span class="target" id="group__coredump__apis_1ga17edf26f97e7f1d39d6a2bb4796f2f84"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">coredump_buffer_output</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">buflen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.coredump_buffer_output" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Output the buffer via coredump. </p>
+<p>This outputs the buffer of byte array to the coredump backend. For example, this can be called to output the coredump section containing registers, or a section for memory dump.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Buffer to be send to coredump output </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buflen</span></code>: Buffer length </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.coredump_query">
+<span class="target" id="group__coredump__apis_1gad521f35e7b487cbaed553f8f8e4a9e27"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">coredump_query</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">coredump_query_id</span></span><span class="w"> </span><span class="n"><span class="pre">query_id</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.coredump_query" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Perform query on coredump subsystem. </p>
+<p>Query the coredump subsystem for information, for example, if there is an error.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Depends on the query </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">query_id</span></code>: Query ID </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[inout]</span> <span class="pre">arg</span></code>: Pointer to argument for exchanging information </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.coredump_cmd">
+<span class="target" id="group__coredump__apis_1ga9ebe60f88decfba5b798736984b4c496"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">coredump_cmd</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">coredump_cmd_id</span></span><span class="w"> </span><span class="n"><span class="pre">query_id</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.coredump_cmd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Perform command on coredump subsystem. </p>
+<p>Perform certain on coredump subsystem, for example, output the stored coredump via logging.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Depends on the command </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">cmd_id</span></code>: Command ID </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[inout]</span> <span class="pre">arg</span></code>: Pointer to argument for exchanging information </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__arch-coredump"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">arch-coredump</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.arch_coredump_info_dump">
+<span class="target" id="group__arch-coredump_1ga081b713e38ca635184f5f07bd7fd7a16"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arch_coredump_info_dump</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">z_arch_esf_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">esf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.arch_coredump_info_dump" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Architecture-specific handling during coredump. </p>
+<p>This dumps architecture-specific information during coredump.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">esf</span></code>: Exception Stack Frame (arch-specific) </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.arch_coredump_tgt_code_get">
+<span class="target" id="group__arch-coredump_1ga1d9b0c011a03434272ff9bec120f273d"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arch_coredump_tgt_code_get</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.arch_coredump_tgt_code_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the target code specified by the architecture. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gdbstub.html" class="btn btn-neutral float-right" title="GDB stub" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="thread-analyzer.html" class="btn btn-neutral" title="Thread analyzer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

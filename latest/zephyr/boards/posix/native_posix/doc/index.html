@@ -1,0 +1,888 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Native POSIX execution (native_posix) &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../../copyright.html" />
+    <link rel="next" title="NRF52 simulated board (BabbleSim)" href="../../nrf52_bsim/doc/index.html" />
+    <link rel="prev" title="POSIX/NATIVE Boards" href="../../index.html" />
+  <link rel="shortcut icon" href="../../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Supported Boards</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../x86/index.html">x86 Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arm/index.html">ARM Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arm64/index.html">ARM64 Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arc/index.html">ARC Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../mips/index.html">MIPS Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nios2/index.html">NIOS II Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../xtensa/index.html">XTENSA Boards</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">POSIX/NATIVE Boards</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Native POSIX execution (native_posix)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#important-limitations">Important limitations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-use-it">How to use it</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#and-64bit-versions">32 and 64bit versions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rationale-for-this-port">Rationale for this port</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#comparison-with-other-options">Comparison with other options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#peripherals">Peripherals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uart">UART</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#subsystems-backends">Subsystems backends</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#host-based-flash-access">Host based flash access</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../nrf52_bsim/doc/index.html">NRF52 simulated board (BabbleSim)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../riscv/index.html">RISCV Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sparc/index.html">SPARC Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../shields/index.html">Shields</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Supported Boards</a> &raquo;</li>
+        
+          <li><a href="../../index.html">POSIX/NATIVE Boards</a> &raquo;</li>
+        
+      <li>Native POSIX execution (native_posix)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/boards/posix/native_posix/doc/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="native-posix-execution-native-posix">
+<span id="native-posix"></span><h1>Native POSIX execution (native_posix)<a class="headerlink" href="#native-posix-execution-native-posix" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id3">Overview</a></p></li>
+<li><p><a class="reference internal" href="#important-limitations" id="id4">Important limitations</a></p></li>
+<li><p><a class="reference internal" href="#how-to-use-it" id="id5">How to use it</a></p></li>
+<li><p><a class="reference internal" href="#and-64bit-versions" id="id6">32 and 64bit versions</a></p></li>
+<li><p><a class="reference internal" href="#rationale-for-this-port" id="id7">Rationale for this port</a></p></li>
+<li><p><a class="reference internal" href="#comparison-with-other-options" id="id8">Comparison with other options</a></p></li>
+<li><p><a class="reference internal" href="#architecture" id="id9">Architecture</a></p></li>
+<li><p><a class="reference internal" href="#peripherals" id="id10">Peripherals</a></p></li>
+<li><p><a class="reference internal" href="#uart" id="id11">UART</a></p></li>
+<li><p><a class="reference internal" href="#subsystems-backends" id="id12">Subsystems backends</a></p></li>
+<li><p><a class="reference internal" href="#host-based-flash-access" id="id13">Host based flash access</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id3">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Using this board, a Zephyr application can be compiled together with
+the Zephyr kernel, creating a normal console executable that runs as
+a native application on the host OS, without emulation. Instead,
+you use native host tools for compiling, debugging, and analyzing your
+Zephyr application, eliminating the need for architecture-specific
+target hardware in the early phases of development.</p>
+<p>This board provides a few peripherals such as an Ethernet driver and UART.
+See <a class="reference internal" href="#peripherals">Peripherals</a> for more information.</p>
+<div class="section" id="host-system-dependencies">
+<span id="native-posix-deps"></span><h3>Host system dependencies<a class="headerlink" href="#host-system-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>This port is designed to run in POSIX compatible operating systems,
+but it has only been tested on Linux.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You must have the 32-bit C library installed in your system
+(in Ubuntu 16.04 install the gcc-multilib package)</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The 32 bit version of this port does not directly work in Windows Subsystem
+for Linux (WSL) because WSL does not support native 32-bit binaries.
+You may want to consider WSL2, or you can also just use the native_posix_64
+target: Check <a class="reference internal" href="#and-64bit-versions">32 and 64bit versions</a>.
+Otherwise <a class="reference external" href="https://github.com/microsoft/WSL/issues/2468#issuecomment-374904520">with some tinkering</a> it
+should be possible to make it work.</p>
+</div>
+</div>
+</div>
+<div class="section" id="important-limitations">
+<span id="native-important-limitations"></span><h2><a class="toc-backref" href="#id4">Important limitations</a><a class="headerlink" href="#important-limitations" title="Permalink to this headline">¶</a></h2>
+<p>The underlying assumptions behind this port set some limitations on what
+can and cannot be done.
+These limitations are due to the code executing natively in
+the host CPU without any instrumentation or means to interrupt it unless the
+simulated CPU is sleeping.</p>
+<p>You can imagine the code executes in a simulated CPU
+which runs at an infinitely fast clock: No time passes while the CPU is
+running.
+Therefore interrupts, including timer interrupts, will not arrive
+while code executes, except immediately after the SW enables or unmasks
+them if they were pending.</p>
+<p>This behavior is intentional, as it provides a deterministic environment to
+develop and debug.
+For more information please see the
+<a class="reference internal" href="#rationale-for-this-port">Rationale for this port</a> and <a class="reference internal" href="#architecture">Architecture</a> sections</p>
+<p>Therefore these limitations apply:</p>
+<ul>
+<li><p>There can <strong>not</strong> be busy wait loops in the application code that wait for
+something to happen without letting the CPU sleep.
+If busy wait loops do exist, they will behave as infinite loops and
+will stall the execution. For example, the following busy wait loop code,
+which could be interrupted on actual hardware, will stall the execution of
+all threads, kernel, and HW models:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">){}</span>
+</pre></div>
+</div>
+<p>Similarly the following code where we expect <code class="docutils literal notranslate"><span class="pre">condition</span></code> to be
+updated by an interrupt handler or another thread, will also stall
+the application when compiled for this port.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span> <span class="n">condition</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">condition</span><span class="p">){}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Code that depends on its own execution speed will normally not
+work as expected. For example, code such as shown below, will likely not
+work as expected:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">peripheral_x</span><span class="o">-&gt;</span><span class="n">run</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+<span class="cm">/* Wait for a number of CPU cycles */</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">NOP</span><span class="p">;</span>
+
+<span class="cm">/* We expect the peripheral done and ready to do something else */</span>
+</pre></div>
+</div>
+</li>
+<li><p>This port is not meant to, and could not possibly help debug races between
+HW and SW, or similar timing related issues.</p></li>
+<li><p>You may not use hard coded memory addresses because there is no I/O or
+MMU emulation.</p></li>
+</ul>
+<div class="section" id="working-around-these-limitations">
+<h3>Working around these limitations<a class="headerlink" href="#working-around-these-limitations" title="Permalink to this headline">¶</a></h3>
+<p>If a busy wait loop exists, it will become evident as the application will be
+stalled in it. To find the loop, you can run the binary in a debugger and
+pause it after the execution is stuck; it will be paused in
+some part of that loop.</p>
+<p>The best solution is to remove that busy wait loop, and instead use
+an appropriate kernel primitive to synchronize your threads.
+Note that busy wait loops are in general a bad coding practice as they
+keep the CPU executing and consuming power.</p>
+<p>If removing the busy loop is really not an option, you may add a conditionally
+compiled call to <a class="reference internal" href="../../../../reference/kernel/other/cpu_idle.html#c.k_cpu_idle" title="k_cpu_idle"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_cpu_idle()</span></code></a> if you are waiting for an
+interrupt, or a call to <a class="reference internal" href="../../../../reference/kernel/threads/index.html#c.k_busy_wait" title="k_busy_wait"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_busy_wait()</span></code></a> with some small delay in
+microseconds.
+In the previous example, modifying the code as follows would work:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">volatile</span> <span class="n">condition</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="p">{</span>
+     <span class="cp">#if defined(CONFIG_ARCH_POSIX)</span>
+             <span class="n">k_cpu_idle</span><span class="p">();</span>
+     <span class="cp">#endif</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="how-to-use-it">
+<h2><a class="toc-backref" href="#id5">How to use it</a><a class="headerlink" href="#how-to-use-it" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="compiling">
+<h3>Compiling<a class="headerlink" href="#compiling" title="Permalink to this headline">¶</a></h3>
+<p>Specify the native_posix board target to build a native POSIX application:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b native_posix samples/hello_world</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running">
+<h3>Running<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h3>
+<p>The result of the compilation is an executable (zephyr.exe) placed in the
+zephyr/ subdirectory of the build folder.
+Run the zephyr.exe executable as you would any other Linux console application.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./build/zephyr/zephyr.exe
+<span class="gp"># </span>Press Ctrl+C to <span class="nb">exit</span>
+</pre></div>
+</div>
+<p>This executable accepts several command line options depending on the
+compilation configuration.
+You can run it with the <code class="docutils literal notranslate"><span class="pre">--help</span></code> command line switch to get a list of
+available options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./build/zephyr/zephyr.exe --help
+</pre></div>
+</div>
+<p>Note that the Zephyr kernel does not actually exit once the application is
+finished. It simply goes into the idle loop forever.
+Therefore you must stop the application manually (Ctrl+C in Linux).</p>
+<p>Application tests using the <code class="docutils literal notranslate"><span class="pre">ztest</span></code> framework will exit after all
+tests have completed.</p>
+<p>If you want your application to gracefully finish when it reaches some point,
+you may add a conditionally compiled (<a class="reference internal" href="../../../../kconfig.html#CONFIG_ARCH_POSIX" title="CONFIG_ARCH_POSIX"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_ARCH_POSIX</span></code></a>) call to
+<code class="docutils literal notranslate"><span class="pre">posix_exit(int</span> <span class="pre">status)</span></code> at that point.</p>
+</div>
+<div class="section" id="debugging">
+<h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
+<p>Since the Zephyr executable is a native application, it can be debugged and
+instrumented as any other native program. The program is compiled with debug
+information, so it can be run directly in, for example, <code class="docutils literal notranslate"><span class="pre">gdb</span></code> or instrumented
+with <code class="docutils literal notranslate"><span class="pre">valgrind</span></code>.</p>
+<p>Because the execution of your Zephyr application is normally deterministic
+(there are no asynchronous or random components), you can execute the
+code multiple times and get the exact same result. Instrumenting the
+code does not affect its execution.</p>
+<p>To ease debugging you may want to compile your code without optimizations
+(e.g., -O0) by setting <a class="reference internal" href="../../../../kconfig.html#CONFIG_NO_OPTIMIZATIONS" title="CONFIG_NO_OPTIMIZATIONS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NO_OPTIMIZATIONS</span></code></a>.</p>
+</div>
+<div class="section" id="address-sanitizer-asan">
+<h3>Address Sanitizer (ASan)<a class="headerlink" href="#address-sanitizer-asan" title="Permalink to this headline">¶</a></h3>
+<p>You can also build Zephyr with <a class="reference external" href="https://github.com/google/sanitizers/wiki/AddressSanitizer">Address Sanitizer</a>. To do this, set
+<a class="reference internal" href="../../../../kconfig.html#CONFIG_ASAN" title="CONFIG_ASAN"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_ASAN</span></code></a>, for example, in the application project file, or in the
+<code class="docutils literal notranslate"><span class="pre">west</span> <span class="pre">build</span></code> or <code class="docutils literal notranslate"><span class="pre">cmake</span></code> command line invocation.</p>
+<p>Note that you will need the ASan library installed in your system.
+In Debian/Ubuntu this is <code class="docutils literal notranslate"><span class="pre">libasan1</span></code>.</p>
+</div>
+<div class="section" id="coverage-reports">
+<h3>Coverage reports<a class="headerlink" href="#coverage-reports" title="Permalink to this headline">¶</a></h3>
+<p>See
+<a class="reference internal" href="../../../../guides/test/coverage.html#coverage-posix"><span class="std std-ref">coverage reports using the POSIX architecture</span></a>.</p>
+</div>
+</div>
+<div class="section" id="and-64bit-versions">
+<h2><a class="toc-backref" href="#id6">32 and 64bit versions</a><a class="headerlink" href="#and-64bit-versions" title="Permalink to this headline">¶</a></h2>
+<p>native_posix comes with two targets: A 32 bit and 64 bit version.
+The 32 bit version, <code class="docutils literal notranslate"><span class="pre">native_posix</span></code>, is the default target, which will compile
+your code for the ILP32 ABI (i386 in a x86 or x86_64 system) where pointers
+and longs are 32 bits.
+This mimics the ABI of most embedded systems Zephyr targets,
+and is therefore normally best to test and debug your code, as some bugs are
+dependent on the size of pointers and longs.
+This target requires either a 64 bit system with multilib support installed or
+one with a 32bit userspace.</p>
+<p>The 64 bit version, <code class="docutils literal notranslate"><span class="pre">native_posix_64</span></code>, compiles your code targeting the
+LP64 ABI (x86-64 in x86 systems), where pointers and longs are 64 bits.
+You can use this target if you cannot compile or run 32 bit binaries.</p>
+<p>If you are using another 32 bit POSIX arch target you may also override its ABI
+target and pointer bit width by setting <a class="reference internal" href="../../../../kconfig.html#CONFIG_64BIT" title="CONFIG_64BIT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_64BIT</span></code></a>.</p>
+</div>
+<div class="section" id="rationale-for-this-port">
+<h2><a class="toc-backref" href="#id7">Rationale for this port</a><a class="headerlink" href="#rationale-for-this-port" title="Permalink to this headline">¶</a></h2>
+<p>The main intents of this port are:</p>
+<ul class="simple">
+<li><p>Allow functional debugging, instrumentation and analysis of the code with
+native tooling.</p></li>
+<li><p>Allow functional regression testing, and simulations in which we have the
+full functionality of the code.</p></li>
+<li><p>Run tests fast: several minutes of simulated time per wall time second.</p></li>
+<li><p>Possibility to connect to external tools which may be able to run much
+faster or much slower than real time.</p></li>
+<li><p>Deterministic, repeatable runs:
+There must not be any randomness or indeterminism (unless host peripherals
+are used).
+The result must <strong>not</strong> be affected by:</p>
+<ul>
+<li><p>Debugging or instrumenting the code.</p></li>
+<li><p>Pausing in a breakpoint and continuing later.</p></li>
+<li><p>The host computer performance or its load.</p></li>
+</ul>
+</li>
+</ul>
+<p>The aim of this port is not to debug HW/SW races, missed HW programming
+deadlines, or issues in which an interrupt comes when it was not expected.
+Normally those would be debugged with a cycle accurate Instruction Set Simulator
+(ISS) or with a development board.</p>
+</div>
+<div class="section" id="comparison-with-other-options">
+<h2><a class="toc-backref" href="#id8">Comparison with other options</a><a class="headerlink" href="#comparison-with-other-options" title="Permalink to this headline">¶</a></h2>
+<p>This port does not try to replace cycle accurate instruction set simulators
+(ISS), development boards, or QEMU, but to complement them. This port’s main aim
+is to meet the targets described in the previous <a class="reference internal" href="#rationale-for-this-port">Rationale for this port</a>
+section.</p>
+<div class="align-center figure" id="id1">
+<img alt="Comparison of different debugging targets" src="../../../../_images/Port_vs_QEMU_vs.svg" /><p class="caption"><span class="caption-number">Fig. 192 </span><span class="caption-text">Comparison of different debugging options. Note that realism has many
+dimensions: Having the real memory map or emulating the exact time an
+instruction executes is just some of it; Emulating peripherals accurately
+is another side.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>This native port compiles your code directly to x86, with no instrumentation or
+monitoring code. Your code executes directly in the host CPU. That is, your code
+executes just as fast as it possibly can.</p>
+<p>Simulated time is normally decoupled from real host time.
+The problem of how to emulate the instruction execution speed is solved
+by assuming that code executes in zero simulated time.</p>
+<p>There is no I/O or MMU emulation. If you try to access memory through hardcoded
+addresses your binary will simply segfault.
+The drivers and HW models for this architecture will hide this from the
+application developers when it relates to those peripherals.
+In general this port is not meant to help developing low level drivers for
+target HW. But for developing application code.</p>
+<p>Your code can be debugged, instrumented, or analyzed with all normal native
+development tools just like any other Linux application.</p>
+<p>Execution is fully reproducible, you can pause it without side-effects.</p>
+<div class="section" id="how-does-this-port-compare-to-qemu">
+<h3>How does this port compare to QEMU:<a class="headerlink" href="#how-does-this-port-compare-to-qemu" title="Permalink to this headline">¶</a></h3>
+<p>With QEMU you compile your image targeting the board which is closer to
+your desired board. For example an ARM based one. QEMU emulates the real memory
+layout of the board, loads the compiled binary and through instructions
+translation executes that ARM targeted binary on the host CPU.
+Depending on configuration, QEMU also provides models of some peripherals
+and, in some cases, can expose host HW as emulated target peripherals.</p>
+<p>QEMU cannot provide any emulation of execution speed. It simply
+executes code as fast as it can, and lets the host CPU speed determine the
+emulated CPU speed. This produces highly indeterministic behavior,
+as the execution speed depends on the host system performance and its load.</p>
+<p>As instructions are translated to the host architecture, and the target CPU and
+MMU are emulated, there is a performance penalty.</p>
+<p>You can connect gdb to QEMU, but have few other instrumentation abilities.</p>
+<p>Execution is not reproducible. Some bugs may be triggered only in some runs
+depending on the computer and its load.</p>
+</div>
+<div class="section" id="how-does-this-port-compare-to-an-iss">
+<h3>How does this port compare to an ISS:<a class="headerlink" href="#how-does-this-port-compare-to-an-iss" title="Permalink to this headline">¶</a></h3>
+<p>With a cycle accurate instruction set simulator you compile targeting either
+your real CPU/platform or a close enough relative. The memory layout is modeled
+and some or all peripherals too.</p>
+<p>The simulator loads your binary, slowly interprets each instruction, and
+accounts for the time each instruction takes.
+Time is simulated and is fully decoupled from real time.
+Simulations are on the order of 10 to 100 times slower than real time.</p>
+<p>Some instruction set simulators work with gdb, and may
+provide some extra tools for analyzing your code.</p>
+<p>Execution is fully reproducible. You can normally pause your execution without
+side-effects.</p>
+</div>
+</div>
+<div class="section" id="architecture">
+<h2><a class="toc-backref" href="#id9">Architecture</a><a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<div class="align-center figure" id="id2">
+<img alt="Zephyr layering in native build" src="../../../../_images/native_layers.svg" /><p class="caption"><span class="caption-number">Fig. 193 </span><span class="caption-text">Zephyr layering when built against an embedded target (left), and
+targeting the native_posix board (right)</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>This board is based on the POSIX architecture port of Zephyr.
+In this architecture each Zephyr thread is mapped to one POSIX pthread,
+but only one of these pthreads executes at a time.
+This architecture provides the same interface to the Kernel as other
+architectures and is therefore transparent for the application.</p>
+<p>This board does not try to emulate any particular embedded CPU or SOC.
+The code is compiled natively for the host x86 system, as a 32-bit
+binary assuming pointer and integer types are 32-bits wide.</p>
+<p>To ensure determinism when the Zephyr code is running,
+and to ease application debugging,
+the board uses a different time than real time: simulated time.
+This simulated time is, in principle, not linked to the host time.</p>
+<p>The Zephyr application sees the code executing as if the CPU were running at
+an infinitely fast clock, and fully decoupled from the underlying host CPU
+speed.
+No simulated time passes while the application or kernel code execute.</p>
+<p>The CPU boot is emulated by creating the Zephyr initialization thread and
+letting it run. This in turn may spawn more Zephyr threads.
+Eventually the SW will run to completion, that is, it will set the CPU
+back to sleep.</p>
+<p>At this point, control is transferred back to the HW models and the simulation
+time can be advanced.</p>
+<p>When the HW models raise an interrupt, the CPU wakes back up, the interrupt
+is handled, the SW runs until completion again, and control is
+transferred back to the HW models, all in zero simulated time.</p>
+<p>If the SW unmasks a pending interrupt while running, or triggers a SW
+interrupt, the interrupt controller may raise the interrupt immediately
+depending on interrupt priorities, masking, and locking state.</p>
+<div class="section" id="about-time-in-native-posix">
+<h3>About time in native_posix<a class="headerlink" href="#about-time-in-native-posix" title="Permalink to this headline">¶</a></h3>
+<p>Normally simulated time runs fully decoupled from the real host time
+and as fast as the host compute power would allow.
+This is desirable when running in a debugger or testing in batch, but not if
+interacting with external interfaces based on the real host time.</p>
+<p>The Zephyr kernel is only aware of the simulated time as provided by the
+HW models. Therefore any normal Zephyr thread will also know only about
+simulated time.</p>
+<p>The only link between the simulated time and the real/host time, if any,
+is created by the clock and timer model.</p>
+<p>This model can be configured to slow down the execution of native_posix to
+real time.
+You can do this with the <code class="docutils literal notranslate"><span class="pre">--rt</span></code> and <code class="docutils literal notranslate"><span class="pre">--no-rt</span></code> options from the command line.
+The default behavior is set with
+<a class="reference internal" href="../../../../kconfig.html#CONFIG_NATIVE_POSIX_SLOWDOWN_TO_REAL_TIME" title="CONFIG_NATIVE_POSIX_SLOWDOWN_TO_REAL_TIME"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NATIVE_POSIX_SLOWDOWN_TO_REAL_TIME</span></code></a>.
+Note that all this model does is wait before raising the
+next system tick interrupt until the corresponding real/host time.
+If, for some reason, native_posix runs slower than real time, all this
+model can do is “catch up” as soon as possible by not delaying the
+following ticks.
+So if the host load is too high, or you are running in a debugger, you will
+see simulated time lagging behind the real host time.
+This solution ensures that normal runs are still deterministic while
+providing an illusion of real timeness to the observer.</p>
+<p>When locked to real time, simulated time can also be set to run faster or
+slower than real time.
+This can be controlled with the <code class="docutils literal notranslate"><span class="pre">--rt-ratio=&lt;ratio&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">-rt-drift=&lt;drift&gt;</span></code>
+command line options. Note that both of these options control the same
+underlying mechanism, and that <code class="docutils literal notranslate"><span class="pre">drift</span></code> is by definition equal to
+<code class="docutils literal notranslate"><span class="pre">ratio</span> <span class="pre">-</span> <span class="pre">1</span></code>.
+It is also possible to adjust this clock speed on the fly with
+<code class="xref c c-func docutils literal notranslate"><span class="pre">native_rtc_adjust_clock()</span></code>.</p>
+<p>In this way if, for example, <code class="docutils literal notranslate"><span class="pre">--rt-ratio=2</span></code> is given, the simulated time
+will advance at twice the real time speed.
+Similarly if <code class="docutils literal notranslate"><span class="pre">--rt-drift=-100e-6</span></code> is given, the simulated time will progress
+100ppm slower than real time.
+Note that these 2 options have no meaning when running in non real-time
+mode.</p>
+<div class="section" id="how-simulated-time-and-real-time-relate-to-each-other">
+<h4>How simulated time and real time relate to each other<a class="headerlink" href="#how-simulated-time-and-real-time-relate-to-each-other" title="Permalink to this headline">¶</a></h4>
+<p>Simulated time (<code class="docutils literal notranslate"><span class="pre">st</span></code>) can be calculated from real time (<code class="docutils literal notranslate"><span class="pre">rt</span></code>) as</p>
+<p><code class="docutils literal notranslate"><span class="pre">st</span> <span class="pre">=</span> <span class="pre">(rt</span> <span class="pre">-</span> <span class="pre">last_rt)</span> <span class="pre">*</span> <span class="pre">ratio</span> <span class="pre">+</span> <span class="pre">last_st</span></code></p>
+<p>And vice-versa:</p>
+<p><code class="docutils literal notranslate"><span class="pre">rt</span> <span class="pre">=</span> <span class="pre">(st</span> <span class="pre">-</span> <span class="pre">last_st)</span> <span class="pre">/</span> <span class="pre">ratio</span> <span class="pre">+</span> <span class="pre">last_rt</span></code></p>
+<p>Where <code class="docutils literal notranslate"><span class="pre">last_rt</span></code> and <code class="docutils literal notranslate"><span class="pre">last_st</span></code> are respectively the real time and the
+simulated time when the last clock ratio adjustment took place.</p>
+<p>All times are kept in microseconds.</p>
+</div>
+</div>
+</div>
+<div class="section" id="peripherals">
+<h2><a class="toc-backref" href="#id10">Peripherals</a><a class="headerlink" href="#peripherals" title="Permalink to this headline">¶</a></h2>
+<p>The following peripherals are currently provided with this board:</p>
+<dl>
+<dt><strong>Interrupt controller</strong>:</dt><dd><p>A simple yet generic interrupt controller is provided. It can nest interrupts
+and provides interrupt priorities. Interrupts can be individually masked or
+unmasked. SW interrupts are also supported.</p>
+</dd>
+<dt><strong>Clock, timer and system tick model</strong></dt><dd><p>This model provides the system tick timer. By default
+<a class="reference internal" href="../../../../kconfig.html#CONFIG_SYS_CLOCK_TICKS_PER_SEC" title="CONFIG_SYS_CLOCK_TICKS_PER_SEC"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SYS_CLOCK_TICKS_PER_SEC</span></code></a> configures it to tick every 10ms.</p>
+<p>This peripheral driver also provides the needed functionality for this
+architecture-specific <a class="reference internal" href="../../../../reference/kernel/threads/index.html#c.k_busy_wait" title="k_busy_wait"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_busy_wait()</span></code></a>.</p>
+<p>Please refer to the section <a class="reference internal" href="#about-time-in-native-posix">About time in native_posix</a> for more
+information.</p>
+</dd>
+<dt><strong>UART</strong></dt><dd><p>An optional UART driver can be compiled with native_posix.
+For more information refer to the section <a class="reference internal" href="#uart">UART</a>.</p>
+</dd>
+<dt><strong>Real time clock</strong></dt><dd><p>The real time clock model provides a model of a constantly powered clock.
+By default this is initialized to the host time at boot.</p>
+<p>This RTC can also be set to start from time 0 with the <code class="docutils literal notranslate"><span class="pre">--rtc-reset</span></code> command
+line option.</p>
+<p>It is possible to offset the RTC clock value at boot with the
+<code class="docutils literal notranslate"><span class="pre">--rtc-offset=&lt;offset&gt;</span></code> option,
+or to adjust it dynamically with the function <code class="xref c c-func docutils literal notranslate"><span class="pre">native_rtc_offset()</span></code>.</p>
+<p>After start, this RTC advances with the simulated time, and is therefore
+affected by the simulated time speed ratio.
+See <a class="reference internal" href="#about-time-in-native-posix">About time in native_posix</a> for more information.</p>
+<p>The time can be queried with the functions <code class="xref c c-func docutils literal notranslate"><span class="pre">native_rtc_gettime_us()</span></code>
+and <code class="xref c c-func docutils literal notranslate"><span class="pre">native_rtc_gettime()</span></code>. Both accept as parameter the clock source:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTC_CLOCK_BOOT</span></code>: It counts the simulated time passed since boot.
+It is not subject to offset adjustments</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTC_CLOCK_REALTIME</span></code>: RTC persistent time. It is affected by
+offset adjustments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTC_CLOCK_PSEUDOHOSTREALTIME</span></code>: A version of the real host time,
+as if the host was also affected by the clock speed ratio and offset
+adjustments performed to the simulated clock and this RTC. Normally
+this value will be a couple of hundredths of microseconds ahead of the
+simulated time, depending on the host execution speed.
+This clock source should be used with care, as depending on the actual
+execution speed of native_posix and the host load,
+it may return a value considerably ahead of the simulated time.</p></li>
+</ul>
+</dd>
+<dt><strong>Entropy device</strong>:</dt><dd><p>An entropy device based on the host <code class="xref c c-func docutils literal notranslate"><span class="pre">random()</span></code> API.
+This device will generate the same sequence of random numbers if initialized
+with the same random seed.
+You can change this random seed value by using the command line option:
+<code class="docutils literal notranslate"><span class="pre">--seed=&lt;random_seed&gt;</span></code> where the value specified is a 32-bit integer
+such as 97229 (decimal),  0x17BCD (hex), or 0275715 (octal).</p>
+</dd>
+<dt><strong>Ethernet driver</strong>:</dt><dd><p>A simple TAP based ethernet driver is provided. The driver will create
+a <strong>zeth</strong> network interface to the host system. One can communicate with
+Zephyr via this network interface. Multiple TAP based network interfaces can
+be created if needed. The IP address configuration can be specified for each
+network interface instance.
+See <a class="reference internal" href="../../../../kconfig.html#CONFIG_ETH_NATIVE_POSIX_SETUP_SCRIPT" title="CONFIG_ETH_NATIVE_POSIX_SETUP_SCRIPT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_ETH_NATIVE_POSIX_SETUP_SCRIPT</span></code></a> option for more details.
+The <a class="reference internal" href="../../../../samples/net/eth_native_posix/README.html#eth-native-posix-sample"><span class="std std-ref">Native Posix Ethernet</span></a> sample app provides
+some use examples and more information about this driver configuration.</p>
+<p>Note that this device can only be used with Linux hosts, and that the user
+needs elevated permissions.</p>
+</dd>
+<dt><strong>Bluetooth controller</strong>:</dt><dd><p>It’s possible to use the host’s Bluetooth adapter as a Bluetooth
+controller for Zephyr. To do this the HCI device needs to be passed as
+a command line option to <code class="docutils literal notranslate"><span class="pre">zephyr.exe</span></code>. For example, to use <code class="docutils literal notranslate"><span class="pre">hci0</span></code>,
+use <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">zephyr.exe</span> <span class="pre">--bt-dev=hci0</span></code>. Using the device requires root
+privileges (or the CAP_NET_ADMIN POSIX capability, to be exact) so
+<code class="docutils literal notranslate"><span class="pre">zephyr.exe</span></code> needs to be run through <code class="docutils literal notranslate"><span class="pre">sudo</span></code>. The chosen HCI device
+must be powered down and support Bluetooth Low Energy (i.e. support the
+Bluetooth specification version 4.0 or greater).</p>
+</dd>
+<dt><strong>USB controller</strong>:</dt><dd><p>It’s possible to use the Virtual USB controller working over USB/IP
+protocol. More information can be found in
+<a class="reference internal" href="../../../../reference/usb/uds.html#testing-usb-native-posix"><span class="std std-ref">Testing USB over USP/IP in native_posix</span></a>.</p>
+</dd>
+<dt><strong>Display driver</strong>:</dt><dd><p>A display driver is provided that creates a window on the host machine to
+render display content.</p>
+<p>This driver requires a 32-bit version of the <a class="reference external" href="https://www.libsdl.org/download-2.0.php">SDL2</a> library on the host
+machine and <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> settings to correctly pickup the SDL2 install path
+and compiler flags.</p>
+<p>On a Ubuntu 18.04 host system, for example, install the <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> and
+<code class="docutils literal notranslate"><span class="pre">libsdl2-dev:i386</span></code> packages, and configure the pkg-config search path with
+these commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install pkg-config libsdl2-dev:i386
+$ export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl>
+<dt><strong>Flash driver</strong>:</dt><dd><p>A flash driver is provided that accesses all flash data through a binary file
+on the host file system. The behavior of the flash device can be configured
+through the native POSIX board devicetree or Kconfig settings under
+<a class="reference internal" href="../../../../kconfig.html#CONFIG_FLASH_SIMULATOR" title="CONFIG_FLASH_SIMULATOR"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_FLASH_SIMULATOR</span></code></a>.</p>
+<p>By default the binary data is located in the file <em>flash.bin</em> in the current
+working directory. The location of this file can be changed through the
+command line parameter <em>–flash</em>. The flash data will be stored in raw format
+and the file will be truncated to match the size specified in the devicetree
+configuration. In case the file does not exists the driver will take care of
+creating the file, else the existing file is used.</p>
+<p>The flash content can be accessed from the host system, as explained in the
+<a class="reference internal" href="#host-based-flash-access">Host based flash access</a> section.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="uart">
+<h2><a class="toc-backref" href="#id11">UART</a><a class="headerlink" href="#uart" title="Permalink to this headline">¶</a></h2>
+<p>This driver can be configured with <a class="reference internal" href="../../../../kconfig.html#CONFIG_UART_NATIVE_POSIX" title="CONFIG_UART_NATIVE_POSIX"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_UART_NATIVE_POSIX</span></code></a>
+to instantiate up to two UARTs. By default only one UART is enabled.
+With <a class="reference internal" href="../../../../kconfig.html#CONFIG_UART_NATIVE_POSIX_PORT_1_ENABLE" title="CONFIG_UART_NATIVE_POSIX_PORT_1_ENABLE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_UART_NATIVE_POSIX_PORT_1_ENABLE</span></code></a>
+you can enable the second one.</p>
+<p>For the first UART, it can link it to a new
+pseudoterminal (i.e. <code class="docutils literal notranslate"><span class="pre">/dev/pts&lt;nbr&gt;</span></code>), or map the UART input and
+output to the executable’s <code class="docutils literal notranslate"><span class="pre">stdin</span></code> and <code class="docutils literal notranslate"><span class="pre">stdout</span></code>.
+This is chosen by selecting either
+<a class="reference internal" href="../../../../kconfig.html#CONFIG_NATIVE_UART_0_ON_OWN_PTY" title="CONFIG_NATIVE_UART_0_ON_OWN_PTY"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NATIVE_UART_0_ON_OWN_PTY</span></code></a> or
+<a class="reference internal" href="../../../../kconfig.html#CONFIG_NATIVE_UART_0_ON_STDINOUT" title="CONFIG_NATIVE_UART_0_ON_STDINOUT"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NATIVE_UART_0_ON_STDINOUT</span></code></a>
+For interactive use with the <a class="reference internal" href="../../../../reference/shell/index.html#shell-api"><span class="std std-ref">Shell</span></a>, choose the first (OWN_PTY) option.
+The second (STDINOUT) option can be used with the shell for automated
+testing, such as when piping other processes’ output to control it.
+This is because the shell subsystem expects access to a raw terminal,
+which (by default) a normal Linux terminal is not.</p>
+<p>When <a class="reference internal" href="../../../../kconfig.html#CONFIG_NATIVE_UART_0_ON_OWN_PTY" title="CONFIG_NATIVE_UART_0_ON_OWN_PTY"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NATIVE_UART_0_ON_OWN_PTY</span></code></a> is chosen, the name of the
+newly created UART pseudo-terminal will be displayed in the console.
+If you want to interact with it manually, you should attach a terminal emulator
+to it. This can be done, for example with the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ xterm -e screen /dev/&lt;ttyn&gt; &amp;
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">/dev/&lt;ttyn&gt;</span></code> should be replaced with the actual TTY device.</p>
+<p>You may also chose to automatically attach a terminal emulator to the first UART
+by passing the command line option <code class="docutils literal notranslate"><span class="pre">-attach_uart</span></code> to the executable.
+The command used for attaching to the new shell can be set with the command line
+option <code class="docutils literal notranslate"><span class="pre">-attach_uart_cmd=&lt;&quot;cmd&quot;&gt;</span></code>. Where the default command is given by
+<a class="reference internal" href="../../../../kconfig.html#CONFIG_NATIVE_UART_AUTOATTACH_DEFAULT_CMD" title="CONFIG_NATIVE_UART_AUTOATTACH_DEFAULT_CMD"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NATIVE_UART_AUTOATTACH_DEFAULT_CMD</span></code></a>.
+Note that the default command assumes both <code class="docutils literal notranslate"><span class="pre">xterm</span></code> and <code class="docutils literal notranslate"><span class="pre">screen</span></code> are
+installed in the system.</p>
+</div>
+<div class="section" id="subsystems-backends">
+<h2><a class="toc-backref" href="#id12">Subsystems backends</a><a class="headerlink" href="#subsystems-backends" title="Permalink to this headline">¶</a></h2>
+<p>Apart from its own peripherals, the native_posix board also has some dedicated
+backends for some of Zephyr’s subsystems. These backends are designed to ease
+development by integrating more seamlessly with the host operating system:</p>
+<dl>
+<dt><strong>Console backend</strong>:</dt><dd><p>A console backend which by default is configured to
+redirect any <code class="xref c c-func docutils literal notranslate"><span class="pre">printk()</span></code> write to the native host application’s
+<code class="docutils literal notranslate"><span class="pre">stdout</span></code>.</p>
+<p>This driver is selected by default if the <a class="reference internal" href="#uart">UART</a> is not compiled in.
+Otherwise <a class="reference internal" href="../../../../kconfig.html#CONFIG_UART_CONSOLE" title="CONFIG_UART_CONSOLE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_UART_CONSOLE</span></code></a> will be set to select the UART as
+console backend.</p>
+</dd>
+<dt><strong>Logger backend</strong>:</dt><dd><p>A backend which prints all logger output to the process <code class="docutils literal notranslate"><span class="pre">stdout</span></code>.
+It supports timestamping, which can be enabled with
+<a class="reference internal" href="../../../../kconfig.html#CONFIG_LOG_BACKEND_FORMAT_TIMESTAMP" title="CONFIG_LOG_BACKEND_FORMAT_TIMESTAMP"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_LOG_BACKEND_FORMAT_TIMESTAMP</span></code></a>; and colored output which can
+be enabled with <a class="reference internal" href="../../../../kconfig.html#CONFIG_LOG_BACKEND_SHOW_COLOR" title="CONFIG_LOG_BACKEND_SHOW_COLOR"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_LOG_BACKEND_SHOW_COLOR</span></code></a> and controlled
+with the command line options <code class="docutils literal notranslate"><span class="pre">--color</span></code>, <code class="docutils literal notranslate"><span class="pre">--no-color</span></code> and
+<code class="docutils literal notranslate"><span class="pre">--force-color</span></code>.</p>
+<p>In native_posix, by default, the logger is configured with
+<a class="reference internal" href="../../../../kconfig.html#CONFIG_LOG_MODE_IMMEDIATE" title="CONFIG_LOG_MODE_IMMEDIATE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_LOG_MODE_IMMEDIATE</span></code></a>.</p>
+<p>This backend can be selected with <a class="reference internal" href="../../../../kconfig.html#CONFIG_LOG_BACKEND_NATIVE_POSIX" title="CONFIG_LOG_BACKEND_NATIVE_POSIX"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_LOG_BACKEND_NATIVE_POSIX</span></code></a>
+and is enabled by default unless the native_posix UART is compiled in.
+In this later case, by default, the logger is set to output to the <a class="reference internal" href="#uart">UART</a>.</p>
+</dd>
+<dt><strong>Tracing</strong>:</dt><dd><p>A backend/”bottom” for Zephyr’s CTF tracing subsystem which writes the tracing
+data to a file in the host filesystem.
+More information can be found in <a class="reference internal" href="../../../../guides/debug_tools/tracing/index.html#ctf"><span class="std std-ref">Common Tracing Format</span></a></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="host-based-flash-access">
+<h2><a class="toc-backref" href="#id13">Host based flash access</a><a class="headerlink" href="#host-based-flash-access" title="Permalink to this headline">¶</a></h2>
+<p>If a flash device is present, the file system partitions on the flash
+device can be exposed through the host file system by enabling
+<a class="reference internal" href="../../../../kconfig.html#CONFIG_FUSE_FS_ACCESS" title="CONFIG_FUSE_FS_ACCESS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_FUSE_FS_ACCESS</span></code></a>. This option enables a FUSE
+(File system in User space) layer that maps the Zephyr file system calls to
+the required UNIX file system calls, and provides access to the flash file
+system partitions with normal operating system commands such as <code class="docutils literal notranslate"><span class="pre">cd</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ls</span></code> and <code class="docutils literal notranslate"><span class="pre">mkdir</span></code>.</p>
+<p>By default the partitions are exposed through the directory <em>flash</em> in the
+current working directory. This directory can be changed via the command line
+option <em>–flash-mount</em>. As this directory operates as a mount point for FUSE
+you have to ensure that it exists before starting the native POSIX board.</p>
+<p>On exit, the native POSIX board application will take care of unmounting the
+directory. In the unfortunate case that the native POSIX board application
+crashes, you can cleanup the stale mount point by using the program
+<code class="docutils literal notranslate"><span class="pre">fusermount</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ fusermount -u flash
+</pre></div>
+</div>
+<p>Note that this feature requires a 32-bit version of the FUSE library, with a
+minimal version of 2.6, on the host system and <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> settings to
+correctly pickup the FUSE install path and compiler flags.</p>
+<p>On a Ubuntu 18.04 host system, for example, install the <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> and
+<code class="docutils literal notranslate"><span class="pre">libfuse-dev:i386</span></code> packages, and configure the pkg-config search path with
+these commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install pkg-config libfuse-dev:i386
+$ export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../nrf52_bsim/doc/index.html" class="btn btn-neutral float-right" title="NRF52 simulated board (BabbleSim)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../index.html" class="btn btn-neutral" title="POSIX/NATIVE Boards" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

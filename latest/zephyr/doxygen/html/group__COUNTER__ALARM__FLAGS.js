@@ -1,0 +1,5 @@
+var group__COUNTER__ALARM__FLAGS =
+[
+    [ "COUNTER_ALARM_CFG_ABSOLUTE", "group__COUNTER__ALARM__FLAGS.html#ga4842d212424f92c5a3b39116ec6c2fd2", null ],
+    [ "COUNTER_ALARM_CFG_EXPIRE_WHEN_LATE", "group__COUNTER__ALARM__FLAGS.html#ga87dffd2a1cadedfc30e7d39af547c336", null ]
+];

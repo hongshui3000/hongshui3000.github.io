@@ -1,0 +1,513 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Network Timeout &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Networking Context" href="net_context.html" />
+    <link rel="prev" title="Network Statistics" href="net_stats.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="apis.html">Network APIs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sockets.html">BSD Sockets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ip_4_6.html">IPv4/IPv6 Primitives and Helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dns_resolve.html">DNS Resolve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_mgmt.html">Network Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_stats.html">Network Statistics</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Network Timeout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="net_context.html">Networking Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="promiscuous.html">Promiscuous Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sntp.html">Simple Network Time Protocol Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="socks5.html">SOCKS5 Proxy Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="trickle.html">Trickle Timer Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.html">Websocket Client API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="capture.html">Network Packet Capture</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="buf_mgmt.html">Network Buffer Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="net_tech.html">Networking Technologies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="protocols.html">Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system_mgmt.html">Network System Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsn.html">Time Sensitive Networking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsm_modem.html">Generic GSM Modem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="apis.html">Network APIs</a> &raquo;</li>
+        
+      <li>Network Timeout</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/networking/net_timeout.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="network-timeout">
+<span id="net-timeout-interface"></span><h1>Network Timeout<a class="headerlink" href="#network-timeout" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#use" id="id2">Use</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id3">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id1">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Zephyr’s network infrastructure mostly uses the millisecond-resolution uptime
+clock to track timeouts, with both deadlines and durations measured with
+32-bit unsigned values.  The 32-bit value rolls over at 49 days 17 hours 2 minutes
+47.296 seconds.</p>
+<p>Timeout processing is often affected by latency, so that the time at which the
+timeout is checked may be some time after it should have expired.  Handling
+this correctly without arbitrary expectations of maximum latency requires that
+the maximum delay that can be directly represented be a 31-bit non-negative
+number (<code class="docutils literal notranslate"><span class="pre">INT32_MAX</span></code>), which overflows at 24 days 20 hours 31 minutes 23.648
+seconds.</p>
+<p>Most network timeouts are shorter than the delay rollover, but a few protocols
+allow for delays that are represented as unsigned 32-bit values counting
+seconds, which corresponds to a 42-bit millisecond count.</p>
+<p>The net_timeout API provides a generic timeout mechanism to correctly track
+the remaining time for these extended-duration timeouts.</p>
+</div>
+<div class="section" id="use">
+<h2><a class="toc-backref" href="#id2">Use</a><a class="headerlink" href="#use" title="Permalink to this headline">¶</a></h2>
+<p>The simplest use of this API is:</p>
+<ol class="arabic simple">
+<li><p>Configure a network timeout using <a class="reference internal" href="#c.net_timeout_set" title="net_timeout_set"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_timeout_set()</span></code></a>.</p></li>
+<li><p>Use <a class="reference internal" href="#c.net_timeout_evaluate" title="net_timeout_evaluate"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_timeout_evaluate()</span></code></a> to determine how long it is until the
+timeout occurs.  Schedule a timeout to occur after this delay.</p></li>
+<li><p>When the timeout callback is invoked, use <a class="reference internal" href="#c.net_timeout_evaluate" title="net_timeout_evaluate"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_timeout_evaluate()</span></code></a>
+again to determine whether the timeout has completed, or whether there is
+additional time remaining.  If the latter, reschedule the callback.</p></li>
+<li><p>While the timeout is running, use <a class="reference internal" href="#c.net_timeout_remaining" title="net_timeout_remaining"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_timeout_remaining()</span></code></a> to get
+the number of seconds until the timeout expires.  This may be used to
+explicitly update the timeout, which should be done by canceling any
+pending callback and restarting from step 1 with the new timeout.</p></li>
+</ol>
+<p>The <a class="reference internal" href="#c.net_timeout" title="net_timeout"><code class="xref c c-struct docutils literal notranslate"><span class="pre">net_timeout</span></code></a> contains a <code class="docutils literal notranslate"><span class="pre">sys_snode_t</span></code> that allows multiple
+timeout instances to be aggregated to share a single kernel timer element.
+The application must use <a class="reference internal" href="#c.net_timeout_evaluate" title="net_timeout_evaluate"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_timeout_evaluate()</span></code></a> on all instances to
+determine the next timeout event to occur.</p>
+<p><a class="reference internal" href="#c.net_timeout_deadline" title="net_timeout_deadline"><code class="xref c c-func docutils literal notranslate"><span class="pre">net_timeout_deadline()</span></code></a> may be used to reconstruct the full-precision
+deadline of the timeout.  This exists primarily for testing but may have use
+in some applications, as it does allow a millisecond-resolution calculation of
+remaining time.</p>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id3">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__net__timeout"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">net_timeout</span></span></dt>
+<dd><p>Network long timeout primitives and helpers. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.NET_TIMEOUT_MAX_VALUE">
+<span class="target" id="group__net__timeout_1gab59bff1cb36902a27ee8e887ef39a4ce"></span><span class="sig-name descname"><span class="n"><span class="pre">NET_TIMEOUT_MAX_VALUE</span></span></span><a class="headerlink" href="#c.NET_TIMEOUT_MAX_VALUE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Divisor used to support ms resolution timeouts. </p>
+<p>Because delays are processed in work queues which are not invoked synchronously with clock changes we need to be able to detect timeouts after they occur, which requires comparing “deadline” to “now” with enough “slop” to handle any observable latency due to “now” advancing past “deadline”.</p>
+<p>The simplest solution is to use the native conversion of the well-defined 32-bit unsigned difference to a 32-bit signed difference, which caps the maximum delay at INT32_MAX. This is compatible with the standard mechanism for detecting completion of deadlines that do not overflow their representation. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_timeout_set">
+<span class="target" id="group__net__timeout_1ga833e08b83a671d4adff799d648a12417"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_timeout_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_timeout" title="net_timeout"><span class="n"><span class="pre">net_timeout</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">timeout</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">lifetime</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">now</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_timeout_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Configure a network timeout structure. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: a pointer to the timeout state.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lifetime</span></code>: the duration of the timeout in seconds.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">now</span></code>: the time at which the timeout started counting down, in milliseconds. This is generally a captured value of <a class="reference internal" href="../kernel/timing/clocks.html#group__clock__apis_1ga9253cfb7b46af4d8994349323ce9872b"><span class="std std-ref">k_uptime_get_32()</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_timeout_deadline">
+<span class="target" id="group__net__timeout_1ga3d9804474050d070fc4224e834f8cefc"></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_timeout_deadline</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_timeout" title="net_timeout"><span class="n"><span class="pre">net_timeout</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">timeout</span></span>, <span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="n"><span class="pre">now</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_timeout_deadline" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the 64-bit system time at which the timeout will complete. </p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Correct behavior requires invocation of <a class="reference internal" href="#group__net__timeout_1ga07b07966dd10929f6d3774467614f006"><span class="std std-ref">net_timeout_evaluate()</span></a> at its specified intervals.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>the value of <a class="reference internal" href="../kernel/timing/clocks.html#group__clock__apis_1gae3e992cd3257c23d5b26d765fcbb2b69"><span class="std std-ref">k_uptime_get()</span></a> at which the timeout will expire. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: state a pointer to the timeout state, initialized by <a class="reference internal" href="#group__net__timeout_1ga833e08b83a671d4adff799d648a12417"><span class="std std-ref">net_timeout_set()</span></a> and maintained by <a class="reference internal" href="#group__net__timeout_1ga07b07966dd10929f6d3774467614f006"><span class="std std-ref">net_timeout_evaluate()</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">now</span></code>: the full-precision value of <a class="reference internal" href="../kernel/timing/clocks.html#group__clock__apis_1gae3e992cd3257c23d5b26d765fcbb2b69"><span class="std std-ref">k_uptime_get()</span></a> relative to which the deadline will be calculated.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_timeout_remaining">
+<span class="target" id="group__net__timeout_1ga34e39484b19c39b3e37a4799848ad502"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_timeout_remaining</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_timeout" title="net_timeout"><span class="n"><span class="pre">net_timeout</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">timeout</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">now</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_timeout_remaining" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Calculate the remaining time to the timeout in whole seconds. </p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This function rounds the remaining time down, i.e. if the timeout will occur in 3500 milliseconds the value 3 will be returned.</p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>Correct behavior requires invocation of <a class="reference internal" href="#group__net__timeout_1ga07b07966dd10929f6d3774467614f006"><span class="std std-ref">net_timeout_evaluate()</span></a> at its specified intervals.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: a pointer to the timeout state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">now</span></code>: the time relative to which the estimate of remaining time should be calculated. This should be recently captured value from <a class="reference internal" href="../kernel/timing/clocks.html#group__clock__apis_1ga9253cfb7b46af4d8994349323ce9872b"><span class="std std-ref">k_uptime_get_32()</span></a>.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: if the timeout has completed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">positive</span></code>: the remaining duration of the timeout, in seconds. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_timeout_evaluate">
+<span class="target" id="group__net__timeout_1ga07b07966dd10929f6d3774467614f006"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_timeout_evaluate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_timeout" title="net_timeout"><span class="n"><span class="pre">net_timeout</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">timeout</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">now</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_timeout_evaluate" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Update state to reflect elapsed time and get new delay. </p>
+<p>This function must be invoked periodically to (1) apply the effect of elapsed time on what remains of a total delay that exceeded the maximum representable delay, and (2) determine that either the timeout has completed or that the infrastructure must wait a certain period before checking again for completion.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: a pointer to the timeout state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">now</span></code>: the time relative to which the estimate of remaining time should be calculated. This should be recently captured value from <a class="reference internal" href="../kernel/timing/clocks.html#group__clock__apis_1ga9253cfb7b46af4d8994349323ce9872b"><span class="std std-ref">k_uptime_get_32()</span></a>.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: if the timeout has completed </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">positive</span></code>: the maximum delay until the state of this timeout should be re-evaluated, in milliseconds. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.net_timeout">
+<span class="target" id="structnet__timeout"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_timeout</span></span></span><a class="headerlink" href="#c.net_timeout" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;net_timeout.h&gt;</em><p>Generic struct for handling network timeouts.</p>
+<p>Except for the linking node, all access to state from these objects must go through the defined API. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_timeout.node">
+<span class="target" id="structnet__timeout_1aad22be1aa3cdc73fbb14a436fc778282"></span><span class="n"><span class="pre">sys_snode_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">node</span></span></span><a class="headerlink" href="#c.net_timeout.node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Used to link multiple timeouts that share a common timer infrastructure.</p>
+<p>For examples a set of related timers may use a single delayed work structure, which is always scheduled at the shortest time to a timeout event. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="net_context.html" class="btn btn-neutral float-right" title="Networking Context" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="net_stats.html" class="btn btn-neutral" title="Network Statistics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

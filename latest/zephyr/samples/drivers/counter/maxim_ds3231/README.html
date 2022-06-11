@@ -1,0 +1,484 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Maxim DS3231 TCXO RTC Sample Application &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../../copyright.html" />
+    <link rel="next" title="Crypto" href="../../crypto/README.html" />
+    <link rel="prev" title="Counter Alarm Sample" href="../alarm/README.html" />
+  <link rel="shortcut icon" href="../../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../security/index.html">Security</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Samples and Demos</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../classic.html">Classic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basic/basic.html">Basic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../userspace/index.html">Userspace Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../subsys/subsys.html">Various Subsystems Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../net/net.html">Networking Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bluetooth/bluetooth.html">Bluetooth samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sensor/sensor.html">Sensor Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arch/index.html">Architecture Dependent Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../boards/boards.html">Board-specific samples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../drivers.html">Driver Samples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../adc/README.html">Analog-to-Digital Converter (ADC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../audio/dmic/README.html">DMIC Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../can/README.html">Controller Area Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../clock_control_litex/README.html">LiteX Clock Control Driver Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../alarm/README.html">Counter Alarm Sample</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Maxim DS3231 TCXO RTC Sample Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#annotated-example-output">Annotated Example Output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-and-running">Building and Running</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../crypto/README.html">Crypto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../dac/README.html">Digital-to-Analog Converter (DAC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../display/README.html">Display Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../eeprom/README.html">EEPROM Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../espi/README.html">Enhanced Serial Peripheral Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../flash_shell/README.html">Flash Shell Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ht16k33/README.html">HT16K33 LED driver with keyscan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../i2c_fujitsu_fram/README.html">I2C Fujitsu FRAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../i2s/echo/README.html">I2S Echo Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../i2s/litex/README.html">I2S example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ipm/ipm_imx/README.html">i.MX IPM example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ipm/ipm_mcux/README.html">Sample mailbox application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ipm/ipm_mhu_dual_core/README.html">MHU Dual Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../jesd216/README.html">JESD216 Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../kscan/README.html">KSCAN Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../kscan_touch/README.html">KSCAN touch panel example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../lcd_hd44780/README.html">LCD HD44780 driver sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../led_apa102/README.html">APA102 Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../led_lp3943/README.html">LP3943: 16-Channel RGB, White-LED Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../led_lp503x/README.html">LP5030/6: 10 or 12 RGB channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../led_lp5562/README.html">LP5562: 4-Channel RGB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../led_lpd8806/README.html">LPD880x Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../led_pca9633/README.html">PCA9633: 4-Channel RGB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../led_pwm/README.html">LED PWM sample application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../led_sx1509b_intensity/README.html">SX1509B LED Intensity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../led_ws2812/README.html">WS2812 Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../misc/ft800/README.html">FT800</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../misc/grove_display/README.html">Grove LCD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../peci/README.html">PECI Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ps2/README.html">PS/2 Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../spi_bitbang/README.html">SPI-Bitbang Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../spi_flash/README.html">JEDEC SPI-NOR Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../spi_flash_at45/README.html">AT45 DataFlash driver sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../uart/echo_bot/README.html">UART Driver Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../uart/stm32/single_wire/README.html">STM32 Single Wire UART</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../application_development/application_development.html">Application development samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../shields/shields.html">Shields Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../posix/posix.html">POSIX Subsystem Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../kernel/index.html">Various Kernel and Scheduler Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tfm_integration/tfm_integration.html">TF-M Integration Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tfm_integration/tfm_integration.html#trusted-firmware-m-tf-m">Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules/index.html">External Module Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../compression/compression.html">Compression Samples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Samples and Demos</a> &raquo;</li>
+        
+          <li><a href="../../drivers.html">Driver Samples</a> &raquo;</li>
+        
+      <li>Maxim DS3231 TCXO RTC Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/samples/drivers/counter/maxim_ds3231/README.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="maxim-ds3231-tcxo-rtc-sample-application">
+<span id="maxim-ds3231-sample"></span><h1>Maxim DS3231 TCXO RTC Sample Application<a class="headerlink" href="#maxim-ds3231-tcxo-rtc-sample-application" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://www.maximintegrated.com/en/products/analog/real-time-clocks/DS3231.html">DS3231</a> temperature-compensated real-time clock is a
+high-precision (2 ppm) battery backed clock that maintains civil time
+and supports alarms.  The <a class="reference external" href="http://macetech.com/store/index.php?main_page=product_info&amp;products_id=8">Chronodot</a> breakout board can be used to
+test it.</p>
+</div>
+<div class="section" id="annotated-example-output">
+<h2>Annotated Example Output<a class="headerlink" href="#annotated-example-output" title="Permalink to this headline">¶</a></h2>
+<p>The sample first displays the boot banner, board identifier and
+frequency of the local clock used for synchronization, and whether the
+DS3231 has recorded a loss-of-oscillator:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*****</span> <span class="n">Booting</span> <span class="n">Zephyr</span> <span class="n">OS</span> <span class="n">build</span> <span class="n">zephyr</span><span class="o">-</span><span class="n">v1</span><span class="mf">.14.0</span><span class="o">-</span><span class="mi">2409</span><span class="o">-</span><span class="n">g322d53aedaa0</span> <span class="o">*****</span>
+<span class="n">DS3231</span> <span class="n">on</span> <span class="n">particle_xenon</span> <span class="n">syncclock</span> <span class="mi">1000</span> <span class="n">Hz</span>
+<span class="o">.</span>
+<span class="n">DS3231</span> <span class="n">has</span> <span class="ow">not</span> <span class="n">experienced</span> <span class="n">an</span> <span class="n">oscillator</span> <span class="n">fault</span>
+</pre></div>
+</div>
+<p>Next, information about the device as a counter is displayed.  The
+counter value is read, and its value formatted as the date, time, day of
+week, and day of year (19 July 2019 is a Friday, and is the 200th day of
+2019):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Counter</span> <span class="n">at</span> <span class="mh">0x20001a58</span>
+        <span class="n">Max</span> <span class="n">top</span> <span class="n">value</span><span class="p">:</span> <span class="mi">4294967295</span> <span class="p">(</span><span class="n">ffffffff</span><span class="p">)</span>
+        <span class="mi">2</span> <span class="n">channels</span>
+        <span class="mi">1</span> <span class="n">Hz</span>
+<span class="n">Top</span> <span class="n">counter</span> <span class="n">value</span><span class="p">:</span> <span class="mi">4294967295</span> <span class="p">(</span><span class="n">ffffffff</span><span class="p">)</span>
+<span class="n">Now</span> <span class="mi">1563512509</span><span class="p">:</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">19</span> <span class="mi">05</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">49</span> <span class="n">Fri</span> <span class="mi">200</span>
+</pre></div>
+</div>
+<p>The DS3231 control and status register values are displayed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DS3231</span> <span class="n">ctrl</span> <span class="mi">04</span> <span class="p">;</span> <span class="n">ctrl_stat</span> <span class="mi">08</span>
+</pre></div>
+</div>
+<p>Next, if the sample application option <code class="docutils literal notranslate"><span class="pre">CONFIG_APP_SET_ALIGNED_CLOCK</span></code>
+is set, the civil time will be advanced to the start of the next hour,
+and the clock will be set to align that time with the time of the boot,
+which in the output below is 34 ms in the past.  The time required to
+synchronize the clock is 967 ms, and the whole second value of one
+second past the hour is written at 1000 ms local uptime:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">19</span> <span class="mi">06</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">00.034000000</span> <span class="n">Fri</span> <span class="mi">200</span> <span class="n">at</span> <span class="mi">34</span> <span class="n">ms</span> <span class="n">past</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Synchronize</span> <span class="n">final</span><span class="p">:</span> <span class="mi">0</span> <span class="mi">0</span> <span class="ow">in</span> <span class="mi">967</span> <span class="n">ms</span>
+<span class="n">wrote</span> <span class="n">sync</span> <span class="mi">0</span><span class="p">:</span> <span class="mi">1563516001</span> <span class="mi">0</span> <span class="n">at</span> <span class="mi">1000</span>
+</pre></div>
+</div>
+<p>Then a synchronization point is read.  This takes 894 ms (it must align
+to an RTC one-second rollover):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Synchronize</span> <span class="n">init</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Synchronize</span> <span class="n">complete</span> <span class="ow">in</span> <span class="mi">894</span> <span class="n">ms</span><span class="p">:</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="o">.</span>
+<span class="n">read</span> <span class="n">sync</span> <span class="mi">0</span><span class="p">:</span> <span class="mi">1563516002</span> <span class="mi">0</span> <span class="n">at</span> <span class="mi">2000</span>
+</pre></div>
+</div>
+<p>The alarm configuration is read from non-volatile memory and displayed.
+See the <code class="docutils literal notranslate"><span class="pre">maxim_ds3231.h</span></code> for interpretation of the integer value and
+flags:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Alarm</span> <span class="mi">1</span> <span class="n">flags</span> <span class="mi">0</span> <span class="n">at</span> <span class="mi">254034017</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Alarm</span> <span class="mi">2</span> <span class="n">flags</span> <span class="n">e</span> <span class="n">at</span> <span class="mi">252374400</span><span class="p">:</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Five seconds is added to the current time and the civil time
+representation displayed.  The second-resolution alarm is configured to
+fire at that time on the current day-of-week.  The minute-resolution
+alarm is configured to fire once per minute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Min</span> <span class="n">Sec</span> <span class="n">base</span> <span class="n">time</span><span class="p">:</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">19</span> <span class="mi">06</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">07</span> <span class="n">Fri</span> <span class="mi">200</span>
+<span class="n">Set</span> <span class="n">sec</span> <span class="n">alarm</span> <span class="mi">90</span> <span class="n">at</span> <span class="mi">1563516007</span> <span class="o">~</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">19</span> <span class="mi">06</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">07</span> <span class="n">Fri</span> <span class="mi">200</span><span class="p">:</span> <span class="mi">5</span>
+<span class="n">Set</span> <span class="nb">min</span> <span class="n">alarm</span> <span class="n">flags</span> <span class="n">f</span> <span class="n">at</span> <span class="mi">1563516007</span> <span class="o">~</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">19</span> <span class="mi">06</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">07</span> <span class="n">Fri</span> <span class="mi">200</span><span class="p">:</span> <span class="mi">7</span>
+</pre></div>
+</div>
+<p>We’re now 2.131 ms into the run, at which point the alarms are read back
+and displayed.  Alarms do not include date but can include day-of-week
+or day-of-month; the date is selected to preserve that information:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2131</span> <span class="n">ms</span> <span class="ow">in</span><span class="p">:</span> <span class="n">get</span> <span class="n">alarms</span><span class="p">:</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="n">Sec</span> <span class="n">alarm</span> <span class="n">flags</span> <span class="mi">10</span> <span class="n">at</span> <span class="mi">252914407</span> <span class="o">~</span> <span class="mi">1978</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">06</span> <span class="mi">06</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">07</span> <span class="n">Fri</span> <span class="mi">006</span>
+<span class="n">Min</span> <span class="n">alarm</span> <span class="n">flags</span> <span class="n">e</span> <span class="n">at</span> <span class="mi">252374400</span> <span class="o">~</span> <span class="mi">1977</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> <span class="n">Sat</span> <span class="mi">365</span>
+</pre></div>
+</div>
+<p>The second-resolution alarm was signalled, and processed by the
+application at 7.002 s into the run, as scheduled (plus callback
+latency).  The callback uses the counter alarm API to schedule a second
+alarm in 10 seconds:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Sec</span> <span class="n">signaled</span> <span class="n">at</span> <span class="mi">7002</span> <span class="n">ms</span><span class="p">,</span> <span class="n">param</span> <span class="mh">0x20000048</span><span class="p">,</span> <span class="n">delay</span> <span class="mi">1</span><span class="p">;</span> <span class="nb">set</span> <span class="mi">7</span>
+</pre></div>
+</div>
+<p>The counter API callback is called at the correct time:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Counter</span> <span class="n">callback</span> <span class="n">at</span> <span class="mi">17001</span> <span class="n">ms</span><span class="p">,</span> <span class="nb">id</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ticks</span> <span class="mi">1563516017</span><span class="p">,</span> <span class="n">ud</span> <span class="mh">0x20000048</span>
+</pre></div>
+</div>
+<p>From here on the sample sleeps except when the minute-resolution alarm
+fires, at which point it displays the RTC time; the
+nanosecond-resolution offset in seconds between the RTC time and the
+local time; the local time from <code class="docutils literal notranslate"><span class="pre">k_uptime_get()</span></code>; and the aggregate
+error between local and RTC time measured in parts-per-million:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2019</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">19</span> <span class="mi">06</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">00</span> <span class="n">Fri</span> <span class="mi">200</span><span class="p">:</span> <span class="n">adj</span> <span class="mf">0.002000000</span><span class="p">,</span> <span class="n">uptime</span> <span class="mi">0</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mf">00.002</span><span class="p">,</span> <span class="n">clk</span> <span class="n">err</span> <span class="mi">34</span> <span class="n">ppm</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">19</span> <span class="mi">06</span><span class="p">:</span><span class="mi">02</span><span class="p">:</span><span class="mi">00</span> <span class="n">Fri</span> <span class="mi">200</span><span class="p">:</span> <span class="n">adj</span> <span class="mf">0.003000000</span><span class="p">,</span> <span class="n">uptime</span> <span class="mi">0</span><span class="p">:</span><span class="mi">02</span><span class="p">:</span><span class="mf">00.004</span><span class="p">,</span> <span class="n">clk</span> <span class="n">err</span> <span class="mi">25</span> <span class="n">ppm</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">19</span> <span class="mi">06</span><span class="p">:</span><span class="mi">03</span><span class="p">:</span><span class="mi">00</span> <span class="n">Fri</span> <span class="mi">200</span><span class="p">:</span> <span class="n">adj</span> <span class="mf">0.005000000</span><span class="p">,</span> <span class="n">uptime</span> <span class="mi">0</span><span class="p">:</span><span class="mi">03</span><span class="p">:</span><span class="mf">00.005</span><span class="p">,</span> <span class="n">clk</span> <span class="n">err</span> <span class="mi">28</span> <span class="n">ppm</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">19</span> <span class="mi">06</span><span class="p">:</span><span class="mi">04</span><span class="p">:</span><span class="mi">00</span> <span class="n">Fri</span> <span class="mi">200</span><span class="p">:</span> <span class="n">adj</span> <span class="mf">0.006000000</span><span class="p">,</span> <span class="n">uptime</span> <span class="mi">0</span><span class="p">:</span><span class="mi">04</span><span class="p">:</span><span class="mf">00.007</span><span class="p">,</span> <span class="n">clk</span> <span class="n">err</span> <span class="mi">25</span> <span class="n">ppm</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">19</span> <span class="mi">06</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span> <span class="n">Fri</span> <span class="mi">200</span><span class="p">:</span> <span class="n">adj</span> <span class="mf">0.008000000</span><span class="p">,</span> <span class="n">uptime</span> <span class="mi">0</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mf">00.008</span><span class="p">,</span> <span class="n">clk</span> <span class="n">err</span> <span class="mi">26</span> <span class="n">ppm</span>
+</pre></div>
+</div>
+<p>The output shows that the Zephyr system clock is running about 25 ppm
+faster than civil time on this device.  This amount of error is expected
+for this target as the system time derives from a crystal oscillator
+with a similar accuracy.</p>
+</div>
+<div class="section" id="building-and-running">
+<h2>Building and Running<a class="headerlink" href="#building-and-running" title="Permalink to this headline">¶</a></h2>
+<p>Wire a Chronodot to one of the supported boards as specified in the
+corresponding devicetree overlay.</p>
+<ul>
+<li><p>Particle Xenon</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b particle-xenon samples/drivers/counter/maxim_ds3231</span>
+</pre></div>
+</div>
+</li>
+<li><p>NXP Freedom K64F</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b frdm_k64f samples/drivers/counter/maxim_ds3231</span>
+</pre></div>
+</div>
+</li>
+<li><p>ST Nucleo L476RG</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b nucleo_l476rg samples/drivers/counter/maxim_ds3231</span>
+</pre></div>
+</div>
+</li>
+<li><p>EFR32 Mighty Gecko Thunderboard Sense 2</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b efr32mg_sltb004a samples/drivers/counter/maxim_ds3231</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../crypto/README.html" class="btn btn-neutral float-right" title="Crypto" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../alarm/README.html" class="btn btn-neutral" title="Counter Alarm Sample" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

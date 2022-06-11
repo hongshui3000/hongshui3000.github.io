@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>ARMv8 Xen Virtual Machine Example &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../../copyright.html" />
+    <link rel="next" title="ARC Boards" href="../../../arc/index.html" />
+    <link rel="prev" title="ARM Cortex-A53 Emulation (QEMU)" href="../../qemu_cortex_a53/doc/index.html" />
+  <link rel="shortcut icon" href="../../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Supported Boards</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../x86/index.html">x86 Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arm/index.html">ARM Boards</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">ARM64 Boards</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../bcm958402m2_a72/doc/index.html">Broadcom BCM958402M2 (Cortex-A72)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fvp_base_revc_2xaemv8a/doc/index.html">ARM BASE RevC AEMv8A Fixed Virtual Platforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fvp_baser_aemv8r/doc/index.html">Arm FVP BaseR AEMv8-R</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../imx8mm_evk/doc/index.html">NXP i.MX8MM EVK (Cortex-A53)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../intel_socfpga_agilex_socdk/doc/index.html">Intel Agilex SoC Development Kit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nxp_ls1046ardb/doc/index.html">NXP LS1046A RDB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qemu_cortex_a53/doc/index.html">ARM Cortex-A53 Emulation (QEMU)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ARMv8 Xen Virtual Machine Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware">Hardware</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-and-running">Building and Running</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#updating-configuration">Updating configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arc/index.html">ARC Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../mips/index.html">MIPS Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../nios2/index.html">NIOS II Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../xtensa/index.html">XTENSA Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../posix/index.html">POSIX/NATIVE Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../riscv/index.html">RISCV Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sparc/index.html">SPARC Boards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../shields/index.html">Shields</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Supported Boards</a> &raquo;</li>
+        
+          <li><a href="../../index.html">ARM64 Boards</a> &raquo;</li>
+        
+      <li>ARMv8 Xen Virtual Machine Example</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/boards/arm64/xenvm/doc/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="armv8-xen-virtual-machine-example">
+<h1>ARMv8 Xen Virtual Machine Example<a class="headerlink" href="#armv8-xen-virtual-machine-example" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This board allows to run Zephyr as Xen guest on any ARMv8 board that supports
+ARM Virtualization Extensions. This is example configuration, as almost any VM
+configuration is unique in many aspects.</p>
+<div class="figure align-center" id="id1">
+<img alt="XenVM" src="../../../../_images/xen_project_logo.png" />
+<p class="caption"><span class="caption-number">Fig. 184 </span><span class="caption-text">Xen virtual Guest (Credit: Xen Project)</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>It provides minimal set of devices:</p>
+<ul class="simple">
+<li><p>ARM Generic timer</p></li>
+<li><p>GICv2/GICv3</p></li>
+</ul>
+</div>
+<div class="section" id="hardware">
+<h2>Hardware<a class="headerlink" href="#hardware" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="supported-features">
+<h3>Supported Features<a class="headerlink" href="#supported-features" title="Permalink to this headline">¶</a></h3>
+<p>The following hardware features are supported:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 27%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
+<th class="head"><p>Controller</p></th>
+<th class="head"><p>Driver/Component</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GIC</p></td>
+<td><p>virtualized</p></td>
+<td><p>interrupt controller</p></td>
+</tr>
+<tr class="row-odd"><td><p>ARM TIMER</p></td>
+<td><p>virtualized</p></td>
+<td><p>system clock</p></td>
+</tr>
+</tbody>
+</table>
+<p>The kernel currently does not support other hardware features on this platform.</p>
+<dl class="simple">
+<dt>The default configuration using GICv2 can be found in the defconfig file:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">boards/arm64/xenvm/xenvm_defconfig</span></code></p>
+</dd>
+<dt>The default configuration using GICv3 can be found in the defconfig file:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">boards/arm64/xenvm/xenvm_gicv3_defconfig</span></code></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="devices">
+<h3>Devices<a class="headerlink" href="#devices" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="system-clock">
+<h4>System Clock<a class="headerlink" href="#system-clock" title="Permalink to this headline">¶</a></h4>
+<p>This board configuration uses a system clock frequency of 8.32 MHz. This is the
+default value, which should be corrected for user’s actual hardware.</p>
+<p>You can determine clock frequency of your ARM Generic Timer by inspecting Xen
+boot log:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">XEN</span><span class="p">)</span> <span class="p">[</span>    <span class="mf">0.147541</span><span class="p">]</span> <span class="n">Generic</span> <span class="n">Timer</span> <span class="n">IRQ</span><span class="p">:</span> <span class="n">phys</span><span class="o">=</span><span class="mi">30</span> <span class="n">hyp</span><span class="o">=</span><span class="mi">26</span> <span class="n">virt</span><span class="o">=</span><span class="mi">27</span> <span class="n">Freq</span><span class="p">:</span> <span class="mi">8320</span> <span class="n">KHz</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interrupt-controller">
+<h4>Interrupt Controller<a class="headerlink" href="#interrupt-controller" title="Permalink to this headline">¶</a></h4>
+<p>Depending on the version of the GIC on your hardware, you may choose one of the
+following board configurations:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">xenvm_defconfig</span></code> selects GICv2</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xenvm_gicv3_defconfig</span></code> selects GICv3</p></li>
+</ul>
+</div>
+<div class="section" id="cpu-core-type">
+<h4>CPU Core type<a class="headerlink" href="#cpu-core-type" title="Permalink to this headline">¶</a></h4>
+<p>Default core in this configuration is Cortex A72. Depending on yours actual
+hardware you might want to change this option in the same way as Interrupt
+Controller configuration.</p>
+</div>
+</div>
+<div class="section" id="known-problems-or-limitations">
+<h3>Known Problems or Limitations<a class="headerlink" href="#known-problems-or-limitations" title="Permalink to this headline">¶</a></h3>
+<p>Xen configures guests in runtime by providing device tree that describes guest
+environment. On other hand, Zephyr uses static configuration that should be know
+at build time. So there are chances, that Zephyr image created with default
+configuration would not boot on your hardware. In this case you need to update
+configuration by altering device tree and Kconfig options. This will be covered
+in detail in next section.</p>
+<p>Most of Xen-specific features are not supported at the moment. This includes:
+* XenBus (under development)
+* Xen grant tables (under development)
+* Xen PV drivers</p>
+<p>Now only following features are supported:
+* Xen Enlighten memory page
+* Xen event channels (currently only pre-defined - PV console, Xenbus)
+* Xen PV console (2 versions: regular ring buffer based for DomU and consoleio for Dom0)
+* Xen early console_io interface (mainly for debug purposes - requires debug version of Xen)</p>
+</div>
+</div>
+<div class="section" id="building-and-running">
+<h2>Building and Running<a class="headerlink" href="#building-and-running" title="Permalink to this headline">¶</a></h2>
+<p>Use this configuration to run basic Zephyr applications and kernel tests as Xen
+guest, for example, with the <a class="reference internal" href="../../../../samples/synchronization/README.html#synchronization-sample"><span class="std std-ref">Synchronization Sample</span></a>:</p>
+<ul class="simple">
+<li><p>if your hardware is based on GICv2:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ west build -b xenvm samples/synchronization
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>if your hardware is based on GICv3:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ west build -b xenvm_gicv3 samples/synchronization
+</pre></div>
+</div>
+<p>This will build an image with the synchronization sample app. Next, you need to
+create guest configuration file <code class="code docutils literal notranslate"><span class="pre">zephyr.conf</span></code>. There is example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;zephyr.bin&quot;</span>
+<span class="n">name</span><span class="o">=</span><span class="s2">&quot;zephyr&quot;</span>
+<span class="n">vcpus</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">memory</span><span class="o">=</span><span class="mi">16</span>
+<span class="n">gic_version</span><span class="o">=</span><span class="s2">&quot;v2&quot;</span>
+<span class="n">on_crash</span><span class="o">=</span><span class="s2">&quot;preserve&quot;</span>
+</pre></div>
+</div>
+<p>When using <code class="docutils literal notranslate"><span class="pre">xenvm_gicv3</span></code> configuration, you need to remove the <code class="docutils literal notranslate"><span class="pre">gic_version</span></code>
+parameter or set it to <code class="docutils literal notranslate"><span class="pre">&quot;v3&quot;</span></code>.</p>
+<p>You need to upload both <code class="code docutils literal notranslate"><span class="pre">zephyr.bin</span></code> and <code class="code docutils literal notranslate"><span class="pre">zephyr.conf</span></code> to your Dom0
+and then you can run Zephyr by issuing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ xl create zephyr.conf
+</pre></div>
+</div>
+<p>Next you need to attach to PV console:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ xl console zephyr
+</pre></div>
+</div>
+<p>Also this can be performed via single command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ xl create -c zephyr.conf
+</pre></div>
+</div>
+<p>You will see Zephyr output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">*** Booting Zephyr OS build zephyr-v2.4.0-1137-g5803ee1e8183  ***</span>
+<span class="go">thread_a: Hello World from cpu 0 on xenvm!</span>
+<span class="go">thread_b: Hello World from cpu 0 on xenvm!</span>
+<span class="go">thread_a: Hello World from cpu 0 on xenvm!</span>
+<span class="go">thread_b: Hello World from cpu 0 on xenvm!</span>
+<span class="go">thread_a: Hello World from cpu 0 on xenvm!</span>
+</pre></div>
+</div>
+<p>Exit xen virtual console by pressing <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">CTRL</kbd>+<kbd class="kbd docutils literal notranslate">]</kbd></kbd></p>
+</div>
+<div class="section" id="updating-configuration">
+<h2>Updating configuration<a class="headerlink" href="#updating-configuration" title="Permalink to this headline">¶</a></h2>
+<p>As was said earlier, Xen describes hardware using device tree and expects that
+guest will parse device tree in runtime. On other hand, Zephyr supports only
+static, build time configuration. While provided configuration should work on
+almost any ARMv8 host running in aarch64 mode, there is no guarantee, that Xen
+will not change some values (like RAM base address) in the future.</p>
+<p>Also, frequency of system timer is board specific and should be updated when running
+Zephyr xenvm image on new hardware.</p>
+<p>One can make Xen to dump generated DTB by using <code class="code docutils literal notranslate"><span class="pre">LIBXL_DEBUG_DUMP_DTB</span></code>
+environment variable, like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ LIBXL_DEBUG_DUMP_DTB=domu-libxl.dtb xl create zephyr.conf
+</pre></div>
+</div>
+<p>Then, generated “domu-libxl.dtb” file can be de-compiled using “dtc” tool.</p>
+<p>Use information from de-compiled DTB file to update all related entries in
+provided “xenvm.dts” file. If memory layout is also changed, you may need to
+update <code class="code docutils literal notranslate"><span class="pre">CONFIG_SRAM_BASE_ADDRESS</span></code> as well.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://wiki.xenproject.org/wiki/Xen_ARM_with_Virtualization_Extensions">Xen ARM with Virtualization Extensions</a></p>
+<p><a class="reference external" href="https://xenbits.xen.org/docs/unstable/man/xl.cfg.5.html">xl.conf (guest configuration file) manual</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../../arc/index.html" class="btn btn-neutral float-right" title="ARC Boards" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../qemu_cortex_a53/doc/index.html" class="btn btn-neutral" title="ARM Cortex-A53 Emulation (QEMU)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,547 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>LiteX Clock Control Driver Sample &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Counter Alarm Sample" href="../counter/alarm/README.html" />
+    <link rel="prev" title="Controller Area Network" href="../can/README.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Samples and Demos</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../classic.html">Classic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basic/basic.html">Basic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userspace/index.html">Userspace Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../subsys/subsys.html">Various Subsystems Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../net/net.html">Networking Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/bluetooth.html">Bluetooth samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sensor/sensor.html">Sensor Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../arch/index.html">Architecture Dependent Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../boards/boards.html">Board-specific samples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../drivers.html">Driver Samples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/README.html">Analog-to-Digital Converter (ADC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../audio/dmic/README.html">DMIC Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../can/README.html">Controller Area Network</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">LiteX Clock Control Driver Sample</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#driver-usage">Driver Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sample-usage">Sample usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building">Building</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sample-output">Sample output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../counter/alarm/README.html">Counter Alarm Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../counter/maxim_ds3231/README.html">Maxim DS3231 TCXO RTC Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../crypto/README.html">Crypto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dac/README.html">Digital-to-Analog Converter (DAC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../display/README.html">Display Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../eeprom/README.html">EEPROM Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../espi/README.html">Enhanced Serial Peripheral Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../flash_shell/README.html">Flash Shell Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ht16k33/README.html">HT16K33 LED driver with keyscan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c_fujitsu_fram/README.html">I2C Fujitsu FRAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/echo/README.html">I2S Echo Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/litex/README.html">I2S example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ipm/ipm_imx/README.html">i.MX IPM example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ipm/ipm_mcux/README.html">Sample mailbox application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ipm/ipm_mhu_dual_core/README.html">MHU Dual Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jesd216/README.html">JESD216 Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kscan/README.html">KSCAN Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kscan_touch/README.html">KSCAN touch panel example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lcd_hd44780/README.html">LCD HD44780 driver sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../led_apa102/README.html">APA102 Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../led_lp3943/README.html">LP3943: 16-Channel RGB, White-LED Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../led_lp503x/README.html">LP5030/6: 10 or 12 RGB channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../led_lp5562/README.html">LP5562: 4-Channel RGB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../led_lpd8806/README.html">LPD880x Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../led_pca9633/README.html">PCA9633: 4-Channel RGB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../led_pwm/README.html">LED PWM sample application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../led_sx1509b_intensity/README.html">SX1509B LED Intensity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../led_ws2812/README.html">WS2812 Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../misc/ft800/README.html">FT800</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../misc/grove_display/README.html">Grove LCD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../peci/README.html">PECI Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ps2/README.html">PS/2 Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_bitbang/README.html">SPI-Bitbang Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_flash/README.html">JEDEC SPI-NOR Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_flash_at45/README.html">AT45 DataFlash driver sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/echo_bot/README.html">UART Driver Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/stm32/single_wire/README.html">STM32 Single Wire UART</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../application_development/application_development.html">Application development samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shields/shields.html">Shields Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../posix/posix.html">POSIX Subsystem Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel/index.html">Various Kernel and Scheduler Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tfm_integration/tfm_integration.html">TF-M Integration Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tfm_integration/tfm_integration.html#trusted-firmware-m-tf-m">Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules/index.html">External Module Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../compression/compression.html">Compression Samples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Samples and Demos</a> &raquo;</li>
+        
+          <li><a href="../drivers.html">Driver Samples</a> &raquo;</li>
+        
+      <li>LiteX Clock Control Driver Sample</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/samples/drivers/clock_control_litex/README.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="litex-clock-control-driver-sample">
+<span id="clock-control-litex-sample"></span><h1>LiteX Clock Control Driver Sample<a class="headerlink" href="#litex-clock-control-driver-sample" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This sample is providing an overview of LiteX clock control driver capabilities.
+The driver uses Mixed Mode Clock Manager (MMCM) module to generate up to 7 clocks with defined phase, frequency and duty cycle.</p>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>LiteX-capable FPGA platform with MMCM modules (for example Digilent Arty A7 development board)</p></li>
+<li><p>SoC configuration with VexRiscv soft CPU and Xilinx 7-series MMCM interface in LiteX (S7MMCM module)</p></li>
+<li><p>Optional: clock output signals redirected to output pins for testing</p></li>
+</ul>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Basic configuration of the driver, including default settings for clock outputs, is held in Device Tree clock control nodes.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>			<span class="n">clk0</span><span class="p">:</span> <span class="n">clock</span><span class="o">-</span><span class="n">controller</span><span class="o">@</span><span class="mi">0</span> <span class="p">{</span>
+				<span class="c1">#clock-cells = &lt;1&gt;;</span>
+				<span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;litex,clkout&quot;</span><span class="p">;</span>
+				<span class="n">clock</span><span class="o">-</span><span class="n">output</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;CLK_0&quot;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">frequency</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">100000000</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">phase</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">duty</span><span class="o">-</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">duty</span><span class="o">-</span><span class="n">den</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">margin</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">margin</span><span class="o">-</span><span class="n">exp</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;disabled&quot;</span><span class="p">;</span>
+			<span class="p">};</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>			<span class="n">clk1</span><span class="p">:</span> <span class="n">clock</span><span class="o">-</span><span class="n">controller</span><span class="o">@</span><span class="mi">1</span> <span class="p">{</span>
+				<span class="c1">#clock-cells = &lt;1&gt;;</span>
+				<span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;litex,clkout&quot;</span><span class="p">;</span>
+				<span class="n">clock</span><span class="o">-</span><span class="n">output</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;CLK_1&quot;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">frequency</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">100000000</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">phase</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">duty</span><span class="o">-</span><span class="n">num</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">duty</span><span class="o">-</span><span class="n">den</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">margin</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">litex</span><span class="p">,</span><span class="n">clock</span><span class="o">-</span><span class="n">margin</span><span class="o">-</span><span class="n">exp</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+				<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;disabled&quot;</span><span class="p">;</span>
+			<span class="p">};</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>		<span class="n">clock0</span><span class="p">:</span> <span class="n">clock</span><span class="o">@</span><span class="mi">82005000</span> <span class="p">{</span>
+			<span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;litex,clk&quot;</span><span class="p">;</span>
+			<span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;clock0&quot;</span><span class="p">;</span>
+			<span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x82005000</span> <span class="mh">0x1</span>
+			       <span class="mh">0x82005004</span> <span class="mh">0x1</span>
+			       <span class="mh">0x82005008</span> <span class="mh">0x1</span>
+			       <span class="mh">0x8200500c</span> <span class="mh">0x1</span>
+			       <span class="mh">0x82005010</span> <span class="mh">0x1</span>
+			       <span class="mh">0x82005014</span> <span class="mh">0x1</span>
+			       <span class="mh">0x82005018</span> <span class="mh">0x2</span>
+			       <span class="mh">0x82005020</span> <span class="mh">0x2</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">reg</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;drp_reset&quot;</span><span class="p">,</span>
+				    <span class="s2">&quot;drp_locked&quot;</span><span class="p">,</span>
+				    <span class="s2">&quot;drp_read&quot;</span><span class="p">,</span>
+				    <span class="s2">&quot;drp_write&quot;</span><span class="p">,</span>
+				    <span class="s2">&quot;drp_drdy&quot;</span><span class="p">,</span>
+				    <span class="s2">&quot;drp_adr&quot;</span><span class="p">,</span>
+				    <span class="s2">&quot;drp_dat_w&quot;</span><span class="p">,</span>
+				    <span class="s2">&quot;drp_dat_r&quot;</span><span class="p">;</span>
+			<span class="c1">#clock-cells = &lt;1&gt;;</span>
+			<span class="n">clocks</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">clk0</span> <span class="mi">0</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;&amp;</span><span class="n">clk1</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">clock</span><span class="o">-</span><span class="n">output</span><span class="o">-</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;CLK_0&quot;</span><span class="p">,</span> <span class="s2">&quot;CLK_1&quot;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">lock</span><span class="o">-</span><span class="n">timeout</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">10</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">drdy</span><span class="o">-</span><span class="n">timeout</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">10</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">sys</span><span class="o">-</span><span class="n">clock</span><span class="o">-</span><span class="n">frequency</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">100000000</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">divclk</span><span class="o">-</span><span class="n">divide</span><span class="o">-</span><span class="nb">min</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">divclk</span><span class="o">-</span><span class="n">divide</span><span class="o">-</span><span class="nb">max</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">107</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">clkfbout</span><span class="o">-</span><span class="n">mult</span><span class="o">-</span><span class="nb">min</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">clkfbout</span><span class="o">-</span><span class="n">mult</span><span class="o">-</span><span class="nb">max</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">65</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">vco</span><span class="o">-</span><span class="n">freq</span><span class="o">-</span><span class="nb">min</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">600000000</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">vco</span><span class="o">-</span><span class="n">freq</span><span class="o">-</span><span class="nb">max</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1200000000</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">clkout</span><span class="o">-</span><span class="n">divide</span><span class="o">-</span><span class="nb">min</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">clkout</span><span class="o">-</span><span class="n">divide</span><span class="o">-</span><span class="nb">max</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">126</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">litex</span><span class="p">,</span><span class="n">vco</span><span class="o">-</span><span class="n">margin</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+			<span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;disabled&quot;</span><span class="p">;</span>
+		<span class="p">};</span>
+</pre></div>
+</div>
+<p>This configuration defines 2 clock outputs: <code class="docutils literal notranslate"><span class="pre">clk0</span></code> and <code class="docutils literal notranslate"><span class="pre">clk1</span></code> with default frequency set to 100MHz, 0 degrees phase offset and 50% duty cycle. Special care should be taken when defining values for FPGA-specific configuration (parameters from <code class="docutils literal notranslate"><span class="pre">litex,divclk-divide-min</span></code> to <code class="docutils literal notranslate"><span class="pre">litex,vco-margin</span></code>).</p>
+<p><strong>Important note:</strong>  <code class="docutils literal notranslate"><span class="pre">reg</span></code> properties in <code class="docutils literal notranslate"><span class="pre">clk0</span></code> and <code class="docutils literal notranslate"><span class="pre">clk1</span></code> nodes reference the clock output number (<code class="docutils literal notranslate"><span class="pre">clkout_nr</span></code>)</p>
+</div>
+<div class="section" id="driver-usage">
+<h2>Driver Usage<a class="headerlink" href="#driver-usage" title="Permalink to this headline">¶</a></h2>
+<p>The driver is interfaced with the <a class="reference internal" href="../../../reference/peripherals/clock_control.html#clock-control-api"><span class="std std-ref">Clock Control API</span></a> function <code class="docutils literal notranslate"><span class="pre">clock_control_on()</span></code> and a LiteX driver specific structure:</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.litex_clk_setup">
+<span class="target" id="structlitex__clk__setup"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">litex_clk_setup</span></span></span><a class="headerlink" href="#c.litex_clk_setup" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Structure for interfacing with clock control API. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">clkout_nr</span></code>: Number of clock output to be changed </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rate</span></code>: Frequency to set given in Hz </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">phase</span></code>: Phase offset in degrees </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">duty</span></code>: Duty cycle of clock signal in percent </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<div class="line-block">
+<div class="line">To change clock parameter it is needed to cast a pointer to structure <code class="docutils literal notranslate"><span class="pre">litex_clk_setup</span></code> onto <code class="docutils literal notranslate"><span class="pre">clock_control_subsys_t</span></code> and use it with <code class="docutils literal notranslate"><span class="pre">clock_control_on()</span></code>.</div>
+<div class="line">This code will try to set on <code class="docutils literal notranslate"><span class="pre">clk0</span></code> frequency 50MHz, 90 degrees of phase offset and 75% duty cycle.</div>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+<span class="k">struct</span> <span class="nc">litex_clk_setup</span> <span class="n">setup</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">clkout_nr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">rate</span> <span class="o">=</span> <span class="mi">50000000</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">duty</span> <span class="o">=</span> <span class="mi">75</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">phase</span> <span class="o">=</span> <span class="mi">90</span>
+<span class="p">};</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">DEVICE_DT_GET</span><span class="p">(</span><span class="n">MMCM</span><span class="p">);</span>
+<span class="n">clock_control_subsys_t</span> <span class="n">sub_system</span> <span class="o">=</span> <span class="p">(</span><span class="n">clock_control_subsys_t</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">setup</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">((</span><span class="n">ret</span> <span class="o">=</span> <span class="n">clock_control_on</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">sub_system</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">LOG_ERR</span><span class="p">(</span><span class="s">&quot;Set CLKOUT%d param error!&quot;</span><span class="p">,</span> <span class="n">setup</span><span class="p">.</span><span class="n">clkout_nr</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Clock output status (frequency, duty and phase offset) can be acquired with function <code class="docutils literal notranslate"><span class="pre">clock_control_get_status()</span></code> and clock output frequency only can be queried with <code class="docutils literal notranslate"><span class="pre">clock_control_get_rate()</span></code></p>
+<p>In both getter functions, basic usage is similar to <code class="docutils literal notranslate"><span class="pre">clock_control_on()</span></code>. Structure <code class="docutils literal notranslate"><span class="pre">litex_clk_setup</span></code> is used to set <code class="docutils literal notranslate"><span class="pre">clkout_nr</span></code> of clock output from which data is to be acquired.</p>
+</div>
+<div class="section" id="sample-usage">
+<h2>Sample usage<a class="headerlink" href="#sample-usage" title="Permalink to this headline">¶</a></h2>
+<p>This example provides a simple way of checking various clock output settings. User can pick one of 4 possible scenarios:</p>
+<ul class="simple">
+<li><p>Frequency range,</p></li>
+<li><p>Duty cycle range,</p></li>
+<li><p>Phase range,</p></li>
+<li><p>Setting frequency, duty and phase at once, then check clock status and rate,</p></li>
+</ul>
+<p>Scenarios are selected by defining <code class="docutils literal notranslate"><span class="pre">LITEX_CLK_TEST</span></code> as one of:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LITEX_TEST_FREQUENCY</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LITEX_TEST_DUTY</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LITEX_TEST_PHASE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LITEX_TEST_SINGLE</span></code></p></li>
+</ul>
+<p>Code is performed on 2 clock outputs with <code class="docutils literal notranslate"><span class="pre">clkout_nr</span></code> defined in <code class="docutils literal notranslate"><span class="pre">LITEX_CLK_TEST_CLK1</span></code> and <code class="docutils literal notranslate"><span class="pre">LITEX_CLK_TEST_CLK2</span></code>. Tests are controlled by separate defines for each scenario.</p>
+</div>
+<div class="section" id="building">
+<h2>Building<a class="headerlink" href="#building" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>west build -b litex_vexriscv zephyr/samples/drivers/clock_control
+</pre></div>
+</div>
+<p>Drivers prints a lot of useful debugging information to the log. It is highly recommended to enable logging and synchronous processing of log messages and set log level to <code class="docutils literal notranslate"><span class="pre">Info</span></code>.</p>
+</div>
+<div class="section" id="sample-output">
+<h2>Sample output<a class="headerlink" href="#sample-output" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[00:00:00.200,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT0: set rate: 100000000 HZ
+[00:00:00.240,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT1: updated rate: 100000000 to 100000000 HZ
+[00:00:00.280,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT0: set duty: 50%
+[00:00:00.320,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT0: set phase: 0 deg
+[00:00:00.360,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT1: set rate: 100000000 HZ
+[00:00:00.400,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT1: set duty: 50%
+[00:00:00.440,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT1: set phase: 0 deg
+[00:00:00.440,000] &lt;inf&gt; CLK_CTRL_LITEX: LiteX Clock Control driver initialized
+*** Booting Zephyr OS build zephyr-v2.2.0-2810-g1ca5dda196c3  ***
+Clock Control Example! riscv32
+device name: clock0
+clock control device is 0x40013460, name is clock0
+Clock test
+Single test
+[00:00:00.510,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT0: set rate: 15000000 HZ
+[00:00:00.550,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT0: set phase: 90 deg
+[00:00:00.590,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT0: set duty: 25%
+[00:00:00.630,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT1: set rate: 15000000 HZ
+[00:00:00.670,000] &lt;inf&gt; CLK_CTRL_LITEX: CLKOUT1: set duty: 75%
+Getters test
+CLKOUT0: get_status: rate:15000000 phase:90 duty:25
+CLKOUT0: get_rate:15000000
+CLKOUT1: get_status: rate:15000000 phase:0 duty:75
+CLKOUT1: get_rate:15000000
+Clock test done returning: 0
+</pre></div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../boards/riscv/litex_vexriscv/doc/index.html#litex-vexriscv"><span class="std std-ref">LiteX VexRiscv</span></a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../counter/alarm/README.html" class="btn btn-neutral float-right" title="Counter Alarm Sample" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../can/README.html" class="btn btn-neutral" title="Controller Area Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

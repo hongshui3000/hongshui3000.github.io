@@ -1,0 +1,573 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Setting Kconfig configuration values &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Kconfig - Tips and Best Practices" href="tips.html" />
+    <link rel="prev" title="Interactive Kconfig interfaces" href="menuconfig.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Build and Configuration Systems</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#build-system-cmake">Build System (CMake)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#configuration-system-kconfig">Configuration System (Kconfig)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="menuconfig.html">Interactive Kconfig interfaces</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Setting Kconfig configuration values</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#visible-and-invisible-kconfig-symbols">Visible and invisible Kconfig symbols</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-symbols-in-configuration-files">Setting symbols in configuration files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-initial-configuration">The Initial Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-invisible-kconfig-symbols">Configuring invisible Kconfig symbols</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tips.html">Kconfig - Tips and Best Practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocessor-functions.html">Custom Kconfig Preprocessor Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="extensions.html">Kconfig extensions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Build and Configuration Systems</a> &raquo;</li>
+        
+      <li>Setting Kconfig configuration values</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/guides/build/kconfig/setting.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="setting-kconfig-configuration-values">
+<span id="setting-configuration-values"></span><h1>Setting Kconfig configuration values<a class="headerlink" href="#setting-kconfig-configuration-values" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="menuconfig.html#menuconfig"><span class="std std-ref">menuconfig and guiconfig interfaces</span></a> can be used to test
+out configurations during application development. This page explains how to
+make settings permanent.</p>
+<p>All Kconfig options can be searched in the <a class="reference internal" href="../../../kconfig.html#kconfig-search"><span class="std std-ref">Kconfig search page</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before making changes to Kconfig files, it’s a good idea to also go through
+the <a class="reference internal" href="tips.html#kconfig-tips-and-tricks"><span class="std std-ref">Kconfig - Tips and Best Practices</span></a> page.</p>
+</div>
+<div class="section" id="visible-and-invisible-kconfig-symbols">
+<h2>Visible and invisible Kconfig symbols<a class="headerlink" href="#visible-and-invisible-kconfig-symbols" title="Permalink to this headline">¶</a></h2>
+<p>When making Kconfig changes, it’s important to understand the difference
+between <em>visible</em> and <em>invisible</em> symbols.</p>
+<ul>
+<li><p>A visible symbol is a symbol defined with a prompt. Visible symbols show
+up in the interactive configuration interfaces (hence <em>visible</em>), and can be
+set in configuration files.</p>
+<p>Here’s an example of a visible symbol:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>config FPU
+   bool &quot;Support floating point operations&quot;
+   depends on HAS_FPU
+</pre></div>
+</div>
+<p>The symbol is shown like this in <code class="docutils literal notranslate"><span class="pre">menuconfig</span></code>, where it can be toggled:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[ ] Support floating point operations
+</pre></div>
+</div>
+</li>
+<li><p>An <em>invisible</em> symbol is a symbol without a prompt. Invisible symbols are
+not shown in the interactive configuration interfaces, and users have no
+direct control over their value. They instead get their value from defaults
+or from other symbols.</p>
+<p>Here’s an example or an invisible symbol:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>config CPU_HAS_FPU
+   bool
+   help
+     This symbol is y if the CPU has a hardware floating point unit.
+</pre></div>
+</div>
+<p>In this case, <code class="docutils literal notranslate"><span class="pre">CPU_HAS_FPU</span></code> is enabled through other symbols having
+<code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">CPU_HAS_FPU</span></code>.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="setting-symbols-in-configuration-files">
+<h2>Setting symbols in configuration files<a class="headerlink" href="#setting-symbols-in-configuration-files" title="Permalink to this headline">¶</a></h2>
+<p>Visible symbols can be configured by setting them in configuration files. The
+initial configuration is produced by merging a <code class="file docutils literal notranslate"><span class="pre">*_defconfig</span></code> file for the
+board with application settings, usually from <code class="file docutils literal notranslate"><span class="pre">prj.conf</span></code>. See
+<a class="reference internal" href="#initial-conf"><span class="std std-ref">The Initial Configuration</span></a> below for more details.</p>
+<p>Assignments in configuration files use this syntax:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>CONFIG_&lt;symbol name&gt;=&lt;value&gt;
+</pre></div>
+</div>
+<p>There should be no spaces around the equals sign.</p>
+<p><code class="docutils literal notranslate"><span class="pre">bool</span></code> symbols can be enabled or disabled by setting them to <code class="docutils literal notranslate"><span class="pre">y</span></code> or <code class="docutils literal notranslate"><span class="pre">n</span></code>,
+respectively. The <code class="docutils literal notranslate"><span class="pre">FPU</span></code> symbol from the example above could be enabled like
+this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>CONFIG_FPU=y
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A boolean symbol can also be set to <code class="docutils literal notranslate"><span class="pre">n</span></code> with a comment formatted like
+this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># CONFIG_SOME_OTHER_BOOL is not set
+</pre></div>
+</div>
+<p>This is the format you will see in the merged configuration in
+<code class="file docutils literal notranslate"><span class="pre">zephyr/.config</span></code>.</p>
+<p>This style is accepted for historical reasons: Kconfig configuration files
+can be parsed as makefiles (though Zephyr doesn’t use this). Having
+<code class="docutils literal notranslate"><span class="pre">n</span></code>-valued symbols correspond to unset variables simplifies tests in Make.</p>
+</div>
+<p>Other symbol types are assigned like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>CONFIG_SOME_STRING=&quot;cool value&quot;
+CONFIG_SOME_INT=123
+</pre></div>
+</div>
+<p>Comments use a #:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># This is a comment
+</pre></div>
+</div>
+<p>Assignments in configuration files are only respected if the dependencies for
+the symbol are satisfied. A warning is printed otherwise. To figure out what
+the dependencies of a symbol are, use one of the <a class="reference internal" href="menuconfig.html#menuconfig"><span class="std std-ref">interactive
+configuration interfaces</span></a> (you can jump directly to a symbol with
+<kbd class="kbd docutils literal notranslate">/</kbd>), or look up the symbol in the <a class="reference internal" href="../../../kconfig.html#kconfig-search"><span class="std std-ref">Kconfig search page</span></a>.</p>
+</div>
+<div class="section" id="the-initial-configuration">
+<span id="initial-conf"></span><h2>The Initial Configuration<a class="headerlink" href="#the-initial-configuration" title="Permalink to this headline">¶</a></h2>
+<p>The initial configuration for an application comes from merging configuration
+settings from three sources:</p>
+<ol class="arabic simple">
+<li><p>A <code class="docutils literal notranslate"><span class="pre">BOARD</span></code>-specific configuration file stored in
+<code class="file docutils literal notranslate"><span class="pre">boards/&lt;architecture&gt;/&lt;BOARD&gt;/&lt;BOARD&gt;_defconfig</span></code></p></li>
+<li><p>Any CMake cache entries prefix with <code class="docutils literal notranslate"><span class="pre">CONFIG_</span></code></p></li>
+<li><p>The application configuration</p></li>
+</ol>
+<p>The application configuration can come from the sources below. By default,
+<code class="file docutils literal notranslate"><span class="pre">prj.conf</span></code> is used.</p>
+<ol class="arabic simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">CONF_FILE</span></code> is set, the configuration file(s) specified in it are
+merged and used as the application configuration. <code class="docutils literal notranslate"><span class="pre">CONF_FILE</span></code> can be set
+in various ways:</p>
+<ol class="arabic simple">
+<li><p>In <code class="file docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>, before calling <code class="docutils literal notranslate"><span class="pre">find_package(Zephyr)</span></code></p></li>
+<li><p>By passing <code class="docutils literal notranslate"><span class="pre">-DCONF_FILE=&lt;conf</span> <span class="pre">file(s)&gt;</span></code>, either directly or via <code class="docutils literal notranslate"><span class="pre">west</span></code></p></li>
+<li><p>From the CMake variable cache</p></li>
+</ol>
+</li>
+<li><p>Otherwise if <code class="docutils literal notranslate"><span class="pre">CONF_FILE</span></code> is set, and a single configuration file of the
+form <code class="file docutils literal notranslate"><span class="pre">prj_&lt;build&gt;.conf</span></code> is used, then if file
+<code class="file docutils literal notranslate"><span class="pre">boards/&lt;BOARD&gt;_&lt;build&gt;.conf</span></code> exists in same folder as file
+<code class="file docutils literal notranslate"><span class="pre">prj_&lt;build&gt;.conf</span></code>, the result of merging <code class="file docutils literal notranslate"><span class="pre">prj_&lt;build&gt;.conf</span></code> and
+<code class="file docutils literal notranslate"><span class="pre">boards/&lt;BOARD&gt;_&lt;build&gt;.conf</span></code> is used.</p></li>
+<li><p>Otherwise, <code class="file docutils literal notranslate"><span class="pre">prj_&lt;BOARD&gt;.conf</span></code> is used if it exists in the application
+configuration directory.</p></li>
+<li><p>Otherwise, if <code class="file docutils literal notranslate"><span class="pre">boards/&lt;BOARD&gt;.conf</span></code> exists in the application
+configuration directory, the result of merging it with <code class="file docutils literal notranslate"><span class="pre">prj.conf</span></code> is
+used.</p></li>
+<li><p>Otherwise, if board revisions are used and
+<code class="file docutils literal notranslate"><span class="pre">boards/&lt;BOARD&gt;_&lt;revision&gt;.conf</span></code> exists in the application
+configuration directory, the result of merging it with <code class="file docutils literal notranslate"><span class="pre">prj.conf</span></code> and
+<code class="file docutils literal notranslate"><span class="pre">boards/&lt;BOARD&gt;.conf</span></code> is used.</p></li>
+<li><p>Otherwise, <code class="file docutils literal notranslate"><span class="pre">prj.conf</span></code> is used if it exists in the application
+configuration directory</p></li>
+</ol>
+<p>All configuration files will be taken from the application’s configuration
+directory except for files with an absolute path that are given with the
+<code class="docutils literal notranslate"><span class="pre">CONF_FILE</span></code> argument.</p>
+<p>See <a class="reference internal" href="../../../application/index.html#application-configuration-directory"><span class="std std-ref">Application Configuration Directory</span></a>
+on how the application configuration directory is defined.</p>
+<p>If a symbol is assigned both in <code class="file docutils literal notranslate"><span class="pre">&lt;BOARD&gt;_defconfig</span></code> and in the
+application configuration, the value set in the application configuration takes
+precedence.</p>
+<p>The merged configuration is saved to <code class="file docutils literal notranslate"><span class="pre">zephyr/.config</span></code> in the build
+directory.</p>
+<p>As long as <code class="file docutils literal notranslate"><span class="pre">zephyr/.config</span></code> exists and is up-to-date (is newer than any
+<code class="docutils literal notranslate"><span class="pre">BOARD</span></code> and application configuration files), it will be used in preference
+to producing a new merged configuration. <code class="file docutils literal notranslate"><span class="pre">zephyr/.config</span></code> is also the
+configuration that gets modified when making changes in the <a class="reference internal" href="menuconfig.html#menuconfig"><span class="std std-ref">interactive
+configuration interfaces</span></a>.</p>
+</div>
+<div class="section" id="configuring-invisible-kconfig-symbols">
+<h2>Configuring invisible Kconfig symbols<a class="headerlink" href="#configuring-invisible-kconfig-symbols" title="Permalink to this headline">¶</a></h2>
+<p>When making changes to the default configuration for a board, you might have to
+configure invisible symbols. This is done in
+<code class="file docutils literal notranslate"><span class="pre">boards/&lt;architecture&gt;/&lt;BOARD&gt;/Kconfig.defconfig</span></code>, which is a regular
+<code class="file docutils literal notranslate"><span class="pre">Kconfig</span></code> file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Assignments in <code class="file docutils literal notranslate"><span class="pre">.config</span></code> files have no effect on invisible symbols,
+so this scheme is not just an organizational issue.</p>
+</div>
+<p>Assigning values in <code class="file docutils literal notranslate"><span class="pre">Kconfig.defconfig</span></code> relies on defining a Kconfig
+symbol in multiple locations. As an example, say we want to set <code class="docutils literal notranslate"><span class="pre">FOO_WIDTH</span></code>
+below to 32:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>config FOO_WIDTH
+    int
+</pre></div>
+</div>
+<p>To do this, we extend the definition of <code class="docutils literal notranslate"><span class="pre">FOO_WIDTH</span></code> as follows, in
+<code class="file docutils literal notranslate"><span class="pre">Kconfig.defconfig</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if BOARD_MY_BOARD
+
+config FOO_WIDTH
+    default 32
+
+endif
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since the type of the symbol (<code class="docutils literal notranslate"><span class="pre">int</span></code>) has already been given at the first
+definition location, it does not need to be repeated here. Only giving the
+type once at the “base” definition of the symbol is a good idea for reasons
+explained in <a class="reference internal" href="tips.html#kconfig-shorthands"><span class="std std-ref">Common Kconfig shorthands</span></a>.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">default</span></code> values in <code class="file docutils literal notranslate"><span class="pre">Kconfig.defconfig</span></code> files have priority over
+<code class="docutils literal notranslate"><span class="pre">default</span></code> values given on the “base” definition of a symbol. Internally, this
+is implemented by including the <code class="file docutils literal notranslate"><span class="pre">Kconfig.defconfig</span></code> files first. Kconfig
+uses the first <code class="docutils literal notranslate"><span class="pre">default</span></code> with a satisfied condition, where an empty condition
+corresponds to <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">y</span></code> (is always satisfied).</p>
+<p>Note that conditions from surrounding top-level <code class="docutils literal notranslate"><span class="pre">if</span></code>s are propagated to
+symbol properties, so the above <code class="docutils literal notranslate"><span class="pre">default</span></code> is equivalent to
+<code class="docutils literal notranslate"><span class="pre">default</span> <span class="pre">32</span> <span class="pre">if</span> <span class="pre">BOARD_MY_BOARD</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When defining a symbol in multiple locations, dependencies are ORed together
+rather than ANDed together. It is not possible to make the dependencies of a
+symbol more restrictive by defining it in multiple locations.</p>
+<p>For example, the direct dependencies of the symbol below becomes
+<code class="docutils literal notranslate"><span class="pre">DEP1</span> <span class="pre">||</span> <span class="pre">DEP2</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>config FOO
+  ...
+  depends on DEP1
+
+config FOO
+  ...
+  depends on DEP2
+</pre></div>
+</div>
+<p>When making changes to <code class="file docutils literal notranslate"><span class="pre">Kconfig.defconfig</span></code> files, always check the
+symbol’s direct dependencies in one of the <a class="reference internal" href="menuconfig.html#menuconfig"><span class="std std-ref">interactive configuration
+interfaces</span></a> afterwards. It is often necessary to repeat
+dependencies from the base definition of the symbol to avoid weakening a
+symbol’s dependencies.</p>
+</div>
+<div class="section" id="motivation-for-kconfig-defconfig-files">
+<h3>Motivation for Kconfig.defconfig files<a class="headerlink" href="#motivation-for-kconfig-defconfig-files" title="Permalink to this headline">¶</a></h3>
+<p>One motivation for this configuration scheme is to avoid making fixed
+<code class="docutils literal notranslate"><span class="pre">BOARD</span></code>-specific settings configurable in the interactive configuration
+interfaces. If all board configuration were done via <code class="file docutils literal notranslate"><span class="pre">&lt;BOARD&gt;_defconfig</span></code>,
+all symbols would have to be visible, as values given in
+<code class="file docutils literal notranslate"><span class="pre">&lt;BOARD&gt;_defconfig</span></code> have no effect on invisible symbols.</p>
+<p>Having fixed settings be user-configurable would clutter up the configuration
+interfaces and make them harder to understand, and would make it easier to
+accidentally create broken configurations.</p>
+<p>When dealing with fixed board-specific settings, also consider whether they
+should be handled via <a class="reference internal" href="../../dts/index.html#dt-guide"><span class="std std-ref">devicetree</span></a> instead.</p>
+</div>
+<div class="section" id="configuring-choices">
+<h3>Configuring choices<a class="headerlink" href="#configuring-choices" title="Permalink to this headline">¶</a></h3>
+<p>There are two ways to configure a Kconfig <code class="docutils literal notranslate"><span class="pre">choice</span></code>:</p>
+<ol class="arabic">
+<li><p>By setting one of the choice symbols to <code class="docutils literal notranslate"><span class="pre">y</span></code> in a configuration file.</p>
+<p>Setting one choice symbol to <code class="docutils literal notranslate"><span class="pre">y</span></code> automatically gives all other choice
+symbols the value <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+<p>If multiple choice symbols are set to <code class="docutils literal notranslate"><span class="pre">y</span></code>, only the last one set to <code class="docutils literal notranslate"><span class="pre">y</span></code>
+will be honored (the rest will get the value <code class="docutils literal notranslate"><span class="pre">n</span></code>). This allows a choice
+selection from a board <code class="file docutils literal notranslate"><span class="pre">defconfig</span></code> file to be overridden from an
+application <code class="file docutils literal notranslate"><span class="pre">prj.conf</span></code> file.</p>
+</li>
+<li><p>By changing the <code class="docutils literal notranslate"><span class="pre">default</span></code> of the choice in <code class="file docutils literal notranslate"><span class="pre">Kconfig.defconfig</span></code>.</p>
+<p>As with symbols, changing the default for a choice is done by defining the
+choice in multiple locations. For this to work, the choice must have a name.</p>
+<p>As an example, assume that a choice has the following base definition (here,
+the name of the choice is <code class="docutils literal notranslate"><span class="pre">FOO</span></code>):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>choice FOO
+    bool &quot;Foo choice&quot;
+    default B
+
+config A
+    bool &quot;A&quot;
+
+config B
+    bool &quot;B&quot;
+
+endchoice
+</pre></div>
+</div>
+<p>To change the default symbol of <code class="docutils literal notranslate"><span class="pre">FOO</span></code> to <code class="docutils literal notranslate"><span class="pre">A</span></code>, you would add the
+following definition to <code class="file docutils literal notranslate"><span class="pre">Kconfig.defconfig</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>choice FOO
+    default A
+endchoice
+</pre></div>
+</div>
+</li>
+</ol>
+<p>The <code class="file docutils literal notranslate"><span class="pre">Kconfig.defconfig</span></code> method should be used when the dependencies of
+the choice might not be satisfied. In that case, you’re setting the default
+selection whenever the user makes the choice visible.</p>
+<div class="section" id="more-kconfig-resources">
+<h4>More Kconfig resources<a class="headerlink" href="#more-kconfig-resources" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference internal" href="tips.html#kconfig-tips-and-tricks"><span class="std std-ref">Kconfig - Tips and Best Practices</span></a> page has some tips for writing Kconfig
+files.</p>
+<p>The <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/scripts/kconfig/kconfiglib.py">kconfiglib.py </a> docstring
+docstring (at the top of the file) goes over how symbol values are calculated
+in detail.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tips.html" class="btn btn-neutral float-right" title="Kconfig - Tips and Best Practices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="menuconfig.html" class="btn btn-neutral" title="Interactive Kconfig interfaces" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1058 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Logical Link Control and Adaptation Protocol (L2CAP) &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Bluetooth Mesh Profile" href="mesh.html" />
+    <link rel="prev" title="Hands Free Profile (HFP)" href="hfp.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Bluetooth</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="connection_mgmt.html">Connection Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="controller.html">Bluetooth Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crypto.html">Cryptography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_buffer.html">Data Buffers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gap.html">Generic Access Profile (GAP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gatt.html">Generic Attribute Profile (GATT)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci_drivers.html">HCI Drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci_raw.html">HCI RAW channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hfp.html">Hands Free Profile (HFP)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Logical Link Control and Adaptation Protocol (L2CAP)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mesh.html">Bluetooth Mesh Profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfcomm.html">Serial Port Emulation (RFCOMM)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sdp.html">Service Discovery Protocol (SDP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uuid.html">Universal Unique Identifiers (UUIDs)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/audio.html">Bluetooth: Basic Audio Profile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Bluetooth</a> &raquo;</li>
+        
+      <li>Logical Link Control and Adaptation Protocol (L2CAP)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/bluetooth/l2cap.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="logical-link-control-and-adaptation-protocol-l2cap">
+<span id="bt-l2cap"></span><h1>Logical Link Control and Adaptation Protocol (L2CAP)<a class="headerlink" href="#logical-link-control-and-adaptation-protocol-l2cap" title="Permalink to this headline">¶</a></h1>
+<p>L2CAP layer enables connection-oriented channels which can be enable with the
+configuration option: <a class="reference internal" href="../../kconfig.html#CONFIG_BT_L2CAP_DYNAMIC_CHANNEL" title="CONFIG_BT_L2CAP_DYNAMIC_CHANNEL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BT_L2CAP_DYNAMIC_CHANNEL</span></code></a>. This channels
+support segmentation and reassembly transparently, they also support credit
+based flow control making it suitable for data streams.</p>
+<p>Channels instances are represented by the <a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><code class="xref c c-struct docutils literal notranslate"><span class="pre">bt_l2cap_chan</span></code></a> struct which
+contains the callbacks in the <a class="reference internal" href="#c.bt_l2cap_chan_ops" title="bt_l2cap_chan_ops"><code class="xref c c-struct docutils literal notranslate"><span class="pre">bt_l2cap_chan_ops</span></code></a> struct to inform
+when the channel has been connected, disconnected or when the encryption has
+changed.
+In addition to that it also contains the <code class="docutils literal notranslate"><span class="pre">recv</span></code> callback which is called
+whenever an incoming data has been received. Data received this way can be
+marked as processed by returning 0 or using
+<a class="reference internal" href="#c.bt_l2cap_chan_recv_complete" title="bt_l2cap_chan_recv_complete"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_l2cap_chan_recv_complete()</span></code></a> API if processing is asynchronous.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">recv</span></code> callback is called directly from RX Thread thus it is not
+recommended to block for long periods of time.</p>
+</div>
+<p>For sending data the <a class="reference internal" href="#c.bt_l2cap_chan_send" title="bt_l2cap_chan_send"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_l2cap_chan_send()</span></code></a> API can be used noting that
+it may block if no credits are available, and resuming as soon as more credits
+are available.</p>
+<p>Servers can be registered using <a class="reference internal" href="#c.bt_l2cap_server_register" title="bt_l2cap_server_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_l2cap_server_register()</span></code></a> API passing
+the <a class="reference internal" href="#c.bt_l2cap_server" title="bt_l2cap_server"><code class="xref c c-struct docutils literal notranslate"><span class="pre">bt_l2cap_server</span></code></a> struct which informs what <code class="docutils literal notranslate"><span class="pre">psm</span></code> it should
+listen to, the required security level <code class="docutils literal notranslate"><span class="pre">sec_level</span></code>, and the callback
+<code class="docutils literal notranslate"><span class="pre">accept</span></code> which is called to authorize incoming connection requests and
+allocate channel instances.</p>
+<p>Client channels can be initiated with use of <a class="reference internal" href="#c.bt_l2cap_chan_connect" title="bt_l2cap_chan_connect"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_l2cap_chan_connect()</span></code></a>
+API and can be disconnected with the <a class="reference internal" href="#c.bt_l2cap_chan_disconnect" title="bt_l2cap_chan_disconnect"><code class="xref c c-func docutils literal notranslate"><span class="pre">bt_l2cap_chan_disconnect()</span></code></a> API.
+Note that the later can also disconnect channel instances created by servers.</p>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__bt__l2cap"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">bt_l2cap</span></span></dt>
+<dd><p>L2CAP. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_L2CAP_HDR_SIZE">
+<span class="target" id="group__bt__l2cap_1gab33b91052026973180356640b7310659"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_HDR_SIZE</span></span></span><a class="headerlink" href="#c.BT_L2CAP_HDR_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>L2CAP PDU header size, used for buffer size calculations </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_L2CAP_TX_MTU">
+<span class="target" id="group__bt__l2cap_1ga45ef5aee4ed4dd705cad6d234562c660"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_TX_MTU</span></span></span><a class="headerlink" href="#c.BT_L2CAP_TX_MTU" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum Transmission Unit (MTU) for an outgoing L2CAP PDU. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_L2CAP_RX_MTU">
+<span class="target" id="group__bt__l2cap_1ga6e458a1758e5012755f3b97f8348c966"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_RX_MTU</span></span></span><a class="headerlink" href="#c.BT_L2CAP_RX_MTU" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum Transmission Unit (MTU) for an incoming L2CAP PDU. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_L2CAP_BUF_SIZE">
+<span class="target" id="group__bt__l2cap_1gab95b119de4757588074e367a90a7136a"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_BUF_SIZE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">mtu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_L2CAP_BUF_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper to calculate needed buffer size for L2CAP PDUs. Useful for creating buffer pools. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Needed buffer size to match the requested L2CAP PDU MTU. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mtu</span></code>: Needed L2CAP PDU MTU.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_L2CAP_SDU_HDR_SIZE">
+<span class="target" id="group__bt__l2cap_1ga967c4c3f9b9beba1d0ce8516c5d1c659"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_SDU_HDR_SIZE</span></span></span><a class="headerlink" href="#c.BT_L2CAP_SDU_HDR_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>L2CAP SDU header size, used for buffer size calculations </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_L2CAP_SDU_TX_MTU">
+<span class="target" id="group__bt__l2cap_1gaa6fcd053d918db7005bc058501c2a598"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_SDU_TX_MTU</span></span></span><a class="headerlink" href="#c.BT_L2CAP_SDU_TX_MTU" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum Transmission Unit for an unsegmented outgoing L2CAP SDU. </p>
+<p>The Maximum Transmission Unit for an outgoing L2CAP SDU when sent without segmentation, i.e a single L2CAP SDU will fit inside a single L2CAP PDU.</p>
+<p>The MTU for outgoing L2CAP SDUs with segmentation is defined by the size of the application buffer pool. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_L2CAP_SDU_RX_MTU">
+<span class="target" id="group__bt__l2cap_1ga13b93a8f09157fbcf739fa4949840efe"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_SDU_RX_MTU</span></span></span><a class="headerlink" href="#c.BT_L2CAP_SDU_RX_MTU" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum Transmission Unit for an unsegmented incoming L2CAP SDU. </p>
+<p>The Maximum Transmission Unit for an incoming L2CAP SDU when sent without segmentation, i.e a single L2CAP SDU will fit inside a single L2CAP PDU.</p>
+<p>The MTU for incoming L2CAP SDUs with segmentation is defined by the size of the application buffer pool. The application will have to define an alloc_buf callback for the channel in order to support receiving segmented L2CAP SDUs. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_L2CAP_SDU_BUF_SIZE">
+<span class="target" id="group__bt__l2cap_1ga1c76618c32bbe86b18fd8663760fb220"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_SDU_BUF_SIZE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">mtu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_L2CAP_SDU_BUF_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper to calculate needed buffer size for L2CAP SDUs. Useful for creating buffer pools. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Needed buffer size to match the requested L2CAP SDU MTU. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mtu</span></code>: Required BT_L2CAP_*_SDU.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_L2CAP_LE_CHAN">
+<span class="target" id="group__bt__l2cap_1gac936761e661a5c65d65ee9b4c185679b"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_LE_CHAN</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_ch</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.BT_L2CAP_LE_CHAN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper macro getting container object of type <a class="reference internal" href="#structbt__l2cap__le__chan"><span class="std std-ref">bt_l2cap_le_chan</span></a> address having the same container chan member address as object in question. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Address of in memory <a class="reference internal" href="#structbt__l2cap__le__chan"><span class="std std-ref">bt_l2cap_le_chan</span></a> object type containing the address of in question object. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_ch</span></code>: Address of object of <a class="reference internal" href="#structbt__l2cap__chan"><span class="std std-ref">bt_l2cap_chan</span></a> type</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_L2CAP_CHAN_SEND_RESERVE">
+<span class="target" id="group__bt__l2cap_1ga281232ec622c626c0be2be23bae18d8d"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_CHAN_SEND_RESERVE</span></span></span><a class="headerlink" href="#c.BT_L2CAP_CHAN_SEND_RESERVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Headroom needed for outgoing L2CAP PDUs. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.BT_L2CAP_SDU_CHAN_SEND_RESERVE">
+<span class="target" id="group__bt__l2cap_1gabdb3983d3862f6654a1653dd45c4157d"></span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_SDU_CHAN_SEND_RESERVE</span></span></span><a class="headerlink" href="#c.BT_L2CAP_SDU_CHAN_SEND_RESERVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Headroom needed for outgoing L2CAP SDUs. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_destroy_t">
+<span class="target" id="group__bt__l2cap_1gafe930d6bed8baed9f982f791b5d2172f"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_chan_destroy_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_l2cap_chan_destroy_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel destroy callback. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: Channel object. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_state_t">
+<span class="target" id="group__bt__l2cap_1ga5a80330e52ea0fa4ee3266094570bb16"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan_state" title="bt_l2cap_chan_state"><span class="n"><span class="pre">bt_l2cap_chan_state</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_chan_state_t</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_state_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Life-span states of L2CAP CoC channel. </p>
+<p>Used only by internal APIs dealing with setting channel to proper state depending on operational context. </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_status_t">
+<span class="target" id="group__bt__l2cap_1ga3a1a88a8e87aefe9bea1dd01aa193b42"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan_status" title="bt_l2cap_chan_status"><span class="n"><span class="pre">bt_l2cap_chan_status</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_chan_status_t</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_status_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Status of L2CAP channel. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_state">
+<span class="target" id="group__bt__l2cap_1ga642436bdf29f79495763b10231c6b25b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_chan_state</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Life-span states of L2CAP CoC channel. </p>
+<p>Used only by internal APIs dealing with setting channel to proper state depending on operational context. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_state.BT_L2CAP_DISCONNECTED">
+<span class="target" id="group__bt__l2cap_1gga642436bdf29f79495763b10231c6b25ba1dc4c69537acf13a8c00dfca5acfb83c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_DISCONNECTED</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_state.BT_L2CAP_DISCONNECTED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel disconnected </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_state.BT_L2CAP_CONNECTING">
+<span class="target" id="group__bt__l2cap_1gga642436bdf29f79495763b10231c6b25bac2a46c646c8739e8b129b89698eae7cd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_CONNECTING</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_state.BT_L2CAP_CONNECTING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel in connecting state </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_state.BT_L2CAP_CONFIG">
+<span class="target" id="group__bt__l2cap_1gga642436bdf29f79495763b10231c6b25ba3167a1b491cb9b97ebe51f66c209f064"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_CONFIG</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_state.BT_L2CAP_CONFIG" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel in config state, BR/EDR specific </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_state.BT_L2CAP_CONNECTED">
+<span class="target" id="group__bt__l2cap_1gga642436bdf29f79495763b10231c6b25ba3adc86576ca2db5a7f74030d11699b68"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_CONNECTED</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_state.BT_L2CAP_CONNECTED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel ready for upper layer traffic on it </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_state.BT_L2CAP_DISCONNECTING">
+<span class="target" id="group__bt__l2cap_1gga642436bdf29f79495763b10231c6b25ba7a24502cfb06df715f58ad2e088cb7e8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_DISCONNECTING</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_state.BT_L2CAP_DISCONNECTING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel in disconnecting state </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_status">
+<span class="target" id="group__bt__l2cap_1ga371a747c8939a1156111dc03c774015c"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_chan_status</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_status" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Status of L2CAP channel. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_status.BT_L2CAP_STATUS_OUT">
+<span class="target" id="group__bt__l2cap_1gga371a747c8939a1156111dc03c774015ca89aea3cf3d9a004ffd53eae602666fd5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_STATUS_OUT</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_status.BT_L2CAP_STATUS_OUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel output status </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_status.BT_L2CAP_STATUS_SHUTDOWN">
+<span class="target" id="group__bt__l2cap_1gga371a747c8939a1156111dc03c774015ca82d4e553f4298d00c27045949663208e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_STATUS_SHUTDOWN</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_status.BT_L2CAP_STATUS_SHUTDOWN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel shutdown status. </p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">Once</span> <span class="n">this</span> <span class="n">status</span> <span class="ow">is</span> <span class="n">notified</span> <span class="n">it</span> <span class="n">means</span> <span class="n">the</span> <span class="n">channel</span> <span class="n">will</span> <span class="n">no</span> <span class="n">longer</span> <span class="n">be</span>
+   <span class="n">able</span> <span class="n">to</span> <span class="n">transmit</span> <span class="ow">or</span> <span class="n">receive</span> <span class="n">data</span><span class="o">.</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_status.BT_L2CAP_STATUS_ENCRYPT_PENDING">
+<span class="target" id="group__bt__l2cap_1gga371a747c8939a1156111dc03c774015caea6cc7cae26d69926e7def91242650af"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_STATUS_ENCRYPT_PENDING</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_status.BT_L2CAP_STATUS_ENCRYPT_PENDING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel encryption pending status. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_status.BT_L2CAP_NUM_STATUS">
+<span class="target" id="group__bt__l2cap_1gga371a747c8939a1156111dc03c774015ca91bd77f9889b59ba5b0005a51016ba2c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_L2CAP_NUM_STATUS</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_status.BT_L2CAP_NUM_STATUS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_l2cap_server_register">
+<span class="target" id="group__bt__l2cap_1ga1a5e8c81c086872d7fb8da5329f982c6"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_server_register</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_server" title="bt_l2cap_server"><span class="n"><span class="pre">bt_l2cap_server</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">server</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_l2cap_server_register" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Register L2CAP server. </p>
+<p>Register L2CAP server for a PSM, each new connection is authorized using the accept() callback which in case of success shall allocate the channel structure to be used by the new connection.</p>
+<p>For fixed, SIG-assigned PSMs (in the range 0x0001-0x007f) the PSM should be assigned to server-&gt;psm before calling this API. For dynamic PSMs (in the range 0x0080-0x00ff) server-&gt;psm may be pre-set to a given value (this is however not recommended) or be left as 0, in which case upon return a newly allocated value will have been assigned to it. For dynamically allocated values the expectation is that it’s exposed through a GATT service, and that’s how L2CAP clients discover how to connect to the server.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">server</span></code>: Server structure.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_l2cap_br_server_register">
+<span class="target" id="group__bt__l2cap_1ga5b0ae2abd714f46e6bb2394bce33e613"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_br_server_register</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_server" title="bt_l2cap_server"><span class="n"><span class="pre">bt_l2cap_server</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">server</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_l2cap_br_server_register" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Register L2CAP server on BR/EDR oriented connection. </p>
+<p>Register L2CAP server for a PSM, each new connection is authorized using the accept() callback which in case of success shall allocate the channel structure to be used by the new connection.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">server</span></code>: Server structure.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_l2cap_ecred_chan_connect">
+<span class="target" id="group__bt__l2cap_1gaebc2d157fb5f013722e9c332b3d81804"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_ecred_chan_connect</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">bt_conn</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">conn</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chans</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">psm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_l2cap_ecred_chan_connect" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Connect Enhanced Credit Based L2CAP channels. </p>
+<p>Connect up to 5 L2CAP channels by PSM, once the connection is completed each channel connected() callback will be called. If the connection is rejected disconnected() callback is called instead.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">conn</span></code>: Connection object. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chans</span></code>: Array of channel objects. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">psm</span></code>: Channel PSM to connect to.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_l2cap_ecred_chan_reconfigure">
+<span class="target" id="group__bt__l2cap_1ga05d28a51d9fba08d609287957ea4c7ec"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_ecred_chan_reconfigure</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chans</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">mtu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_l2cap_ecred_chan_reconfigure" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reconfigure Enhanced Credit Based L2CAP channels. </p>
+<p>Reconfigure up to 5 L2CAP channels. Channels must be from the same bt_conn. Once reconfiguration is completed each channel reconfigured() callback will be called. MTU cannot be decreased on any of provided channels.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chans</span></code>: Array of channel objects. Null-terminated. Elements after the first 5 are silently ignored. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mtu</span></code>: Channel MTU to reconfigure to.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_connect">
+<span class="target" id="group__bt__l2cap_1ga3c3cfb4b151c808c0a3d2562a5c26a20"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_chan_connect</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">bt_conn</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">conn</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">psm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_l2cap_chan_connect" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Connect L2CAP channel. </p>
+<p>Connect L2CAP channel by PSM, once the connection is completed channel connected() callback will be called. If the connection is rejected disconnected() callback is called instead. Channel object passed (over an address of it) as second parameter shouldn’t be instantiated in application as standalone. Instead of, application should create transport dedicated L2CAP objects, i.e. type of <a class="reference internal" href="#structbt__l2cap__le__chan"><span class="std std-ref">bt_l2cap_le_chan</span></a> for LE and/or type of <a class="reference internal" href="#structbt__l2cap__br__chan"><span class="std std-ref">bt_l2cap_br_chan</span></a> for BR/EDR. Then pass to this API the location (address) of <a class="reference internal" href="#structbt__l2cap__chan"><span class="std std-ref">bt_l2cap_chan</span></a> type object which is a member of both transport dedicated objects.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">conn</span></code>: Connection object. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: Channel object. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">psm</span></code>: Channel PSM to connect to.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_disconnect">
+<span class="target" id="group__bt__l2cap_1ga7165f82a05e3a19d6b2baf0ba292a3fe"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_chan_disconnect</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_l2cap_chan_disconnect" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Disconnect L2CAP channel. </p>
+<p>Disconnect L2CAP channel, if the connection is pending it will be canceled and as a result the channel disconnected() callback is called. Regarding to input parameter, to get details see reference description to <a class="reference internal" href="#group__bt__l2cap_1ga3c3cfb4b151c808c0a3d2562a5c26a20"><span class="std std-ref">bt_l2cap_chan_connect()</span></a> API above.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: Channel object.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_send">
+<span class="target" id="group__bt__l2cap_1ga97b7909749667f910f83e6fcb54495c3"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_chan_send</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_l2cap_chan_send" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send data to L2CAP channel. </p>
+<p>Send data from buffer to the channel. If credits are not available, buf will be queued and sent as and when credits are received from peer. Regarding to first input parameter, to get details see reference description to <a class="reference internal" href="#group__bt__l2cap_1ga3c3cfb4b151c808c0a3d2562a5c26a20"><span class="std std-ref">bt_l2cap_chan_connect()</span></a> API above.</p>
+<p>When sending L2CAP data over an BR/EDR connection the application is sending L2CAP PDUs. The application is required to have reserved <a class="reference internal" href="#group__bt__l2cap_1ga281232ec622c626c0be2be23bae18d8d"><span class="std std-ref">BT_L2CAP_CHAN_SEND_RESERVE</span></a> bytes in the buffer before sending. The application should use the <a class="reference internal" href="#group__bt__l2cap_1gab95b119de4757588074e367a90a7136a"><span class="std std-ref">BT_L2CAP_BUF_SIZE()</span></a> helper to correctly size the buffers for the for the outgoing buffer pool.</p>
+<p>When sending L2CAP data over an LE connection the applicatios is sending L2CAP SDUs. The application can optionally reserve <a class="reference internal" href="#group__bt__l2cap_1gabdb3983d3862f6654a1653dd45c4157d"><span class="std std-ref">BT_L2CAP_SDU_CHAN_SEND_RESERVE</span></a> bytes in the buffer before sending. By reserving bytes in the buffer the stack can use this buffer as a segment directly, otherwise it will have to allocate a new segment for the first segment. If the application is reserving the bytes it should use the <a class="reference internal" href="#group__bt__l2cap_1gab95b119de4757588074e367a90a7136a"><span class="std std-ref">BT_L2CAP_BUF_SIZE()</span></a> helper to correctly size the buffers for the for the outgoing buffer pool. When segmenting an L2CAP SDU into L2CAP PDUs the stack will first attempt to allocate buffers from the original buffer pool of the L2CAP SDU before using the stacks own buffer pool.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Buffer ownership is transferred to the stack in case of success, in case of an error the caller retains the ownership of the buffer.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Bytes sent in case of success or negative value in case of error. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_recv_complete">
+<span class="target" id="group__bt__l2cap_1gad53f5fc31314121ff84e740879eae3cf"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_chan_recv_complete</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_l2cap_chan_recv_complete" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Complete receiving L2CAP channel data. </p>
+<p>Complete the reception of incoming data. This shall only be called if the channel recv callback has returned -EINPROGRESS to process some incoming data. The buffer shall contain the original user_data as that is used for storing the credits/segments used by the packet.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: Channel object. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Buffer containing the data.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan">
+<span class="target" id="structbt__l2cap__chan"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_chan</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;l2cap.h&gt;</em><p>L2CAP Channel structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan.conn">
+<span class="target" id="structbt__l2cap__chan_1a007a7ef11a00c0dff22cd64961260d3d"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">bt_conn</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">conn</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan.conn" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel connection reference </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan.ops">
+<span class="target" id="structbt__l2cap__chan_1a3e370744f17ca4cff200cc0a2ee1a74b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan_ops" title="bt_l2cap_chan_ops"><span class="n"><span class="pre">bt_l2cap_chan_ops</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ops</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan.ops" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel operations reference </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_endpoint">
+<span class="target" id="structbt__l2cap__le__endpoint"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_le_endpoint</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_endpoint" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;l2cap.h&gt;</em><p>LE L2CAP Endpoint structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_endpoint.cid">
+<span class="target" id="structbt__l2cap__le__endpoint_1aeee85135541b17bede098891b820c63f"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cid</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_endpoint.cid" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Endpoint Channel Identifier (CID) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_endpoint.mtu">
+<span class="target" id="structbt__l2cap__le__endpoint_1a598f0c7f0ad4cc029013358d35ce9dc2"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mtu</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_endpoint.mtu" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Endpoint Maximum Transmission Unit </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_endpoint.mps">
+<span class="target" id="structbt__l2cap__le__endpoint_1aa9e4f21e48eda61a3d0b777ee13c2599"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mps</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_endpoint.mps" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Endpoint Maximum PDU payload Size </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_endpoint.init_credits">
+<span class="target" id="structbt__l2cap__le__endpoint_1a834561b4a8857253bdfc3d0d2c1033f5"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">init_credits</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_endpoint.init_credits" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Endpoint initial credits </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_endpoint.credits">
+<span class="target" id="structbt__l2cap__le__endpoint_1ab3f475c383791731c595845c80c27edf"></span><span class="n"><span class="pre">atomic_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">credits</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_endpoint.credits" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Endpoint credits </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_chan">
+<span class="target" id="structbt__l2cap__le__chan"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_le_chan</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_chan" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;l2cap.h&gt;</em><p>LE L2CAP Channel structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_chan.chan">
+<span class="target" id="structbt__l2cap__le__chan_1a980126cabc3824ab623d634d91f7d761"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">chan</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_chan.chan" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Common L2CAP channel reference object </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_chan.rx">
+<span class="target" id="structbt__l2cap__le__chan_1a95808ad9bcd910b65bee31fa6bd4b638"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_le_endpoint" title="bt_l2cap_le_endpoint"><span class="n"><span class="pre">bt_l2cap_le_endpoint</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rx</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_chan.rx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel Receiving Endpoint. </p>
+<p>If the application has set an alloc_buf channel callback for the channel to support receiving segmented L2CAP SDUs the application should inititalize the MTU of the Receiving Endpoint. Otherwise the MTU of the receiving endpoint will be initialized to <a class="reference internal" href="#group__bt__l2cap_1ga13b93a8f09157fbcf739fa4949840efe"><span class="std std-ref">BT_L2CAP_SDU_RX_MTU</span></a> by the stack. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_chan.pending_rx_mtu">
+<span class="target" id="structbt__l2cap__le__chan_1a55d8ce850f365ac7ab7ff450ecb61f23"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pending_rx_mtu</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_chan.pending_rx_mtu" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pending RX MTU on ECFC reconfigure, used internally by stack </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_chan.tx">
+<span class="target" id="structbt__l2cap__le__chan_1a059f98cebf6f43a05937ac82815009e7"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_le_endpoint" title="bt_l2cap_le_endpoint"><span class="n"><span class="pre">bt_l2cap_le_endpoint</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_chan.tx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel Transmission Endpoint </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_chan.tx_queue">
+<span class="target" id="structbt__l2cap__le__chan_1a716ea69cb7261076023d0cf6384b3ebb"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_fifo</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx_queue</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_chan.tx_queue" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel Transmission queue </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_chan.tx_buf">
+<span class="target" id="structbt__l2cap__le__chan_1ae6e98bc056be4f2209e897e4693788d5"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">tx_buf</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_chan.tx_buf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel Pending Transmission buffer </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_le_chan.tx_work">
+<span class="target" id="structbt__l2cap__le__chan_1ae557daa4f1b2938e7189df7f0bd1e4d2"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../kernel/threads/workqueue.html#c.k_work" title="k_work"><span class="n"><span class="pre">k_work</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx_work</span></span></span><a class="headerlink" href="#c.bt_l2cap_le_chan.tx_work" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel Transmission work </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_l2cap_br_endpoint">
+<span class="target" id="structbt__l2cap__br__endpoint"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_br_endpoint</span></span></span><a class="headerlink" href="#c.bt_l2cap_br_endpoint" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;l2cap.h&gt;</em><p>BREDR L2CAP Endpoint structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_br_endpoint.cid">
+<span class="target" id="structbt__l2cap__br__endpoint_1acbe4f6cc15bb20703fca53e7084b2ea7"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cid</span></span></span><a class="headerlink" href="#c.bt_l2cap_br_endpoint.cid" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Endpoint Channel Identifier (CID) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_br_endpoint.mtu">
+<span class="target" id="structbt__l2cap__br__endpoint_1aaeb46128990fe08c926d34049bbc2d6a"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mtu</span></span></span><a class="headerlink" href="#c.bt_l2cap_br_endpoint.mtu" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Endpoint Maximum Transmission Unit </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_l2cap_br_chan">
+<span class="target" id="structbt__l2cap__br__chan"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_br_chan</span></span></span><a class="headerlink" href="#c.bt_l2cap_br_chan" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;l2cap.h&gt;</em><p>BREDR L2CAP Channel structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_br_chan.chan">
+<span class="target" id="structbt__l2cap__br__chan_1a28ed2b2541697390c325c706d4ad8f0b"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">chan</span></span></span><a class="headerlink" href="#c.bt_l2cap_br_chan.chan" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Common L2CAP channel reference object </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_br_chan.rx">
+<span class="target" id="structbt__l2cap__br__chan_1a00d49d2d73f2dafdc73a9f7b9393b98d"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_br_endpoint" title="bt_l2cap_br_endpoint"><span class="n"><span class="pre">bt_l2cap_br_endpoint</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rx</span></span></span><a class="headerlink" href="#c.bt_l2cap_br_chan.rx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel Receiving Endpoint </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_br_chan.tx">
+<span class="target" id="structbt__l2cap__br__chan_1a67aec1f3bef3afe689c164185bd77f98"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_br_endpoint" title="bt_l2cap_br_endpoint"><span class="n"><span class="pre">bt_l2cap_br_endpoint</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tx</span></span></span><a class="headerlink" href="#c.bt_l2cap_br_chan.tx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel Transmission Endpoint </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_ops">
+<span class="target" id="structbt__l2cap__chan__ops"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_chan_ops</span></span></span><a class="headerlink" href="#c.bt_l2cap_chan_ops" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;l2cap.h&gt;</em><p>L2CAP Channel operations structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_ops.connected">
+<span class="target" id="structbt__l2cap__chan__ops_1a3a4dd75a11c9867adcade6d288dec2de"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">connected</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_l2cap_chan_ops.connected" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel connected callback. </p>
+<p>If this callback is provided it will be called whenever the connection completes.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: The channel that has been connected </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_ops.disconnected">
+<span class="target" id="structbt__l2cap__chan__ops_1a2e5fcc77a5174de6e3933bb6a14e4ad3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">disconnected</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_l2cap_chan_ops.disconnected" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel disconnected callback. </p>
+<p>If this callback is provided it will be called whenever the channel is disconnected, including when a connection gets rejected.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: The channel that has been Disconnected </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_ops.encrypt_change">
+<span class="target" id="structbt__l2cap__chan__ops_1a12f3290f9bd04fb5fe562c620dff6984"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">encrypt_change</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">hci_status</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_l2cap_chan_ops.encrypt_change" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel encrypt_change callback. </p>
+<p>If this callback is provided it will be called whenever the security level changed (indirectly link encryption done) or authentication procedure fails. In both cases security initiator and responder got the final status (HCI status) passed by related to encryption and authentication events from local host’s controller.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: The channel which has made encryption status changed. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span></code>: HCI status of performed security procedure caused by channel security requirements. The value is populated by HCI layer and set to 0 when success and to non-zero (reference to HCI Error Codes) when security/authentication failed. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_ops.alloc_buf">
+<span class="target" id="structbt__l2cap__chan__ops_1a1821ec3519a445b00ec8248057e1862a"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">alloc_buf</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_l2cap_chan_ops.alloc_buf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel alloc_buf callback. </p>
+<p>If this callback is provided the channel will use it to allocate buffers to store incoming data. Channels that requires segmentation must set this callback. If the application has not set a callback the L2CAP SDU MTU will be truncated to <a class="reference internal" href="#group__bt__l2cap_1ga13b93a8f09157fbcf739fa4949840efe"><span class="std std-ref">BT_L2CAP_SDU_RX_MTU</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Allocated buffer. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: The channel requesting a buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_ops.recv">
+<span class="target" id="structbt__l2cap__chan__ops_1a0ab419d3c52c08e0dfda236466d7cadd"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">recv</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_l2cap_chan_ops.recv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel recv callback. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>-EINPROGRESS in case where user has to confirm once the data has been processed by calling <a class="reference internal" href="#group__bt__l2cap_1gad53f5fc31314121ff84e740879eae3cf"><span class="std std-ref">bt_l2cap_chan_recv_complete</span></a> passing back the buffer received with its original user_data which contains the number of segments/credits used by the packet. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: The channel receiving data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Buffer containing incoming data.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_ops.sent">
+<span class="target" id="structbt__l2cap__chan__ops_1a770c09f3fb10c9d1e069333d22803d1a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sent</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_l2cap_chan_ops.sent" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel sent callback. </p>
+<p>If this callback is provided it will be called whenever a SDU has been completely sent.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: The channel which has sent data. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_ops.status">
+<span class="target" id="structbt__l2cap__chan__ops_1a4be7fadf07368750cc33cf034d3073e7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">status</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">atomic_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_l2cap_chan_ops.status" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel status callback. </p>
+<p>If this callback is provided it will be called whenever the channel status changes.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: The channel which status changed </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span></code>: The channel status </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_chan_ops.reconfigured">
+<span class="target" id="structbt__l2cap__chan__ops_1afba426353897bc3a57c936a98acab839"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">reconfigured</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_l2cap_chan_ops.reconfigured" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Channel reconfigured callback. </p>
+<p>If this callback is provided it will be called whenever peer or local device requested reconfiguration. Application may check updated MTU and MPS values by inspecting chan-&gt;le endpoints.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: The channel which was reconfigured </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_l2cap_server">
+<span class="target" id="structbt__l2cap__server"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_l2cap_server</span></span></span><a class="headerlink" href="#c.bt_l2cap_server" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;l2cap.h&gt;</em><p>L2CAP Server structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_server.psm">
+<span class="target" id="structbt__l2cap__server_1a07925dda8566ee7518b1809725e1b110"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">psm</span></span></span><a class="headerlink" href="#c.bt_l2cap_server.psm" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Server PSM. </p>
+<p>Possible values: 0 A dynamic value will be auto-allocated when <a class="reference internal" href="#group__bt__l2cap_1ga1a5e8c81c086872d7fb8da5329f982c6"><span class="std std-ref">bt_l2cap_server_register()</span></a> is called.</p>
+<p>0x0001-0x007f Standard, Bluetooth SIG-assigned fixed values.</p>
+<p>0x0080-0x00ff Dynamically allocated. May be pre-set by the application before server registration (not recommended however), or auto-allocated by the stack if the app gave 0 as the value. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_server.sec_level">
+<span class="target" id="structbt__l2cap__server_1a9f082abf679a397264a7b51fa4400852"></span><a class="reference internal" href="connection_mgmt.html#c.bt_security_t" title="bt_security_t"><span class="n"><span class="pre">bt_security_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sec_level</span></span></span><a class="headerlink" href="#c.bt_l2cap_server.sec_level" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Required minimum security level </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_l2cap_server.accept">
+<span class="target" id="structbt__l2cap__server_1ac2cd90d48a5d332932c76ce978f0a407"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">accept</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">bt_conn</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">conn</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_l2cap_chan" title="bt_l2cap_chan"><span class="n"><span class="pre">bt_l2cap_chan</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">chan</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_l2cap_server.accept" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Server accept callback. </p>
+<p>This callback is called whenever a new incoming connection requires authorization.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>-ENOMEM if no available space for new channel. </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>-EACCES if application did not authorize the connection. </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>-EPERM if encryption key size is too short. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">conn</span></code>: The connection that is requesting authorization </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chan</span></code>: Pointer to received the allocated channel</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mesh.html" class="btn btn-neutral float-right" title="Bluetooth Mesh Profile" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="hfp.html" class="btn btn-neutral" title="Hands Free Profile (HFP)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

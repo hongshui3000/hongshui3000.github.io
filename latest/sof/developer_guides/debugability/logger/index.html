@@ -1,0 +1,553 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Logger &mdash; SOF Project 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/sof.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Coredump-reader" href="../coredump-reader/index.html" />
+    <link rel="prev" title="Traces" href="../traces/index.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SOF Project
+          
+
+          
+            
+            <img src="../../../_static/logo_sof_white_200w.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://sofproject.org">SOF project website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction to the SOF Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../architectures/index.html">Supported Architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../platforms/index.html">Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../algos/index.html">Algorithms</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../unit_tests.html">Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xtrun/index.html">Xtensa Simulator (xt-run)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topology/topology.html">SOF Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../uuid/index.html">UUID Usage in SOF</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Debugability</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../traces/index.html">Traces</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Logger</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#logger-usage">Logger usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trace-filtering">Trace filtering</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../coredump-reader/index.html">Coredump-reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../probes/index.html">Probes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ri-info/index.html">sof-ri-info</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tuning/sof-ctl.html">Runtime Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../rimage/index.html">Rimage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_driver/index.html">SOF Linux Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/virtualization.html">SOF VirtIO design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/running.html">Run SOF VirtIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fuzzing/index.html">Fuzzing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testbench/index.html">Testbench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#technical-notes">Technical Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release.html">Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contributing to the Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tsc/index.html">Technical Steering Committee (TSC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../maintainers/index.html">SOF admin, maintainers and code owners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../presentations/index.html">Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">SOF Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Developer Guides</a> &raquo;</li>
+        
+          <li><a href="../index.html">Debugability</a> &raquo;</li>
+        
+      <li>Logger</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/developer_guides/debugability/logger/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="logger">
+<span id="dbg-logger"></span><h1>Logger<a class="headerlink" href="#logger" title="Permalink to this headline">¶</a></h1>
+<p>The sof-logger is used to print logs delivered from the FW <cite>dma_trace</cite>
+mechanism by searching log entries in the <cite>ldc</cite> file (logs dictionary)
+that are generated by the <em>SMEX</em> (Sof Metadata Extractor) tool. Every entry
+declared in the FW is placed in an elf output file (e.g. sof-apl) in the
+<cite>.static_log_entries</cite> section in a struct form that is defined in <cite>sof/src/include/sof/trace.h</cite> in the <cite>sof</cite> fw repo.</p>
+<p>The <cite>ldc</cite> file contains <cite>snd_sof_logs_header</cite> and <cite>snd_sof_uids_header</cite>
+(defined in smex/ldc.h). <cite>snd_sof_logs_header</cite> is followed by a
+<cite>.static_log_entries</cite> section incorporated from the FW elf file (e.g.
+sof-apl). <cite>snd_sof_logs_header</cite> contains basic information about the
+<cite>.static_log_entries</cite> section such as <cite>base_address</cite> and <cite>data_length</cite>. The
+sof-logger works by reading entry parameters values and entries addresses from the FW <cite>dma_trace</cite> mechanism and searching for suitable entries in the
+<cite>ldc</cite> file by its address. The <cite>snd_sof_uids_header</cite> struct is followed by
+the <cite>.static_uuid_entries</cite> section content from the FW elf file. A single
+uuid entry is defined in <cite>sof/src/include/sof/lib/uuid.h</cite> in the <cite>sof</cite> fw
+repo.</p>
+<div class="section" id="logger-usage">
+<h2>Logger usage<a class="headerlink" href="#logger-usage" title="Permalink to this headline">¶</a></h2>
+<p>Usage sof-logger &lt;option(s)&gt; &lt;file(s)&gt;</p>
+<dl class="option-list">
+<dt><kbd><span class="option">-h</span></kbd></dt>
+<dd><p>help</p>
+</dd>
+<dt><kbd><span class="option">-l <var>ldc_file</var></span></kbd></dt>
+<dd><p>Specify the ldc file (debugging information and strings)</p>
+</dd>
+<dt><kbd><span class="option">-i <var>in_file</var></span></kbd></dt>
+<dd><p>Get traces from the in_file instead of from the default “/sys/kernel/debug/sof/etrace”</p>
+</dd>
+<dt><kbd><span class="option">-o <var>out_file</var></span></kbd></dt>
+<dd><p>Specify the output file instead of the default stdout</p>
+</dd>
+<dt><kbd><span class="option">-t</span></kbd></dt>
+<dd><p>Get traces from “/sys/kernel/debug/sof/trace” instead of from the default “/sys/kernel/debug/sof/etrace”</p>
+</dd>
+<dt><kbd><span class="option">-p</span></kbd></dt>
+<dd><p>Get traces from stdin instead of the default “/sys/kernel/debug/sof/etrace”</p>
+</dd>
+<dt><kbd><span class="option">-c <var>clock</var></span></kbd></dt>
+<dd><p>Set the timestamp clock in MHz</p>
+</dd>
+<dt><kbd><span class="option">-n</span></kbd></dt>
+<dd><p>Disable checking the firmware version with the default verification file “/sys/kernel/debug/sof/fw_version”</p>
+</dd>
+<dt><kbd><span class="option">-v <var>ver_file</var></span></kbd></dt>
+<dd><p>Enable checking the firmware version with the ver_file file instead of the default: “/sys/kernel/debug/sof/fw_version”</p>
+</dd>
+<dt><kbd><span class="option">-s</span></kbd></dt>
+<dd><p>Take a snapshot of state</p>
+</dd>
+<dt><kbd><span class="option">-r</span></kbd></dt>
+<dd><p>Less formatted output for chained log processors</p>
+</dd>
+<dt><kbd><span class="option">-L</span></kbd></dt>
+<dd><p>Hide log location in source code</p>
+</dd>
+<dt><kbd><span class="option">-f <var>precision</var></span></kbd></dt>
+<dd><p>Set timestamp precision</p>
+</dd>
+<dt><kbd><span class="option">-g</span></kbd></dt>
+<dd><p>Hide timestamp</p>
+</dd>
+<dt><kbd><span class="option">-d</span></kbd></dt>
+<dd><p>Dump ldc information</p>
+</dd>
+<dt><kbd><span class="option">-F <var>filter</var></span></kbd></dt>
+<dd><p>Update trace filtering</p>
+</dd>
+</dl>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Gets traces from the “/sys/kernel/debug/sof/etrace” file; disable compatibility
+check between given ldc_file with fw_version saved in default location
+and prints logs to stdout</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file -n
+</pre></div>
+</div>
+</li>
+<li><p>Gets traces from the “/sys/kernel/debug/sof/etrace” file; verifies the
+fw_version with the ver_file file and prints logs to stdout</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file -v ver_file
+</pre></div>
+</div>
+</li>
+<li><p>Get traces from the “/sys/kernel/debug/sof/etrace” file and prints logs to
+stdout</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file
+</pre></div>
+</div>
+</li>
+<li><p>Get traces from the “/sys/kernel/debug/sof/etrace” file and prints logs to
+the out_file file</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file -o out_file
+</pre></div>
+</div>
+</li>
+<li><p>Get traces from the “/sys/kernel/debug/sof/trace” file and prints logs to
+stdout</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file -t
+</pre></div>
+</div>
+</li>
+<li><p>Get traces from the “/sys/kernel/debug/sof/trace” file and prints logs to
+the out_file file</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file -t -o out_file
+</pre></div>
+</div>
+</li>
+<li><p>Get traces from stdin and prints logs to stdout</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file -p
+</pre></div>
+</div>
+</li>
+<li><p>Get traces from stdin and prints logs to the out_file file</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file -p -o out_file
+</pre></div>
+</div>
+</li>
+<li><p>Get traces from the trace_dump file and prints logs to stdout</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file -i trace_dump
+</pre></div>
+</div>
+</li>
+<li><p>Get traces from the trace_dump file and prints logs to the out_file file</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file -i trace_dump -o out_file
+</pre></div>
+</div>
+</li>
+<li><p>c flag defines the clock value (in MHz) used to format log timestamps. By
+default, the clock value is set to 19.2 (MHz). The below example sets the
+clock value to 19.9 (MHz).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file -i trace_dump -o out_file -c <span class="m">19</span>.9
+</pre></div>
+</div>
+</li>
+<li><p>Dump information from the ldc file (such as the ABI version and the uuid
+dictionary) to stdout</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sof-logger -l ldc_file -d
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="trace-filtering">
+<h2>Trace filtering<a class="headerlink" href="#trace-filtering" title="Permalink to this headline">¶</a></h2>
+<p>Current log levels can be changed for any instance of a component at
+runtime. To do so, use the <cite>-F</cite> option and the following argument format:</p>
+<blockquote>
+<div><p>&lt;log_level&gt;=”&lt;component1&gt;[, &lt;component2&gt;]”</p>
+</div></blockquote>
+<p>Where <em>&lt;log_level&gt;</em> can be one of the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code> / <code class="docutils literal notranslate"><span class="pre">critical</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">e</span></code> / <code class="docutils literal notranslate"><span class="pre">error</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">w</span></code> / <code class="docutils literal notranslate"><span class="pre">warning</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i</span></code> / <code class="docutils literal notranslate"><span class="pre">info</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">d</span></code> / <code class="docutils literal notranslate"><span class="pre">debug</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code> / <code class="docutils literal notranslate"><span class="pre">verbose</span></code></p></li>
+</ul>
+<p>After the <strong>=</strong> character, all components are listed in a comma-separated
+format. Each component begins with <em>name</em> followed by an optional <em>instance</em>
+description.</p>
+<p>The list of possible component names comes from the UUID declaration.
+Refer to the <a class="reference internal" href="../../../api/uuid-api.html#uuid-api"><span class="std std-ref">UUID API</span></a> for more detailed information. Use the <code class="docutils literal notranslate"><span class="pre">-d</span></code>
+flag in the logger to list component names from the <code class="docutils literal notranslate"><span class="pre">ldc</span></code> file content.</p>
+<p>Example output:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$./sof-logger -d log/sof-cnl.ldc
+logger ABI Version is   <span class="m">5</span>:2:0
+ldc_file ABI Version is <span class="m">5</span>:2:0
+
+Components uuid dictionary size:        <span class="m">824</span> bytes
+Components uuid base address:           0x1FFFA000
+Components uuid entries:
+         ADDRESS                                    UUID NAME
+      0x1FFFA000  &lt;8b9d100c-6d78-418f-90a3-e0e805d0852b&gt; host
+      0x1FFFA01C  &lt;f11818eb-e92e-4082-82a3-dc54c604ebb3&gt; pipe-task
+      0x1FFFA03C  &lt;34dc0385-fc2f-4f7f-82d2-6cee444533e0&gt; volume-task
+      0x1FFFA05C  &lt;b77e677e-5ff4-4188-af14-fba8bdbf8682&gt; volume
+      0x1FFFA078  &lt;c1c5326d-8390-46b4-aa47-95c3beca6550&gt; src
+      0x1FFFA134  &lt;c2b00d27-ffbc-4150-a51a-245c79c5e54b&gt; dai
+      -------------------------------------------------- cnt: <span class="m">6</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>A special wildcard - <code class="docutils literal notranslate"><span class="pre">*</span></code> - can be used to apply a given trace level to
+each component.</p>
+<p>Instance descriptions can have one of the following forms:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">*</span></code> - each component instance</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">X.*</span></code> - each component on selected pipeline <em>X</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">X.Y</span></code> - component on pipeline <em>X</em> with id <em>Y</em></p></li>
+</ul>
+<p>Trace level changes works in the same order as options given in a command line, and a new set overwrites old values. It allows you to easily enable verbose logs only for selected components and keep the lowest possible log level (critical) for others, as shown in the following example:</p>
+<blockquote>
+<div><p>sof-logger -l ldc_file -t -Fcritical=* -Fverbose=”dai*, volume1.1”</p>
+</div></blockquote>
+<p>A similar example may be prepared for components on a particular pipeline:</p>
+<blockquote>
+<div><p>sof-loggerr -l ldc_file -t -Fc=* -Fv=*1.*</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To track a verbose message, select the “Trace verbose” option under the “Trace” menu from the firmware build.</p>
+</div>
+<p>Active trace filters are stored in the firmware runtime memory, so after a firmware restart (such as after power gating in sleep mode) filters settings will be reset.</p>
+<p>Consider disabling power gating during your debug session by entering the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo su
+<span class="nb">echo</span> on &gt;/sys/devices/pci0000<span class="se">\:</span><span class="m">00</span>/0000<span class="se">\:</span><span class="k">$(</span>lspci -nn <span class="p">|</span> grep <span class="s2">&quot;audio contoller&quot;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $1;}&#39;</span><span class="k">)</span>/power/control
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The current device power status can be read by entering this command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat /sys/devices/pci0000<span class="se">\:</span><span class="m">00</span>/0000<span class="se">\:</span><span class="k">$(</span>lspci -nn <span class="p">|</span> grep <span class="s2">&quot;audio controller&quot;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $1;}&#39;</span><span class="k">)</span>/power/runtime_status
+</pre></div>
+</div>
+</div>
+<p>The logger trace filtration affects only traces sent after the filter setup,
+so traces already stored on the kernel side are not affected.</p>
+<p>Filters are set up incrementally, so when loggers are run twice with
+different settings, then filters from the first run will not be restored to
+the default state but will be replaced by a new one. To reset filters to the
+default state, a firmware reset is needed.</p>
+<div class="section" id="detailed-description">
+<h3>Detailed description<a class="headerlink" href="#detailed-description" title="Permalink to this headline">¶</a></h3>
+<p>The filtration mechanism occurs on the firmware side so, after changing the
+log level to verbose for each component, the DSP can be overhelmed by
+tracing.</p>
+<p>Core functionality is provided by the DSP, so filtration does not work in
+offline mode - during conversion in a previously saved input file.</p>
+<p>Communication between the firmware and logger is occurs through driver
+debug file systems. The logger writes new trace settings to <code class="docutils literal notranslate"><span class="pre">sys/kernel/debug/sof/filter</span></code>. These will be used to create <em>IPC</em> messages with new
+trace levels. A simple text data format is used:</p>
+<p><code class="docutils literal notranslate"><span class="pre">log1_level</span> <span class="pre">uuid1_id</span> <span class="pre">pipe1_id</span> <span class="pre">comp1_id;</span> <span class="pre">[log2_level</span> <span class="pre">uuid2_id</span> <span class="pre">pipe2_id</span> <span class="pre">comp2_id;]\n</span></code></p>
+<p>Any unused uuid_id should be set here to 0; other unused fields should be
+set to -1. <code class="docutils literal notranslate"><span class="pre">log_level</span></code> must always be set to a valid value that represents <code class="docutils literal notranslate"><span class="pre">LOG_LEVEL_*</span></code> defined values.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../coredump-reader/index.html" class="btn btn-neutral float-right" title="Coredump-reader" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../traces/index.html" class="btn btn-neutral" title="Traces" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; Copyright 2021, SOF Project..
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> SOF Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version zephyr">
+        <a href="../../../../zephyr/index.html">Zephyr Project</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

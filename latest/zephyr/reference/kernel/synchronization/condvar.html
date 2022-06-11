@@ -1,0 +1,566 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Condition Variables &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Events" href="events.html" />
+    <link rel="prev" title="Mutexes" href="mutexes.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Kernel Services</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#scheduling-interrupts-and-synchronization">Scheduling, Interrupts, and Synchronization</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../threads/index.html">Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../scheduling/index.html">Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/system_threads.html">System Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/workqueue.html">Workqueue Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/nothread.html">Zephyr Without Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../other/interrupts.html">Interrupts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../other/polling.html">Polling API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphores.html">Semaphores</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mutexes.html">Mutexes</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Condition Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../smp/smp.html">Symmetric Multiprocessing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data-passing">Data Passing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#memory-management">Memory Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#timing">Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Kernel Services</a> &raquo;</li>
+        
+      <li>Condition Variables</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/kernel/synchronization/condvar.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="condition-variables">
+<span id="condvar"></span><h1>Condition Variables<a class="headerlink" href="#condition-variables" title="Permalink to this headline">¶</a></h1>
+<p>A <em class="dfn">condition variable</em> is a synchronization primitive
+that enables threads to wait until a particular condition occurs.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#concepts" id="id1">Concepts</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id2">Implementation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#defining-a-condition-variable" id="id3">Defining a Condition Variable</a></p></li>
+<li><p><a class="reference internal" href="#waiting-on-a-condition-variable" id="id4">Waiting on a Condition Variable</a></p></li>
+<li><p><a class="reference internal" href="#signaling-a-condition-variable" id="id5">Signaling a Condition Variable</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#suggested-uses" id="id6">Suggested Uses</a></p></li>
+<li><p><a class="reference internal" href="#configuration-options" id="id7">Configuration Options</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id8">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="concepts">
+<h2><a class="toc-backref" href="#id1">Concepts</a><a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h2>
+<p>Any number of condition variables can be defined (limited only by available RAM). Each
+condition variable is referenced by its memory address.</p>
+<p>To wait for a condition to become true, a thread can make use of a condition
+variable.</p>
+<p>A condition variable is basically a queue of threads that threads can put
+themselves on when some state of execution (i.e., some condition) is not as
+desired (by waiting on the condition). The function
+<a class="reference internal" href="#c.k_condvar_wait" title="k_condvar_wait"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_condvar_wait()</span></code></a> performs atomically the following steps;</p>
+<ol class="arabic simple">
+<li><p>Releases the last acquired mutex.</p></li>
+<li><p>Puts the current thread in the condition variable queue.</p></li>
+</ol>
+<p>Some other thread, when it changes said state, can then wake one (or more)
+of those waiting threads and thus allow them to continue by signaling on
+the condition using <a class="reference internal" href="#c.k_condvar_signal" title="k_condvar_signal"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_condvar_signal()</span></code></a> or
+<a class="reference internal" href="#c.k_condvar_broadcast" title="k_condvar_broadcast"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_condvar_broadcast()</span></code></a> then it:</p>
+<ol class="arabic simple">
+<li><p>Re-acquires the mutex previously released.</p></li>
+<li><p>Returns from <a class="reference internal" href="#c.k_condvar_wait" title="k_condvar_wait"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_condvar_wait()</span></code></a>.</p></li>
+</ol>
+<p>A condition variable must be initialized before it can be used.</p>
+</div>
+<div class="section" id="implementation">
+<h2><a class="toc-backref" href="#id2">Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="defining-a-condition-variable">
+<h3><a class="toc-backref" href="#id3">Defining a Condition Variable</a><a class="headerlink" href="#defining-a-condition-variable" title="Permalink to this headline">¶</a></h3>
+<p>A condition variable is defined using a variable of type <code class="xref c c-struct docutils literal notranslate"><span class="pre">k_condvar</span></code>.
+It must then be initialized by calling <a class="reference internal" href="#c.k_condvar_init" title="k_condvar_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_condvar_init()</span></code></a>.</p>
+<p>The following code defines a condition variable:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">k_condvar</span> <span class="n">my_condvar</span><span class="p">;</span>
+
+<span class="n">k_condvar_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_condvar</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Alternatively, a condition variable can be defined and initialized at compile time
+by calling <a class="reference internal" href="#c.K_CONDVAR_DEFINE" title="K_CONDVAR_DEFINE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_CONDVAR_DEFINE</span></code></a>.</p>
+<p>The following code has the same effect as the code segment above.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">K_CONDVAR_DEFINE</span><span class="p">(</span><span class="n">my_condvar</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="waiting-on-a-condition-variable">
+<h3><a class="toc-backref" href="#id4">Waiting on a Condition Variable</a><a class="headerlink" href="#waiting-on-a-condition-variable" title="Permalink to this headline">¶</a></h3>
+<p>A thread can wait on a condition by calling <a class="reference internal" href="#c.k_condvar_wait" title="k_condvar_wait"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_condvar_wait()</span></code></a>.</p>
+<p>The following code waits on the condition variable.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">K_MUTEX_DEFINE</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+<span class="n">K_CONDVAR_DEFINE</span><span class="p">(</span><span class="n">condvar</span><span class="p">)</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">k_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+
+    <span class="cm">/* block this thread until another thread signals cond. While</span>
+<span class="cm">     * blocked, the mutex is released, then re-acquired before this</span>
+<span class="cm">     * thread is woken up and the call returns.</span>
+<span class="cm">     */</span>
+    <span class="n">k_condvar_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">condvar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mutex</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+    <span class="p">...</span>
+    <span class="n">k_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="signaling-a-condition-variable">
+<h3><a class="toc-backref" href="#id5">Signaling a Condition Variable</a><a class="headerlink" href="#signaling-a-condition-variable" title="Permalink to this headline">¶</a></h3>
+<p>A condition variable is signaled on by calling <a class="reference internal" href="#c.k_condvar_signal" title="k_condvar_signal"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_condvar_signal()</span></code></a> for
+one thread or by calling <a class="reference internal" href="#c.k_condvar_broadcast" title="k_condvar_broadcast"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_condvar_broadcast()</span></code></a> for multiple threads.</p>
+<p>The following code builds on the example above.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">worker_thread</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">k_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     * Do some work and fullfill the condition</span>
+<span class="cm">     */</span>
+    <span class="p">...</span>
+    <span class="p">...</span>
+    <span class="n">k_condvar_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">condvar</span><span class="p">);</span>
+    <span class="n">k_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="suggested-uses">
+<h2><a class="toc-backref" href="#id6">Suggested Uses</a><a class="headerlink" href="#suggested-uses" title="Permalink to this headline">¶</a></h2>
+<p>Use condition variables with a mutex to signal changing states (conditions) from
+one thread to another thread.
+Condition variables are not the condition itself and they are not events.
+The condition is contained in the surrounding programming logic.</p>
+<p>Mutexes alone are not designed for use as a notification/synchronization
+mechanism. They are meant to provide mutually exclusive access to a shared
+resource only.</p>
+</div>
+<div class="section" id="configuration-options">
+<h2><a class="toc-backref" href="#id7">Configuration Options</a><a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p>None.</p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id8">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__condvar__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">condvar_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_CONDVAR_DEFINE">
+<span class="target" id="group__condvar__apis_1ga770816651e25f7e7dae992a0b2260c21"></span><span class="sig-name descname"><span class="n"><span class="pre">K_CONDVAR_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_CONDVAR_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define and initialize a condition variable. </p>
+<p>The condition variable can be accessed outside the module where it is defined using:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extern</span> <span class="n">struct</span> <span class="n">k_condvar</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">;</span> 
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the condition variable. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_condvar_init">
+<span class="target" id="group__condvar__apis_1gac9b497c56cc4642965afa6c0c6d7ecfc"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_condvar_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_condvar</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">condvar</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_condvar_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a condition variable. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">condvar</span></code>: pointer to a <code class="docutils literal notranslate"><span class="pre">k_condvar</span></code> structure </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Condition variable created successfully </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_condvar_signal">
+<span class="target" id="group__condvar__apis_1ga0376a8f7dc6e4f1e1eed55940f43015b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_condvar_signal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_condvar</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">condvar</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_condvar_signal" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Signals one thread that is pending on the condition variable. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">condvar</span></code>: pointer to a <code class="docutils literal notranslate"><span class="pre">k_condvar</span></code> structure </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: On success </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_condvar_broadcast">
+<span class="target" id="group__condvar__apis_1gad2e46a7b9e1bc934fd1f5cb38dde40d8"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_condvar_broadcast</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_condvar</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">condvar</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_condvar_broadcast" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unblock all threads that are pending on the condition variable. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>An integer with number of woken threads on success </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">condvar</span></code>: pointer to a <code class="docutils literal notranslate"><span class="pre">k_condvar</span></code> structure </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_condvar_wait">
+<span class="target" id="group__condvar__apis_1gab2e1d05db4f954755f430ca894e44dbc"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_condvar_wait</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_condvar</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">condvar</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="mutexes.html#c.k_mutex" title="k_mutex"><span class="n"><span class="pre">k_mutex</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mutex</span></span>, <a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_condvar_wait" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Waits on the condition variable releasing the mutex lock. </p>
+<p>Automically releases the currently owned mutex, blocks the current thread waiting on the condition variable specified by <em>condvar</em>, and finally acquires the mutex again.</p>
+<p>The waiting thread unblocks only after another thread calls k_condvar_signal, or k_condvar_broadcast with the same condition variable.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">condvar</span></code>: pointer to a <code class="docutils literal notranslate"><span class="pre">k_condvar</span></code> structure </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mutex</span></code>: Address of the mutex. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Waiting period for the condition variable or one of the special values K_NO_WAIT and K_FOREVER. </p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: On success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Waiting period timed out. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="events.html" class="btn btn-neutral float-right" title="Events" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mutexes.html" class="btn btn-neutral" title="Mutexes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,602 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Clock Control &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="DAC" href="dac.html" />
+    <link rel="prev" title="Counter" href="counter.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Peripherals</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="adc.html">ADC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="counter.html">Counter</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Clock Control</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-options">Configuration Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dac.html">DAC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dma.html">DMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ec_host_cmd_periph.html">EC Host Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eeprom.html">EEPROM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entropy.html">Entropy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flash.html">Flash</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gna.html">GNA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpio.html">GPIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hwinfo.html">Hardware Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c_eeprom_slave.html">I2C EEPROM Slave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c.html">I2C</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ipm.html">IPM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kscan.html">KSCAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="led.html">LED</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mbox.html">MBOX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pinmux.html">Pinmux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pwm.html">PWM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ps2.html">PS/2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="peci.html">PECI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="regulators.html">Regulators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rtc.html">RTC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sensor.html">Sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spi.html">SPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcpc.html">TCPC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uart.html">UART</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdio.html">MDIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchdog.html">Watchdog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video.html">Video</a></li>
+<li class="toctree-l3"><a class="reference internal" href="espi.html">eSPI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Peripherals</a> &raquo;</li>
+        
+      <li>Clock Control</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/peripherals/clock_control.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="clock-control">
+<span id="clock-control-api"></span><h1>Clock Control<a class="headerlink" href="#clock-control" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The clock control API provides access to clocks in the system, including the
+ability to turn them on and off.</p>
+</div>
+<div class="section" id="configuration-options">
+<h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_CLOCK_CONTROL" title="CONFIG_CLOCK_CONTROL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_CLOCK_CONTROL</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__clock__control__interface"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">clock_control_interface</span></span></dt>
+<dd><p>Clock Control Interface. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.CLOCK_CONTROL_SUBSYS_ALL">
+<span class="target" id="group__clock__control__interface_1ga9aa9a4e00c1e7985a1fea6bed235003e"></span><span class="sig-name descname"><span class="n"><span class="pre">CLOCK_CONTROL_SUBSYS_ALL</span></span></span><a class="headerlink" href="#c.CLOCK_CONTROL_SUBSYS_ALL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.clock_control_subsys_t">
+<span class="target" id="group__clock__control__interface_1gaa7d3935eaaf18902801a7d94859483db"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_subsys_t</span></span></span><a class="headerlink" href="#c.clock_control_subsys_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>clock_control_subsys_t is a type to identify a clock controller sub-system. Such data pointed is opaque and relevant only to the clock controller driver instance being used. </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.clock_control_subsys_rate_t">
+<span class="target" id="group__clock__control__interface_1ga05d8b476ef0331e1502702921d2801f1"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_subsys_rate_t</span></span></span><a class="headerlink" href="#c.clock_control_subsys_rate_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>clock_control_subsys_rate_t is a type to identify a clock controller sub-system rate. Such data pointed is opaque and relevant only to set the clock controller rate of the driver instance being used. </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.clock_control_cb_t">
+<span class="target" id="group__clock__control__interface_1ga17257fb3864dc5a33082c3422ad7c275"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">subsys</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.clock_control_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback called on clock started. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device structure whose driver controls the clock. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">subsys</span></code>: Opaque data representing the clock. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User data. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.clock_control">
+<span class="target" id="group__clock__control__interface_1ga459b95cb726892b95537d15273413099"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clock_control</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sys</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.clock_control" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.clock_control_get">
+<span class="target" id="group__clock__control__interface_1ga41087b8914b4bec0c1a61217122cc2a0"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_get</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sys</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rate</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.clock_control_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.clock_control_async_on_fn">
+<span class="target" id="group__clock__control__interface_1ga0cd408e023fda272784c24d0c644014d"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_async_on_fn</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sys</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#c.clock_control_cb_t" title="clock_control_cb_t"><span class="n"><span class="pre">clock_control_cb_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.clock_control_async_on_fn" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.clock_control_get_status_fn">
+<span class="target" id="group__clock__control__interface_1ga0af123fbaa3572a9722f17c331936e9a"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.clock_control_status" title="clock_control_status"><span class="n"><span class="pre">clock_control_status</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_get_status_fn</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sys</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.clock_control_get_status_fn" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.clock_control_set">
+<span class="target" id="group__clock__control__interface_1ga8ea31ee8a6e3aa69de0098efba63ae2b"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_set</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sys</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#c.clock_control_subsys_rate_t" title="clock_control_subsys_rate_t"><span class="n"><span class="pre">clock_control_subsys_rate_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">rate</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.clock_control_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.clock_control_status">
+<span class="target" id="group__clock__control__interface_1gad12829335f0c954ab6d586549db45e09"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_status</span></span></span><a class="headerlink" href="#c.clock_control_status" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Current clock status. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.clock_control_status.CLOCK_CONTROL_STATUS_STARTING">
+<span class="target" id="group__clock__control__interface_1ggad12829335f0c954ab6d586549db45e09aa1d03cc305aa2f510471e6f1ae1fbd52"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CLOCK_CONTROL_STATUS_STARTING</span></span></span><a class="headerlink" href="#c.clock_control_status.CLOCK_CONTROL_STATUS_STARTING" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.clock_control_status.CLOCK_CONTROL_STATUS_OFF">
+<span class="target" id="group__clock__control__interface_1ggad12829335f0c954ab6d586549db45e09a44a027c5e5bf19836aebc427098f0cfa"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CLOCK_CONTROL_STATUS_OFF</span></span></span><a class="headerlink" href="#c.clock_control_status.CLOCK_CONTROL_STATUS_OFF" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.clock_control_status.CLOCK_CONTROL_STATUS_ON">
+<span class="target" id="group__clock__control__interface_1ggad12829335f0c954ab6d586549db45e09a232119a145ecc5d6a1ff0454a97c92db"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CLOCK_CONTROL_STATUS_ON</span></span></span><a class="headerlink" href="#c.clock_control_status.CLOCK_CONTROL_STATUS_ON" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.clock_control_status.CLOCK_CONTROL_STATUS_UNAVAILABLE">
+<span class="target" id="group__clock__control__interface_1ggad12829335f0c954ab6d586549db45e09a825b0d9a572d483343b109d0c3d288c0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CLOCK_CONTROL_STATUS_UNAVAILABLE</span></span></span><a class="headerlink" href="#c.clock_control_status.CLOCK_CONTROL_STATUS_UNAVAILABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.clock_control_status.CLOCK_CONTROL_STATUS_UNKNOWN">
+<span class="target" id="group__clock__control__interface_1ggad12829335f0c954ab6d586549db45e09a4c939e7c8c38b5f2c50fe339a60c75cc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CLOCK_CONTROL_STATUS_UNKNOWN</span></span></span><a class="headerlink" href="#c.clock_control_status.CLOCK_CONTROL_STATUS_UNKNOWN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.clock_control_on">
+<span class="target" id="group__clock__control__interface_1gaec69b0989cefad79ffd5c92f060150b9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_on</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sys</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.clock_control_on" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Enable a clock controlled by the device. </p>
+<p>On success, the clock is enabled and ready when this function returns. This function may sleep, and thus can only be called from thread context.</p>
+<p>Use <a class="reference internal" href="#group__clock__control__interface_1ga03cedb9723e001d01c495f0abb6acfdf"><span class="std std-ref">clock_control_async_on()</span></a> for non-blocking operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno on failure. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device structure whose driver controls the clock. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sys</span></code>: Opaque data representing the clock. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.clock_control_off">
+<span class="target" id="group__clock__control__interface_1gadbebc1c12937be561b761ef4a3b7d8a5"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_off</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sys</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.clock_control_off" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Disable a clock controlled by the device. </p>
+<p>This function is non-blocking and can be called from any context. On success, the clock is disabled when this function returns.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative errno on failure. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device structure whose driver controls the clock </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sys</span></code>: Opaque data representing the clock </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.clock_control_async_on">
+<span class="target" id="group__clock__control__interface_1ga03cedb9723e001d01c495f0abb6acfdf"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_async_on</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sys</span></span>, <a class="reference internal" href="#c.clock_control_cb_t" title="clock_control_cb_t"><span class="n"><span class="pre">clock_control_cb_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.clock_control_async_on" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Request clock to start with notification when clock has been started. </p>
+<p>Function is non-blocking and can be called from any context. User callback is called when clock is started.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sys</span></code>: A pointer to an opaque data representing the sub-system. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cb</span></code>: Callback. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User context passed to the callback.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: if start is successfully initiated. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EALREADY</span></code>: if clock was already started and is starting or running. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If the requested mode of operation is not supported. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: if the interface is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">other</span></code>: negative errno on vendor specific error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.clock_control_get_status">
+<span class="target" id="group__clock__control__interface_1ga35be64d09222f44aa00cd1371a39613e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.clock_control_status" title="clock_control_status"><span class="n"><span class="pre">clock_control_status</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_get_status</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sys</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.clock_control_get_status" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get clock status. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Status. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sys</span></code>: A pointer to an opaque data representing the sub-system.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.clock_control_get_rate">
+<span class="target" id="group__clock__control__interface_1ga00f6af6d2668c2dfff0640fe176e89ff"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_get_rate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sys</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rate</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.clock_control_get_rate" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain the clock rate of given sub-system. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Pointer to the device structure for the clock controller driver instance </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sys</span></code>: A pointer to an opaque data representing the sub-system </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">rate</span></code>: Subsystem clock rate </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.clock_control_set_rate">
+<span class="target" id="group__clock__control__interface_1ga3bd25314e8bfcc62f0728d89321bb614"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_set_rate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.clock_control_subsys_t" title="clock_control_subsys_t"><span class="n"><span class="pre">clock_control_subsys_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">sys</span></span>, <a class="reference internal" href="#c.clock_control_subsys_rate_t" title="clock_control_subsys_rate_t"><span class="n"><span class="pre">clock_control_subsys_rate_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">rate</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.clock_control_set_rate" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the rate of the clock controlled by the device. </p>
+<p>On success, the new clock rate is set and ready when this function returns. This function may sleep, and thus can only be called from thread context.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device structure whose driver controls the clock. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sys</span></code>: Opaque data representing the clock. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rate</span></code>: Opaque data representing the clock rate to be used.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-EALREADY</span></code>: if clock was already in the given rate. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If the requested mode of operation is not supported. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: if the interface is not implemented. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">other</span></code>: negative errno on vendor specific error. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.clock_control_driver_api">
+<span class="target" id="structclock__control__driver__api"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clock_control_driver_api</span></span></span><a class="headerlink" href="#c.clock_control_driver_api" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;clock_control.h&gt;</em></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dac.html" class="btn btn-neutral float-right" title="DAC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="counter.html" class="btn btn-neutral" title="Counter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

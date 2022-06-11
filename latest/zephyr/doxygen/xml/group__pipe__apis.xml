@@ -1,0 +1,589 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__pipe__apis" kind="group">
+    <compoundname>pipe_apis</compoundname>
+    <title>Pipe APIs</title>
+    <innerclass refid="structk__pipe" prot="public">k_pipe</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__pipe__apis_1gae9e807fb63bb7186b87015664f2c762d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_pipe_init</definition>
+        <argsstring>(struct k_pipe *pipe, unsigned char *buffer, size_t size)</argsstring>
+        <name>k_pipe_init</name>
+        <param>
+          <type>struct <ref refid="structk__pipe" kindref="compound">k_pipe</ref> *</type>
+          <declname>pipe</declname>
+        </param>
+        <param>
+          <type><ref refid="lib_2libc_2minimal_2include_2sys_2types_8h_1a4089fb16419d359081465355db05f846" kindref="member">unsigned</ref> char *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+<para>Initialize a pipe. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine initializes a pipe object, prior to its first use.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pipe</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the pipe. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>buffer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the pipe&apos;s ring buffer, or NULL if no ring buffer is used. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the pipe&apos;s ring buffer (in bytes), or zero if no ring buffer is used. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="4777" column="6" declfile="include/kernel.h" declline="4777" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__pipe__apis_1gaad0ab1b97b537da408031e4bcbe04f36" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_pipe_cleanup</definition>
+        <argsstring>(struct k_pipe *pipe)</argsstring>
+        <name>k_pipe_cleanup</name>
+        <param>
+          <type>struct <ref refid="structk__pipe" kindref="compound">k_pipe</ref> *</type>
+          <declname>pipe</declname>
+        </param>
+        <briefdescription>
+<para>Release a pipe&apos;s allocated buffer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If a pipe object was given a dynamically allocated buffer via <ref refid="group__pipe__apis_1ga32a902a5d12ca54b17c2b58783214613" kindref="member">k_pipe_alloc_init()</ref>, this will free it. This function does nothing if the buffer wasn&apos;t dynamically allocated.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pipe</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the pipe. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>on success </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EAGAIN</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>nothing to cleanup </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="4790" column="5" declfile="include/kernel.h" declline="4790" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__pipe__apis_1ga32a902a5d12ca54b17c2b58783214613" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_pipe_alloc_init</definition>
+        <argsstring>(struct k_pipe *pipe, size_t size)</argsstring>
+        <name>k_pipe_alloc_init</name>
+        <param>
+          <type>struct <ref refid="structk__pipe" kindref="compound">k_pipe</ref> *</type>
+          <declname>pipe</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+<para>Initialize a pipe and allocate a buffer for it. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Storage for the buffer region will be allocated from the calling thread&apos;s resource pool. This memory will be released if <ref refid="group__pipe__apis_1gaad0ab1b97b537da408031e4bcbe04f36" kindref="member">k_pipe_cleanup()</ref> is called, or userspace is enabled and the pipe object loses all references to it.</para>
+<para>This function should only be called on uninitialized pipe objects.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pipe</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the pipe. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the pipe&apos;s ring buffer (in bytes), or zero if no ring buffer is used. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>on success </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-ENOMEM</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if memory couldn&apos;t be allocated </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="4807" column="6" declfile="include/kernel.h" declline="4807" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__pipe__apis_1ga5cfd4b75485c7d69f8614030914ad132" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_pipe_put</definition>
+        <argsstring>(struct k_pipe *pipe, void *data, size_t bytes_to_write, size_t *bytes_written, size_t min_xfer, k_timeout_t timeout)</argsstring>
+        <name>k_pipe_put</name>
+        <param>
+          <type>struct <ref refid="structk__pipe" kindref="compound">k_pipe</ref> *</type>
+          <declname>pipe</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>bytes_to_write</declname>
+        </param>
+        <param>
+          <type>size_t *</type>
+          <declname>bytes_written</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>min_xfer</declname>
+        </param>
+        <param>
+          <type><ref refid="structk__timeout__t" kindref="compound">k_timeout_t</ref></type>
+          <declname>timeout</declname>
+        </param>
+        <briefdescription>
+<para>Write data to a pipe. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine writes up to <emphasis>bytes_to_write</emphasis> bytes of data to <emphasis>pipe</emphasis>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pipe</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the pipe. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of data to write. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bytes_to_write</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of data (in bytes). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bytes_written</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of area to hold the number of bytes written. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>min_xfer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Minimum number of bytes to write. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeout</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Waiting period to wait for the data to be written, or one of the special values K_NO_WAIT and K_FOREVER.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>At least <emphasis>min_xfer</emphasis> bytes of data were written. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EIO</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Returned without waiting; zero data bytes were written. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EAGAIN</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Waiting period timed out; between zero and <emphasis>min_xfer</emphasis> minus one data bytes were written. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="4827" column="6" declfile="include/kernel.h" declline="4827" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__pipe__apis_1gada9aaf9a336d98a95441212f4223e9ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int k_pipe_get</definition>
+        <argsstring>(struct k_pipe *pipe, void *data, size_t bytes_to_read, size_t *bytes_read, size_t min_xfer, k_timeout_t timeout)</argsstring>
+        <name>k_pipe_get</name>
+        <param>
+          <type>struct <ref refid="structk__pipe" kindref="compound">k_pipe</ref> *</type>
+          <declname>pipe</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>bytes_to_read</declname>
+        </param>
+        <param>
+          <type>size_t *</type>
+          <declname>bytes_read</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>min_xfer</declname>
+        </param>
+        <param>
+          <type><ref refid="structk__timeout__t" kindref="compound">k_timeout_t</ref></type>
+          <declname>timeout</declname>
+        </param>
+        <briefdescription>
+<para>Read data from a pipe. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine reads up to <emphasis>bytes_to_read</emphasis> bytes of data from <emphasis>pipe</emphasis>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pipe</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the pipe. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address to place the data read from pipe. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bytes_to_read</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum number of data bytes to read. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bytes_read</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of area to hold the number of bytes read. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>min_xfer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Minimum number of data bytes to read. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeout</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Waiting period to wait for the data to be read, or one of the special values K_NO_WAIT and K_FOREVER.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>At least <emphasis>min_xfer</emphasis> bytes of data were read. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EINVAL</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>invalid parameters supplied </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EIO</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Returned without waiting; zero data bytes were read. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>-EAGAIN</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Waiting period timed out; between zero and <emphasis>min_xfer</emphasis> minus one data bytes were read. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="4850" column="6" declfile="include/kernel.h" declline="4850" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__pipe__apis_1ga21849ebf856532de6e3ea38489071220" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t k_pipe_read_avail</definition>
+        <argsstring>(struct k_pipe *pipe)</argsstring>
+        <name>k_pipe_read_avail</name>
+        <param>
+          <type>struct <ref refid="structk__pipe" kindref="compound">k_pipe</ref> *</type>
+          <declname>pipe</declname>
+        </param>
+        <briefdescription>
+<para>Query the number of bytes that may be read from <emphasis>pipe</emphasis>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pipe</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the pipe.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number n such that 0 &lt;= n &lt;= <ref refid="structk__pipe_1aca3472fb8d68f01af4e26b0b88736d64" kindref="member">k_pipe::size</ref>; the result is zero for unbuffered pipes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="4862" column="9" declfile="include/kernel.h" declline="4862" declcolumn="9"/>
+      </memberdef>
+      <memberdef kind="function" id="group__pipe__apis_1gaff3ed3e93591d72c60a3640d195998c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t k_pipe_write_avail</definition>
+        <argsstring>(struct k_pipe *pipe)</argsstring>
+        <name>k_pipe_write_avail</name>
+        <param>
+          <type>struct <ref refid="structk__pipe" kindref="compound">k_pipe</ref> *</type>
+          <declname>pipe</declname>
+        </param>
+        <briefdescription>
+<para>Query the number of bytes that may be written to <emphasis>pipe</emphasis>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pipe</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the pipe.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number n such that 0 &lt;= n &lt;= <ref refid="structk__pipe_1aca3472fb8d68f01af4e26b0b88736d64" kindref="member">k_pipe::size</ref>; the result is zero for unbuffered pipes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="4872" column="9" declfile="include/kernel.h" declline="4872" declcolumn="9"/>
+      </memberdef>
+      <memberdef kind="function" id="group__pipe__apis_1ga41484bb5c7dcd97e7a7b7f1422f8026f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_pipe_flush</definition>
+        <argsstring>(struct k_pipe *pipe)</argsstring>
+        <name>k_pipe_flush</name>
+        <param>
+          <type>struct <ref refid="structk__pipe" kindref="compound">k_pipe</ref> *</type>
+          <declname>pipe</declname>
+        </param>
+        <briefdescription>
+<para>Flush the pipe of write data. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine flushes the pipe. Flushing the pipe is equivalent to reading both all the data in the pipe&apos;s buffer and all the data waiting to go into that pipe into a large temporary buffer and discarding the buffer. Any writers that were previously pended become unpended.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pipe</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the pipe. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="4884" column="7" declfile="include/kernel.h" declline="4884" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="group__pipe__apis_1ga71e0e38a15fa27f27c1f028223936445" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void k_pipe_buffer_flush</definition>
+        <argsstring>(struct k_pipe *pipe)</argsstring>
+        <name>k_pipe_buffer_flush</name>
+        <param>
+          <type>struct <ref refid="structk__pipe" kindref="compound">k_pipe</ref> *</type>
+          <declname>pipe</declname>
+        </param>
+        <briefdescription>
+<para>Flush the pipe&apos;s internal buffer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine flushes the pipe&apos;s internal buffer. This is equivalent to reading up to N bytes from the pipe (where N is the size of the pipe&apos;s buffer) into a temporary buffer and then discarding that buffer. If there were writers previously pending, then some may unpend as they try to fill up the pipe&apos;s emptied buffer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pipe</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Address of the pipe. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="4897" column="7" declfile="include/kernel.h" declline="4897" declcolumn="7"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="group__pipe__apis_1gac2256aa00c59e78199be9bdefd61aa52" prot="public" static="no">
+        <name>K_PIPE_DEFINE</name>
+        <param><defname>name</defname></param>
+        <param><defname>pipe_buffer_size</defname></param>
+        <param><defname>pipe_align</defname></param>
+        <initializer>	static <ref refid="lib_2libc_2minimal_2include_2sys_2types_8h_1a4089fb16419d359081465355db05f846" kindref="member">unsigned</ref> char __noinit __aligned(pipe_align)		\
+		_k_pipe_buf_##name[pipe_buffer_size];			\
+	<ref refid="group__iterable__section__apis_1gabed6642b8cc06863ce97dd536698004d" kindref="member">STRUCT_SECTION_ITERABLE</ref>(<ref refid="structk__pipe" kindref="compound">k_pipe</ref>, name) =				\
+		Z_PIPE_INITIALIZER(name, _k_pipe_buf_##name, pipe_buffer_size)</initializer>
+        <briefdescription>
+<para>Statically define and initialize a pipe. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The pipe can be accessed outside the module where it is defined using:</para>
+<para><programlisting><codeline><highlight class="normal">extern<sp/>struct<sp/>k_pipe<sp/>&lt;name&gt;;<sp/></highlight></codeline>
+</programlisting></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the pipe. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pipe_buffer_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the pipe&apos;s ring buffer (in bytes), or zero if no ring buffer is used. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pipe_align</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Alignment of the pipe&apos;s ring buffer (power of 2). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="4760" column="9" bodyfile="include/kernel.h" bodystart="4760" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

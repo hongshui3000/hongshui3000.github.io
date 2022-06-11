@@ -1,0 +1,719 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Semaphores &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Mutexes" href="mutexes.html" />
+    <link rel="prev" title="Polling API" href="../other/polling.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Kernel Services</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#scheduling-interrupts-and-synchronization">Scheduling, Interrupts, and Synchronization</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../threads/index.html">Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../scheduling/index.html">Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/system_threads.html">System Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/workqueue.html">Workqueue Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/nothread.html">Zephyr Without Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../other/interrupts.html">Interrupts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../other/polling.html">Polling API</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Semaphores</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mutexes.html">Mutexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="condvar.html">Condition Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../smp/smp.html">Symmetric Multiprocessing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data-passing">Data Passing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#memory-management">Memory Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#timing">Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Kernel Services</a> &raquo;</li>
+        
+      <li>Semaphores</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/kernel/synchronization/semaphores.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="semaphores">
+<span id="semaphores-v2"></span><h1>Semaphores<a class="headerlink" href="#semaphores" title="Permalink to this headline">¶</a></h1>
+<p>A <em class="dfn">semaphore</em> is a kernel object that implements a traditional
+counting semaphore.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#concepts" id="id1">Concepts</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id2">Implementation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#defining-a-semaphore" id="id3">Defining a Semaphore</a></p></li>
+<li><p><a class="reference internal" href="#giving-a-semaphore" id="id4">Giving a Semaphore</a></p></li>
+<li><p><a class="reference internal" href="#taking-a-semaphore" id="id5">Taking a Semaphore</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#suggested-uses" id="id6">Suggested Uses</a></p></li>
+<li><p><a class="reference internal" href="#configuration-options" id="id7">Configuration Options</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id8">API Reference</a></p></li>
+<li><p><a class="reference internal" href="#user-mode-semaphore-api-reference" id="id9">User Mode Semaphore API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="concepts">
+<h2><a class="toc-backref" href="#id1">Concepts</a><a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h2>
+<p>Any number of semaphores can be defined (limited only by available RAM). Each
+semaphore is referenced by its memory address.</p>
+<p>A semaphore has the following key properties:</p>
+<ul class="simple">
+<li><p>A <strong>count</strong> that indicates the number of times the semaphore can be taken.
+A count of zero indicates that the semaphore is unavailable.</p></li>
+<li><p>A <strong>limit</strong> that indicates the maximum value the semaphore’s count
+can reach.</p></li>
+</ul>
+<p>A semaphore must be initialized before it can be used. Its count must be set
+to a non-negative value that is less than or equal to its limit.</p>
+<p>A semaphore may be <strong>given</strong> by a thread or an ISR. Giving the semaphore
+increments its count, unless the count is already equal to the limit.</p>
+<p>A semaphore may be <strong>taken</strong> by a thread. Taking the semaphore
+decrements its count, unless the semaphore is unavailable (i.e. at zero).
+When a semaphore is unavailable a thread may choose to wait for it to be given.
+Any number of threads may wait on an unavailable semaphore simultaneously.
+When the semaphore is given, it is taken by the highest priority thread
+that has waited longest.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may initialize a “full” semaphore (count equal to limit) to limit the number
+of threads able to execute the critical section at the same time. You may also
+initialize an empty semaphore (count equal to 0, with a limit greater than 0)
+to create a gate through which no waiting thread may pass until the semaphore
+is incremented. All standard use cases of the common semaphore are supported.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The kernel does allow an ISR to take a semaphore, however the ISR must
+not attempt to wait if the semaphore is unavailable.</p>
+</div>
+</div>
+<div class="section" id="implementation">
+<h2><a class="toc-backref" href="#id2">Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="defining-a-semaphore">
+<h3><a class="toc-backref" href="#id3">Defining a Semaphore</a><a class="headerlink" href="#defining-a-semaphore" title="Permalink to this headline">¶</a></h3>
+<p>A semaphore is defined using a variable of type <code class="xref c c-struct docutils literal notranslate"><span class="pre">k_sem</span></code>.
+It must then be initialized by calling <a class="reference internal" href="#c.k_sem_init" title="k_sem_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_sem_init()</span></code></a>.</p>
+<p>The following code defines a semaphore, then configures it as a binary
+semaphore by setting its count to 0 and its limit to 1.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">k_sem</span> <span class="n">my_sem</span><span class="p">;</span>
+
+<span class="n">k_sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_sem</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Alternatively, a semaphore can be defined and initialized at compile time
+by calling <a class="reference internal" href="#c.K_SEM_DEFINE" title="K_SEM_DEFINE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_SEM_DEFINE</span></code></a>.</p>
+<p>The following code has the same effect as the code segment above.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">K_SEM_DEFINE</span><span class="p">(</span><span class="n">my_sem</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="giving-a-semaphore">
+<h3><a class="toc-backref" href="#id4">Giving a Semaphore</a><a class="headerlink" href="#giving-a-semaphore" title="Permalink to this headline">¶</a></h3>
+<p>A semaphore is given by calling <a class="reference internal" href="#c.k_sem_give" title="k_sem_give"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_sem_give()</span></code></a>.</p>
+<p>The following code builds on the example above, and gives the semaphore to
+indicate that a unit of data is available for processing by a consumer thread.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">input_data_interrupt_handler</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/* notify thread that data is available */</span>
+    <span class="n">k_sem_give</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_sem</span><span class="p">);</span>
+
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="taking-a-semaphore">
+<h3><a class="toc-backref" href="#id5">Taking a Semaphore</a><a class="headerlink" href="#taking-a-semaphore" title="Permalink to this headline">¶</a></h3>
+<p>A semaphore is taken by calling <a class="reference internal" href="#c.k_sem_take" title="k_sem_take"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_sem_take()</span></code></a>.</p>
+<p>The following code builds on the example above, and waits up to 50 milliseconds
+for the semaphore to be given.
+A warning is issued if the semaphore is not obtained in time.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">consumer_thread</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="p">...</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">k_sem_take</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_sem</span><span class="p">,</span> <span class="n">K_MSEC</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printk</span><span class="p">(</span><span class="s">&quot;Input data not available!&quot;</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="cm">/* fetch available data */</span>
+        <span class="p">...</span>
+    <span class="p">}</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="suggested-uses">
+<h2><a class="toc-backref" href="#id6">Suggested Uses</a><a class="headerlink" href="#suggested-uses" title="Permalink to this headline">¶</a></h2>
+<p>Use a semaphore to control access to a set of resources by multiple threads.</p>
+<p>Use a semaphore to synchronize processing between a producing and consuming
+threads or ISRs.</p>
+</div>
+<div class="section" id="configuration-options">
+<h2><a class="toc-backref" href="#id7">Configuration Options</a><a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p>None.</p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id8">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__semaphore__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">semaphore_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_SEM_MAX_LIMIT">
+<span class="target" id="group__semaphore__apis_1ga689359a77a0cebe737ef644c188f7e57"></span><span class="sig-name descname"><span class="n"><span class="pre">K_SEM_MAX_LIMIT</span></span></span><a class="headerlink" href="#c.K_SEM_MAX_LIMIT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum limit value allowed for a semaphore. </p>
+<p>This is intended for use when a semaphore does not have an explicit maximum limit, and instead is just used for counting purposes. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_SEM_DEFINE">
+<span class="target" id="group__semaphore__apis_1ga018a8aa43e02e704deee7b6341502946"></span><span class="sig-name descname"><span class="n"><span class="pre">K_SEM_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">initial_count</span></span>, <span class="n"><span class="pre">count_limit</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_SEM_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define and initialize a semaphore. </p>
+<p>The semaphore can be accessed outside the module where it is defined using:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extern</span> <span class="n">struct</span> <span class="n">k_sem</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">;</span> 
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the semaphore. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initial_count</span></code>: Initial semaphore count. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count_limit</span></code>: Maximum permitted semaphore count. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_sem_init">
+<span class="target" id="group__semaphore__apis_1gadcd0e6cfba3392fb887222eafe4c1845"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_sem_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_sem</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sem</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">initial_count</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">limit</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_sem_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a semaphore. </p>
+<p>This routine initializes a semaphore object, prior to its first use.</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__semaphore__apis_1ga689359a77a0cebe737ef644c188f7e57"><span class="std std-ref">K_SEM_MAX_LIMIT</span></a></p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sem</span></code>: Address of the semaphore. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initial_count</span></code>: Initial semaphore count. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code>: Maximum permitted semaphore count.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Semaphore created successfully </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: Invalid values </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_sem_take">
+<span class="target" id="group__semaphore__apis_1gac71e2383c1920dddc45a561cacfef090"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_sem_take</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_sem</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sem</span></span>, <a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_sem_take" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Take a semaphore. </p>
+<p>This routine takes <em>sem</em>.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><em>timeout</em> must be set to K_NO_WAIT if called from ISR.</p>
+</dd>
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sem</span></code>: Address of the semaphore. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Waiting period to take the semaphore, or one of the special values K_NO_WAIT and K_FOREVER.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Semaphore taken. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: Returned without waiting. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Waiting period timed out, or the semaphore was reset during the waiting period. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_sem_give">
+<span class="target" id="group__semaphore__apis_1gab9be3cf1988af2cd6afdace52d497c84"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_sem_give</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_sem</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_sem_give" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Give a semaphore. </p>
+<p>This routine gives <em>sem</em>, unless the semaphore is already at its maximum permitted count.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sem</span></code>: Address of the semaphore. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_sem_reset">
+<span class="target" id="group__semaphore__apis_1ga1bd12d8d8c1b9c6be9b665d0fefe5562"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_sem_reset</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_sem</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_sem_reset" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resets a semaphore’s count to zero. </p>
+<p>This routine sets the count of <em>sem</em> to zero. Any outstanding semaphore takes will be aborted with -EAGAIN.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sem</span></code>: Address of the semaphore. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_sem_count_get">
+<span class="target" id="group__semaphore__apis_1ga58843b581e170a1811fc38eecbfd01f3"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_sem_count_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">k_sem</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_sem_count_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a semaphore’s count. </p>
+<p>This routine returns the current count of <em>sem</em>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Current semaphore count. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sem</span></code>: Address of the semaphore.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="user-mode-semaphore-api-reference">
+<h2><a class="toc-backref" href="#id9">User Mode Semaphore API Reference</a><a class="headerlink" href="#user-mode-semaphore-api-reference" title="Permalink to this headline">¶</a></h2>
+<p>The sys_sem exists in user memory working as counter semaphore for user mode
+thread when user mode enabled. When user mode isn’t enabled, sys_sem behaves
+like k_sem.</p>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__user__semaphore__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">user_semaphore_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SYS_SEM_DEFINE">
+<span class="target" id="group__user__semaphore__apis_1gad7b4e3a8910b78e4beb0ec20524426e1"></span><span class="sig-name descname"><span class="n"><span class="pre">SYS_SEM_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_name</span></span>, <span class="n"><span class="pre">_initial_count</span></span>, <span class="n"><span class="pre">_count_limit</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SYS_SEM_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Statically define and initialize a sys_sem. </p>
+<p>The semaphore can be accessed outside the module where it is defined using:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extern</span> <span class="n">struct</span> <span class="n">sys_sem</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">;</span> 
+</pre></div>
+</div>
+</p>
+<p>Route this to memory domains using K_APP_DMEM().</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_name</span></code>: Name of the semaphore. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_initial_count</span></code>: Initial semaphore count. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_count_limit</span></code>: Maximum permitted semaphore count. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_sem_init">
+<span class="target" id="group__user__semaphore__apis_1gae20385545bbf7a9dfd59afa74bf1120a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_sem_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sys_sem</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sem</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">initial_count</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">limit</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_sem_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a semaphore. </p>
+<p>This routine initializes a semaphore instance, prior to its first use.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sem</span></code>: Address of the semaphore. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initial_count</span></code>: Initial semaphore count. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code>: Maximum permitted semaphore count.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Initial success. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: Bad parameters, the value of limit should be located in (0, INT_MAX] and initial_count shouldn’t be greater than limit. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_sem_give">
+<span class="target" id="group__user__semaphore__apis_1gaae32032398db1f693ad3f876863f78b4"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_sem_give</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sys_sem</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_sem_give" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Give a semaphore. </p>
+<p>This routine gives <em>sem</em>, unless the semaphore is already at its maximum permitted count.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sem</span></code>: Address of the semaphore.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Semaphore given. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: Parameter address not recognized. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EACCES</span></code>: Caller does not have enough access. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Count reached Maximum permitted count and try again. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_sem_take">
+<span class="target" id="group__user__semaphore__apis_1gaf742a29f89a816fa34b8d6d33e221b77"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_sem_take</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sys_sem</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sem</span></span>, <a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_sem_take" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Take a sys_sem. </p>
+<p>This routine takes <em>sem</em>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sem</span></code>: Address of the sys_sem. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Waiting period to take the sys_sem, or one of the special values K_NO_WAIT and K_FOREVER.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: sys_sem taken. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: Parameter address not recognized. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ETIMEDOUT</span></code>: Waiting period timed out. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EACCES</span></code>: Caller does not have enough access. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.sys_sem_count_get">
+<span class="target" id="group__user__semaphore__apis_1ga7b287ca3cc3ab2766d7c1beec1849894"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_sem_count_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sys_sem</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_sem_count_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get sys_sem’s value. </p>
+<p>This routine returns the current value of <em>sem</em>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Current value of sys_sem. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sem</span></code>: Address of the sys_sem.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mutexes.html" class="btn btn-neutral float-right" title="Mutexes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../other/polling.html" class="btn btn-neutral" title="Polling API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

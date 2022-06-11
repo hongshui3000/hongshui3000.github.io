@@ -1,0 +1,28 @@
+var group__kernel__sched__tests =
+[
+    [ "test_bad_priorities", "group__kernel__sched__tests.html#ga06468ec560826bb502b6d94712278cbe", null ],
+    [ "test_k_thread_priority_get_init_null", "group__kernel__sched__tests.html#ga280a0acbd9dea9af67ee56b05fc4639d", null ],
+    [ "test_k_thread_priority_set_init_null", "group__kernel__sched__tests.html#ga8c5f191cc509c98818f332daea80c7fe", null ],
+    [ "test_k_thread_priority_set_overmax", "group__kernel__sched__tests.html#gac6dc9abbe00729f2054f72348b5a7e4d", null ],
+    [ "test_k_thread_priority_set_upgrade", "group__kernel__sched__tests.html#ga3beb62b6bd5c58af01c51bfd844da87b", null ],
+    [ "test_k_thread_resume_init_null", "group__kernel__sched__tests.html#ga0031bfdb3c5051c053fd98ac4cd2424e", null ],
+    [ "test_k_thread_suspend_init_null", "group__kernel__sched__tests.html#ga6a2dd1ce9277d13299bbcf4edfece202", null ],
+    [ "test_k_wakeup_init_null", "group__kernel__sched__tests.html#ga2530535cc5b87a91008bb5fb6f519629", null ],
+    [ "test_lock_preemptible", "group__kernel__sched__tests.html#ga5747d604fdb0a85e0d45c6530058ef24", null ],
+    [ "test_pending_thread_wakeup", "group__kernel__sched__tests.html#gaf7dddee86d5a24ec7f8db1b0381c8970", null ],
+    [ "test_preempt", "group__kernel__sched__tests.html#ga9d41c0cba432ab7b6c38cbfe81b35b94", null ],
+    [ "test_priority_cooperative", "group__kernel__sched__tests.html#gadcaa67e72a6c021339110eb4ff1242e4", null ],
+    [ "test_priority_preemptible", "group__kernel__sched__tests.html#gac04ad4372fb87d1c0cfa525ef5cb6940", null ],
+    [ "test_priority_preemptible_wait_prio", "group__kernel__sched__tests.html#ga25b3cd1ed71cdb636f8d02f2b9f058d3", null ],
+    [ "test_priority_scheduling", "group__kernel__sched__tests.html#ga43f9fb9bd47c18d171883a37f51d4d02", null ],
+    [ "test_sched_is_preempt_thread", "group__kernel__sched__tests.html#ga0c8ecd714cfe8b18c43a9c7b50e1f713", null ],
+    [ "test_sleep_cooperative", "group__kernel__sched__tests.html#ga0035834d2e4db3813ad4e8183e65fe32", null ],
+    [ "test_sleep_wakeup_preemptible", "group__kernel__sched__tests.html#ga2154e8dce668a294824c0a13edfc3739", null ],
+    [ "test_time_slicing_disable_preemptible", "group__kernel__sched__tests.html#gabb7c9c0f75ed7b62f3e03a4e267e65f2", null ],
+    [ "test_time_slicing_preemptible", "group__kernel__sched__tests.html#ga29c073bdfd6c751628afe7ba9eda7502", null ],
+    [ "test_unlock_nested_sched_lock", "group__kernel__sched__tests.html#ga4fcc88261fe2fb8292a5d8c059ce82ef", null ],
+    [ "test_unlock_preemptible", "group__kernel__sched__tests.html#ga7b6a31f45b525d56ad33131daaf8adee", null ],
+    [ "test_unqueued", "group__kernel__sched__tests.html#ga26d08fc3b91cee16a29de99045d9db67", null ],
+    [ "test_wakeup_expired_timer_thread", "group__kernel__sched__tests.html#gab015586c36d9616495578d57be339631", null ],
+    [ "test_yield_cooperative", "group__kernel__sched__tests.html#ga224c79245d2b7fff8648fa4d94b75c46", null ]
+];

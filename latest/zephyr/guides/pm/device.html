@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Device Power Management Infrastructure &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Device Runtime Power Management" href="device_runtime.html" />
+    <link rel="prev" title="System Power Management" href="system.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Power Management</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system.html">System Power Management</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Device Power Management Infrastructure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#runtime-device-power-management">Runtime Device Power Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#system-power-management">System Power Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-power-management-states">Device Power Management States</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-power-management-operations">Device Power Management Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-model-with-power-management-support">Device Model with Power Management Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#busy-status-indication">Busy Status Indication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wakeup-capability">Wakeup capability</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#power-domain">Power Domain</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="device_runtime.html">Device Runtime Power Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="power_domain.html">Power Domain</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Power Management</a> &raquo;</li>
+        
+      <li>Device Power Management Infrastructure</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/pm/device.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="device-power-management-infrastructure">
+<h1>Device Power Management Infrastructure<a class="headerlink" href="#device-power-management-infrastructure" title="Permalink to this headline">¶</a></h1>
+<p>The device power management infrastructure consists of interfaces to the
+<a class="reference internal" href="../../reference/drivers/index.html#device-model-api"><span class="std std-ref">Device Driver Model</span></a>. These APIs send control commands to the device driver
+to update its power state or to get its current power state.</p>
+<p>Zephyr RTOS supports two methods of doing device power management.</p>
+<ul class="simple">
+<li><p>Runtime Device Power Management</p></li>
+<li><p>System Power Management</p></li>
+</ul>
+<div class="section" id="runtime-device-power-management">
+<h2>Runtime Device Power Management<a class="headerlink" href="#runtime-device-power-management" title="Permalink to this headline">¶</a></h2>
+<p>In this method, the application or any component that deals with devices directly
+and has the best knowledge of their use, performs the device power management. This
+saves power if some devices that are not in use can be turned off or put
+in power saving mode. This method allows saving power even when the CPU is
+active. The components that use the devices need to be power aware and should
+be able to make decisions related to managing device power.</p>
+<p>In this method, the SOC interface can enter CPU or SOC power states quickly when
+<code class="code docutils literal notranslate"><span class="pre">pm_system_suspend()</span></code> gets called. This is because it does not need to
+spend time doing device power management if the devices are already put in the
+appropriate power state by the application or component managing the devices.</p>
+</div>
+<div class="section" id="system-power-management">
+<h2>System Power Management<a class="headerlink" href="#system-power-management" title="Permalink to this headline">¶</a></h2>
+<p>In this method device power management is mostly done inside
+<code class="code docutils literal notranslate"><span class="pre">pm_system_suspend()</span></code> along with entering a CPU or SOC power state.</p>
+<p>If a decision to enter a lower power state is made, the implementation would enter it
+only after checking if the devices are not in the middle of a hardware
+transaction that cannot be interrupted. This method can be used in
+implementations where the applications and components using devices are not
+expected to be power aware and do not implement runtime device power management.</p>
+<img alt="../../_images/central_method.svg" class="align-center" src="../../_images/central_method.svg" /><p>This method can also be used to emulate a hardware feature supported by some
+SOCs which triggers automatic entry to a lower power state when all devices are idle.
+Refer to <a class="reference internal" href="#busy-status-indication">Busy Status Indication</a> to see how to indicate whether a device is busy
+or idle.</p>
+</div>
+<div class="section" id="device-power-management-states">
+<h2>Device Power Management States<a class="headerlink" href="#device-power-management-states" title="Permalink to this headline">¶</a></h2>
+<p>The power management subsystem defines device states in
+<a class="reference internal" href="../../reference/pm/index.html#c.pm_device_state" title="pm_device_state"><code class="xref c c-enum docutils literal notranslate"><span class="pre">pm_device_state</span></code></a>. These states are classified based on the degree of
+device context that gets lost in those states, kind of operations done to save
+power, and the impact on the device behavior due to the state transition. Device
+context includes device registers, clocks, memory etc.</p>
+</div>
+<div class="section" id="device-power-management-operations">
+<h2>Device Power Management Operations<a class="headerlink" href="#device-power-management-operations" title="Permalink to this headline">¶</a></h2>
+<p>Zephyr RTOS power management subsystem provides a control function interface
+to device drivers to indicate power management operations to perform. Each
+device driver defines:</p>
+<ul class="simple">
+<li><p>The device’s supported power states.</p></li>
+<li><p>The device’s supported transitions between power states.</p></li>
+<li><p>The device’s necessary operations to handle the transition between power states.</p></li>
+</ul>
+<p>The following are some examples of operations that the device driver may perform
+in transition between power states:</p>
+<ul class="simple">
+<li><p>Save/Restore device states.</p></li>
+<li><p>Gate/Un-gate clocks.</p></li>
+<li><p>Gate/Un-gate power.</p></li>
+<li><p>Mask/Un-mask interrupts.</p></li>
+</ul>
+</div>
+<div class="section" id="device-model-with-power-management-support">
+<h2>Device Model with Power Management Support<a class="headerlink" href="#device-model-with-power-management-support" title="Permalink to this headline">¶</a></h2>
+<p>Drivers initialize the devices using macros. See <a class="reference internal" href="../../reference/drivers/index.html#device-model-api"><span class="std std-ref">Device Driver Model</span></a> for
+details on how these macros are used. Use the DEVICE_DEFINE macro to initialize
+drivers providing power management support via the PM control function.
+One of the macro parameters is the pointer to the PM action callback.
+If the driver doesn’t implement any power control operations, it can initialize
+the corresponding pointer with <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
+</div>
+<div class="section" id="busy-status-indication">
+<span id="pm-device-busy"></span><h2>Busy Status Indication<a class="headerlink" href="#busy-status-indication" title="Permalink to this headline">¶</a></h2>
+<p>The SOC interface executes some power policies that can turn off power to devices,
+causing them to lose their state. If the devices are in the middle of some
+hardware transaction, like writing to flash memory when the power is turned
+off, then such transactions would be left in an inconsistent state. This
+infrastructure guards such transactions by indicating to the SOC interface that
+the device is in the middle of a hardware transaction.</p>
+<p>When the <code class="xref c c-func docutils literal notranslate"><span class="pre">pm_system_suspend()</span></code> is called, depending on the power state
+returned by the policy manager, the system may suspend or put devices in low
+power if they are not marked as busy.</p>
+</div>
+<div class="section" id="wakeup-capability">
+<h2>Wakeup capability<a class="headerlink" href="#wakeup-capability" title="Permalink to this headline">¶</a></h2>
+<p>Some devices are capable of waking the system up from a sleep state.
+When a device has such capability, applications can enable or disable
+this feature on a device dynamically using
+<a class="reference internal" href="../../reference/pm/index.html#c.pm_device_wakeup_enable" title="pm_device_wakeup_enable"><code class="xref c c-func docutils literal notranslate"><span class="pre">pm_device_wakeup_enable()</span></code></a>.</p>
+<p>This property can be set on device declaring the property <code class="docutils literal notranslate"><span class="pre">wakeup-source</span></code> in
+the device node in devicetree. For example, this devicetree fragment sets the
+<code class="docutils literal notranslate"><span class="pre">gpio0</span></code> device as a “wakeup” source:</p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="nl">gpio0</span><span class="p">:</span> <span class="nf">gpio</span><span class="o">@</span><span class="mi">40022000</span><span class="cm"> </span><span class="p">{</span>
+        <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;ti,cc13xx-cc26xx-gpio&quot;</span><span class="p">;</span>
+        <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x40022000</span> <span class="mh">0x400</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="n">interrupts</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span> <span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="kr">status</span> <span class="o">=</span> <span class="s">&quot;disabled&quot;</span><span class="p">;</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;GPIO_0&quot;</span><span class="p">;</span>
+        <span class="n">gpio-controller</span><span class="p">;</span>
+        <span class="n">wakeup-source</span><span class="p">;</span>
+        <span class="o">#</span><span class="n">gpio-cells</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>By default, “wakeup” capable devices do not have this functionality enabled
+during the device initialization. Applications can enable this functionality
+later calling <a class="reference internal" href="../../reference/pm/index.html#c.pm_device_wakeup_enable" title="pm_device_wakeup_enable"><code class="xref c c-func docutils literal notranslate"><span class="pre">pm_device_wakeup_enable()</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This property is <strong>only</strong> used by the system power management to identify
+devices that should not be suspended.
+It is responsability of driver or the application to do any additional
+configuration required by the device to support it.</p>
+</div>
+</div>
+<div class="section" id="power-domain">
+<h2>Power Domain<a class="headerlink" href="#power-domain" title="Permalink to this headline">¶</a></h2>
+<p>Power domain on Zephyr is represented as a regular device. The power management
+subsystem ensures that a domain is resumed before and suspended after devices
+using it. When <a class="reference internal" href="../../kconfig.html#CONFIG_PM_DEVICE_RUNTIME" title="CONFIG_PM_DEVICE_RUNTIME"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PM_DEVICE_RUNTIME</span></code></a> is enabled, every time a
+device is suspended or resumed the same action is done in the domain the
+device belongs.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="device_runtime.html" class="btn btn-neutral float-right" title="Device Runtime Power Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="system.html" class="btn btn-neutral" title="System Power Management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

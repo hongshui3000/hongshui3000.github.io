@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__shared__multi__heap" kind="group">
+    <compoundname>shared_multi_heap</compoundname>
+    <title>Shared multi-heap interface</title>
+    <innerclass refid="structshared__multi__heap__region" prot="public">shared_multi_heap_region</innerclass>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="group__shared__multi__heap_1gad3617533a50c35c71f7c476b13061ae1" prot="public" static="no" strong="no">
+        <type></type>
+        <name>smh_reg_attr</name>
+        <enumvalue id="group__shared__multi__heap_1ggad3617533a50c35c71f7c476b13061ae1afb2e0bb04859ff231dee953279b8bf3a" prot="public">
+          <name>SMH_REG_ATTR_CACHEABLE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>cacheable </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="group__shared__multi__heap_1ggad3617533a50c35c71f7c476b13061ae1a2625b9b8aea429ab748f9e39d55f0dff" prot="public">
+          <name>SMH_REG_ATTR_NON_CACHEABLE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>non-cacheable </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="group__shared__multi__heap_1ggad3617533a50c35c71f7c476b13061ae1a0a41317e94fcdf459708be4a78b74c91" prot="public">
+          <name>SMH_REG_ATTR_NUM</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>must be the last item </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Memory region attributes / capabilities. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>** This list needs to be kept in sync with shared-multi-heap.yaml ** </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/multi_heap/shared_multi_heap.h" line="36" column="1" bodyfile="include/multi_heap/shared_multi_heap.h" bodystart="36" bodyend="45"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="group__shared__multi__heap_1ga88c9661dd24b8b6e974ee4ca2762d201" prot="public" static="no">
+        <type><ref refid="stdbool_8h_1abb452686968e48b67397da5f97445f5b" kindref="member">bool</ref>(*</type>
+        <definition>typedef bool(* smh_init_reg_fn_t) (struct shared_multi_heap_region *reg, uint8_t **v_addr, size_t *size)</definition>
+        <argsstring>)(struct shared_multi_heap_region *reg, uint8_t **v_addr, size_t *size)</argsstring>
+        <name>smh_init_reg_fn_t</name>
+        <briefdescription>
+<para>Region init function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This is a user-provided function whose responsibility is to setup or initialize the memory region passed in input before this is added to the heap pool by the shared multi-heap manager. This function can be used by architectures using MMU / MPU that must correctly map the region before this is considered valid and accessible.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>reg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the SMH region structure. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v_addr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Virtual address obtained after mapping. For non-MMU architectures this value is the physical address of the region. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the region after mapping.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the region is ready to be added to the heap pool. False if the region must be skipped. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/multi_heap/shared_multi_heap.h" line="78" column="9" bodyfile="include/multi_heap/shared_multi_heap.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__shared__multi__heap_1ga59c5c0d6bb27c49bf58d31485bb23e04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int shared_multi_heap_pool_init</definition>
+        <argsstring>(smh_init_reg_fn_t smh_init_reg_fn)</argsstring>
+        <name>shared_multi_heap_pool_init</name>
+        <param>
+          <type><ref refid="group__shared__multi__heap_1ga88c9661dd24b8b6e974ee4ca2762d201" kindref="member">smh_init_reg_fn_t</ref></type>
+          <declname>smh_init_reg_fn</declname>
+        </param>
+        <briefdescription>
+<para>Init the pool. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initialize the shared multi-heap pool and hook-up the region init function.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>smh_init_reg_fn</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function pointer to the region init function. Can be NULL for non-MPU / non-MMU architectures. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/multi_heap/shared_multi_heap.h" line="90" column="5" declfile="include/multi_heap/shared_multi_heap.h" declline="90" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="group__shared__multi__heap_1ga44cbb4a2abb7be7201417d094d5f6c3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void* shared_multi_heap_alloc</definition>
+        <argsstring>(enum smh_reg_attr attr, size_t bytes)</argsstring>
+        <name>shared_multi_heap_alloc</name>
+        <param>
+          <type>enum <ref refid="group__shared__multi__heap_1gad3617533a50c35c71f7c476b13061ae1" kindref="member">smh_reg_attr</ref></type>
+          <declname>attr</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>bytes</declname>
+        </param>
+        <briefdescription>
+<para>Allocate memory from the memory shared multi-heap pool. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Allocate a block of memory of the specified size in bytes and with a specified capability / attribute.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>attr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Capability / attribute requested for the memory block. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bytes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Requested size of the allocation in bytes.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A valid pointer to heap memory or NULL if no memory is available. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/multi_heap/shared_multi_heap.h" line="103" column="6" declfile="include/multi_heap/shared_multi_heap.h" declline="103" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="group__shared__multi__heap_1gab968bf26483d22939aaa7c2b1b6743ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void shared_multi_heap_free</definition>
+        <argsstring>(void *block)</argsstring>
+        <name>shared_multi_heap_free</name>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <briefdescription>
+<para>Free memory from the shared multi-heap pool. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Free the passed block of memory.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>block</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Block to free. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/multi_heap/shared_multi_heap.h" line="112" column="6" declfile="include/multi_heap/shared_multi_heap.h" declline="112" declcolumn="6"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Shared multi-heap interface. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The shared multi-heap manager uses the multi-heap allocator to manage a set of reserved memory regions with different capabilities / attributes (cacheable, non-cacheable, etc...) defined in the DT.</para>
+<para>The user can request allocation from the shared pool specifying the capability / attribute of interest for the memory (cacheable / non-cacheable memory, etc...) </para>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

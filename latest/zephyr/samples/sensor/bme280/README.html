@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>BME280 Humidity and Pressure Sensor &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="BME680: Integrated environmental sensor" href="../bme680/README.html" />
+    <link rel="prev" title="APDS9960 RGB, Ambient Light, Gesture Sensor" href="../apds9960/README.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Samples and Demos</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../classic.html">Classic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../basic/basic.html">Basic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../userspace/index.html">Userspace Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../subsys/subsys.html">Various Subsystems Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../net/net.html">Networking Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/bluetooth.html">Bluetooth samples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../sensor.html">Sensor Samples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adt7420/README.html">ADT7420: High accuracy digital I2C temperature sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../adxl362/README.html">ADXL362: Three Axis Accelerometer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../adxl372/README.html">ADXL372: Three Axis High-g I2C/SPI Accelerometer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../amg88xx/README.html">AMG88XX Infrared Array Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ams_iAQcore/README.html">ams iAQcore Indoor air quality sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apds9960/README.html">APDS9960 RGB, Ambient Light, Gesture Sensor</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">BME280 Humidity and Pressure Sensor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-and-running">Building and Running</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../bme680/README.html">BME680: Integrated environmental sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bmi270/README.html">BMI270: 6 axis inertial measurement unit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bmm150/README.html">BMM150 Geomagnetic Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bq274xx/README.html">BQ274XX Sensor Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ccs811/README.html">CCS811 Indoor Air Quality Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dht/README.html">DHT: Aosong DHT Digital-output Humidity and Temperature Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dps310/README.html">DPS310 Temperature and Pressure Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ens210/README.html">ams ens210 Relative Humidity and Temperature Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fdc2x1x/README.html">FDC2X1X: Capacitance-to-Digital Converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fxas21002/README.html">FXAS21002 Gyroscope Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fxos8700/README.html">FXOS8700 Accelerometer/Magnetometer Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hts221/README.html">HTS221: Temperature and Humidity Monitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i3g4250d/README.html">I3G4250D: 3-axis digital output gyroscope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../icm42605/README.html">MPU6050: Invensense Motion Tracking Device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ina219/README.html">INA219 Bidirectional Power/Current Monitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../isl29035/README.html">ISL29035: Digital Light Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lis2dh/README.html">LIS2DH: Motion Sensor Monitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lps22hb/README.html">LPS22HB: Temperature and Humidity Monitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lps22hh/README.html">LPS22HH: Temperature and Pressure Monitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lsm303dlhc/README.html">LSM303DLHC: Magnetometer and Accelerometer data Monitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lsm6dsl/README.html">LSM6DSL: IMU sensor Monitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lsm6dso/README.html">LSM6DSO: IMU Sensor Monitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../magn_polling/README.html">BMC150 Magnetometer Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../max17262/README.html">MAX17262 Fuel Gauge Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../max30101/README.html">MAX30101 Heart Rate Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../max6675/README.html">MAX6675 K-thermocouple to digital converter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mcp9808/README.html">MCP9808 Temperature Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mcux_acmp/README.html">NXP MCUX Analog Comparator (ACMP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mhz19b/README.html">MH-Z19B: CO2 Sensor Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mpr/README.html">MPR Pressure Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mpu6050/README.html">MPU6050: Invensense Motion Tracking Device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ms5837/README.html">MS5837 Sensor Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/README.html">QDEC: Quadrature Decoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sensor_shell/README.html">Sensor Shell Module Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sgp40_sht4x/README.html">SGP40 and SHT4X: High accuracy digital I2C humidity sensor and multipixel gas sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sht3xd/README.html">SHT3XD: High accuracy digital I2C humidity sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sm351lt/README.html">SM351LT: Magnetoresistive Sensor Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stm32_temp_sensor/README.html">STM32 Temperature Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../th02/README.html">TH02: Temperature and Humidity Monitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ti_hdc/README.html">TI_HDC Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tmp108/README.html">TMP108 sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tmp112/README.html">TMP112 sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tmp116/README.html">TI_TMP116 Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vcnl4040/README.html">VCNL4040: proximity and ambient light sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vl53l0x/README.html">VL53L0X: Time Of Flight sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../wsen_itds/README.html">WSEN-ITDS: 3-axis acceleration sensor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../arch/index.html">Architecture Dependent Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../boards/boards.html">Board-specific samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/drivers.html">Driver Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../application_development/application_development.html">Application development samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shields/shields.html">Shields Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../posix/posix.html">POSIX Subsystem Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel/index.html">Various Kernel and Scheduler Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tfm_integration/tfm_integration.html">TF-M Integration Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tfm_integration/tfm_integration.html#trusted-firmware-m-tf-m">Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules/index.html">External Module Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../compression/compression.html">Compression Samples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Samples and Demos</a> &raquo;</li>
+        
+          <li><a href="../sensor.html">Sensor Samples</a> &raquo;</li>
+        
+      <li>BME280 Humidity and Pressure Sensor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/samples/sensor/bme280/README.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bme280-humidity-and-pressure-sensor">
+<span id="bme280"></span><h1>BME280 Humidity and Pressure Sensor<a class="headerlink" href="#bme280-humidity-and-pressure-sensor" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This sample shows how to use the Zephyr <a class="reference internal" href="../../../reference/peripherals/sensor.html#sensor-api"><span class="std std-ref">Sensors</span></a> API driver for the
+<a class="reference external" href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/`">Bosch BME280</a> environmental sensor.</p>
+<p>The sample periodically reads temperature, pressure and humidity data from the
+first available BME280 device discovered in the system. The sample checks the
+sensor in polling mode (without interrupt trigger).</p>
+</div>
+<div class="section" id="building-and-running">
+<h2>Building and Running<a class="headerlink" href="#building-and-running" title="Permalink to this headline">¶</a></h2>
+<p>The sample can be configured to support BME280 sensors connected via either I2C
+or SPI. Configuration is done via <a class="reference internal" href="../../../guides/dts/index.html#dt-guide"><span class="std std-ref">devicetree</span></a>. The devicetree
+must have an enabled node with <code class="docutils literal notranslate"><span class="pre">compatible</span> <span class="pre">=</span> <span class="pre">&quot;bosch,bme280&quot;;</span></code>. See
+<a class="reference internal" href="../../../reference/devicetree/compatibles/bosch%2Cbme280.html#std-dtcompatible-bosch-bme280"><code class="xref std std-dtcompatible docutils literal notranslate"><span class="pre">bosch,bme280</span></code></a> for the devicetree binding and see below for
+examples and common configurations.</p>
+<p>If the sensor is not built into your board, start by wiring the sensor pins
+according to the connection diagram given in the <a class="reference external" href="https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf">BME280 datasheet</a> at
+page 38.</p>
+<div class="section" id="boards-with-a-built-in-bme280">
+<h3>Boards with a built-in BME280<a class="headerlink" href="#boards-with-a-built-in-bme280" title="Permalink to this headline">¶</a></h3>
+<p>Your board may have a BME280 node configured in its devicetree by default. Make
+sure this node has <code class="docutils literal notranslate"><span class="pre">status</span> <span class="pre">=</span> <span class="pre">&quot;okay&quot;;</span></code>, then build and run with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>From the root of the zephyr repository
+<span class="go">west build -b adafruit_feather_m0_basic_proto samples/sensor/bme280</span>
+<span class="go">west flash</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="bme280-via-arduino-spi-pins">
+<h3>BME280 via Arduino SPI pins<a class="headerlink" href="#bme280-via-arduino-spi-pins" title="Permalink to this headline">¶</a></h3>
+<p>If you wired the sensor to a SPI peripheral on an Arduino header, build and
+flash with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>From the root of the zephyr repository
+<span class="go">west build -b None samples/sensor/bme280 -- -DDTC_OVERLAY_FILE=arduino_spi.overlay</span>
+<span class="go">west flash</span>
+</pre></div>
+</div>
+<p>The devicetree overlay <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/samples/sensor/bme280/arduino_spi.overlay">samples/sensor/bme280/arduino_spi.overlay</a>
+works on any board with a properly configured Arduino pin-compatible SPI
+peripheral.</p>
+</div>
+<div class="section" id="bme280-via-arduino-i2c-pins">
+<h3>BME280 via Arduino I2C pins<a class="headerlink" href="#bme280-via-arduino-i2c-pins" title="Permalink to this headline">¶</a></h3>
+<p>If you wired the sensor to an I2C peripheral on an Arduino header, build and
+flash with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>From the root of the zephyr repository
+<span class="go">west build -b None samples/sensor/bme280 -- -DDTC_OVERLAY_FILE=arduino_i2c.overlay</span>
+<span class="go">west flash</span>
+</pre></div>
+</div>
+<p>The devicetree overlay <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/samples/sensor/bme280/arduino_i2c.overlay">samples/sensor/bme280/arduino_i2c.overlay</a>
+works on any board with a properly configured Arduino pin-compatible I2C
+peripheral.</p>
+</div>
+<div class="section" id="board-specific-overlays">
+<h3>Board-specific overlays<a class="headerlink" href="#board-specific-overlays" title="Permalink to this headline">¶</a></h3>
+<p>If your board’s devicetree does not have a BME280 node already, you can create
+a board-specific devicetree overlay adding one in the <code class="file docutils literal notranslate"><span class="pre">boards</span></code> directory.
+See existing overlays for examples.</p>
+<p>The build system uses these overlays by default when targeting those boards, so
+no <code class="docutils literal notranslate"><span class="pre">DTC_OVERLAY_FILE</span></code> setting is needed when building and running.</p>
+<p>For example, to build for the <a class="reference internal" href="../../../boards/arm/adafruit_feather_m0_basic_proto/doc/index.html#adafruit-feather-m0-basic-proto"><span class="std std-ref">Adafruit Feather M0 Basic Proto</span></a> using the
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/samples/sensor/bme280/boards/adafruit_feather_m0_basic_proto.overlay">samples/sensor/bme280/boards/adafruit_feather_m0_basic_proto.overlay</a>
+overlay provided with this sample:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>From the root of the zephyr repository
+<span class="go">west build -b adafruit_feather_m0_basic_proto samples/sensor/bme280</span>
+<span class="go">west flash</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sample-output">
+<h3>Sample Output<a class="headerlink" href="#sample-output" title="Permalink to this headline">¶</a></h3>
+<p>The sample prints output to the serial console. BME280 device driver messages
+are also logged. Refer to your board’s documentation for information on
+connecting to its serial console.</p>
+<p>Here is example output for the default application settings, assuming that only
+one BME280 sensor is connected to the standard Arduino I2C pins:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[00:00:00.379,760] &lt;dbg&gt; BME280.bme280_init: initializing &quot;BME280_SPI&quot; on bus &quot;SPI_3&quot;
+[00:00:00.379,821] &lt;dbg&gt; BME280.bme280_init: bad chip id 0xff
+[00:00:00.379,821] &lt;dbg&gt; BME280.bme280_init: initializing &quot;BME280_I2C&quot; on bus &quot;I2C_0&quot;
+[00:00:00.380,340] &lt;dbg&gt; BME280.bme280_init: ID OK
+[00:00:00.385,559] &lt;dbg&gt; BME280.bme280_init: BME280_I2C OK
+*** Booting Zephyr OS build zephyr-v2.4.0-2940-gbb732ada394f  ***
+Found device BME280_I2C, getting sensor data
+temp: 20.260000; press: 99.789019; humidity: 46.458984
+temp: 20.260000; press: 99.789480; humidity: 46.424804
+temp: 20.250000; press: 99.789246; humidity: 46.423828
+</pre></div>
+</div>
+<p>Here is example output for the default application settings, assuming that two
+different BME280 sensors are connected to the standard Arduino I2C and SPI pins:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[00:00:00.377,777] &lt;dbg&gt; BME280.bme280_init: initializing &quot;BME280_SPI&quot; on bus &quot;SPI_3&quot;
+[00:00:00.377,838] &lt;dbg&gt; BME280.bme280_init: ID OK
+[00:00:00.379,608] &lt;dbg&gt; BME280.bme280_init: BME280_SPI OK
+[00:00:00.379,638] &lt;dbg&gt; BME280.bme280_init: initializing &quot;BME280_I2C&quot; on bus &quot;I2C_0&quot;
+[00:00:00.380,126] &lt;dbg&gt; BME280.bme280_init: ID OK
+[00:00:00.385,345] &lt;dbg&gt; BME280.bme280_init: BME280_I2C OK
+*** Booting Zephyr OS build zephyr-v2.4.0-2940-gbb732ada394f  ***
+Found device BME280_I2C, getting sensor data
+temp: 20.150000; press: 99.857675; humidity: 46.447265
+temp: 20.150000; press: 99.859121; humidity: 46.458984
+temp: 20.150000; press: 99.859234; humidity: 46.469726
+</pre></div>
+</div>
+<p>That the driver logs include a line saying <code class="docutils literal notranslate"><span class="pre">BME280_I2C</span> <span class="pre">OK</span></code> in both cases, but
+<code class="docutils literal notranslate"><span class="pre">BME280_SPI</span> <span class="pre">OK</span></code> is missing when that device is not connected.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../bme680/README.html" class="btn btn-neutral float-right" title="BME680: Integrated environmental sensor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../apds9960/README.html" class="btn btn-neutral" title="APDS9960 RGB, Ambient Light, Gesture Sensor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

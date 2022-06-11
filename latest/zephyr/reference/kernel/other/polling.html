@@ -1,0 +1,900 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Polling API &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Semaphores" href="../synchronization/semaphores.html" />
+    <link rel="prev" title="Interrupts" href="interrupts.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Kernel Services</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#scheduling-interrupts-and-synchronization">Scheduling, Interrupts, and Synchronization</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../threads/index.html">Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../scheduling/index.html">Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/system_threads.html">System Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/workqueue.html">Workqueue Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../threads/nothread.html">Zephyr Without Threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="interrupts.html">Interrupts</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Polling API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/semaphores.html">Semaphores</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/mutexes.html">Mutexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/condvar.html">Condition Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../synchronization/events.html">Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../smp/smp.html">Symmetric Multiprocessing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data-passing">Data Passing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#memory-management">Memory Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#timing">Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Kernel Services</a> &raquo;</li>
+        
+      <li>Polling API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/kernel/other/polling.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="polling-api">
+<span id="polling-v2"></span><h1>Polling API<a class="headerlink" href="#polling-api" title="Permalink to this headline">¶</a></h1>
+<p>The polling API is used to wait concurrently for any one of multiple conditions
+to be fulfilled.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#concepts" id="id1">Concepts</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id2">Implementation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#using-k-poll" id="id3">Using k_poll()</a></p></li>
+<li><p><a class="reference internal" href="#using-k-poll-signal-raise" id="id4">Using k_poll_signal_raise()</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#suggested-uses" id="id5">Suggested Uses</a></p></li>
+<li><p><a class="reference internal" href="#configuration-options" id="id6">Configuration Options</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id7">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="concepts">
+<h2><a class="toc-backref" href="#id1">Concepts</a><a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h2>
+<p>The polling API’s main function is <a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a>, which is very similar
+in concept to the POSIX <code class="xref c c-func docutils literal notranslate"><span class="pre">poll()</span></code> function, except that it operates on
+kernel objects rather than on file descriptors.</p>
+<p>The polling API allows a single thread to wait concurrently for one or more
+conditions to be fulfilled without actively looking at each one individually.</p>
+<p>There is a limited set of such conditions:</p>
+<ul class="simple">
+<li><p>a semaphore becomes available</p></li>
+<li><p>a kernel FIFO contains data ready to be retrieved</p></li>
+<li><p>a poll signal is raised</p></li>
+</ul>
+<p>A thread that wants to wait on multiple conditions must define an array of
+<strong>poll events</strong>, one for each condition.</p>
+<p>All events in the array must be initialized before the array can be polled on.</p>
+<p>Each event must specify which <strong>type</strong> of condition must be satisfied so that
+its state is changed to signal the requested condition has been met.</p>
+<p>Each event must specify what <strong>kernel object</strong> it wants the condition to be
+satisfied.</p>
+<p>Each event must specify which <strong>mode</strong> of operation is used when the condition
+is satisfied.</p>
+<p>Each event can optionally specify a <strong>tag</strong> to group multiple events together,
+to the user’s discretion.</p>
+<p>Apart from the kernel objects, there is also a <strong>poll signal</strong> pseudo-object
+type that be directly signaled.</p>
+<p>The <a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a> function returns as soon as one of the conditions it
+is waiting for is fulfilled. It is possible for more than one to be fulfilled
+when <a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a> returns, if they were fulfilled before
+<a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a> was called, or due to the preemptive multi-threading
+nature of the kernel. The caller must look at the state of all the poll events
+in the array to figured out which ones were fulfilled and what actions to take.</p>
+<p>Currently, there is only one mode of operation available: the object is not
+acquired. As an example, this means that when <a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a> returns and
+the poll event states that the semaphore is available, the caller of
+<a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a> must then invoke <a class="reference internal" href="../synchronization/semaphores.html#c.k_sem_take" title="k_sem_take"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_sem_take()</span></code></a> to take
+ownership of the semaphore. If the semaphore is contested, there is no
+guarantee that it will be still available when <a class="reference internal" href="../synchronization/semaphores.html#c.k_sem_give" title="k_sem_give"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_sem_give()</span></code></a> is
+called.</p>
+</div>
+<div class="section" id="implementation">
+<h2><a class="toc-backref" href="#id2">Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="using-k-poll">
+<h3><a class="toc-backref" href="#id3">Using k_poll()</a><a class="headerlink" href="#using-k-poll" title="Permalink to this headline">¶</a></h3>
+<p>The main API is <a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a>, which operates on an array of poll events
+of type <a class="reference internal" href="#c.k_poll_event" title="k_poll_event"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_poll_event</span></code></a>. Each entry in the array represents one
+event a call to <a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a> will wait for its condition to be
+fulfilled.</p>
+<p>They can be initialized using either the runtime initializers
+<a class="reference internal" href="#c.K_POLL_EVENT_INITIALIZER" title="K_POLL_EVENT_INITIALIZER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_POLL_EVENT_INITIALIZER()</span></code></a> or <a class="reference internal" href="#c.k_poll_event_init" title="k_poll_event_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll_event_init()</span></code></a>, or
+the static initializer <a class="reference internal" href="#c.K_POLL_EVENT_STATIC_INITIALIZER" title="K_POLL_EVENT_STATIC_INITIALIZER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_POLL_EVENT_STATIC_INITIALIZER()</span></code></a>. An object
+that matches the <strong>type</strong> specified must be passed to the initializers. The
+<strong>mode</strong> <em>must</em> be set to <a class="reference internal" href="#c.k_poll_modes.K_POLL_MODE_NOTIFY_ONLY" title="K_POLL_MODE_NOTIFY_ONLY"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_POLL_MODE_NOTIFY_ONLY</span></code></a>. The state <em>must</em>
+be set to <a class="reference internal" href="#c.K_POLL_STATE_NOT_READY" title="K_POLL_STATE_NOT_READY"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_POLL_STATE_NOT_READY</span></code></a> (the initializers take care of
+this). The user <strong>tag</strong> is optional and completely opaque to the API: it is
+there to help a user to group similar events together. Being optional, it is
+passed to the static initializer, but not the runtime ones for performance
+reasons. If using runtime initializers, the user must set it separately in the
+<a class="reference internal" href="#c.k_poll_event" title="k_poll_event"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_poll_event</span></code></a> data structure. If an event in the array is to be
+ignored, most likely temporarily, its type can be set to K_POLL_TYPE_IGNORE.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">k_poll_event</span> <span class="n">events</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">K_POLL_EVENT_STATIC_INITIALIZER</span><span class="p">(</span><span class="n">K_POLL_TYPE_SEM_AVAILABLE</span><span class="p">,</span>
+                                    <span class="n">K_POLL_MODE_NOTIFY_ONLY</span><span class="p">,</span>
+                                    <span class="o">&amp;</span><span class="n">my_sem</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">K_POLL_EVENT_STATIC_INITIALIZER</span><span class="p">(</span><span class="n">K_POLL_TYPE_FIFO_DATA_AVAILABLE</span><span class="p">,</span>
+                                    <span class="n">K_POLL_MODE_NOTIFY_ONLY</span><span class="p">,</span>
+                                    <span class="o">&amp;</span><span class="n">my_fifo</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>or at runtime</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">k_poll_event</span> <span class="n">events</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="kt">void</span> <span class="nf">some_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">k_poll_event_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">events</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                      <span class="n">K_POLL_TYPE_SEM_AVAILABLE</span><span class="p">,</span>
+                      <span class="n">K_POLL_MODE_NOTIFY_ONLY</span><span class="p">,</span>
+                      <span class="o">&amp;</span><span class="n">my_sem</span><span class="p">);</span>
+
+    <span class="n">k_poll_event_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">events</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                      <span class="n">K_POLL_TYPE_FIFO_DATA_AVAILABLE</span><span class="p">,</span>
+                      <span class="n">K_POLL_MODE_NOTIFY_ONLY</span><span class="p">,</span>
+                      <span class="o">&amp;</span><span class="n">my_fifo</span><span class="p">);</span>
+
+    <span class="c1">// tags are left uninitialized if unused</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After the events are initialized, the array can be passed to
+<a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a>. A timeout can be specified to wait only for a specified
+amount of time, or the special values <a class="reference internal" href="../timing/clocks.html#c.K_NO_WAIT" title="K_NO_WAIT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_NO_WAIT</span></code></a> and
+<a class="reference internal" href="../timing/clocks.html#c.K_FOREVER" title="K_FOREVER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_FOREVER</span></code></a> to either not wait or wait until an event condition is
+satisfied and not sooner.</p>
+<p>A list of pollers is offered on each semaphore or FIFO and as many events
+can wait in it as the app wants.
+Notice that the waiters will be served in first-come-first-serve order,
+not in priority order.</p>
+<p>In case of success, <a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a> returns 0. If it times out, it returns
+-<a class="reference internal" href="../../libc/index.html#c.EAGAIN" title="EAGAIN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">EAGAIN</span></code></a>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// assume there is no contention on this semaphore and FIFO</span>
+<span class="c1">// -EADDRINUSE will not occur; the semaphore and/or data will be available</span>
+
+<span class="kt">void</span> <span class="nf">do_stuff</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">rc</span> <span class="o">=</span> <span class="n">k_poll</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">state</span> <span class="o">==</span> <span class="n">K_POLL_STATE_SEM_AVAILABLE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">k_sem_take</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">sem</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">state</span> <span class="o">==</span> <span class="n">K_POLL_STATE_FIFO_DATA_AVAILABLE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">k_fifo_get</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">fifo</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+            <span class="c1">// handle data</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// handle timeout</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When <a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a> is called in a loop, the events state must be reset
+to <a class="reference internal" href="#c.K_POLL_STATE_NOT_READY" title="K_POLL_STATE_NOT_READY"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_POLL_STATE_NOT_READY</span></code></a> by the user.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">do_stuff</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(;;)</span> <span class="p">{</span>
+        <span class="n">rc</span> <span class="o">=</span> <span class="n">k_poll</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">state</span> <span class="o">==</span> <span class="n">K_POLL_STATE_SEM_AVAILABLE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">k_sem_take</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">sem</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">state</span> <span class="o">==</span> <span class="n">K_POLL_STATE_FIFO_DATA_AVAILABLE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">k_fifo_get</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">fifo</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+            <span class="c1">// handle data</span>
+        <span class="p">}</span>
+        <span class="n">events</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">state</span> <span class="o">=</span> <span class="n">K_POLL_STATE_NOT_READY</span><span class="p">;</span>
+        <span class="n">events</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">state</span> <span class="o">=</span> <span class="n">K_POLL_STATE_NOT_READY</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-k-poll-signal-raise">
+<h3><a class="toc-backref" href="#id4">Using k_poll_signal_raise()</a><a class="headerlink" href="#using-k-poll-signal-raise" title="Permalink to this headline">¶</a></h3>
+<p>One of the types of events is <a class="reference internal" href="#c.K_POLL_TYPE_SIGNAL" title="K_POLL_TYPE_SIGNAL"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_POLL_TYPE_SIGNAL</span></code></a>: this is a “direct”
+signal to a poll event. This can be seen as a lightweight binary semaphore only
+one thread can wait for.</p>
+<p>A poll signal is a separate object of type <a class="reference internal" href="#c.k_poll_signal" title="k_poll_signal"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_poll_signal</span></code></a> that
+must be attached to a k_poll_event, similar to a semaphore or FIFO. It must
+first be initialized either via <a class="reference internal" href="#c.K_POLL_SIGNAL_INITIALIZER" title="K_POLL_SIGNAL_INITIALIZER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_POLL_SIGNAL_INITIALIZER()</span></code></a> or
+<a class="reference internal" href="#c.k_poll_signal_init" title="k_poll_signal_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll_signal_init()</span></code></a>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">k_poll_signal</span> <span class="n">signal</span><span class="p">;</span>
+<span class="kt">void</span> <span class="nf">do_stuff</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">k_poll_signal_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">signal</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>It is signaled via the <a class="reference internal" href="#c.k_poll_signal_raise" title="k_poll_signal_raise"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll_signal_raise()</span></code></a> function. This function
+takes a user <strong>result</strong> parameter that is opaque to the API and can be used to
+pass extra information to the thread waiting on the event.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">k_poll_signal</span> <span class="n">signal</span><span class="p">;</span>
+
+<span class="c1">// thread A</span>
+<span class="kt">void</span> <span class="nf">do_stuff</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">k_poll_signal_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">signal</span><span class="p">);</span>
+
+    <span class="k">struct</span> <span class="nc">k_poll_event</span> <span class="n">events</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">K_POLL_EVENT_INITIALIZER</span><span class="p">(</span><span class="n">K_POLL_TYPE_SIGNAL</span><span class="p">,</span>
+                                 <span class="n">K_POLL_MODE_NOTIFY_ONLY</span><span class="p">,</span>
+                                 <span class="o">&amp;</span><span class="n">signal</span><span class="p">),</span>
+    <span class="p">};</span>
+
+    <span class="n">k_poll</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">events</span><span class="p">.</span><span class="n">signal</span><span class="o">-&gt;</span><span class="n">result</span> <span class="o">==</span> <span class="mh">0x1337</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// A-OK!</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// weird error</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// thread B</span>
+<span class="kt">void</span> <span class="nf">signal_do_stuff</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">k_poll_signal_raise</span><span class="p">(</span><span class="o">&amp;</span><span class="n">signal</span><span class="p">,</span> <span class="mh">0x1337</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the signal is to be polled in a loop, <em>both</em> its event state and its
+<strong>signaled</strong> field <em>must</em> be reset on each iteration if it has been signaled.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">k_poll_signal</span> <span class="n">signal</span><span class="p">;</span>
+<span class="kt">void</span> <span class="nf">do_stuff</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">k_poll_signal_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">signal</span><span class="p">);</span>
+
+    <span class="k">struct</span> <span class="nc">k_poll_event</span> <span class="n">events</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">K_POLL_EVENT_INITIALIZER</span><span class="p">(</span><span class="n">K_POLL_TYPE_SIGNAL</span><span class="p">,</span>
+                                 <span class="n">K_POLL_MODE_NOTIFY_ONLY</span><span class="p">,</span>
+                                 <span class="o">&amp;</span><span class="n">signal</span><span class="p">),</span>
+    <span class="p">};</span>
+
+    <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+        <span class="n">k_poll</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K_FOREVER</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">signal</span><span class="o">-&gt;</span><span class="n">result</span> <span class="o">==</span> <span class="mh">0x1337</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// A-OK!</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// weird error</span>
+        <span class="p">}</span>
+
+        <span class="n">events</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">signal</span><span class="o">-&gt;</span><span class="n">signaled</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">events</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">state</span> <span class="o">=</span> <span class="n">K_POLL_STATE_NOT_READY</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that poll signals are not internally synchronized.  A k_poll call
+that is passed a signal will return after any code in the system calls
+<a class="reference internal" href="#c.k_poll_signal_raise" title="k_poll_signal_raise"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll_signal_raise()</span></code></a>.  But if the signal is being
+externally managed and reset via <a class="reference internal" href="#c.k_poll_signal_init" title="k_poll_signal_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll_signal_init()</span></code></a>, it is
+possible that by the time the application checks, the event state may
+no longer be equal to <a class="reference internal" href="#c.K_POLL_STATE_SIGNALED" title="K_POLL_STATE_SIGNALED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_POLL_STATE_SIGNALED</span></code></a>, and a (naive)
+application will miss events.  Best practice is always to reset the
+signal only from within the thread invoking the k_poll() loop, or else
+to use some other event type which tracks event counts: semaphores and
+FIFOs more more error-proof in thise sense because they can’t “miss”
+events, architecturally.</p>
+</div>
+</div>
+<div class="section" id="suggested-uses">
+<h2><a class="toc-backref" href="#id5">Suggested Uses</a><a class="headerlink" href="#suggested-uses" title="Permalink to this headline">¶</a></h2>
+<p>Use <a class="reference internal" href="#c.k_poll" title="k_poll"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_poll()</span></code></a> to consolidate multiple threads that would be pending
+on one object each, saving possibly large amounts of stack space.</p>
+<p>Use a poll signal as a lightweight binary semaphore if only one thread pends on
+it.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Because objects are only signaled if no other thread is waiting for them to
+become available and only one thread can poll on a specific object, polling
+is best used when objects are not subject of contention between multiple
+threads, basically when a single thread operates as a main “server” or
+“dispatcher” for multiple objects and is the only one trying to acquire
+these objects.</p>
+</div>
+</div>
+<div class="section" id="configuration-options">
+<h2><a class="toc-backref" href="#id6">Configuration Options</a><a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_POLL" title="CONFIG_POLL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_POLL</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id7">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__poll__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">poll_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_TYPE_IGNORE">
+<span class="target" id="group__poll__apis_1gafd5d801eb9e9cf6097b2c08b4933998e"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_TYPE_IGNORE</span></span></span><a class="headerlink" href="#c.K_POLL_TYPE_IGNORE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_TYPE_SIGNAL">
+<span class="target" id="group__poll__apis_1ga144d8eb34d85f6053e454410a10bf56a"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_TYPE_SIGNAL</span></span></span><a class="headerlink" href="#c.K_POLL_TYPE_SIGNAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_TYPE_SEM_AVAILABLE">
+<span class="target" id="group__poll__apis_1ga0fd7605bdffd43dff7480a90a603ffde"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_TYPE_SEM_AVAILABLE</span></span></span><a class="headerlink" href="#c.K_POLL_TYPE_SEM_AVAILABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_TYPE_DATA_AVAILABLE">
+<span class="target" id="group__poll__apis_1ga58d656f73f031a39b8a936133fe5504f"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_TYPE_DATA_AVAILABLE</span></span></span><a class="headerlink" href="#c.K_POLL_TYPE_DATA_AVAILABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_TYPE_FIFO_DATA_AVAILABLE">
+<span class="target" id="group__poll__apis_1ga71734fee18c523cf70276260118afb91"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_TYPE_FIFO_DATA_AVAILABLE</span></span></span><a class="headerlink" href="#c.K_POLL_TYPE_FIFO_DATA_AVAILABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_TYPE_MSGQ_DATA_AVAILABLE">
+<span class="target" id="group__poll__apis_1gaa83509b54175fb6c98324422a928d5e1"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_TYPE_MSGQ_DATA_AVAILABLE</span></span></span><a class="headerlink" href="#c.K_POLL_TYPE_MSGQ_DATA_AVAILABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_STATE_NOT_READY">
+<span class="target" id="group__poll__apis_1ga522822c5e06a89b22ce4dcefd10c66aa"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_STATE_NOT_READY</span></span></span><a class="headerlink" href="#c.K_POLL_STATE_NOT_READY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_STATE_SIGNALED">
+<span class="target" id="group__poll__apis_1ga478aae7fe4fb5c7b7c76ed216c22a7f1"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_STATE_SIGNALED</span></span></span><a class="headerlink" href="#c.K_POLL_STATE_SIGNALED" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_STATE_SEM_AVAILABLE">
+<span class="target" id="group__poll__apis_1gae9e3eefd5a29a538d22f53592578bb37"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_STATE_SEM_AVAILABLE</span></span></span><a class="headerlink" href="#c.K_POLL_STATE_SEM_AVAILABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_STATE_DATA_AVAILABLE">
+<span class="target" id="group__poll__apis_1gac166d9919d591bace163c5211e7b41f4"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_STATE_DATA_AVAILABLE</span></span></span><a class="headerlink" href="#c.K_POLL_STATE_DATA_AVAILABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_STATE_FIFO_DATA_AVAILABLE">
+<span class="target" id="group__poll__apis_1gabd5ac3341698534f39ded718079d6168"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_STATE_FIFO_DATA_AVAILABLE</span></span></span><a class="headerlink" href="#c.K_POLL_STATE_FIFO_DATA_AVAILABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_STATE_MSGQ_DATA_AVAILABLE">
+<span class="target" id="group__poll__apis_1gac236074cd43f59f28b803fe2c4a4f6f7"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_STATE_MSGQ_DATA_AVAILABLE</span></span></span><a class="headerlink" href="#c.K_POLL_STATE_MSGQ_DATA_AVAILABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_STATE_CANCELLED">
+<span class="target" id="group__poll__apis_1gadaf4b4c8e13afb54114af72d133e1fdb"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_STATE_CANCELLED</span></span></span><a class="headerlink" href="#c.K_POLL_STATE_CANCELLED" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_SIGNAL_INITIALIZER">
+<span class="target" id="group__poll__apis_1ga6d6321e189afca73a276cd671ec531ae"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_SIGNAL_INITIALIZER</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_POLL_SIGNAL_INITIALIZER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_EVENT_INITIALIZER">
+<span class="target" id="group__poll__apis_1ga8e3889f2bac281a6e65e31068e58047e"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_EVENT_INITIALIZER</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_event_type</span></span>, <span class="n"><span class="pre">_event_mode</span></span>, <span class="n"><span class="pre">_event_obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_POLL_EVENT_INITIALIZER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_POLL_EVENT_STATIC_INITIALIZER">
+<span class="target" id="group__poll__apis_1gada2366896d913dc916b3c28642648b63"></span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_EVENT_STATIC_INITIALIZER</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_event_type</span></span>, <span class="n"><span class="pre">_event_mode</span></span>, <span class="n"><span class="pre">_event_obj</span></span>, <span class="n"><span class="pre">event_tag</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_POLL_EVENT_STATIC_INITIALIZER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.k_poll_modes">
+<span class="target" id="group__poll__apis_1ga36d7978872a83191dd3cc16d62165add"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_poll_modes</span></span></span><a class="headerlink" href="#c.k_poll_modes" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.k_poll_modes.K_POLL_MODE_NOTIFY_ONLY">
+<span class="target" id="group__poll__apis_1gga36d7978872a83191dd3cc16d62165adda22874743e2f6b0f1fd55c5375732b681"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_MODE_NOTIFY_ONLY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.k_poll_modes.K_POLL_MODE_NOTIFY_ONLY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.k_poll_modes.K_POLL_NUM_MODES">
+<span class="target" id="group__poll__apis_1gga36d7978872a83191dd3cc16d62165adda71e08944b3e944c28056f9a5fbfb018c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">K_POLL_NUM_MODES</span></span></span><a class="headerlink" href="#c.k_poll_modes.K_POLL_NUM_MODES" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_poll_event_init">
+<span class="target" id="group__poll__apis_1gaa06bddd93a024fc5326d93187d80eb03"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_poll_event_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_poll_event" title="k_poll_event"><span class="n"><span class="pre">k_poll_event</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">event</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">mode</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_poll_event_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize one struct <a class="reference internal" href="#structk__poll__event"><span class="std std-ref">k_poll_event</span></a> instance. </p>
+<p>After this routine is called on a poll event, the event it ready to be placed in an event array to be passed to <a class="reference internal" href="#group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"><span class="std std-ref">k_poll()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">event</span></code>: The event to initialize. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: A bitfield of the types of event, from the K_POLL_TYPE_xxx values. Only values that apply to the same object being polled can be used together. Choosing K_POLL_TYPE_IGNORE disables the event. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mode</span></code>: Future. Use K_POLL_MODE_NOTIFY_ONLY. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">obj</span></code>: Kernel object or poll signal. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_poll">
+<span class="target" id="group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_poll</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_poll_event" title="k_poll_event"><span class="n"><span class="pre">k_poll_event</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">events</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">num_events</span></span>, <a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_poll" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Wait for one or many of multiple poll events to occur. </p>
+<p>This routine allows a thread to wait concurrently for one or many of multiple poll events to have occurred. Such events can be a kernel object being available, like a semaphore, or a poll signal event.</p>
+<p>When an event notifies that a kernel object is available, the kernel object is not “given” to the thread calling <a class="reference internal" href="#group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"><span class="std std-ref">k_poll()</span></a>: it merely signals the fact that the object was available when the <a class="reference internal" href="#group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"><span class="std std-ref">k_poll()</span></a> call was in effect. Also, all threads trying to acquire an object the regular way, i.e. by pending on the object, have precedence over the thread polling on the object. This means that the polling thread will never get the poll event on an object until the object becomes available and its pend queue is empty. For this reason, the <a class="reference internal" href="#group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"><span class="std std-ref">k_poll()</span></a> call is more effective when the objects being polled only have one thread, the polling thread, trying to acquire them.</p>
+<p>When <a class="reference internal" href="#group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"><span class="std std-ref">k_poll()</span></a> returns 0, the caller should loop on all the events that were passed to <a class="reference internal" href="#group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"><span class="std std-ref">k_poll()</span></a> and check the state field for the values that were expected and take the associated actions.</p>
+<p>Before being reused for another call to <a class="reference internal" href="#group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"><span class="std std-ref">k_poll()</span></a>, the user has to reset the state field to K_POLL_STATE_NOT_READY.</p>
+<p>When called from user mode, a temporary memory allocation is required from the caller’s resource pool.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">events</span></code>: An array of events to be polled for. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_events</span></code>: The number of events in the array. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Waiting period for an event to be ready, or one of the special values K_NO_WAIT and K_FOREVER.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: One or more events are ready. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Waiting period timed out. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINTR</span></code>: Polling has been interrupted, e.g. with <a class="reference internal" href="../data_passing/queues.html#group__queue__apis_1ga7c39d86cc6509f59ff9223cac3ea5071"><span class="std std-ref">k_queue_cancel_wait()</span></a>. All output events are still set and valid, cancelled event(s) will be set to K_POLL_STATE_CANCELLED. In other words, -EINTR status means that at least one of output events is K_POLL_STATE_CANCELLED. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOMEM</span></code>: Thread resource pool insufficient memory (user mode only) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: Bad parameters (user mode only) </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_poll_signal_init">
+<span class="target" id="group__poll__apis_1gaee3090c2a912b93b6a5855e3018c3551"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_poll_signal_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_poll_signal" title="k_poll_signal"><span class="n"><span class="pre">k_poll_signal</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sig</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_poll_signal_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a poll signal object. </p>
+<p>Ready a poll signal object to be signaled via <a class="reference internal" href="#group__poll__apis_1gad0bf3825f828ec3ca37481bf3cbd6723"><span class="std std-ref">k_poll_signal_raise()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sig</span></code>: A poll signal. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_poll_signal_reset">
+<span class="target" id="group__poll__apis_1ga02d899d1455ae1f3f55ffe8f1ebd6994"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_poll_signal_reset</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_poll_signal" title="k_poll_signal"><span class="n"><span class="pre">k_poll_signal</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sig</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_poll_signal_reset" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_poll_signal_check">
+<span class="target" id="group__poll__apis_1ga69dae11c7cb2c669caa411c3e7001311"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_poll_signal_check</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_poll_signal" title="k_poll_signal"><span class="n"><span class="pre">k_poll_signal</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sig</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">signaled</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">result</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_poll_signal_check" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Fetch the signaled state and result value of a poll signal. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sig</span></code>: A poll signal object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">signaled</span></code>: An integer buffer which will be written nonzero if the object was signaled </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">result</span></code>: An integer destination buffer which will be written with the result value if the object was signaled, or an undefined value if it was not. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_poll_signal_raise">
+<span class="target" id="group__poll__apis_1gad0bf3825f828ec3ca37481bf3cbd6723"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_poll_signal_raise</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_poll_signal" title="k_poll_signal"><span class="n"><span class="pre">k_poll_signal</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sig</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">result</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_poll_signal_raise" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Signal a poll signal object. </p>
+<p>This routine makes ready a poll signal, which is basically a poll event of type K_POLL_TYPE_SIGNAL. If a thread was polling on that event, it will be made ready to run. A <em>result</em> value can be specified.</p>
+<p>The poll signal contains a ‘signaled’ field that, when set by <a class="reference internal" href="#group__poll__apis_1gad0bf3825f828ec3ca37481bf3cbd6723"><span class="std std-ref">k_poll_signal_raise()</span></a>, stays set until the user sets it back to 0 with <a class="reference internal" href="#group__poll__apis_1ga02d899d1455ae1f3f55ffe8f1ebd6994"><span class="std std-ref">k_poll_signal_reset()</span></a>. It thus has to be reset by the user before being passed again to <a class="reference internal" href="#group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"><span class="std std-ref">k_poll()</span></a> or <a class="reference internal" href="#group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"><span class="std std-ref">k_poll()</span></a> will consider it being signaled, and will return immediately.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>The result is stored and the ‘signaled’ field is set even if this function returns an error indicating that an expiring poll was not notified. The next <a class="reference internal" href="#group__poll__apis_1gac550dc93662ce164fb22a5a91d6830db"><span class="std std-ref">k_poll()</span></a> will detect the missed raise.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sig</span></code>: A poll signal. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">result</span></code>: The value to store in the result field of the signal.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: The signal was delivered successfully. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: The polling thread’s timeout is in the process of expiring. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.k_poll_signal">
+<span class="target" id="structk__poll__signal"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_poll_signal</span></span></span><a class="headerlink" href="#c.k_poll_signal" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;kernel.h&gt;</em><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_poll_signal.poll_events">
+<span class="target" id="structk__poll__signal_1a22e88955ba0e369d39edefadcf4c60fd"></span><a class="reference internal" href="../../data_structures/dlist.html#c.sys_dlist_t" title="sys_dlist_t"><span class="n"><span class="pre">sys_dlist_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">poll_events</span></span></span><a class="headerlink" href="#c.k_poll_signal.poll_events" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>PRIVATE - DO NOT TOUCH </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_poll_signal.signaled">
+<span class="target" id="structk__poll__signal_1ae9fe6751d75f7d2b2800cb723603c0fe"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">signaled</span></span></span><a class="headerlink" href="#c.k_poll_signal.signaled" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 if the event has been signaled, 0 otherwise. Stays set to 1 until user resets it to 0. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_poll_signal.result">
+<span class="target" id="structk__poll__signal_1ab438c1e36cecda66fe2c4642518a1db1"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">result</span></span></span><a class="headerlink" href="#c.k_poll_signal.result" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>custom result value passed to <a class="reference internal" href="#group__poll__apis_1gad0bf3825f828ec3ca37481bf3cbd6723"><span class="std std-ref">k_poll_signal_raise()</span></a> if needed </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.k_poll_event">
+<span class="target" id="structk__poll__event"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_poll_event</span></span></span><a class="headerlink" href="#c.k_poll_event" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;kernel.h&gt;</em><p>Poll Event. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_poll_event.poller">
+<span class="target" id="structk__poll__event_1ad030c37b97f33e1bbb3361057180fa4f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">z_poller</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">poller</span></span></span><a class="headerlink" href="#c.k_poll_event.poller" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>PRIVATE - DO NOT TOUCH </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_poll_event.tag">
+<span class="target" id="structk__poll__event_1a37c5f45deaa046b356d95af569220c70"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tag</span></span></span><a class="headerlink" href="#c.k_poll_event.tag" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>optional user-specified tag, opaque, untouched by the API </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_poll_event.type">
+<span class="target" id="structk__poll__event_1a8f9e251aa8722eb4716f622e85be34ae"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.k_poll_event.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>bitfield of event types (bitwise-ORed K_POLL_TYPE_xxx values) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_poll_event.state">
+<span class="target" id="structk__poll__event_1aaf4f32852d799a406bfeea4e57891129"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">state</span></span></span><a class="headerlink" href="#c.k_poll_event.state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>bitfield of event states (bitwise-ORed K_POLL_STATE_xxx values) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_poll_event.mode">
+<span class="target" id="structk__poll__event_1acca81763486ef5ebcc911cb1cbd6c899"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mode</span></span></span><a class="headerlink" href="#c.k_poll_event.mode" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>mode of operation, from enum k_poll_modes </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_poll_event.unused">
+<span class="target" id="structk__poll__event_1a750ac48e7aa3c8fb70814b24e951fc85"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unused</span></span></span><a class="headerlink" href="#c.k_poll_event.unused" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>unused bits in 32-bit word </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.k_poll_event.&#64;158">
+<span class="target" id="structk__poll__event_1a274ebe9a8d99fe8d03e5e85fd047cc3a"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><a class="reference internal" href="#c.k_poll_event" title="k_poll_event"><span class="n"><span class="pre">k_poll_event</span></span></a><span class="p"><span class="pre">.</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#c.k_poll_event.@158" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>per-type data </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../synchronization/semaphores.html" class="btn btn-neutral float-right" title="Semaphores" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="interrupts.html" class="btn btn-neutral" title="Interrupts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

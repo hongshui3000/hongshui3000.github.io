@@ -1,0 +1,751 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Flash Circular Buffer (FCB) &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Stream Flash" href="../stream/stream_flash.html" />
+    <link rel="prev" title="Flash map" href="../flash_map/flash_map.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Storage</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../nvs/nvs.html">Non-Volatile Storage (NVS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../disk/access.html">Disk Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../flash_map/flash_map.html">Flash map</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Flash Circular Buffer (FCB)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../stream/stream_flash.html">Stream Flash</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Storage</a> &raquo;</li>
+        
+      <li>Flash Circular Buffer (FCB)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/storage/fcb/fcb.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="flash-circular-buffer-fcb">
+<span id="fcb-api"></span><h1>Flash Circular Buffer (FCB)<a class="headerlink" href="#flash-circular-buffer-fcb" title="Permalink to this headline">¶</a></h1>
+<p>Flash circular buffer provides an abstraction through which you can treat
+flash like a FIFO. You append entries to the end, and read data from the
+beginning.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As of Zephyr release 2.1 the <a class="reference internal" href="../nvs/nvs.html#nvs-api"><span class="std std-ref">NVS</span></a> storage API is
+recommended over FCB for use as a back-end for the <a class="reference internal" href="../../settings/index.html#settings-api"><span class="std std-ref">settings API</span></a>.</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Entries in the flash contain the length of the entry, the data within
+the entry, and checksum over the entry contents.</p>
+<p>Storage of entries in flash is done in a FIFO fashion. When you
+request space for the next entry, space is located at the end of the
+used area. When you start reading, the first entry served is the
+oldest entry in flash.</p>
+<p>Entries can be appended to the end of the area until storage space is
+exhausted. You have control over what happens next; either erase oldest
+block of data, thereby freeing up some space, or stop writing new data
+until existing data has been collected. FCB treats underlying storage as
+an array of flash sectors; when it erases old data, it does this a
+sector at a time.</p>
+<p>Entries in the flash are checksummed. That is how FCB detects whether
+writing entry to flash completed ok. It will skip over entries which
+don’t have a valid checksum.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>To add an entry to circular buffer:</p>
+<ul class="simple">
+<li><p>Call <a class="reference internal" href="#c.fcb_append" title="fcb_append"><code class="xref c c-func docutils literal notranslate"><span class="pre">fcb_append()</span></code></a> to get the location where data can be written. If
+this fails due to lack of space, you can call <a class="reference internal" href="#c.fcb_rotate" title="fcb_rotate"><code class="xref c c-func docutils literal notranslate"><span class="pre">fcb_rotate()</span></code></a> to erase
+the oldest sector which will make the space. And then call
+<a class="reference internal" href="#c.fcb_append" title="fcb_append"><code class="xref c c-func docutils literal notranslate"><span class="pre">fcb_append()</span></code></a> again.</p></li>
+<li><p>Use <a class="reference internal" href="../flash_map/flash_map.html#c.flash_area_write" title="flash_area_write"><code class="xref c c-func docutils literal notranslate"><span class="pre">flash_area_write()</span></code></a> to write entry contents.</p></li>
+<li><p>Call <a class="reference internal" href="#c.fcb_append_finish" title="fcb_append_finish"><code class="xref c c-func docutils literal notranslate"><span class="pre">fcb_append_finish()</span></code></a> when done. This completes the writing of the
+entry by calculating the checksum.</p></li>
+</ul>
+<p>To read contents of the circular buffer:</p>
+<ul class="simple">
+<li><p>Call <a class="reference internal" href="#c.fcb_walk" title="fcb_walk"><code class="xref c c-func docutils literal notranslate"><span class="pre">fcb_walk()</span></code></a> with a pointer to your callback function.</p></li>
+<li><p>Within callback function copy in data from the entry using
+<a class="reference internal" href="../flash_map/flash_map.html#c.flash_area_read" title="flash_area_read"><code class="xref c c-func docutils literal notranslate"><span class="pre">flash_area_read()</span></code></a>. You can tell when all data from within a sector
+has been read by monitoring the returned entry’s area pointer. Then you
+can call <a class="reference internal" href="#c.fcb_rotate" title="fcb_rotate"><code class="xref c c-func docutils literal notranslate"><span class="pre">fcb_rotate()</span></code></a>, if you’re done with that data.</p></li>
+</ul>
+<p>Alternatively:</p>
+<ul class="simple">
+<li><p>Call <a class="reference internal" href="#c.fcb_getnext" title="fcb_getnext"><code class="xref c c-func docutils literal notranslate"><span class="pre">fcb_getnext()</span></code></a> with 0 in entry offset to get the pointer to
+the oldest entry.</p></li>
+<li><p>Use <a class="reference internal" href="../flash_map/flash_map.html#c.flash_area_read" title="flash_area_read"><code class="xref c c-func docutils literal notranslate"><span class="pre">flash_area_read()</span></code></a> to read entry contents.</p></li>
+<li><p>Call <a class="reference internal" href="#c.fcb_getnext" title="fcb_getnext"><code class="xref c c-func docutils literal notranslate"><span class="pre">fcb_getnext()</span></code></a> with pointer to current entry to get the next one.
+And so on.</p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<p>The FCB subsystem APIs are provided by <code class="docutils literal notranslate"><span class="pre">fcb.h</span></code>:</p>
+<div class="section" id="data-structures">
+<h3>Data structures<a class="headerlink" href="#data-structures" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__fcb__data__structures"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">fcb_data_structures</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FCB_MAX_LEN">
+<span class="target" id="group__fcb__data__structures_1gaccabb1cb7f83c0d8919571cf3de7ee47"></span><span class="sig-name descname"><span class="n"><span class="pre">FCB_MAX_LEN</span></span></span><a class="headerlink" href="#c.FCB_MAX_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Max length of element </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.FCB_ENTRY_FA_DATA_OFF">
+<span class="target" id="group__fcb__data__structures_1ga9b47a1aa59039995107c8e23dfacf43f"></span><span class="sig-name descname"><span class="n"><span class="pre">FCB_ENTRY_FA_DATA_OFF</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">entry</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.FCB_ENTRY_FA_DATA_OFF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper macro for calculating the data offset related to the fcb <a class="reference internal" href="../flash_map/flash_map.html#structflash__area"><span class="std std-ref">flash_area</span></a> start offset. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">entry</span></code>: fcb entry structure </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.fcb_entry">
+<span class="target" id="structfcb__entry"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_entry</span></span></span><a class="headerlink" href="#c.fcb_entry" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;fcb.h&gt;</em><p>FCB entry info structure. This data structure describes the element location in the flash. </p>
+<p>You would use it to figure out what parameters to pass to <a class="reference internal" href="../flash_map/flash_map.html#group__flash__area__api_1ga7c55704b0c0061a4715470676114b127"><span class="std std-ref">flash_area_read()</span></a> to read element contents. Or to <a class="reference internal" href="../flash_map/flash_map.html#group__flash__area__api_1gaa56052f8d6bf4f6966752bc21f5cceb8"><span class="std std-ref">flash_area_write()</span></a> when adding a new element. Entry location is pointer to area (within fcb-&gt;f_sectors), and offset within that area. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb_entry.fe_sector">
+<span class="target" id="structfcb__entry_1aa564f9f79012beb20265bc5e85816fea"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../flash_map/flash_map.html#c.flash_sector" title="flash_sector"><span class="n"><span class="pre">flash_sector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">fe_sector</span></span></span><a class="headerlink" href="#c.fcb_entry.fe_sector" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pointer to info about sector where data are placed </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb_entry.fe_elem_off">
+<span class="target" id="structfcb__entry_1a6d01cb2107949bf4f0a2779c9781261f"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fe_elem_off</span></span></span><a class="headerlink" href="#c.fcb_entry.fe_elem_off" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Offset from the start of the sector to beginning of element. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb_entry.fe_data_off">
+<span class="target" id="structfcb__entry_1a82cba5933875498c804f31722a6e90f9"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fe_data_off</span></span></span><a class="headerlink" href="#c.fcb_entry.fe_data_off" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Offset from the start of the sector to the start of element. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb_entry.fe_data_len">
+<span class="target" id="structfcb__entry_1aa207d21d51bc2c7aa838ca9dc3b52be7"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fe_data_len</span></span></span><a class="headerlink" href="#c.fcb_entry.fe_data_len" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Size of data area in fcb entry </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.fcb_entry_ctx">
+<span class="target" id="structfcb__entry__ctx"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_entry_ctx</span></span></span><a class="headerlink" href="#c.fcb_entry_ctx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;fcb.h&gt;</em><p>Structure for transferring complete information about FCB entry location within flash memory. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb_entry_ctx.loc">
+<span class="target" id="structfcb__entry__ctx_1a0da5217647b82c8799a6cde221253680"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_entry" title="fcb_entry"><span class="n"><span class="pre">fcb_entry</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">loc</span></span></span><a class="headerlink" href="#c.fcb_entry_ctx.loc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>FCB entry info </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb_entry_ctx.fap">
+<span class="target" id="structfcb__entry__ctx_1a8b491cd670e609c2b4d897d15e37eb2b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../flash_map/flash_map.html#c.flash_area" title="flash_area"><span class="n"><span class="pre">flash_area</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">fap</span></span></span><a class="headerlink" href="#c.fcb_entry_ctx.fap" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flash area where the entry is placed </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.fcb">
+<span class="target" id="structfcb"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb</span></span></span><a class="headerlink" href="#c.fcb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;fcb.h&gt;</em><p>FCB instance structure. </p>
+<p>The following data structure describes the FCB itself. First part should be filled in by the user before calling <a class="reference internal" href="#group__fcb__api_1ga318d35b6f023bb4079aaf76c01a59b96"><span class="std std-ref">fcb_init</span></a>. The second part is used by FCB for its internal bookkeeping. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.f_magic">
+<span class="target" id="structfcb_1a4206faa9ed633ba2315163c52e557397"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">f_magic</span></span></span><a class="headerlink" href="#c.fcb.f_magic" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Magic value, should not be 0xFFFFFFFF. It is xored with inversion of f_erase_value and placed in the beginning of FCB flash sector. FCB uses this when determining whether sector contains valid data or not. Giving it value of 0xFFFFFFFF means leaving bytes of the filed in “erased” state. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.f_version">
+<span class="target" id="structfcb_1a030b96abd6c857295f154197278cca69"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">f_version</span></span></span><a class="headerlink" href="#c.fcb.f_version" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Current version number of the data </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.f_sector_cnt">
+<span class="target" id="structfcb_1aa642058028d755c7bc5b6814a4cb8c16"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">f_sector_cnt</span></span></span><a class="headerlink" href="#c.fcb.f_sector_cnt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of elements in sector array </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.f_scratch_cnt">
+<span class="target" id="structfcb_1aab748de6989e30de6571fc94d66ee365"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">f_scratch_cnt</span></span></span><a class="headerlink" href="#c.fcb.f_scratch_cnt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of sectors to keep empty. This can be used if you need to have scratch space for garbage collecting when FCB fills up. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.f_sectors">
+<span class="target" id="structfcb_1afc96f045d541c8d141d3427884f1fb44"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../flash_map/flash_map.html#c.flash_sector" title="flash_sector"><span class="n"><span class="pre">flash_sector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">f_sectors</span></span></span><a class="headerlink" href="#c.fcb.f_sectors" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Array of sectors, must be contiguous </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.f_mtx">
+<span class="target" id="structfcb_1a1f30c78d7e02748fbf0bf5033d4bdadf"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../kernel/synchronization/mutexes.html#c.k_mutex" title="k_mutex"><span class="n"><span class="pre">k_mutex</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">f_mtx</span></span></span><a class="headerlink" href="#c.fcb.f_mtx" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Locking for accessing the FCB data, internal state </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.f_oldest">
+<span class="target" id="structfcb_1ac6dc6236f8b03e4b03f691c55b4d3327"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../flash_map/flash_map.html#c.flash_sector" title="flash_sector"><span class="n"><span class="pre">flash_sector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">f_oldest</span></span></span><a class="headerlink" href="#c.fcb.f_oldest" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pointer to flash sector containing the oldest data, internal state </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.f_active">
+<span class="target" id="structfcb_1a1f7922dc1e8076bcfffca117260d5e02"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_entry" title="fcb_entry"><span class="n"><span class="pre">fcb_entry</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">f_active</span></span></span><a class="headerlink" href="#c.fcb.f_active" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>internal state </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.f_active_id">
+<span class="target" id="structfcb_1a8da1d0b4bef7d9ddcd5922d9bbef0cef"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">f_active_id</span></span></span><a class="headerlink" href="#c.fcb.f_active_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flash location where the newest data is, internal state </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.f_align">
+<span class="target" id="structfcb_1aa745e88d4477408b40a759dd1baea637"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">f_align</span></span></span><a class="headerlink" href="#c.fcb.f_align" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>writes to flash have to aligned to this, internal state </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.fap">
+<span class="target" id="structfcb_1a16cfc82afc8abe70291f4b462e617f2f"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../flash_map/flash_map.html#c.flash_area" title="flash_area"><span class="n"><span class="pre">flash_area</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">fap</span></span></span><a class="headerlink" href="#c.fcb.fap" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flash area used by the fcb instance, , internal state. This can be transfer to FCB user </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.fcb.f_erase_value">
+<span class="target" id="structfcb_1a614c6441395637c6c0a17a4fd6107db3"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">f_erase_value</span></span></span><a class="headerlink" href="#c.fcb.f_erase_value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The value flash takes when it is erased. This is read from flash parameters and initialized upon call to fcb_init. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="api-functions">
+<h3>API functions<a class="headerlink" href="#api-functions" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__fcb__api"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">fcb_api</span></span></dt>
+<dd><p>Flash Circular Buffer APIs. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.fcb_walk_cb">
+<span class="target" id="group__fcb__api_1gaeed5144438ee00d83c9b3d3b4b7490ea"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">fcb_walk_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_entry_ctx" title="fcb_entry_ctx"><span class="n"><span class="pre">fcb_entry_ctx</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">loc_ctx</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.fcb_walk_cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>FCB Walk callback function type.</p>
+<p>Type of function which is expected to be called while walking over fcb entries thanks to a <a class="reference internal" href="#group__fcb__api_1ga2e22f120b3f1d729f8e861f0c0e448fb"><span class="std std-ref">fcb_walk</span></a> call.</p>
+<p>Entry data can be read using <a class="reference internal" href="../flash_map/flash_map.html#group__flash__area__api_1ga7c55704b0c0061a4715470676114b127"><span class="std std-ref">flash_area_read()</span></a>, using loc_ctx fields as arguments. If cb wants to stop the walk, it should return non-zero value.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 continue walking, non-zero stop walking. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">loc_ctx</span></code>: entry location information (full context) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[inout]</span> <span class="pre">arg</span></code>: callback context, transferred from <a class="reference internal" href="#group__fcb__api_1ga2e22f120b3f1d729f8e861f0c0e448fb"><span class="std std-ref">fcb_walk</span></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fcb_init">
+<span class="target" id="group__fcb__api_1ga318d35b6f023bb4079aaf76c01a59b96"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_init</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">f_area_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_init" title="fcb"><span class="n"><span class="pre">fcb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fcb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fcb_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize FCB instance.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, non-zero on failure. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">f_area_id</span></code>: ID of flash area where fcb storage resides. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[inout]</span> <span class="pre">fcb</span></code>: FCB instance structure.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fcb_append">
+<span class="target" id="group__fcb__api_1ga46a06d5c3bf945ba807b6960a354d744"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_append</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_append" title="fcb"><span class="n"><span class="pre">fcb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fcb</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_entry" title="fcb_entry"><span class="n"><span class="pre">fcb_entry</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">loc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fcb_append" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Appends an entry to circular buffer.</p>
+<p>When writing the contents for the entry, use loc-&gt;fe_sector and loc-&gt;fe_data_off with <a class="reference internal" href="../flash_map/flash_map.html#group__flash__area__api_1gaa56052f8d6bf4f6966752bc21f5cceb8"><span class="std std-ref">flash_area_write()</span></a> to fcb <a class="reference internal" href="../flash_map/flash_map.html#structflash__area"><span class="std std-ref">flash_area</span></a>. When you’re finished, call <a class="reference internal" href="#group__fcb__api_1ga2d8581e0784546fd73e4cd2f8baeebd9"><span class="std std-ref">fcb_append_finish()</span></a> with loc as argument.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, non-zero on failure. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">fcb</span></code>: FCB instance structure. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">len</span></code>: Length of data which are expected to be written as the entry payload. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">loc</span></code>: entry location information</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fcb_append_finish">
+<span class="target" id="group__fcb__api_1ga2d8581e0784546fd73e4cd2f8baeebd9"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_append_finish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_append_finish" title="fcb"><span class="n"><span class="pre">fcb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fcb</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_entry" title="fcb_entry"><span class="n"><span class="pre">fcb_entry</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">append_loc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fcb_append_finish" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Finishes entry append operation.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, non-zero on failure. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">fcb</span></code>: FCB instance structure. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">append_loc</span></code>: entry location information</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fcb_walk">
+<span class="target" id="group__fcb__api_1ga2e22f120b3f1d729f8e861f0c0e448fb"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_walk</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_walk" title="fcb"><span class="n"><span class="pre">fcb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fcb</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../flash_map/flash_map.html#c.flash_sector" title="flash_sector"><span class="n"><span class="pre">flash_sector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sector</span></span>, <a class="reference internal" href="#c.fcb_walk_cb" title="fcb_walk_cb"><span class="n"><span class="pre">fcb_walk_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cb_arg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fcb_walk" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Walk over all entries in the FCB sector</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, negative on failure (or transferred form callback return-value), positive transferred form callback return-value </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">sector</span></code>: fcb sector to be walked. If null, traverse entire storage. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">fcb</span></code>: FCB instance structure. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">cb</span></code>: pointer to the function which gets called for every entry. If cb wants to stop the walk, it should return non-zero value. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[inout]</span> <span class="pre">cb_arg</span></code>: callback context, transferred to the callback implementation.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fcb_getnext">
+<span class="target" id="group__fcb__api_1gaeeeb1d66ebc6dcefde1e07c3d8bdf4bc"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_getnext</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_getnext" title="fcb"><span class="n"><span class="pre">fcb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fcb</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_entry" title="fcb_entry"><span class="n"><span class="pre">fcb_entry</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">loc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fcb_getnext" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get next fcb entry location.</p>
+<p>Function to obtain fcb entry location in relation to entry pointed by </p>
+<p>loc. If loc-&gt;fe_sector is set and loc-&gt;fe_elem_off is not 0 function fetches next fcb entry location. If loc-&gt;fe_sector is NULL function fetches the oldest entry location within FCB storage. loc-&gt;fe_sector is set and loc-&gt;fe_elem_off is 0 function fetches the first entry location in the fcb sector.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success, non-zero on failure. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">fcb</span></code>: FCB instance structure. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[inout]</span> <span class="pre">loc</span></code>: entry location information</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fcb_rotate">
+<span class="target" id="group__fcb__api_1gab749a92fa5890a35996c27f9f2b8f98f"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_rotate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_rotate" title="fcb"><span class="n"><span class="pre">fcb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fcb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fcb_rotate" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fcb_append_to_scratch">
+<span class="target" id="group__fcb__api_1gaf26d681ddea9b22d06122184b5a09566"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_append_to_scratch</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_append_to_scratch" title="fcb"><span class="n"><span class="pre">fcb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fcb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fcb_append_to_scratch" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fcb_free_sector_cnt">
+<span class="target" id="group__fcb__api_1ga2dec5f90b687466997eb25be43448daa"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_free_sector_cnt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_free_sector_cnt" title="fcb"><span class="n"><span class="pre">fcb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fcb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fcb_free_sector_cnt" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get free sector count.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Number of free sectors. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">fcb</span></code>: FCB instance structure.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fcb_is_empty">
+<span class="target" id="group__fcb__api_1ga76d29d337d5e457f065ed897297ba6cb"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_is_empty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_is_empty" title="fcb"><span class="n"><span class="pre">fcb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fcb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fcb_is_empty" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check whether FCB has any data.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Positive value if fcb is empty, otherwise 0. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">fcb</span></code>: FCB instance structure.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fcb_offset_last_n">
+<span class="target" id="group__fcb__api_1gacf4b86d660b7f3a3b73477defd86590c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_offset_last_n</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_offset_last_n" title="fcb"><span class="n"><span class="pre">fcb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fcb</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">entries</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_entry" title="fcb_entry"><span class="n"><span class="pre">fcb_entry</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">last_n_entry</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fcb_offset_last_n" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Finds the fcb entry that gives back up to n entries at the end.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on there are any fcbs available; -ENOENT otherwise </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">fcb</span></code>: FCB instance structure. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">entries</span></code>: number of fcb entries the user wants to get </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">last_n_entry</span></code>: last_n_entry the <a class="reference internal" href="#structfcb__entry"><span class="std std-ref">fcb_entry</span></a> to be returned</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.fcb_clear">
+<span class="target" id="group__fcb__api_1gab3d5c09980af72f0de1692682c8dfef1"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fcb_clear</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.fcb_clear" title="fcb"><span class="n"><span class="pre">fcb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fcb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.fcb_clear" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Clear fcb instance storage.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 on success; non-zero on failure </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">fcb</span></code>: FCB instance structure.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../stream/stream_flash.html" class="btn btn-neutral float-right" title="Stream Flash" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../flash_map/flash_map.html" class="btn btn-neutral" title="Flash map" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1018 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Memory Heaps &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../copyright.html" />
+    <link rel="next" title="Memory Slabs" href="slabs.html" />
+    <link rel="prev" title="Pipes" href="../data_passing/pipes.html" />
+  <link rel="shortcut icon" href="../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Kernel Services</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#scheduling-interrupts-and-synchronization">Scheduling, Interrupts, and Synchronization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#data-passing">Data Passing</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#memory-management">Memory Management</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Memory Heaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="slabs.html">Memory Slabs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#timing">Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="../index.html">Kernel Services</a> &raquo;</li>
+        
+      <li>Memory Heaps</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/reference/kernel/memory/heap.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="memory-heaps">
+<span id="heap-v2"></span><h1>Memory Heaps<a class="headerlink" href="#memory-heaps" title="Permalink to this headline">¶</a></h1>
+<p>Zephyr provides a collection of utilities that allow threads to
+dynamically allocate memory.</p>
+<div class="section" id="synchronized-heap-allocator">
+<h2>Synchronized Heap Allocator<a class="headerlink" href="#synchronized-heap-allocator" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="creating-a-heap">
+<h3>Creating a Heap<a class="headerlink" href="#creating-a-heap" title="Permalink to this headline">¶</a></h3>
+<p>The simplest way to define a heap is statically, with the
+<a class="reference internal" href="#c.K_HEAP_DEFINE" title="K_HEAP_DEFINE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_HEAP_DEFINE</span></code></a> macro.  This creates a static <a class="reference internal" href="#c.k_heap" title="k_heap"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_heap</span></code></a> variable
+with a given name that manages a memory region of the
+specified size.</p>
+<p>Heaps can also be created to manage arbitrary regions of
+application-controlled memory using <a class="reference internal" href="#c.k_heap_init" title="k_heap_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_heap_init()</span></code></a>.</p>
+</div>
+<div class="section" id="allocating-memory">
+<h3>Allocating Memory<a class="headerlink" href="#allocating-memory" title="Permalink to this headline">¶</a></h3>
+<p>Memory can be allocated from a heap using <a class="reference internal" href="#c.k_heap_alloc" title="k_heap_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_heap_alloc()</span></code></a>,
+passing it the address of the heap object and the number of bytes
+desired.  This functions similarly to standard C <code class="docutils literal notranslate"><span class="pre">malloc()</span></code>,
+returning a NULL pointer on an allocation failure.</p>
+<p>The heap supports blocking operation, allowing threads to go to sleep
+until memory is available.  The final argument is a
+<a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><code class="xref c c-type docutils literal notranslate"><span class="pre">k_timeout_t</span></code></a> timeout value indicating how long the thread may
+sleep before returning, or else one of the constant timeout values
+<a class="reference internal" href="../timing/clocks.html#c.K_NO_WAIT" title="K_NO_WAIT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_NO_WAIT</span></code></a> or <a class="reference internal" href="../timing/clocks.html#c.K_FOREVER" title="K_FOREVER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">K_FOREVER</span></code></a>.</p>
+</div>
+<div class="section" id="releasing-memory">
+<h3>Releasing Memory<a class="headerlink" href="#releasing-memory" title="Permalink to this headline">¶</a></h3>
+<p>Memory allocated with <a class="reference internal" href="#c.k_heap_alloc" title="k_heap_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_heap_alloc()</span></code></a> must be released using
+<a class="reference internal" href="#c.k_heap_free" title="k_heap_free"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_heap_free()</span></code></a>.  Similar to standard C <code class="docutils literal notranslate"><span class="pre">free()</span></code>, the pointer
+provided must be either a <code class="docutils literal notranslate"><span class="pre">NULL</span></code> value or a pointer previously
+returned by <a class="reference internal" href="#c.k_heap_alloc" title="k_heap_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_heap_alloc()</span></code></a> for the same heap.  Freeing a
+<code class="docutils literal notranslate"><span class="pre">NULL</span></code> value is defined to have no effect.</p>
+</div>
+</div>
+<div class="section" id="low-level-heap-allocator">
+<h2>Low Level Heap Allocator<a class="headerlink" href="#low-level-heap-allocator" title="Permalink to this headline">¶</a></h2>
+<p>The underlying implementation of the <a class="reference internal" href="#c.k_heap" title="k_heap"><code class="xref c c-struct docutils literal notranslate"><span class="pre">k_heap</span></code></a>
+abstraction is provided a data structure named <code class="xref c c-struct docutils literal notranslate"><span class="pre">sys_heap</span></code>.  This
+implements exactly the same allocation semantics, but
+provides no kernel synchronization tools.  It is available for
+applications that want to manage their own blocks of memory in
+contexts (for example, userspace) where synchronization is unavailable
+or more complicated.  Unlike <code class="docutils literal notranslate"><span class="pre">k_heap</span></code>, all calls to any <code class="docutils literal notranslate"><span class="pre">sys_heap</span></code>
+functions on a single heap must be serialized by the caller.
+Simultaneous use from separate threads is disallowed.</p>
+<div class="section" id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
+<p>Internally, the <code class="docutils literal notranslate"><span class="pre">sys_heap</span></code> memory block is partitioned into “chunks”
+of 8 bytes.  All allocations are made out of a contiguous region of
+chunks.  The first chunk of every allocation or unused block is
+prefixed by a chunk header that stores the length of the chunk, the
+length of the next lower (“left”) chunk in physical memory, a bit
+indicating whether the chunk is in use, and chunk-indexed link
+pointers to the previous and next chunk in a “free list” to which
+unused chunks are added.</p>
+<p>The heap code takes reasonable care to avoid fragmentation.  Free
+block lists are stored in “buckets” by their size, each bucket storing
+blocks within one power of two (i.e. a bucket for blocks of 3-4
+chunks, another for 5-8, 9-16, etc…) this allows new allocations to
+be made from the smallest/most-fragmented blocks available.  Also, as
+allocations are freed and added to the heap, they are automatically
+combined with adjacent free blocks to prevent fragmentation.</p>
+<p>All metadata is stored at the beginning of the contiguous block of
+heap memory, including the variable-length list of bucket list heads
+(which depend on heap size).  The only external memory required is the
+<code class="xref c c-struct docutils literal notranslate"><span class="pre">sys_heap</span></code> structure itself.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">sys_heap</span></code> functions are unsynchronized.  Care must be taken by
+any users to prevent concurrent access.  Only one context may be
+inside one of the API functions at a time.</p>
+<p>The heap code takes care to present high performance and reliable
+latency.  All <code class="docutils literal notranslate"><span class="pre">sys_heap</span></code> API functions are guaranteed to complete
+within constant time.  On typical architectures, they will all
+complete within 1-200 cycles.  One complexity is that the search of
+the minimum bucket size for an allocation (the set of free blocks that
+“might fit”) has a compile-time upper bound of iterations to prevent
+unbounded list searches, at the expense of some fragmentation
+resistance.  This <a class="reference internal" href="../../../kconfig.html#CONFIG_SYS_HEAP_ALLOC_LOOPS" title="CONFIG_SYS_HEAP_ALLOC_LOOPS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_SYS_HEAP_ALLOC_LOOPS</span></code></a> value may be
+chosen by the user at build time, and defaults to a value of 3.</p>
+</div>
+</div>
+<div class="section" id="multi-heap-wrapper-utility">
+<h2>Multi-Heap Wrapper Utility<a class="headerlink" href="#multi-heap-wrapper-utility" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">sys_heap</span></code> utility requires that all managed memory be in a
+single contiguous block.  It is common for complicated microcontroller
+applications to have more complicated memory setups that they still
+want to manage dynamically as a “heap”.  For example, the memory might
+exist as separate discontiguous regions, different areas may have
+different cache, performance or power behavior, peripheral devices may
+only be able to perform DMA to certain regions, etc…</p>
+<p>For those situations, Zephyr provides a <code class="docutils literal notranslate"><span class="pre">sys_multi_heap</span></code> utility.
+Effectively this is a simple wrapper around a set of one or more
+<code class="docutils literal notranslate"><span class="pre">sys_heap</span></code> objects.  It should be initialized after its child heaps
+via <code class="xref c c-func docutils literal notranslate"><span class="pre">sys_multi_heap_init()</span></code>, after which each heap can be added
+to the managed set via <code class="xref c c-func docutils literal notranslate"><span class="pre">sys_multi_heap_add_heap()</span></code>.  No
+destruction utility is provided; just as for <code class="docutils literal notranslate"><span class="pre">sys_heap</span></code>,
+applications that want to destroy a multi heap should simply ensure
+all allocated blocks are freed (or at least will never be used again)
+and repurpose the underlying memory for another usage.</p>
+<p>It has a single pair of allocation entry points,
+<code class="xref c c-func docutils literal notranslate"><span class="pre">sys_multi_heap_alloc()</span></code> and
+<code class="xref c c-func docutils literal notranslate"><span class="pre">sys_multi_heap_aligned_alloc()</span></code>.  These behave identically to
+the <code class="docutils literal notranslate"><span class="pre">sys_heap</span></code> functions with similar names, except that they also
+accept an opaque “configuration” parameter.  This pointer is
+uninspected by the multi heap code itself; instead it is passed to a
+callback function provided at initialization time.  This
+application-provided callback is responsible for doing the underlying
+allocation from one of the managed heaps, and may use the
+configuration parameter in any way it likes to make that decision.</p>
+<p>When unused, a multi heap may be freed via
+<code class="xref c c-func docutils literal notranslate"><span class="pre">sys_multi_heap_free()</span></code>.  The application does not need to pass
+a configuration parameter.  Memory allocated from any of the managed
+<code class="docutils literal notranslate"><span class="pre">sys_heap</span></code> objects may be freed with in the same way.</p>
+</div>
+<div class="section" id="system-heap">
+<h2>System Heap<a class="headerlink" href="#system-heap" title="Permalink to this headline">¶</a></h2>
+<p>The <em class="dfn">system heap</em> is a predefined memory allocator that allows
+threads to dynamically allocate memory from a common memory region in
+a <code class="xref c c-func docutils literal notranslate"><span class="pre">malloc()</span></code>-like manner.</p>
+<p>Only a single system heap is defined. Unlike other heaps or memory
+pools, the system heap cannot be directly referenced using its
+memory address.</p>
+<p>The size of the system heap is configurable to arbitrary sizes,
+subject to space availability.</p>
+<p>A thread can dynamically allocate a chunk of heap memory by calling
+<a class="reference internal" href="#c.k_malloc" title="k_malloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_malloc()</span></code></a>. The address of the allocated chunk is
+guaranteed to be aligned on a multiple of pointer sizes. If a suitable
+chunk of heap memory cannot be found <code class="docutils literal notranslate"><span class="pre">NULL</span></code> is returned.</p>
+<p>When the thread is finished with a chunk of heap memory it can release
+the chunk back to the system heap by calling <a class="reference internal" href="#c.k_free" title="k_free"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_free()</span></code></a>.</p>
+<div class="section" id="defining-the-heap-memory-pool">
+<h3>Defining the Heap Memory Pool<a class="headerlink" href="#defining-the-heap-memory-pool" title="Permalink to this headline">¶</a></h3>
+<p>The size of the heap memory pool is specified using the
+<a class="reference internal" href="../../../kconfig.html#CONFIG_HEAP_MEM_POOL_SIZE" title="CONFIG_HEAP_MEM_POOL_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_HEAP_MEM_POOL_SIZE</span></code></a> configuration option.</p>
+<p>By default, the heap memory pool size is zero bytes. This value instructs
+the kernel not to define the heap memory pool object. The maximum size is limited
+by the amount of available memory in the system. The project build will fail in
+the link stage if the size specified can not be supported.</p>
+</div>
+<div class="section" id="id1">
+<h3>Allocating Memory<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>A chunk of heap memory is allocated by calling <a class="reference internal" href="#c.k_malloc" title="k_malloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_malloc()</span></code></a>.</p>
+<p>The following code allocates a 200 byte chunk of heap memory, then fills it
+with zeros. A warning is issued if a suitable chunk is not obtained.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="o">*</span><span class="n">mem_ptr</span><span class="p">;</span>
+
+<span class="n">mem_ptr</span> <span class="o">=</span> <span class="n">k_malloc</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">mem_ptr</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">mem_ptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+    <span class="p">...</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Memory not allocated&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Releasing Memory<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>A chunk of heap memory is released by calling <a class="reference internal" href="#c.k_free" title="k_free"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_free()</span></code></a>.</p>
+<p>The following code allocates a 75 byte chunk of memory, then releases it
+once it is no longer needed.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="o">*</span><span class="n">mem_ptr</span><span class="p">;</span>
+
+<span class="n">mem_ptr</span> <span class="o">=</span> <span class="n">k_malloc</span><span class="p">(</span><span class="mi">75</span><span class="p">);</span>
+<span class="p">...</span> <span class="cm">/* use memory block */</span>
+<span class="n">k_free</span><span class="p">(</span><span class="n">mem_ptr</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="suggested-uses">
+<h3>Suggested Uses<a class="headerlink" href="#suggested-uses" title="Permalink to this headline">¶</a></h3>
+<p>Use the heap memory pool to dynamically allocate memory in a
+<code class="xref c c-func docutils literal notranslate"><span class="pre">malloc()</span></code>-like manner.</p>
+</div>
+<div class="section" id="configuration-options">
+<h3>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h3>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../kconfig.html#CONFIG_HEAP_MEM_POOL_SIZE" title="CONFIG_HEAP_MEM_POOL_SIZE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_HEAP_MEM_POOL_SIZE</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h3>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__heap__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">heap_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_HEAP_DEFINE">
+<span class="target" id="group__heap__apis_1ga795d7f1e6d5b7b19a7a50198d7829a0f"></span><span class="sig-name descname"><span class="n"><span class="pre">K_HEAP_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_HEAP_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define a static <a class="reference internal" href="#structk__heap"><span class="std std-ref">k_heap</span></a>. </p>
+<p>This macro defines and initializes a static memory region and <a class="reference internal" href="#structk__heap"><span class="std std-ref">k_heap</span></a> of the requested size. After kernel start, &amp;name can be used as if <a class="reference internal" href="#group__heap__apis_1ga9273e06dc8d6a351499f2f5abfdcb39f"><span class="std std-ref">k_heap_init()</span></a> had been called.</p>
+<p>Note that this macro enforces a minimum size on the memory region to accommodate metadata requirements. Very small heaps will be padded to fit.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Symbol name for the struct <a class="reference internal" href="#structk__heap"><span class="std std-ref">k_heap</span></a> object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: Size of memory region, in bytes </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.K_HEAP_DEFINE_NOCACHE">
+<span class="target" id="group__heap__apis_1ga968f4c6a201fdf6862d62dd5d9f8d032"></span><span class="sig-name descname"><span class="n"><span class="pre">K_HEAP_DEFINE_NOCACHE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.K_HEAP_DEFINE_NOCACHE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define a static <a class="reference internal" href="#structk__heap"><span class="std std-ref">k_heap</span></a> in uncached memory. </p>
+<p>This macro defines and initializes a static memory region and <a class="reference internal" href="#structk__heap"><span class="std std-ref">k_heap</span></a> of the requested size in uncache memory. After kernel start, &amp;name can be used as if <a class="reference internal" href="#group__heap__apis_1ga9273e06dc8d6a351499f2f5abfdcb39f"><span class="std std-ref">k_heap_init()</span></a> had been called.</p>
+<p>Note that this macro enforces a minimum size on the memory region to accommodate metadata requirements. Very small heaps will be padded to fit.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Symbol name for the struct <a class="reference internal" href="#structk__heap"><span class="std std-ref">k_heap</span></a> object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: Size of memory region, in bytes </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_heap_init">
+<span class="target" id="group__heap__apis_1ga9273e06dc8d6a351499f2f5abfdcb39f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_heap_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_heap" title="k_heap"><span class="n"><span class="pre">k_heap</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mem</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_heap_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a <a class="reference internal" href="#structk__heap"><span class="std std-ref">k_heap</span></a>. </p>
+<p>This constructs a synchronized <a class="reference internal" href="#structk__heap"><span class="std std-ref">k_heap</span></a> object over a memory region specified by the user. Note that while any alignment and size can be passed as valid parameters, internal alignment restrictions inside the inner sys_heap mean that not all bytes may be usable as allocated memory.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">h</span></code>: Heap struct to initialize </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mem</span></code>: Pointer to memory. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: Size of memory region, in bytes </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_heap_aligned_alloc">
+<span class="target" id="group__heap__apis_1ga3b197aee88cde2f1c9ed7e13e8b29f79"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_heap_aligned_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_heap" title="k_heap"><span class="n"><span class="pre">k_heap</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">align</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span>, <a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_heap_aligned_alloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate aligned memory from a <a class="reference internal" href="#structk__heap"><span class="std std-ref">k_heap</span></a>. </p>
+<p>Behaves in all ways like <a class="reference internal" href="#group__heap__apis_1gab0427bace1282ab2ec35236c05d18e37"><span class="std std-ref">k_heap_alloc()</span></a>, except that the returned memory (if available) will have a starting address in memory which is a multiple of the specified power-of-two alignment value in bytes. The resulting memory can be returned to the heap using <a class="reference internal" href="#group__heap__apis_1ga6cf917a0b3d91a0101192bd4808ada9c"><span class="std std-ref">k_heap_free()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><em>timeout</em> must be set to K_NO_WAIT if called from ISR. </p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>When CONFIG_MULTITHREADING=n any <em>timeout</em> is treated as K_NO_WAIT.</p>
+</dd>
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Pointer to memory the caller can now use </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">h</span></code>: Heap from which to allocate </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">align</span></code>: Alignment in bytes, must be a power of two </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: Number of bytes requested </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: How long to wait, or K_NO_WAIT </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_heap_alloc">
+<span class="target" id="group__heap__apis_1gab0427bace1282ab2ec35236c05d18e37"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_heap_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_heap" title="k_heap"><span class="n"><span class="pre">k_heap</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span>, <a class="reference internal" href="../timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_heap_alloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate memory from a <a class="reference internal" href="#structk__heap"><span class="std std-ref">k_heap</span></a>. </p>
+<p>Allocates and returns a memory buffer from the memory region owned by the heap. If no memory is available immediately, the call will block for the specified timeout (constructed via the standard timeout API, or K_NO_WAIT or K_FOREVER) waiting for memory to be freed. If the allocation cannot be performed by the expiration of the timeout, NULL will be returned.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p><em>timeout</em> must be set to K_NO_WAIT if called from ISR. </p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>When CONFIG_MULTITHREADING=n any <em>timeout</em> is treated as K_NO_WAIT.</p>
+</dd>
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../../api/terminology.html#api-term-isr-ok"><span class="std std-ref">isr-ok</span></a></span> </p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>A pointer to valid heap memory, or NULL </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">h</span></code>: Heap from which to allocate </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: Desired size of block to allocate </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: How long to wait, or K_NO_WAIT </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_heap_free">
+<span class="target" id="group__heap__apis_1ga6cf917a0b3d91a0101192bd4808ada9c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_heap_free</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.k_heap" title="k_heap"><span class="n"><span class="pre">k_heap</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">h</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_heap_free" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Free memory allocated by <a class="reference internal" href="#group__heap__apis_1gab0427bace1282ab2ec35236c05d18e37"><span class="std std-ref">k_heap_alloc()</span></a> </p>
+<p>Returns the specified memory block, which must have been returned from <a class="reference internal" href="#group__heap__apis_1gab0427bace1282ab2ec35236c05d18e37"><span class="std std-ref">k_heap_alloc()</span></a>, to the heap for use by other callers. Passing a NULL block is legal, and has no effect.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">h</span></code>: Heap to which to return the memory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mem</span></code>: A valid memory block, or NULL </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_aligned_alloc">
+<span class="target" id="group__heap__apis_1ga5088aeb1294fdc5ab2dcfef017fd43a6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_aligned_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">align</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_aligned_alloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate memory from the heap with a specified alignment. </p>
+<p>This routine provides semantics similar to aligned_alloc(); memory is allocated from the heap with a specified alignment. However, one minor difference is that <a class="reference internal" href="#group__heap__apis_1ga5088aeb1294fdc5ab2dcfef017fd43a6"><span class="std std-ref">k_aligned_alloc()</span></a> accepts any non-zero <code class="docutils literal notranslate"><span class="pre">size</span></code>, wherase aligned_alloc() only accepts a <code class="docutils literal notranslate"><span class="pre">size</span></code> that is an integral multiple of <code class="docutils literal notranslate"><span class="pre">align</span></code>.</p>
+<p>Above, aligned_alloc() refers to: C11 standard (ISO/IEC 9899:2011): 7.22.3.1 The aligned_alloc function (p: 347-348)</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Address of the allocated memory if successful; otherwise NULL. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">align</span></code>: Alignment of memory requested (in bytes). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Amount of memory requested (in bytes).</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_malloc">
+<span class="target" id="group__heap__apis_1gaee4557c0eeb6d2f97fc3715d91742e10"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_malloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_malloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate memory from the heap. </p>
+<p>This routine provides traditional malloc() semantics. Memory is allocated from the heap memory pool.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Address of the allocated memory if successful; otherwise NULL. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Amount of memory requested (in bytes).</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_free">
+<span class="target" id="group__heap__apis_1ga79b63cc93b3358cf82d74f40e73b69d5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_free</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ptr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_free" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Free memory allocated from heap. </p>
+<p>This routine provides traditional free() semantics. The memory being returned must have been allocated from the heap memory pool or k_mem_pool_malloc().</p>
+<p>If <em>ptr</em> is NULL, no operation is performed.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ptr</span></code>: Pointer to previously allocated memory. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.k_calloc">
+<span class="target" id="group__heap__apis_1ga8e2782f24e6cdc7902fce1950ace696b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">k_calloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nmemb</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.k_calloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate memory from heap, array style. </p>
+<p>This routine provides traditional calloc() semantics. Memory is allocated from the heap memory pool and zeroed.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Address of the allocated memory if successful; otherwise NULL. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nmemb</span></code>: Number of elements in the requested array </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Size of each array element (in bytes).</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.k_heap">
+<span class="target" id="structk__heap"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k_heap</span></span></span><a class="headerlink" href="#c.k_heap" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;kernel.h&gt;</em></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="heap-listener">
+<h2>Heap listener<a class="headerlink" href="#heap-listener" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__heap__listener__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">heap_listener_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HEAP_ID_FROM_POINTER">
+<span class="target" id="group__heap__listener__apis_1ga77e603053a5b69caae2a49e441a525c0"></span><span class="sig-name descname"><span class="n"><span class="pre">HEAP_ID_FROM_POINTER</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">heap_pointer</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HEAP_ID_FROM_POINTER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Construct heap identifier from heap pointer. </p>
+<p>Construct a heap identifer from a pointer to the heap object, such as sys_heap.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">heap_pointer</span></code>: Pointer to the heap object </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HEAP_ID_LIBC">
+<span class="target" id="group__heap__listener__apis_1ga7627d1b500bb7e833770c99071f9255d"></span><span class="sig-name descname"><span class="n"><span class="pre">HEAP_ID_LIBC</span></span></span><a class="headerlink" href="#c.HEAP_ID_LIBC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Libc heap identifier. </p>
+<p>Identifier of the global libc heap. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HEAP_LISTENER_ALLOC_DEFINE">
+<span class="target" id="group__heap__listener__apis_1ga1854b23cbd41dec0d8262e8f122ebd5d"></span><span class="sig-name descname"><span class="n"><span class="pre">HEAP_LISTENER_ALLOC_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">_heap_id</span></span>, <span class="n"><span class="pre">_alloc_cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HEAP_LISTENER_ALLOC_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define heap event listener node for allocation event. </p>
+<p>Sample usage: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">on_heap_alloc</span><span class="p">(</span><span class="n">uintptr_t</span> <span class="n">heap_id</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">mem</span><span class="p">,</span> <span class="n">size_t</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">LOG_INF</span><span class="p">(</span><span class="s2">&quot;Memory allocated at %p, size </span><span class="si">%ld</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">heap_id</span><span class="p">,</span> <span class="n">mem</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">HEAP_LISTENER_ALLOC_DEFINE</span><span class="p">(</span><span class="n">my_listener</span><span class="p">,</span> <span class="n">HEAP_ID_LIBC</span><span class="p">,</span> <span class="n">on_heap_alloc</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the heap event listener object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_heap_id</span></code>: Identifier of the heap to be listened </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_alloc_cb</span></code>: Function to be called for allocation event </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HEAP_LISTENER_FREE_DEFINE">
+<span class="target" id="group__heap__listener__apis_1ga7e5822ebd4c08235b01cf99cd6fe10e8"></span><span class="sig-name descname"><span class="n"><span class="pre">HEAP_LISTENER_FREE_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">_heap_id</span></span>, <span class="n"><span class="pre">_free_cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HEAP_LISTENER_FREE_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define heap event listener node for free event. </p>
+<p>Sample usage: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">on_heap_free</span><span class="p">(</span><span class="n">uintptr_t</span> <span class="n">heap_id</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">mem</span><span class="p">,</span> <span class="n">size_t</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">LOG_INF</span><span class="p">(</span><span class="s2">&quot;Memory freed at %p, size </span><span class="si">%ld</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">heap_id</span><span class="p">,</span> <span class="n">mem</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">HEAP_LISTENER_FREE_DEFINE</span><span class="p">(</span><span class="n">my_listener</span><span class="p">,</span> <span class="n">HEAP_ID_LIBC</span><span class="p">,</span> <span class="n">on_heap_free</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the heap event listener object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_heap_id</span></code>: Identifier of the heap to be listened </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_free_cb</span></code>: Function to be called for free event </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.HEAP_LISTENER_RESIZE_DEFINE">
+<span class="target" id="group__heap__listener__apis_1gaa4fa9685749e050ca06e7cdc99b7c970"></span><span class="sig-name descname"><span class="n"><span class="pre">HEAP_LISTENER_RESIZE_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">_heap_id</span></span>, <span class="n"><span class="pre">_resize_cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HEAP_LISTENER_RESIZE_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define heap event listener node for resize event. </p>
+<p>Sample usage: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">on_heap_resized</span><span class="p">(</span><span class="n">uintptr_t</span> <span class="n">heap_id</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">old_heap_end</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">new_heap_end</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">LOG_INF</span><span class="p">(</span><span class="s2">&quot;Libc heap end moved from %p to %p&quot;</span><span class="p">,</span> <span class="n">old_heap_end</span><span class="p">,</span> <span class="n">new_heap_end</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">HEAP_LISTENER_RESIZE_DEFINE</span><span class="p">(</span><span class="n">my_listener</span><span class="p">,</span> <span class="n">HEAP_ID_LIBC</span><span class="p">,</span> <span class="n">on_heap_resized</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the heap event listener object </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_heap_id</span></code>: Identifier of the heap to be listened </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_resize_cb</span></code>: Function to be called when the listened heap is resized </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.heap_listener_resize_cb_t">
+<span class="target" id="group__heap__listener__apis_1ga38ae35495e88e699bfa26685e36ae0cc"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">heap_listener_resize_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uintptr_t</span></span><span class="w"> </span><span class="n"><span class="pre">heap_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">old_heap_end</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">new_heap_end</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.heap_listener_resize_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback used when heap is resized. </p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Minimal C library does not emit this event.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">heap_id</span></code>: Identifier of heap being resized </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">old_heap_end</span></code>: Pointer to end of heap before resize </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">new_heap_end</span></code>: Pointer to end of heap after resize </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.heap_listener_alloc_cb_t">
+<span class="target" id="group__heap__listener__apis_1ga9bcf93f882c1af68fe7ae0e7fe4235c3"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">heap_listener_alloc_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uintptr_t</span></span><span class="w"> </span><span class="n"><span class="pre">heap_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mem</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.heap_listener_alloc_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback used when there is heap allocation. </p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Heaps managed by libraries outside of code in Zephyr main code repository may not emit this event.</p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>The number of bytes allocated may not match exactly to the request to the allocation function. Internal mechanism of the heap may allocate more than requested.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">heap_id</span></code>: Heap identifier </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mem</span></code>: Pointer to the allocated memory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: Size of allocated memory </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.heap_listener_free_cb_t">
+<span class="target" id="group__heap__listener__apis_1gacaf76642922706c2bff8a57f9efe7e8f"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">heap_listener_free_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uintptr_t</span></span><span class="w"> </span><span class="n"><span class="pre">heap_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mem</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.heap_listener_free_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback used when memory is freed from heap. </p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Heaps managed by libraries outside of code in Zephyr main code repository may not emit this event.</p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>The number of bytes freed may not match exactly to the request to the allocation function. Internal mechanism of the heap dictates how memory is allocated or freed.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">heap_id</span></code>: Heap identifier </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mem</span></code>: Pointer to the freed memory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: Size of freed memory </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.heap_event_types">
+<span class="target" id="group__heap__listener__apis_1ga9679320e1c32dcbad726789946565510"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">heap_event_types</span></span></span><a class="headerlink" href="#c.heap_event_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.heap_event_types.HEAP_EVT_UNKNOWN">
+<span class="target" id="group__heap__listener__apis_1gga9679320e1c32dcbad726789946565510ae82b3e0225bde5553f472c5f00985b18"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HEAP_EVT_UNKNOWN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.heap_event_types.HEAP_EVT_UNKNOWN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.heap_event_types.HEAP_RESIZE">
+<span class="target" id="group__heap__listener__apis_1gga9679320e1c32dcbad726789946565510a198aa2475e58078a46cf79ffb0914408"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HEAP_RESIZE</span></span></span><a class="headerlink" href="#c.heap_event_types.HEAP_RESIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.heap_event_types.HEAP_ALLOC">
+<span class="target" id="group__heap__listener__apis_1gga9679320e1c32dcbad726789946565510a23ece0bd476a164e251ebd1af61f0008"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HEAP_ALLOC</span></span></span><a class="headerlink" href="#c.heap_event_types.HEAP_ALLOC" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.heap_event_types.HEAP_FREE">
+<span class="target" id="group__heap__listener__apis_1gga9679320e1c32dcbad726789946565510a82e2137ada931f068fa36d40245f5a80"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HEAP_FREE</span></span></span><a class="headerlink" href="#c.heap_event_types.HEAP_FREE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.heap_event_types.HEAP_REALLOC">
+<span class="target" id="group__heap__listener__apis_1gga9679320e1c32dcbad726789946565510aa64f229b21eedbca9a581b60e3da5a50"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HEAP_REALLOC</span></span></span><a class="headerlink" href="#c.heap_event_types.HEAP_REALLOC" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.heap_event_types.HEAP_MAX_EVENTS">
+<span class="target" id="group__heap__listener__apis_1gga9679320e1c32dcbad726789946565510afb3a6f56a29d74c35db90fbeaa61a3b6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HEAP_MAX_EVENTS</span></span></span><a class="headerlink" href="#c.heap_event_types.HEAP_MAX_EVENTS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.heap_listener_register">
+<span class="target" id="group__heap__listener__apis_1ga63d5470d9ca312ccc80d35c7f8dea200"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">heap_listener_register</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.heap_listener" title="heap_listener"><span class="n"><span class="pre">heap_listener</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">listener</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.heap_listener_register" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Register heap event listener. </p>
+<p>Add the listener to the global list of heap listeners that can be notified by different heap implementations upon certain events related to the heap usage.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">listener</span></code>: Pointer to the <a class="reference internal" href="#structheap__listener"><span class="std std-ref">heap_listener</span></a> object </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.heap_listener_unregister">
+<span class="target" id="group__heap__listener__apis_1ga872e123af0a5349e45fcedfd8b83b508"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">heap_listener_unregister</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.heap_listener" title="heap_listener"><span class="n"><span class="pre">heap_listener</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">listener</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.heap_listener_unregister" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unregister heap event listener. </p>
+<p>Remove the listener from the global list of heap listeners that can be notified by different heap implementations upon certain events related to the heap usage.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">listener</span></code>: Pointer to the <a class="reference internal" href="#structheap__listener"><span class="std std-ref">heap_listener</span></a> object </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.heap_listener_notify_alloc">
+<span class="target" id="group__heap__listener__apis_1gaebe49e01cba6d327c635da4795e37e22"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">heap_listener_notify_alloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uintptr_t</span></span><span class="w"> </span><span class="n"><span class="pre">heap_id</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mem</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.heap_listener_notify_alloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Notify listeners of heap allocation event. </p>
+<p>Notify registered heap event listeners with matching heap identifier that an allocation has been done on heap</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">heap_id</span></code>: Heap identifier </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mem</span></code>: Pointer to the allocated memory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: Size of allocated memory </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.heap_listener_notify_free">
+<span class="target" id="group__heap__listener__apis_1ga8fd3dc5b65e3bc8bbc1dadaa741d47fc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">heap_listener_notify_free</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uintptr_t</span></span><span class="w"> </span><span class="n"><span class="pre">heap_id</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mem</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.heap_listener_notify_free" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Notify listeners of heap free event. </p>
+<p>Notify registered heap event listeners with matching heap identifier that memory is freed on heap</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">heap_id</span></code>: Heap identifier </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mem</span></code>: Pointer to the freed memory </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: Size of freed memory </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.heap_listener_notify_resize">
+<span class="target" id="group__heap__listener__apis_1ga9d3062fbcdc10edc3839193e8ea79654"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">heap_listener_notify_resize</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uintptr_t</span></span><span class="w"> </span><span class="n"><span class="pre">heap_id</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">old_heap_end</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">new_heap_end</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.heap_listener_notify_resize" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Notify listeners of heap resize event. </p>
+<p>Notify registered heap event listeners with matching heap identifier that the heap has been resized.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">heap_id</span></code>: Heap identifier </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">old_heap_end</span></code>: Address of the heap end before the change </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">new_heap_end</span></code>: Address of the heap end after the change </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.heap_listener">
+<span class="target" id="structheap__listener"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">heap_listener</span></span></span><a class="headerlink" href="#c.heap_listener" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;heap_listener.h&gt;</em><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.heap_listener.node">
+<span class="target" id="structheap__listener_1ab0f3071d7828856bcbee55ff9791a27c"></span><span class="n"><span class="pre">sys_snode_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">node</span></span></span><a class="headerlink" href="#c.heap_listener.node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Singly linked list node </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.heap_listener.heap_id">
+<span class="target" id="structheap__listener_1a9b13bffbb860ea78207b4ebe7c61b768"></span><span class="n"><span class="pre">uintptr_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">heap_id</span></span></span><a class="headerlink" href="#c.heap_listener.heap_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Identifier of the heap whose events are listened.</p>
+<p>It can be a heap pointer, if the heap is represented as an object, or 0 in the case of the global libc heap. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.heap_listener.event">
+<span class="target" id="structheap__listener_1a1ef2db791f5422fa7e6bb17c2b6bf247"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.heap_event_types" title="heap_event_types"><span class="n"><span class="pre">heap_event_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">event</span></span></span><a class="headerlink" href="#c.heap_listener.event" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The heap event to be notified. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="slabs.html" class="btn btn-neutral float-right" title="Memory Slabs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../data_passing/pipes.html" class="btn btn-neutral" title="Pipes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

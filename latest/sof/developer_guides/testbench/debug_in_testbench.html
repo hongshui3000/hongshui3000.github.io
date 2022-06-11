@@ -1,0 +1,486 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Debug Component in Testbench &mdash; SOF Project 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/sof.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Prepare a New Component for Testbench" href="prepare_new_component.html" />
+    <link rel="prev" title="Build and Run Testbench" href="build_testbench.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SOF Project
+          
+
+          
+            
+            <img src="../../_static/logo_sof_white_200w.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://sofproject.org">SOF project website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction to the SOF Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architectures/index.html">Supported Architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../platforms/index.html">Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../algos/index.html">Algorithms</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../firmware/index.html">Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../unit_tests.html">Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xtrun/index.html">Xtensa Simulator (xt-run)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topology/topology.html">SOF Topology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../uuid/index.html">UUID Usage in SOF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugability/index.html">Debugability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tuning/sof-ctl.html">Runtime Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rimage/index.html">Rimage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_driver/index.html">SOF Linux Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/virtualization.html">SOF VirtIO design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/running.html">Run SOF VirtIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fuzzing/index.html">Fuzzing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Testbench</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="build_testbench.html">Build and Run Testbench</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Debug Component in Testbench</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gdb-and-ddd">GDB and DDD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#valgrind">Valgrind</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gprof">Gprof</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="prepare_new_component.html">Prepare a New Component for Testbench</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test_audio_quality.html">Test Audio Quality</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#technical-notes">Technical Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../release.html">Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contributing to the Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tsc/index.html">Technical Steering Committee (TSC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maintainers/index.html">SOF admin, maintainers and code owners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../presentations/index.html">Presentations</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SOF Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Testbench</a> &raquo;</li>
+        
+      <li>Debug Component in Testbench</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/developer_guides/testbench/debug_in_testbench.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="debug-component-in-testbench">
+<span id="debug-in-testbench"></span><h1>Debug Component in Testbench<a class="headerlink" href="#debug-component-in-testbench" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="gdb-and-ddd">
+<h2>GDB and DDD<a class="headerlink" href="#gdb-and-ddd" title="Permalink to this headline">¶</a></h2>
+<p>Code debugging with debugger is an efficient way to find issues in
+components. The code may crash or operate incorrectly. The SOF data
+structures can be understood better while seeing them in action.</p>
+<p>In a testbench environment, a severe memory access mistake typically results
+in a segmentation fault where the operating system traps the application when
+it performs illegal memory access to RAM it has not allocated. The debugger
+shows the stack trace of calls if this happens for quick spotting of
+offending code.</p>
+<p>A stable but incorrectly working component can be examined with breakpoints
+and visualization of data structures.</p>
+<p>To initiate debugging, the output from our previous IIR EQ example is
+used (refer to <a class="reference internal" href="build_testbench.html#build-testbench"><span class="std std-ref">Build and Run Testbench</span></a>). The information for debugging is shown below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./eqiir_run.sh <span class="m">16</span> <span class="m">16</span> <span class="m">48000</span> audio_in.raw audio_out.raw
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Command</span><span class="p">:</span>         <span class="o">../../</span><span class="n">testbench</span><span class="o">/</span><span class="n">build_testbench</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">testbench</span>
+<span class="n">Argument</span><span class="p">:</span>        <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">r</span> <span class="mi">48000</span> <span class="o">-</span><span class="n">R</span> <span class="mi">48000</span> <span class="o">-</span><span class="n">i</span> <span class="n">audio_in</span><span class="o">.</span><span class="n">raw</span> <span class="o">-</span><span class="n">o</span> <span class="n">audio_out</span><span class="o">.</span><span class="n">raw</span> <span class="o">-</span><span class="n">t</span> <span class="o">../../</span><span class="n">build_tools</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">topology</span><span class="o">/</span><span class="n">test</span><span class="o">-</span><span class="n">playback</span><span class="o">-</span><span class="n">ssp5</span><span class="o">-</span><span class="n">mclk</span><span class="o">-</span><span class="mi">0</span><span class="o">-</span><span class="n">I2S</span><span class="o">-</span><span class="n">eq</span><span class="o">-</span><span class="n">iir</span><span class="o">-</span><span class="n">s16le</span><span class="o">-</span><span class="n">s16le</span><span class="o">-</span><span class="mi">48</span><span class="n">k</span><span class="o">-</span><span class="mi">24576</span><span class="n">k</span><span class="o">-</span><span class="n">codec</span><span class="o">.</span><span class="n">tplg</span> <span class="o">-</span><span class="n">b</span> <span class="n">S16_LE</span>
+<span class="n">LD_LIBRARY_PATH</span><span class="p">:</span> <span class="o">../../</span><span class="n">testbench</span><span class="o">/</span><span class="n">build_testbench</span><span class="o">/</span><span class="n">sof_ep</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">lib</span><span class="p">:</span><span class="o">../../</span><span class="n">testbench</span><span class="o">/</span><span class="n">build_testbench</span><span class="o">/</span><span class="n">sof_parser</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">lib</span>
+</pre></div>
+</div>
+<p>In the above output the command shows the path to the installed testbench
+binary. The arguments specify the input and output sample rate, input
+and output RAW data files, the topology to use for testing, and the sample
+format. The command line options are described when invoking the binary with
+switch <code class="docutils literal notranslate"><span class="pre">-h</span></code>. But for the binary to work correctly, the dynamic libraries path must be instructed for the operating system. This is done by setting the
+environment variable <code class="docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH</span></code> to the above shown value.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>../../testbench/build_testbench/sof_ep/install/lib:../../testbench/build_testbench/sof_parser/install/lib
+../../testbench/build_testbench/install/bin/testbench -h
+</pre></div>
+</div>
+<p>If the help text appears, the testbench binary started directly from the
+command line works. Next, the testbench can be started in the Data Display
+Debugger (DDD) application. DDD is a graphical front-end for the GNU
+Debugger (GDB). DDD and the dependencies such as GDB needs to be installed
+if it is missing from the development computer.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install ddd
+</pre></div>
+</div>
+<p>The debugging is started to the previously used shell with the
+<code class="docutils literal notranslate"><span class="pre">LD_LIBRARY_PATH</span></code> set.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ddd ../../testbench/build_testbench/install/bin/testbench
+</pre></div>
+</div>
+<p>This opens the debugger window. From there, find the code line just after
+topology parsing (currently 295) by scrolling the code window with a mouse
+and placing a break point there with the right-mouse button (a red stop
+sign). If issues happen at topology parsing or within the component in
+instantiating in <code class="docutils literal notranslate"><span class="pre">new()</span></code>, place the breakpoint to the <code class="docutils literal notranslate"><span class="pre">parse_topology()</span></code>
+line.</p>
+<div class="figure align-default" id="id1">
+<img alt="../../_images/fig_ddd.png" src="../../_images/fig_ddd.png" />
+<p class="caption"><span class="caption-number">Figure 76 </span><span class="caption-text">The ddd debugger start view.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id2">
+<img alt="../../_images/fig_add_breakpoint.png" src="../../_images/fig_add_breakpoint.png" />
+<p class="caption"><span class="caption-number">Figure 77 </span><span class="caption-text">Breakpoint added with right-mouse click.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>The breakpoint is placed after topology parsing since the component symbols
+do not exist in debugger context before it is loaded by the topology. To run
+the testbench until breakpoint, select <strong>Program</strong> -&gt; <strong>Run</strong> from the menu
+as shown in the image above. Then use your mouse to copy and paste the
+argument line output from the previous script run and click <strong>Run</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">r</span> <span class="mi">48000</span> <span class="o">-</span><span class="n">R</span> <span class="mi">48000</span> <span class="o">-</span><span class="n">i</span> <span class="n">audio_in</span><span class="o">.</span><span class="n">raw</span> <span class="o">-</span><span class="n">o</span> <span class="n">audio_out</span><span class="o">.</span><span class="n">raw</span> <span class="o">-</span><span class="n">t</span> <span class="o">../../</span><span class="n">build_tools</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">topology</span><span class="o">/</span><span class="n">test</span><span class="o">-</span><span class="n">playback</span><span class="o">-</span><span class="n">ssp5</span><span class="o">-</span><span class="n">mclk</span><span class="o">-</span><span class="mi">0</span><span class="o">-</span><span class="n">I2S</span><span class="o">-</span><span class="n">eq</span><span class="o">-</span><span class="n">iir</span><span class="o">-</span><span class="n">s16le</span><span class="o">-</span><span class="n">s16le</span><span class="o">-</span><span class="mi">48</span><span class="n">k</span><span class="o">-</span><span class="mi">24576</span><span class="n">k</span><span class="o">-</span><span class="n">codec</span><span class="o">.</span><span class="n">tplg</span> <span class="o">-</span><span class="n">b</span> <span class="n">S16_L</span>
+</pre></div>
+</div>
+<p>The execution is now stopped to breakpoint. Since the symbols exist now, the
+breakpoints can be added to the component life cycle after <code class="docutils literal notranslate"><span class="pre">new()</span></code>. Use
+the lowest window part with the prompt (gdb) for convenience.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">break</span> eq_iir_cmd
+<span class="nb">break</span> eq_iir_params
+<span class="nb">break</span> eq_iir_prepare
+<span class="nb">break</span> eq_iir_copy
+<span class="nb">break</span> eq_iir_reset
+<span class="nb">break</span> eq_iir_free
+</pre></div>
+</div>
+<p>Next, press <strong>Cont</strong> in the small remote control window next to the main ddd
+window. The execution stops at the <code class="docutils literal notranslate"><span class="pre">params()</span></code> function in playback start.
+To view stream parameters, mouse left-click on <strong>params</strong> in the function
+arguments list and use the mouse to right-click “Display *params”. The same
+can be done for the dev structure. The suppressed fields in brackets can be
+expanded and pointers such as the field <code class="docutils literal notranslate"><span class="pre">pipeline</span></code> from dev can be viewed
+by right-mouse clicking “Display *()” from a viewed pointer field. The
+boxes can be arranged with the mouse.</p>
+<div class="figure align-default" id="id3">
+<img alt="../../_images/fig_ddd_structs.png" src="../../_images/fig_ddd_structs.png" />
+<p class="caption"><span class="caption-number">Figure 78 </span><span class="caption-text">Viewing data in ddd.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>By further pressing <strong>Cont</strong>, the code can be run into <code class="docutils literal notranslate"><span class="pre">prepare()</span></code>. The
+next <strong>Cont</strong> press brings the execution to <code class="docutils literal notranslate"><span class="pre">copy()</span></code>. A breakpoint can be
+added to a known processing function:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">break</span> eq_iir_s32_default
+</pre></div>
+</div>
+<p>In the function, step with <strong>Next</strong> over code lines until the read frag
+operation for the source buffer is completed. The input frame of two
+channels to be consumed and produced can be added to view with the following
+command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>graph display x<span class="o">[</span><span class="m">0</span><span class="o">]</span>@2
+graph display y<span class="o">[</span><span class="m">0</span><span class="o">]</span>@2
+</pre></div>
+</div>
+<p>You can also display the entire sink buffer content to see the circular
+update over two periods of data. The format can be changed to hex if desired
+with a right-mouse click of the data.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>graph display <span class="o">((</span>int16_t *<span class="o">)</span>sinkb-&gt;stream.addr<span class="o">)[</span><span class="m">0</span><span class="o">]</span>@192
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>DDD has data plotting capability but the feature does not work at the
+time of this writing. Such a feature can be useful in finding PCM code
+data glitches. For a simpler one-time view, <code class="docutils literal notranslate"><span class="pre">.gdbinit</span></code> can be set up
+with a macro script to plot the buffers with <code class="docutils literal notranslate"><span class="pre">gnuplot</span></code>. Examples can be
+found via web search.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Due to code optimization with the <code class="docutils literal notranslate"><span class="pre">-O</span></code> flag, some symbols are optimized
+out and do not exist in context. Also, the code lines stepping may appear
+to be non-linear. The testbench can be built as a debug version with the
+cmake build type definition.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> tools/testbench/build_testbench
+cmake -DCMAKE_BUILD_TYPE<span class="o">=</span>Debug ..
+make install
+</pre></div>
+</div>
+<p>At the time of this writing, the flag does not propagate properly
+into generated Makefiles. It may be necessary to manually edit
+<code class="docutils literal notranslate"><span class="pre">flags.make</span></code> to remove the <code class="docutils literal notranslate"><span class="pre">-O3</span></code> flags. They can be found by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep -r <span class="s2">&quot;O3&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="valgrind">
+<h2>Valgrind<a class="headerlink" href="#valgrind" title="Permalink to this headline">¶</a></h2>
+<p>Valgrind is a C library run-time that does extensive checks for memory
+access. It finds and reports issues that normally do not segfault the
+testbench. Components with violations would keep running in the firmware but
+would cause random instability and failures.</p>
+<p>Using Valgrind is simple. The previously used command line for testbench run
+is passed as an argument to the valgrind command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>valgrind ../../testbench/build_testbench/install/bin/testbench -d -r <span class="m">48000</span> -R <span class="m">48000</span> -i audio_in.raw -o audio_out.raw -t ../../build_tools/test/topology/test-playback-ssp5-mclk-0-I2S-eq-iir-s16le-s16le-48k-24576k-codec.tplg -b S16_L
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Valgrind finds issues from the current testbench version. The issues
+before component <code class="docutils literal notranslate"><span class="pre">new()</span></code> and after component <code class="docutils literal notranslate"><span class="pre">free()</span></code> are usually due
+to shortcuts taken in porting part of SOF to the testbench or from
+non-critical features like printing traces. Issues like these that are
+found during the component life cycle should be checked and fixed.</p>
+</div>
+</div>
+<div class="section" id="gprof">
+<h2>Gprof<a class="headerlink" href="#gprof" title="Permalink to this headline">¶</a></h2>
+<p>The hotspots of the components can be found with a profiling tool. The
+functions that are called most frequently or where the majority of CPU time
+is spent are the best candidates to optimize for speed.</p>
+<p>The GNU C compiler (GCC) supports option <code class="docutils literal notranslate"><span class="pre">-pg</span></code> to enable the generation of
+profiling data when running the executable. There is no cmake build option
+for enabling profiling but the cmake files can be hand-edited to contain
+<code class="docutils literal notranslate"><span class="pre">-pg</span></code> instead of <code class="docutils literal notranslate"><span class="pre">-g</span></code>.</p>
+<p>A run of profiling enabled code generates the data file that is viewed with
+the <code class="docutils literal notranslate"><span class="pre">gprof</span></code> command.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>../../testbench/build_testbench/install/bin/testbench -d -r <span class="m">48000</span> -R <span class="m">48000</span> -i audio_in.raw -o audio_out.raw -t ../../build_tools/test/topology/test-playback-ssp5-mclk-0-I2S-eq-iir-s16le-s16le-48k-24576k-codec.tplg -b S16_L
+gprof ../../testbench/build_testbench/install/bin/testbench gmon.out
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="prepare_new_component.html" class="btn btn-neutral float-right" title="Prepare a New Component for Testbench" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="build_testbench.html" class="btn btn-neutral" title="Build and Run Testbench" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; Copyright 2021, SOF Project..
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> SOF Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version zephyr">
+        <a href="../../../zephyr/index.html">Zephyr Project</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

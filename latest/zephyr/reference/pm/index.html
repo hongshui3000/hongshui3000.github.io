@@ -1,0 +1,1503 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Power Management &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Random Number Generation" href="../random/index.html" />
+    <link rel="prev" title="Pin Control" href="../pinctrl/index.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Power Management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#system-pm-apis">System PM APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#states">States</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constraints">Constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hooks">Hooks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#device-pm-apis">Device PM APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#device-runtime-pm-apis">Device Runtime PM APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+      <li>Power Management</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/pm/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="power-management">
+<span id="pm-api"></span><h1>Power Management<a class="headerlink" href="#power-management" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="system-pm-apis">
+<h2>System PM APIs<a class="headerlink" href="#system-pm-apis" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__subsys__pm__sys"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">subsys_pm_sys</span></span></dt>
+<dd><p>System Power Management API. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_state_force">
+<span class="target" id="group__subsys__pm__sys_1ga075be307983f4efdcc93252a31a4258a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_state_force</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">cpu</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_state_info" title="pm_state_info"><span class="n"><span class="pre">pm_state_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_state_force" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Force usage of given power state. </p>
+<p>This function overrides decision made by PM policy forcing usage of given power state upon next entry of the idle thread.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This function can only run in thread context</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cpu</span></code>: CPU index. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Power state which should be used in the ongoing suspend operation. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_notifier_register">
+<span class="target" id="group__subsys__pm__sys_1ga066945118b8f287ee56aacf41b677a78"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_notifier_register</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_notifier" title="pm_notifier"><span class="n"><span class="pre">pm_notifier</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">notifier</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_notifier_register" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Register a power management notifier. </p>
+<p>Register the given notifier from the power management notification list.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">notifier</span></code>: <a class="reference internal" href="#structpm__notifier"><span class="std std-ref">pm_notifier</span></a> object to be registered. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_notifier_unregister">
+<span class="target" id="group__subsys__pm__sys_1gab0856d662e50a3847a1b70cb8370849a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_notifier_unregister</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_notifier" title="pm_notifier"><span class="n"><span class="pre">pm_notifier</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">notifier</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_notifier_unregister" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unregister a power management notifier. </p>
+<p>Remove the given notifier from the power management notification list. After that this object callbacks will not be called.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 if the notifier was successfully removed, a negative value otherwise. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">notifier</span></code>: <a class="reference internal" href="#structpm__notifier"><span class="std std-ref">pm_notifier</span></a> object to be unregistered.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_state_next_get">
+<span class="target" id="group__subsys__pm__sys_1gab97fe043eba04414da4adec3612039ad"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_state_info" title="pm_state_info"><span class="n"><span class="pre">pm_state_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pm_state_next_get</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">cpu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_state_next_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gets the next power state that will be used. </p>
+<p>This function returns the next power state that will be used by the SoC.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>next <a class="reference internal" href="#structpm__state__info"><span class="std std-ref">pm_state_info</span></a> that will be used </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cpu</span></code>: CPU index. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.pm_notifier">
+<span class="target" id="structpm__notifier"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_notifier</span></span></span><a class="headerlink" href="#c.pm_notifier" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;pm.h&gt;</em><p>Power management notifier struct</p>
+<p>This struct contains callbacks that are called when the target enters and exits power states.</p>
+<p>As currently implemented the entry callback is invoked when transitioning from PM_STATE_ACTIVE to another state, and the exit callback is invoked when transitioning from a non-active state to PM_STATE_ACTIVE. This behavior may change in the future.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>These callbacks can be called from the ISR of the event that caused the kernel exit from idling.</p>
+</dd>
+<dt><strong>Note</strong></dt><dd><p>It is not allowed to call <a class="reference internal" href="#group__subsys__pm__sys_1gab0856d662e50a3847a1b70cb8370849a"><span class="std std-ref">pm_notifier_unregister</span></a> or <a class="reference internal" href="#group__subsys__pm__sys_1ga066945118b8f287ee56aacf41b677a78"><span class="std std-ref">pm_notifier_register</span></a> from these callbacks because they are called with the spin locked in those functions. </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.pm_notifier.state_entry">
+<span class="target" id="structpm__notifier_1ab84353bcc32f4262ea1a34f316d21278"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">state_entry</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_state" title="pm_state"><span class="n"><span class="pre">pm_state</span></span></a><span class="w"> </span><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.pm_notifier.state_entry" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Application defined function for doing any target specific operations for power state entry. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.pm_notifier.state_exit">
+<span class="target" id="structpm__notifier_1aeb6bcf67d2d4c5342d8d81cea3728ec5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">state_exit</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_state" title="pm_state"><span class="n"><span class="pre">pm_state</span></span></a><span class="w"> </span><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.pm_notifier.state_exit" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Application defined function for doing any target specific operations for power state exit. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="states">
+<h3>States<a class="headerlink" href="#states" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__subsys__pm__states"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">subsys_pm_states</span></span></dt>
+<dd><p>System Power Management States. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PM_STATE_INFO_DT_INIT">
+<span class="target" id="group__subsys__pm__states_1ga1e77683479b589093f06cca9b1d142b9"></span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_INFO_DT_INIT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PM_STATE_INFO_DT_INIT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initializer for struct <a class="reference internal" href="#structpm__state__info"><span class="std std-ref">pm_state_info</span></a> given a DT node identifier with zephyr,power-state compatible. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: A node identifier with compatible zephyr,power-state </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PM_STATE_DT_INIT">
+<span class="target" id="group__subsys__pm__states_1gadd0dca42aef0a021fed9ca2d588ce393"></span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_DT_INIT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PM_STATE_DT_INIT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initializer for enum pm_state given a DT node identifier with zephyr,power-state compatible. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: A node identifier with compatible zephyr,power-state </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DT_NUM_CPU_POWER_STATES">
+<span class="target" id="group__subsys__pm__states_1ga70e4a8cbc3b0e9427f4bf67ee31b3edd"></span><span class="sig-name descname"><span class="n"><span class="pre">DT_NUM_CPU_POWER_STATES</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DT_NUM_CPU_POWER_STATES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain number of CPU power states supported by the given CPU node identifier. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Number of supported CPU power states. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: A CPU node identifier. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PM_STATE_INFO_LIST_FROM_DT_CPU">
+<span class="target" id="group__subsys__pm__states_1ga2846f402e20570fc61118b8545cdbe12"></span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_INFO_LIST_FROM_DT_CPU</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PM_STATE_INFO_LIST_FROM_DT_CPU" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize an array of struct <a class="reference internal" href="#structpm__state__info"><span class="std std-ref">pm_state_info</span></a> with information from all the states present in the given CPU node identifier. </p>
+<p>Example devicetree fragment:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cpus</span> <span class="p">{</span>
+   <span class="o">...</span>
+   <span class="n">cpu0</span><span class="p">:</span> <span class="n">cpu</span><span class="o">@</span><span class="mi">0</span> <span class="p">{</span>
+           <span class="n">device_type</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span><span class="p">;</span>
+           <span class="o">...</span>
+           <span class="n">cpu</span><span class="o">-</span><span class="n">power</span><span class="o">-</span><span class="n">states</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">state0</span> <span class="o">&amp;</span><span class="n">state1</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="o">...</span>
+<span class="n">power</span><span class="o">-</span><span class="n">states</span> <span class="p">{</span>
+   <span class="n">state0</span><span class="p">:</span> <span class="n">state0</span> <span class="p">{</span>
+           <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;zephyr,power-state&quot;</span><span class="p">;</span>
+           <span class="n">power</span><span class="o">-</span><span class="n">state</span><span class="o">-</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;suspend-to-idle&quot;</span><span class="p">;</span>
+           <span class="nb">min</span><span class="o">-</span><span class="n">residency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">10000</span><span class="o">&gt;</span><span class="p">;</span>
+           <span class="n">exit</span><span class="o">-</span><span class="n">latency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">100</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="p">};</span>
+
+   <span class="n">state1</span><span class="p">:</span> <span class="n">state1</span> <span class="p">{</span>
+           <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;zephyr,power-state&quot;</span><span class="p">;</span>
+           <span class="n">power</span><span class="o">-</span><span class="n">state</span><span class="o">-</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;suspend-to-ram&quot;</span><span class="p">;</span>
+           <span class="nb">min</span><span class="o">-</span><span class="n">residency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">50000</span><span class="o">&gt;</span><span class="p">;</span>
+           <span class="n">exit</span><span class="o">-</span><span class="n">latency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">500</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</p>
+<p>Example usage:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">struct</span> <span class="n">pm_state_info</span> <span class="n">states</span><span class="p">[]</span> <span class="o">=</span>
+     <span class="n">PM_STATE_INFO_LIST_FROM_DT_CPU</span><span class="p">(</span><span class="n">DT_NODELABEL</span><span class="p">(</span><span class="n">cpu0</span><span class="p">));</span>
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: A CPU node identifier. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PM_STATE_LIST_FROM_DT_CPU">
+<span class="target" id="group__subsys__pm__states_1ga8248587108fcb76adefb50a360bc5db7"></span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_LIST_FROM_DT_CPU</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PM_STATE_LIST_FROM_DT_CPU" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize an array of struct pm_state with information from all the states present in the given CPU node identifier. </p>
+<p>Example devicetree fragment:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cpus</span> <span class="p">{</span>
+   <span class="o">...</span>
+   <span class="n">cpu0</span><span class="p">:</span> <span class="n">cpu</span><span class="o">@</span><span class="mi">0</span> <span class="p">{</span>
+           <span class="n">device_type</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span><span class="p">;</span>
+           <span class="o">...</span>
+           <span class="n">cpu</span><span class="o">-</span><span class="n">power</span><span class="o">-</span><span class="n">states</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">state0</span> <span class="o">&amp;</span><span class="n">state1</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="o">...</span>
+<span class="n">power</span><span class="o">-</span><span class="n">states</span> <span class="p">{</span>
+   <span class="n">state0</span><span class="p">:</span> <span class="n">state0</span> <span class="p">{</span>
+           <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;zephyr,power-state&quot;</span><span class="p">;</span>
+           <span class="n">power</span><span class="o">-</span><span class="n">state</span><span class="o">-</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;suspend-to-idle&quot;</span><span class="p">;</span>
+           <span class="nb">min</span><span class="o">-</span><span class="n">residency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">10000</span><span class="o">&gt;</span><span class="p">;</span>
+           <span class="n">exit</span><span class="o">-</span><span class="n">latency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">100</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="p">};</span>
+
+   <span class="n">state1</span><span class="p">:</span> <span class="n">state1</span> <span class="p">{</span>
+           <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;zephyr,power-state&quot;</span><span class="p">;</span>
+           <span class="n">power</span><span class="o">-</span><span class="n">state</span><span class="o">-</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;suspend-to-ram&quot;</span><span class="p">;</span>
+           <span class="nb">min</span><span class="o">-</span><span class="n">residency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">50000</span><span class="o">&gt;</span><span class="p">;</span>
+           <span class="n">exit</span><span class="o">-</span><span class="n">latency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">500</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</p>
+<p>Example usage:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">enum</span> <span class="n">pm_state</span> <span class="n">states</span><span class="p">[]</span> <span class="o">=</span> <span class="n">PM_STATE_LIST_FROM_DT_CPU</span><span class="p">(</span><span class="n">DT_NODELABEL</span><span class="p">(</span><span class="n">cpu0</span><span class="p">));</span>
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: A CPU node identifier. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.pm_state">
+<span class="target" id="group__subsys__pm__states_1ga20e2f5ea9027a3653e5b9cc5aa1e21d5"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_state</span></span></span><a class="headerlink" href="#c.pm_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Power management state </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_state.PM_STATE_ACTIVE">
+<span class="target" id="group__subsys__pm__states_1gga20e2f5ea9027a3653e5b9cc5aa1e21d5a383b8ef562f50d7a3d18914d3c950743"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_ACTIVE</span></span></span><a class="headerlink" href="#c.pm_state.PM_STATE_ACTIVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Runtime active state. </p>
+<p>The system is fully powered and active.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This state is correlated with ACPI G0/S0 state </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_state.PM_STATE_RUNTIME_IDLE">
+<span class="target" id="group__subsys__pm__states_1gga20e2f5ea9027a3653e5b9cc5aa1e21d5a73c76572bc04e999d22a3bded9c54b19"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_RUNTIME_IDLE</span></span></span><a class="headerlink" href="#c.pm_state.PM_STATE_RUNTIME_IDLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Runtime idle state. </p>
+<p>Runtime idle is a system sleep state in which all of the cores enter deepest possible idle state and wait for interrupts, no requirements for the devices, leaving them at the states where they are.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This state is correlated with ACPI S0ix state </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_state.PM_STATE_SUSPEND_TO_IDLE">
+<span class="target" id="group__subsys__pm__states_1gga20e2f5ea9027a3653e5b9cc5aa1e21d5a781f940d30738d746eb2523155950fc0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_SUSPEND_TO_IDLE</span></span></span><a class="headerlink" href="#c.pm_state.PM_STATE_SUSPEND_TO_IDLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Suspend to idle state. </p>
+<p>The system goes through a normal platform suspend where it puts all of the cores in deepest possible idle state and <em>may</em> puts peripherals into low-power states. No operating state is lost (ie. the cpu core does not lose execution context), so the system can go back to where it left off easily enough.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This state is correlated with ACPI S1 state </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_state.PM_STATE_STANDBY">
+<span class="target" id="group__subsys__pm__states_1gga20e2f5ea9027a3653e5b9cc5aa1e21d5a19a09872876d4732d0aebb82e52f2429"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_STANDBY</span></span></span><a class="headerlink" href="#c.pm_state.PM_STATE_STANDBY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Standby state. </p>
+<p>In addition to putting peripherals into low-power states all non-boot CPUs are powered off. It should allow more energy to be saved relative to suspend to idle, but the resume latency will generally be greater than for that state. But it should be the same state with suspend to idle state on uniprocesser system.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This state is correlated with ACPI S2 state </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_state.PM_STATE_SUSPEND_TO_RAM">
+<span class="target" id="group__subsys__pm__states_1gga20e2f5ea9027a3653e5b9cc5aa1e21d5a363669b6a6db4bee5b8196442e9f2a00"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_SUSPEND_TO_RAM</span></span></span><a class="headerlink" href="#c.pm_state.PM_STATE_SUSPEND_TO_RAM" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Suspend to ram state. </p>
+<p>This state offers significant energy savings by powering off as much of the system as possible, where memory should be placed into the self-refresh mode to retain its contents. The state of devices and CPUs is saved and held in memory, and it may require some boot- strapping code in ROM to resume the system from it.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This state is correlated with ACPI S3 state </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_state.PM_STATE_SUSPEND_TO_DISK">
+<span class="target" id="group__subsys__pm__states_1gga20e2f5ea9027a3653e5b9cc5aa1e21d5acc7f38698db1ae08365115f8407c9695"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_SUSPEND_TO_DISK</span></span></span><a class="headerlink" href="#c.pm_state.PM_STATE_SUSPEND_TO_DISK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Suspend to disk state. </p>
+<p>This state offers significant energy savings by powering off as much of the system as possible, including the memory. The contents of memory are written to disk or other non-volatile storage, and on resume it’s read back into memory with the help of boot-strapping code, restores the system to the same point of execution where it went to suspend to disk.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This state is correlated with ACPI S4 state </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_state.PM_STATE_SOFT_OFF">
+<span class="target" id="group__subsys__pm__states_1gga20e2f5ea9027a3653e5b9cc5aa1e21d5a18d180711616cd9ed59fbe27dd0dbf01"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_SOFT_OFF</span></span></span><a class="headerlink" href="#c.pm_state.PM_STATE_SOFT_OFF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Soft off state. </p>
+<p>This state consumes a minimal amount of power and requires a large latency in order to return to runtime active state. The contents of system(CPU and memory) will not be preserved, so the system will be restarted as if from initial power-up and kernel boot.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This state is correlated with ACPI G2/S5 state </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_state.PM_STATE_COUNT">
+<span class="target" id="group__subsys__pm__states_1gga20e2f5ea9027a3653e5b9cc5aa1e21d5a97c44ed1a8b6873243d6bbd76a382737"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_STATE_COUNT</span></span></span><a class="headerlink" href="#c.pm_state.PM_STATE_COUNT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of power management states (internal use) </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_state_cpu_get_all">
+<span class="target" id="group__subsys__pm__states_1ga682f75eb5324455ce95a5c7d4c2d6242"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_state_cpu_get_all</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">cpu</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_state_info" title="pm_state_info"><span class="n"><span class="pre">pm_state_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">states</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_state_cpu_get_all" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain information about all supported states by a CPU.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Number of supported states. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cpu</span></code>: CPU index. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">states</span></code>: Where to store the list of supported states.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.pm_state_info">
+<span class="target" id="structpm__state__info"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_state_info</span></span></span><a class="headerlink" href="#c.pm_state_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;state.h&gt;</em><p>Information about a power management state </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.pm_state_info.substate_id">
+<span class="target" id="structpm__state__info_1a422bc0c9aedc107dbfa57c3ac8eb2445"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">substate_id</span></span></span><a class="headerlink" href="#c.pm_state_info.substate_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Some platforms have multiple states that map to one Zephyr power state. This property allows the platform distinguish them. e.g:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">power</span><span class="o">-</span><span class="n">states</span> <span class="p">{</span>
+   <span class="n">state0</span><span class="p">:</span> <span class="n">state0</span> <span class="p">{</span>
+           <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;zephyr,power-state&quot;</span><span class="p">;</span>
+           <span class="n">power</span><span class="o">-</span><span class="n">state</span><span class="o">-</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;suspend-to-idle&quot;</span><span class="p">;</span>
+           <span class="n">substate</span><span class="o">-</span><span class="nb">id</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+           <span class="nb">min</span><span class="o">-</span><span class="n">residency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">10000</span><span class="o">&gt;</span><span class="p">;</span>
+           <span class="n">exit</span><span class="o">-</span><span class="n">latency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">100</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="p">};</span>
+   <span class="n">state1</span><span class="p">:</span> <span class="n">state1</span> <span class="p">{</span>
+           <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;zephyr,power-state&quot;</span><span class="p">;</span>
+           <span class="n">power</span><span class="o">-</span><span class="n">state</span><span class="o">-</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;suspend-to-idle&quot;</span><span class="p">;</span>
+           <span class="n">substate</span><span class="o">-</span><span class="nb">id</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+           <span class="nb">min</span><span class="o">-</span><span class="n">residency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">20000</span><span class="o">&gt;</span><span class="p">;</span>
+           <span class="n">exit</span><span class="o">-</span><span class="n">latency</span><span class="o">-</span><span class="n">us</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">200</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+ </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.pm_state_info.min_residency_us">
+<span class="target" id="structpm__state__info_1a442654715d3872de1b7b0dcf08bffb8b"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">min_residency_us</span></span></span><a class="headerlink" href="#c.pm_state_info.min_residency_us" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Minimum residency duration in microseconds. It is the minimum time for a given idle state to be worthwhile energywise.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>0 means that this property is not available for this state. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.pm_state_info.exit_latency_us">
+<span class="target" id="structpm__state__info_1a6fc8e0a78df78c7a28a0bc2a27292818"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exit_latency_us</span></span></span><a class="headerlink" href="#c.pm_state_info.exit_latency_us" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Worst case latency in microseconds required to exit the idle state.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>0 means that this property is not available for this state. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="constraints">
+<h3>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__subsys__pm__sys__constraint"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">subsys_pm_sys_constraint</span></span></dt>
+<dd><p>System Power Management Constraints API. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_constraint_set">
+<span class="target" id="group__subsys__pm__sys__constraint_1ga0b2764efe4b8ec19aa78ad638b4f47d4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_constraint_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_state" title="pm_state"><span class="n"><span class="pre">pm_state</span></span></a><span class="w"> </span><span class="n"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_constraint_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set a constraint for a power state. </p>
+<p>Disabled state cannot be selected by the Zephyr power management policies. Application defined policy should use the <a class="reference internal" href="#group__subsys__pm__sys__constraint_1ga5c3d6808b51499d3375a72ed1a2191c6"><span class="std std-ref">pm_constraint_get</span></a> function to check if given state is enabled and could be used.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This API is refcount</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">state</span></code>: Power state to be disabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_constraint_release">
+<span class="target" id="group__subsys__pm__sys__constraint_1gac72b5d3d2a6b24e46afd63289c9c3024"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_constraint_release</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_state" title="pm_state"><span class="n"><span class="pre">pm_state</span></span></a><span class="w"> </span><span class="n"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_constraint_release" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Release a constraint for a power state. </p>
+<p>Enabled state can be selected by the Zephyr power management policies. Application defined policy should use the <a class="reference internal" href="#group__subsys__pm__sys__constraint_1ga5c3d6808b51499d3375a72ed1a2191c6"><span class="std std-ref">pm_constraint_get</span></a> function to check if given state is enabled and could be used. By default all power states are enabled.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This API is refcount</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">state</span></code>: Power state to be enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_constraint_get">
+<span class="target" id="group__subsys__pm__sys__constraint_1ga5c3d6808b51499d3375a72ed1a2191c6"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_constraint_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_state" title="pm_state"><span class="n"><span class="pre">pm_state</span></span></a><span class="w"> </span><span class="n"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_constraint_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if particular power state is enabled. </p>
+<p>This function returns true if given power state is enabled.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">state</span></code>: Power state. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="hooks">
+<h3>Hooks<a class="headerlink" href="#hooks" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__subsys__pm__sys__hooks"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">subsys_pm_sys_hooks</span></span></dt>
+<dd><p>System Power Management Hooks. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_state_set">
+<span class="target" id="group__subsys__pm__sys__hooks_1gaa5c707f5c9c14494a388c6c2144e8f61"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_state_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_state" title="pm_state"><span class="n"><span class="pre">pm_state</span></span></a><span class="w"> </span><span class="n"><span class="pre">state</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">substate_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_state_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Put processor into a power state. </p>
+<p>This function implements the SoC specific details necessary to put the processor into available power states.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">state</span></code>: Power state. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">substate_id</span></code>: Power substate id. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_state_exit_post_ops">
+<span class="target" id="group__subsys__pm__sys__hooks_1ga7594e7e9b41c180ac760b7b0c47673b2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_state_exit_post_ops</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_state" title="pm_state"><span class="n"><span class="pre">pm_state</span></span></a><span class="w"> </span><span class="n"><span class="pre">state</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">substate_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_state_exit_post_ops" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Do any SoC or architecture specific post ops after sleep state exits. </p>
+<p>This function is a place holder to do any operations that may be needed to be done after sleep state exits. Currently it enables interrupts after resuming from sleep state. In future, the enabling of interrupts may be moved into the kernel.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">state</span></code>: Power state. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">substate_id</span></code>: Power substate id. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="device-pm-apis">
+<h2>Device PM APIs<a class="headerlink" href="#device-pm-apis" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__subsys__pm__device"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">subsys_pm_device</span></span></dt>
+<dd><p>Device Power Management API. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PM_DEVICE_DEFINE">
+<span class="target" id="group__subsys__pm__device_1ga26e9cbf9103b9ddda42527740c905b02"></span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dev_name</span></span>, <span class="n"><span class="pre">pm_action_cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PM_DEVICE_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define device PM resources for the given device name.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This macro is a no-op if<span> <a class="reference internal" href="../../kconfig.html#CONFIG_PM_DEVICE" title="CONFIG_PM_DEVICE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PM_DEVICE</span></code></a> </span> is not enabled.</p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__subsys__pm__device_1gaf625e31cd9c3f992c826872ac3b93554"><span class="std std-ref">PM_DEVICE_DT_DEFINE</span></a>, <a class="reference internal" href="#group__subsys__pm__device_1ga0fbb1dca1f65934b20970076a4bcaf88"><span class="std std-ref">PM_DEVICE_DT_INST_DEFINE</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_name</span></code>: Device name. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pm_action_cb</span></code>: PM control callback.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PM_DEVICE_DT_DEFINE">
+<span class="target" id="group__subsys__pm__device_1gaf625e31cd9c3f992c826872ac3b93554"></span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_DT_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span>, <span class="n"><span class="pre">pm_action_cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PM_DEVICE_DT_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define device PM resources for the given node identifier.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This macro is a no-op if<span> <a class="reference internal" href="../../kconfig.html#CONFIG_PM_DEVICE" title="CONFIG_PM_DEVICE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PM_DEVICE</span></code></a> </span> is not enabled.</p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__subsys__pm__device_1ga0fbb1dca1f65934b20970076a4bcaf88"><span class="std std-ref">PM_DEVICE_DT_INST_DEFINE</span></a>, <a class="reference internal" href="#group__subsys__pm__device_1ga26e9cbf9103b9ddda42527740c905b02"><span class="std std-ref">PM_DEVICE_DEFINE</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: Node identifier. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pm_action_cb</span></code>: PM control callback.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PM_DEVICE_DT_INST_DEFINE">
+<span class="target" id="group__subsys__pm__device_1ga0fbb1dca1f65934b20970076a4bcaf88"></span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_DT_INST_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">idx</span></span>, <span class="n"><span class="pre">pm_action_cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PM_DEVICE_DT_INST_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define device PM resources for the given instance.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This macro is a no-op if<span> <a class="reference internal" href="../../kconfig.html#CONFIG_PM_DEVICE" title="CONFIG_PM_DEVICE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PM_DEVICE</span></code></a> </span> is not enabled.</p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__subsys__pm__device_1gaf625e31cd9c3f992c826872ac3b93554"><span class="std std-ref">PM_DEVICE_DT_DEFINE</span></a>, <a class="reference internal" href="#group__subsys__pm__device_1ga26e9cbf9103b9ddda42527740c905b02"><span class="std std-ref">PM_DEVICE_DEFINE</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">idx</span></code>: Instance index. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pm_action_cb</span></code>: PM control callback.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PM_DEVICE_GET">
+<span class="target" id="group__subsys__pm__device_1gafce1f14890ebdb9317486a85e68c47f3"></span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dev_name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PM_DEVICE_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain a reference to the device PM resources for the given device. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Reference to the device PM resources (NULL if device <span> <a class="reference internal" href="../../kconfig.html#CONFIG_PM_DEVICE" title="CONFIG_PM_DEVICE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PM_DEVICE</span></code></a> </span> is disabled). </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_name</span></code>: Device name.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PM_DEVICE_DT_GET">
+<span class="target" id="group__subsys__pm__device_1gad244d742bc6b9874bfb90a2c3c87c4e8"></span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_DT_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PM_DEVICE_DT_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain a reference to the device PM resources for the given node. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Reference to the device PM resources (NULL if device <span> <a class="reference internal" href="../../kconfig.html#CONFIG_PM_DEVICE" title="CONFIG_PM_DEVICE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PM_DEVICE</span></code></a> </span> is disabled). </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: Node identifier.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.PM_DEVICE_DT_INST_GET">
+<span class="target" id="group__subsys__pm__device_1ga52892f2c34f6ccc9598002625baf12ce"></span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_DT_INST_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">idx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.PM_DEVICE_DT_INST_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain a reference to the device PM resources for the given instance. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Reference to the device PM resources (NULL if device <span> <a class="reference internal" href="../../kconfig.html#CONFIG_PM_DEVICE" title="CONFIG_PM_DEVICE"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_PM_DEVICE</span></code></a> </span> is disabled). </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">idx</span></code>: Instance index.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.pm_device_state">
+<span class="target" id="group__subsys__pm__device_1ga561c0789071e3c3963f21f4c4a1bb2c6"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_state</span></span></span><a class="headerlink" href="#c.pm_device_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Device power states. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_device_state.PM_DEVICE_STATE_ACTIVE">
+<span class="target" id="group__subsys__pm__device_1gga561c0789071e3c3963f21f4c4a1bb2c6a54b207e01b4dfc5e1ff56149817120c7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_STATE_ACTIVE</span></span></span><a class="headerlink" href="#c.pm_device_state.PM_DEVICE_STATE_ACTIVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Device is in active or regular state. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_device_state.PM_DEVICE_STATE_SUSPENDED">
+<span class="target" id="group__subsys__pm__device_1gga561c0789071e3c3963f21f4c4a1bb2c6a03f61cb7cd5e4820c1c731500fd053b5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_STATE_SUSPENDED</span></span></span><a class="headerlink" href="#c.pm_device_state.PM_DEVICE_STATE_SUSPENDED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Device is suspended.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Device context may be lost. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_device_state.PM_DEVICE_STATE_SUSPENDING">
+<span class="target" id="group__subsys__pm__device_1gga561c0789071e3c3963f21f4c4a1bb2c6a51a5904aff980deff73d29568b6f7deb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_STATE_SUSPENDING</span></span></span><a class="headerlink" href="#c.pm_device_state.PM_DEVICE_STATE_SUSPENDING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Device is being suspended. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_device_state.PM_DEVICE_STATE_OFF">
+<span class="target" id="group__subsys__pm__device_1gga561c0789071e3c3963f21f4c4a1bb2c6a2456389354b744d4e96847e38f8b61c2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_STATE_OFF</span></span></span><a class="headerlink" href="#c.pm_device_state.PM_DEVICE_STATE_OFF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Device is turned off (power removed).</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Device context is lost. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.pm_device_action">
+<span class="target" id="group__subsys__pm__device_1gaee5546eacb9be7caa9d59ab63926cc4c"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_action</span></span></span><a class="headerlink" href="#c.pm_device_action" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Device PM actions. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_device_action.PM_DEVICE_ACTION_SUSPEND">
+<span class="target" id="group__subsys__pm__device_1ggaee5546eacb9be7caa9d59ab63926cc4ca5b7ae11deaee85eb0b8452bc89383790"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_ACTION_SUSPEND</span></span></span><a class="headerlink" href="#c.pm_device_action.PM_DEVICE_ACTION_SUSPEND" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Suspend. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_device_action.PM_DEVICE_ACTION_RESUME">
+<span class="target" id="group__subsys__pm__device_1ggaee5546eacb9be7caa9d59ab63926cc4ca757c6ab81eeac0d6afae479d6a0ac564"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_ACTION_RESUME</span></span></span><a class="headerlink" href="#c.pm_device_action.PM_DEVICE_ACTION_RESUME" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resume. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_device_action.PM_DEVICE_ACTION_TURN_OFF">
+<span class="target" id="group__subsys__pm__device_1ggaee5546eacb9be7caa9d59ab63926cc4ca2bcd7dee3a85b27157bbc465bacf521e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_ACTION_TURN_OFF</span></span></span><a class="headerlink" href="#c.pm_device_action.PM_DEVICE_ACTION_TURN_OFF" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Turn off. <dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Action triggered only by a power domain. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_device_action.PM_DEVICE_ACTION_TURN_ON">
+<span class="target" id="group__subsys__pm__device_1ggaee5546eacb9be7caa9d59ab63926cc4cac7690e0ffd27742acf58fdbdb7b89544"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_ACTION_TURN_ON</span></span></span><a class="headerlink" href="#c.pm_device_action.PM_DEVICE_ACTION_TURN_ON" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Turn on. <dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Action triggered only by a power domain. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.pm_device_action.PM_DEVICE_ACTION_FORCE_SUSPEND">
+<span class="target" id="group__subsys__pm__device_1ggaee5546eacb9be7caa9d59ab63926cc4ca63772d89ffcae03af7b1aa2cfd16cba3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PM_DEVICE_ACTION_FORCE_SUSPEND</span></span></span><a class="headerlink" href="#c.pm_device_action.PM_DEVICE_ACTION_FORCE_SUSPEND" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Force suspend. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_state_str">
+<span class="target" id="group__subsys__pm__device_1ga9b125b1c930d9121fd3614cb08862b9d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_state_str</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_device_state" title="pm_device_state"><span class="n"><span class="pre">pm_device_state</span></span></a><span class="w"> </span><span class="n"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_state_str" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get name of device PM state. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">state</span></code>: State id which name should be returned </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_state_get">
+<span class="target" id="group__subsys__pm__device_1gaffcf0aea5df10657235d4ed1f8c74d5a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_state_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_device_state" title="pm_device_state"><span class="n"><span class="pre">pm_device_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_state_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain the power state of a device. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state</span></code>: Pointer where device power state will be stored.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If device does not implement power management. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_action_run">
+<span class="target" id="group__subsys__pm__device_1ga3840d6e7832a00b93763247a5951bfde"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_action_run</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_device_action" title="pm_device_action"><span class="n"><span class="pre">pm_device_action</span></span></a><span class="w"> </span><span class="n"><span class="pre">action</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_action_run" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Run a pm action on a device. </p>
+<p>This function calls the device PM control callback so that the device does the necessary operations to execute the given action.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">action</span></code>: Device pm action.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If successful. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOTSUP</span></code>: If requested state is not supported. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EALREADY</span></code>: If device is already at the requested state. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>: If device is changing its state. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If device does not support PM. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EPERM</span></code>: If device has power state locked. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Errno</span></code>: Other negative errno on failure. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_children_action_run">
+<span class="target" id="group__subsys__pm__device_1ga765a5412f66070ccefd8e80ed9f62b1b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_children_action_run</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.pm_device_action" title="pm_device_action"><span class="n"><span class="pre">pm_device_action</span></span></a><span class="w"> </span><span class="n"><span class="pre">action</span></span>, <span class="n"><span class="pre">pm_device_action_failed_cb_t</span></span><span class="w"> </span><span class="n"><span class="pre">failure_cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_children_action_run" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Run a pm action on all children of a device. </p>
+<p>This function calls all child devices PM control callback so that the device does the necessary operations to execute the given action.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">action</span></code>: Device pm action. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">failure_cb</span></code>: Function to call if a child fails the action, can be NULL. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_busy_set">
+<span class="target" id="group__subsys__pm__device_1ga7ea002352f3d1c90aecff1d54c255a06"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_busy_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_busy_set" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Mark a device as busy. </p>
+<p>Devices marked as busy will not be suspended when the system goes into low-power states. This can be useful if, for example, the device is in the middle of a transaction.</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__subsys__pm__device_1ga8b527314f0c61b85602876b4f5a52275"><span class="std std-ref">pm_device_busy_clear()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_busy_clear">
+<span class="target" id="group__subsys__pm__device_1ga8b527314f0c61b85602876b4f5a52275"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_busy_clear</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_busy_clear" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Clear a device busy status. </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__subsys__pm__device_1ga7ea002352f3d1c90aecff1d54c255a06"><span class="std std-ref">pm_device_busy_set()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_is_any_busy">
+<span class="target" id="group__subsys__pm__device_1gae59a1fbcd2399717076fbfcee1e5e411"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_is_any_busy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_is_any_busy" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if any device is busy. </p>
+<p><dl class="simple">
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code>: If no device is busy </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: If one or more devices are busy </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_is_busy">
+<span class="target" id="group__subsys__pm__device_1ga8ff7c3197d5ded860878302d00ac709c"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_is_busy</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_is_busy" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if a device is busy. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code>: If the device is not busy </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: If the device is busy </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_wakeup_enable">
+<span class="target" id="group__subsys__pm__device_1ga8837ac66f849821757b3638bbb65d3ac"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_wakeup_enable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">enable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_wakeup_enable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Enable or disable a device as a wake up source. </p>
+<p>A device marked as a wake up source will not be suspended when the system goes into low-power modes, thus allowing to use it as a wake up source for the system.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enable</span></code>: <code class="docutils literal notranslate"><span class="pre">true</span></code> to enable or <code class="docutils literal notranslate"><span class="pre">false</span></code> to disable</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: If the wakeup source was successfully enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code>: If the wakeup source was not successfully enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_wakeup_is_enabled">
+<span class="target" id="group__subsys__pm__device_1ga0716c6158804ac48022280d8d237f8c1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_wakeup_is_enabled</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_wakeup_is_enabled" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if a device is enabled as a wake up source. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: if the wakeup source is enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code>: if the wakeup source is not enabled. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_wakeup_is_capable">
+<span class="target" id="group__subsys__pm__device_1gac818aafb748b57d70909808b45d89379"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_wakeup_is_capable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_wakeup_is_capable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if a device is wake up capable. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: If the device is wake up capable. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code>: If the device is not wake up capable. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_state_lock">
+<span class="target" id="group__subsys__pm__device_1gaab27e932950e1063b2f1f4c4e19dbf01"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_state_lock</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_state_lock" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Lock current device state. </p>
+<p>This function locks the current device power state. Once locked the device power state will not be changed by system power management or device runtime power management until unlocked.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>The given device should not have device runtime enabled.</p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__subsys__pm__device_1gaa5d2387a01a4ca4d765b1ea2361155bb"><span class="std std-ref">pm_device_state_unlock</span></a></p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_state_unlock">
+<span class="target" id="group__subsys__pm__device_1gaa5d2387a01a4ca4d765b1ea2361155bb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_state_unlock</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_state_unlock" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unlock the current device state. </p>
+<p>Unlocks a previously locked device pm.</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__subsys__pm__device_1gaab27e932950e1063b2f1f4c4e19dbf01"><span class="std std-ref">pm_device_state_lock</span></a></p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_state_is_locked">
+<span class="target" id="group__subsys__pm__device_1gaf577cada579b6f871bc55e4a282ef8a6"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_state_is_locked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_state_is_locked" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the device pm is locked. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: If device is locked. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code>: If device is not locked. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_on_power_domain">
+<span class="target" id="group__subsys__pm__device_1ga32eb5e210d2f0ba533b0185a94c8744e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_on_power_domain</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_on_power_domain" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if the device is on a switchable power domain. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: If device is on a switchable power domain. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code>: If device is not on a switchable power domain. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="device-runtime-pm-apis">
+<h2>Device Runtime PM APIs<a class="headerlink" href="#device-runtime-pm-apis" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__subsys__pm__device__runtime"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">subsys_pm_device_runtime</span></span></dt>
+<dd><p>Device Runtime Power Management API. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_runtime_enable">
+<span class="target" id="group__subsys__pm__device__runtime_1gaabcd2cc694c9e201dd87bf42f02b454c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_runtime_enable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_runtime_enable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Enable device runtime PM. </p>
+<p>This function will enable runtime PM on the given device. If the device is in <a class="reference internal" href="#group__subsys__pm__device_1gga561c0789071e3c3963f21f4c4a1bb2c6a54b207e01b4dfc5e1ff56149817120c7"><span class="std std-ref">PM_DEVICE_STATE_ACTIVE</span></a> state, the device will be suspended.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../api/terminology.html#api-term-pre-kernel-ok"><span class="std std-ref">pre-kernel-ok</span></a></span> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__subsys__pm__device__runtime_1gac69c6b91803e7ee985b57143d7526e17"><span class="std std-ref">pm_device_runtime_init_suspended()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If the device runtime PM is enabled successfully. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EPERM</span></code>: If device has power state locked. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If the functionality is not available. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno, result of suspending the device.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_runtime_disable">
+<span class="target" id="group__subsys__pm__device__runtime_1gaa7fc78138e282b0eae7da67876baee80"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_runtime_disable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_runtime_disable" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Disable device runtime PM. </p>
+<p>If the device is currently suspended it will be resumed.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../api/terminology.html#api-term-pre-kernel-ok"><span class="std std-ref">pre-kernel-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If the device runtime PM is disabled successfully. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENOSYS</span></code>: If the functionality is not available. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno, result of resuming the device. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_runtime_get">
+<span class="target" id="group__subsys__pm__device__runtime_1ga530d4be65757fb2276ab6f631953e045"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_runtime_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_runtime_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Resume a device based on usage count. </p>
+<p>This function will resume the device if the device is suspended (usage count equal to 0). In case of a resume failure, usage count and device state will be left unchanged. In all other cases, usage count will be incremented.</p>
+<p>If the device is still being suspended as a result of calling <a class="reference internal" href="#group__subsys__pm__device__runtime_1gab3eedd20c986f2ef8bd837263337b34b"><span class="std std-ref">pm_device_runtime_put_async()</span></a>, this function will wait for the operation to finish to then resume the device.</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../api/terminology.html#api-term-pre-kernel-ok"><span class="std std-ref">pre-kernel-ok</span></a></span> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If it succeeds. In case device runtime PM is not enabled or not available this function will be a no-op and will also return 0. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno, result of the PM action callback. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_runtime_put">
+<span class="target" id="group__subsys__pm__device__runtime_1ga98daba53a992fb6bd2c2b31cb445844f"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_runtime_put</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_runtime_put" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Suspend a device based on usage count. </p>
+<p>This function will suspend the device if the device is no longer required (usage count equal to 0). In case of suspend failure, usage count and device state will be left unchanged. In all other cases, usage count will be decremented (down to 0).</p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../api/terminology.html#api-term-pre-kernel-ok"><span class="std std-ref">pre-kernel-ok</span></a></span> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__subsys__pm__device__runtime_1gab3eedd20c986f2ef8bd837263337b34b"><span class="std std-ref">pm_device_runtime_put_async()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If it succeeds. In case device runtime PM is not enabled or not available this function will be a no-op and will also return 0. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EALREADY</span></code>: If device is already suspended (can only happen if get/put calls are unbalanced). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-errno</span></code>: Other negative errno, result of the action callback.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_runtime_put_async">
+<span class="target" id="group__subsys__pm__device__runtime_1gab3eedd20c986f2ef8bd837263337b34b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_runtime_put_async</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_runtime_put_async" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Suspend a device based on usage count (asynchronously). </p>
+<p>This function will schedule the device suspension if the device is no longer required (usage count equal to 0). In all other cases, usage count will be decremented (down to 0).</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>Asynchronous operations are not supported when in pre-kernel mode. In this case, the function will be blocking (equivalent to <a class="reference internal" href="#group__subsys__pm__device__runtime_1ga98daba53a992fb6bd2c2b31cb445844f"><span class="std std-ref">pm_device_runtime_put()</span></a>).</p>
+</dd>
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../api/terminology.html#api-term-pre-kernel-ok"><span class="std std-ref">pre-kernel-ok</span></a></span> , <span> <a class="reference internal" href="../api/terminology.html#api-term-async"><span class="std std-ref">async</span></a></span> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__subsys__pm__device__runtime_1ga98daba53a992fb6bd2c2b31cb445844f"><span class="std std-ref">pm_device_runtime_put()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If it succeeds. In case device runtime PM is not enabled or not available this function will be a no-op and will also return 0. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EALREADY</span></code>: If device is already suspended (can only happen if get/put calls are unbalanced).</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_runtime_is_enabled">
+<span class="target" id="group__subsys__pm__device__runtime_1ga605cd2a3d0ea31efe6bd0b9a6f723219"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_runtime_is_enabled</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_runtime_is_enabled" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if device runtime is enabled for a given device. </p>
+<p><dl class="simple">
+<dt><strong>Function properties (list may not be complete)</strong></dt><dd><p> <span> <a class="reference internal" href="../api/terminology.html#api-term-pre-kernel-ok"><span class="std std-ref">pre-kernel-ok</span></a></span> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__subsys__pm__device__runtime_1gaabcd2cc694c9e201dd87bf42f02b454c"><span class="std std-ref">pm_device_runtime_enable()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: If device has device runtime PM enabled. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code>: If the device has device runtime PM disabled.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_runtime_init_suspended">
+<span class="target" id="group__subsys__pm__device__runtime_1gac69c6b91803e7ee985b57143d7526e17"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_runtime_init_suspended</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_runtime_init_suspended" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a device state to <a class="reference internal" href="#group__subsys__pm__device_1gga561c0789071e3c3963f21f4c4a1bb2c6a03f61cb7cd5e4820c1c731500fd053b5"><span class="std std-ref">PM_DEVICE_STATE_SUSPENDED</span></a>. </p>
+<p>By default device state is initialized to <a class="reference internal" href="#group__subsys__pm__device_1gga561c0789071e3c3963f21f4c4a1bb2c6a54b207e01b4dfc5e1ff56149817120c7"><span class="std std-ref">PM_DEVICE_STATE_ACTIVE</span></a>. In general, this makes sense because the device initialization function will resume and configure a device, leaving it operational. However, when device runtime PM is enabled, the device may not be resumed and the init function will just enable device runtime PM. If that is the case, this function can be used to set the initial device state to <a class="reference internal" href="#group__subsys__pm__device_1gga561c0789071e3c3963f21f4c4a1bb2c6a03f61cb7cd5e4820c1c731500fd053b5"><span class="std std-ref">PM_DEVICE_STATE_SUSPENDED</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.pm_device_runtime_init_off">
+<span class="target" id="group__subsys__pm__device__runtime_1ga6536a4c3bfaf286f70cec164da665f01"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pm_device_runtime_init_off</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pm_device_runtime_init_off" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a device state to <a class="reference internal" href="#group__subsys__pm__device_1gga561c0789071e3c3963f21f4c4a1bb2c6a2456389354b744d4e96847e38f8b61c2"><span class="std std-ref">PM_DEVICE_STATE_OFF</span></a>. </p>
+<p>By default device state is initialized to <a class="reference internal" href="#group__subsys__pm__device_1gga561c0789071e3c3963f21f4c4a1bb2c6a54b207e01b4dfc5e1ff56149817120c7"><span class="std std-ref">PM_DEVICE_STATE_ACTIVE</span></a>. In general, this makes sense because the device initialization function will resume and configure a device, leaving it operational. However, when device runtime PM is enabled, the device may be connected to a power domain, at which case it won’t be powered at boot.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../random/index.html" class="btn btn-neutral float-right" title="Random Number Generation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../pinctrl/index.html" class="btn btn-neutral" title="Pin Control" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

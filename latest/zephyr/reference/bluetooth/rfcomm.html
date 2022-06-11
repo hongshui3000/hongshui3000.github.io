@@ -1,0 +1,584 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Serial Port Emulation (RFCOMM) &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Service Discovery Protocol (SDP)" href="sdp.html" />
+    <link rel="prev" title="Bluetooth Mesh Shell" href="mesh/shell.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Bluetooth</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="connection_mgmt.html">Connection Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="controller.html">Bluetooth Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crypto.html">Cryptography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_buffer.html">Data Buffers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gap.html">Generic Access Profile (GAP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gatt.html">Generic Attribute Profile (GATT)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci_drivers.html">HCI Drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci_raw.html">HCI RAW channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hfp.html">Hands Free Profile (HFP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l2cap.html">Logical Link Control and Adaptation Protocol (L2CAP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mesh.html">Bluetooth Mesh Profile</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Serial Port Emulation (RFCOMM)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sdp.html">Service Discovery Protocol (SDP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uuid.html">Universal Unique Identifiers (UUIDs)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/audio.html">Bluetooth: Basic Audio Profile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Bluetooth</a> &raquo;</li>
+        
+      <li>Serial Port Emulation (RFCOMM)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/bluetooth/rfcomm.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="serial-port-emulation-rfcomm">
+<span id="bt-rfcomm"></span><h1>Serial Port Emulation (RFCOMM)<a class="headerlink" href="#serial-port-emulation-rfcomm" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__bt__rfcomm"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">bt_rfcomm</span></span></dt>
+<dd><p>RFCOMM. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.bt_rfcomm_role_t">
+<span class="target" id="group__bt__rfcomm_1ga11f290d34ad631afaa10caf2cefd72b9"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_rfcomm_role" title="bt_rfcomm_role"><span class="n"><span class="pre">bt_rfcomm_role</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_rfcomm_role_t</span></span></span><a class="headerlink" href="#c.bt_rfcomm_role_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Role of RFCOMM session and dlc. Used only by internal APIs. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.&#64;86">
+<span class="target" id="group__bt__rfcomm_1gae33c78feb670de33d2abf21ec0624531"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#c.@86" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.&#64;86.BT_RFCOMM_CHAN_HFP_HF">
+<span class="target" id="group__bt__rfcomm_1ggae33c78feb670de33d2abf21ec0624531aa62985d89ab11a130eed284d98b7b1e4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_RFCOMM_CHAN_HFP_HF</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.@86.BT_RFCOMM_CHAN_HFP_HF" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.&#64;86.BT_RFCOMM_CHAN_HFP_AG">
+<span class="target" id="group__bt__rfcomm_1ggae33c78feb670de33d2abf21ec0624531ac7f345a01b4d9aca4c2a879dce05e0dd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_RFCOMM_CHAN_HFP_AG</span></span></span><a class="headerlink" href="#c.@86.BT_RFCOMM_CHAN_HFP_AG" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.&#64;86.BT_RFCOMM_CHAN_HSP_AG">
+<span class="target" id="group__bt__rfcomm_1ggae33c78feb670de33d2abf21ec0624531adc095ec30d3edf16ef95ece5b3c1104b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_RFCOMM_CHAN_HSP_AG</span></span></span><a class="headerlink" href="#c.@86.BT_RFCOMM_CHAN_HSP_AG" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.&#64;86.BT_RFCOMM_CHAN_HSP_HS">
+<span class="target" id="group__bt__rfcomm_1ggae33c78feb670de33d2abf21ec0624531aaf92af85143e2a0430d5a99c9a0d3c25"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_RFCOMM_CHAN_HSP_HS</span></span></span><a class="headerlink" href="#c.@86.BT_RFCOMM_CHAN_HSP_HS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.&#64;86.BT_RFCOMM_CHAN_SPP">
+<span class="target" id="group__bt__rfcomm_1ggae33c78feb670de33d2abf21ec0624531a05cfd05b25c785acb72916b723141495"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_RFCOMM_CHAN_SPP</span></span></span><a class="headerlink" href="#c.@86.BT_RFCOMM_CHAN_SPP" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.bt_rfcomm_role">
+<span class="target" id="group__bt__rfcomm_1gaa70d7971435dc7e6421372d7385811b2"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_rfcomm_role</span></span></span><a class="headerlink" href="#c.bt_rfcomm_role" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Role of RFCOMM session and dlc. Used only by internal APIs. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_rfcomm_role.BT_RFCOMM_ROLE_ACCEPTOR">
+<span class="target" id="group__bt__rfcomm_1ggaa70d7971435dc7e6421372d7385811b2aa0b65eed9632ff8ad3235b4c0eae166d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_RFCOMM_ROLE_ACCEPTOR</span></span></span><a class="headerlink" href="#c.bt_rfcomm_role.BT_RFCOMM_ROLE_ACCEPTOR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.bt_rfcomm_role.BT_RFCOMM_ROLE_INITIATOR">
+<span class="target" id="group__bt__rfcomm_1ggaa70d7971435dc7e6421372d7385811b2a20601c2b890ee84b83dfc9ed55e07cf8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BT_RFCOMM_ROLE_INITIATOR</span></span></span><a class="headerlink" href="#c.bt_rfcomm_role.BT_RFCOMM_ROLE_INITIATOR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_rfcomm_server_register">
+<span class="target" id="group__bt__rfcomm_1gafd0ffcff41e233f74dc2726e889f5401"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_rfcomm_server_register</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_rfcomm_server" title="bt_rfcomm_server"><span class="n"><span class="pre">bt_rfcomm_server</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">server</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_rfcomm_server_register" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Register RFCOMM server. </p>
+<p>Register RFCOMM server for a channel, each new connection is authorized using the accept() callback which in case of success shall allocate the dlc structure to be used by the new connection.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">server</span></code>: Server structure.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_rfcomm_dlc_connect">
+<span class="target" id="group__bt__rfcomm_1ga2fb8e3ce2a39d0a3c5bea9b3c24a7ab7"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_rfcomm_dlc_connect</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">bt_conn</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">conn</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_rfcomm_dlc" title="bt_rfcomm_dlc"><span class="n"><span class="pre">bt_rfcomm_dlc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dlc</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">channel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_rfcomm_dlc_connect" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Connect RFCOMM channel. </p>
+<p>Connect RFCOMM dlc by channel, once the connection is completed dlc connected() callback will be called. If the connection is rejected disconnected() callback is called instead.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">conn</span></code>: Connection object. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dlc</span></code>: Dlc object. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">channel</span></code>: Server channel to connect to.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_rfcomm_dlc_send">
+<span class="target" id="group__bt__rfcomm_1ga593841aef52027598977b7b2bbd0237d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_rfcomm_dlc_send</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_rfcomm_dlc" title="bt_rfcomm_dlc"><span class="n"><span class="pre">bt_rfcomm_dlc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dlc</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_rfcomm_dlc_send" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send data to RFCOMM. </p>
+<p>Send data from buffer to the dlc. Length should be less than or equal to mtu.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Bytes sent in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dlc</span></code>: Dlc object. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Data buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_rfcomm_dlc_disconnect">
+<span class="target" id="group__bt__rfcomm_1ga998328b021ec53f7e291ab76856ffa18"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_rfcomm_dlc_disconnect</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_rfcomm_dlc" title="bt_rfcomm_dlc"><span class="n"><span class="pre">bt_rfcomm_dlc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dlc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_rfcomm_dlc_disconnect" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Disconnect RFCOMM dlc. </p>
+<p>Disconnect RFCOMM dlc, if the connection is pending it will be canceled and as a result the dlc disconnected() callback is called.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dlc</span></code>: Dlc object.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.bt_rfcomm_create_pdu">
+<span class="target" id="group__bt__rfcomm_1ga9cfe3dc87eddb46a6468b512c388b35c"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">bt_rfcomm_create_pdu</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf_pool" title="net_buf_pool"><span class="n"><span class="pre">net_buf_pool</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pool</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bt_rfcomm_create_pdu" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate the buffer from pool after reserving head room for RFCOMM, L2CAP and ACL headers. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>New buffer. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pool</span></code>: Which pool to take the buffer from.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_rfcomm_dlc_ops">
+<span class="target" id="structbt__rfcomm__dlc__ops"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_rfcomm_dlc_ops</span></span></span><a class="headerlink" href="#c.bt_rfcomm_dlc_ops" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;rfcomm.h&gt;</em><p>RFCOMM DLC operations structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_rfcomm_dlc_ops.connected">
+<span class="target" id="structbt__rfcomm__dlc__ops_1aba1719c36e7a1dc9705994bcdf134e28"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">connected</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_rfcomm_dlc" title="bt_rfcomm_dlc"><span class="n"><span class="pre">bt_rfcomm_dlc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dlc</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_rfcomm_dlc_ops.connected" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>DLC connected callback</p>
+<p>If this callback is provided it will be called whenever the connection completes.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dlc</span></code>: The dlc that has been connected </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_rfcomm_dlc_ops.disconnected">
+<span class="target" id="structbt__rfcomm__dlc__ops_1a4eeaf7b5db6c93e846a72797e6612d30"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">disconnected</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_rfcomm_dlc" title="bt_rfcomm_dlc"><span class="n"><span class="pre">bt_rfcomm_dlc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dlc</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_rfcomm_dlc_ops.disconnected" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>DLC disconnected callback</p>
+<p>If this callback is provided it will be called whenever the dlc is disconnected, including when a connection gets rejected or cancelled (both incoming and outgoing)</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dlc</span></code>: The dlc that has been Disconnected </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_rfcomm_dlc_ops.recv">
+<span class="target" id="structbt__rfcomm__dlc__ops_1a4a4e29065b267f0370df5ea602223d0a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">recv</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_rfcomm_dlc" title="bt_rfcomm_dlc"><span class="n"><span class="pre">bt_rfcomm_dlc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dlc</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_rfcomm_dlc_ops.recv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>DLC recv callback</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dlc</span></code>: The dlc receiving data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Buffer containing incoming data. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_rfcomm_dlc">
+<span class="target" id="structbt__rfcomm__dlc"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_rfcomm_dlc</span></span></span><a class="headerlink" href="#c.bt_rfcomm_dlc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;rfcomm.h&gt;</em><p>RFCOMM DLC structure. </p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.bt_rfcomm_server">
+<span class="target" id="structbt__rfcomm__server"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bt_rfcomm_server</span></span></span><a class="headerlink" href="#c.bt_rfcomm_server" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;rfcomm.h&gt;</em><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_rfcomm_server.channel">
+<span class="target" id="structbt__rfcomm__server_1a30b22ea64c0fdd7130e8aaa79519e776"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">channel</span></span></span><a class="headerlink" href="#c.bt_rfcomm_server.channel" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Server Channel </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.bt_rfcomm_server.accept">
+<span class="target" id="structbt__rfcomm__server_1a7bcb6da4cd4265c9c3b6439ec8e3a957"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">accept</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">bt_conn</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">conn</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.bt_rfcomm_dlc" title="bt_rfcomm_dlc"><span class="n"><span class="pre">bt_rfcomm_dlc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dlc</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.bt_rfcomm_server.accept" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Server accept callback</p>
+<p>This callback is called whenever a new incoming connection requires authorization.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 in case of success or negative value in case of error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">conn</span></code>: The connection that is requesting authorization </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dlc</span></code>: Pointer to received the allocated dlc</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sdp.html" class="btn btn-neutral float-right" title="Service Discovery Protocol (SDP)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mesh/shell.html" class="btn btn-neutral" title="Bluetooth Mesh Shell" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

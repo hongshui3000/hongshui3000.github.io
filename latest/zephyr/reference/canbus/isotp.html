@@ -1,0 +1,688 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>ISO-TP Transport Protocol &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Crypto" href="../crypto/index.html" />
+    <link rel="prev" title="CAN Controller" href="controller.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Controller Area Network (CAN)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="controller.html">CAN Controller</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ISO-TP Transport Protocol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Controller Area Network (CAN)</a> &raquo;</li>
+        
+      <li>ISO-TP Transport Protocol</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/canbus/isotp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="iso-tp-transport-protocol">
+<span id="can-isotp"></span><h1>ISO-TP Transport Protocol<a class="headerlink" href="#iso-tp-transport-protocol" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id2">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id1">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>ISO-TP is a transport protocol defined in the ISO-Standard ISO15765-2 Road
+vehicles - Diagnostic communication over Controller Area Network (DoCAN).
+Part2: Transport protocol and network layer services. As its name already
+implies, it is originally designed, and still used in road vehicle diagnostic
+over Controller Area Networks. Nevertheless, it’s not limited to applications in
+road vehicles or the automotive domain.</p>
+<p>This transport protocol extends the limited payload data size for classical
+CAN (8 bytes) and CAN-FD (64 bytes) to theoretically four gigabytes.
+Additionally, it adds a flow control mechanism to influence the sender’s
+behavior. ISO-TP segments packets into small fragments depending on the payload
+size of the CAN frame. The header of those segments is called Protocol Control
+Information (PCI).</p>
+<p>Packets smaller or equal to seven bytes on Classical CAN are called
+single-frames (SF). They don’t need to fragment and do not have any flow-control.</p>
+<p>Packets larger than that are segmented into a first-frame (FF) and as many
+consecutive-frames as required. The FF contains information about the length of
+the entire payload data and additionally, the first few bytes of payload data.
+The receiving peer sends back a flow-control-frame (FC) to either deny,
+postpone, or accept the following consecutive frames.
+The FC also defines the conditions of sending, namely the block-size (BS) and
+the minimum separation time between frames (STmin). The block size defines how
+many CF the sender is allowed to send, before he has to wait for another FC.</p>
+<a class="reference internal image-reference" href="../../_images/isotp_sequence.svg"><img alt="ISO-TP Sequence" class="align-center" src="../../_images/isotp_sequence.svg" width="20%" /></a>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id2">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__can__isotp"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">can_isotp</span></span></dt>
+<dd><p>CAN ISO-TP Interf. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_N_OK">
+<span class="target" id="group__can__isotp_1gab7daaebbc303665beb2946ce077d5312"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_N_OK</span></span></span><a class="headerlink" href="#c.ISOTP_N_OK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Completed successfully </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_N_TIMEOUT_A">
+<span class="target" id="group__can__isotp_1ga8298423e96932f94308f3064755d18fb"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_N_TIMEOUT_A</span></span></span><a class="headerlink" href="#c.ISOTP_N_TIMEOUT_A" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Ar/As has timed out </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_N_TIMEOUT_BS">
+<span class="target" id="group__can__isotp_1ga9e525bb24928a2656e7cd2842b306553"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_N_TIMEOUT_BS</span></span></span><a class="headerlink" href="#c.ISOTP_N_TIMEOUT_BS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reception of next FC has timed out </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_N_TIMEOUT_CR">
+<span class="target" id="group__can__isotp_1ga77b802df46c66ed6002f143b57f73b7a"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_N_TIMEOUT_CR</span></span></span><a class="headerlink" href="#c.ISOTP_N_TIMEOUT_CR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Cr has timed out </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_N_WRONG_SN">
+<span class="target" id="group__can__isotp_1ga9caa5677a171e1bd0be06ebb6b006046"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_N_WRONG_SN</span></span></span><a class="headerlink" href="#c.ISOTP_N_WRONG_SN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unexpected sequence number </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_N_INVALID_FS">
+<span class="target" id="group__can__isotp_1ga99312831df8e1822f02b41e3fccc0661"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_N_INVALID_FS</span></span></span><a class="headerlink" href="#c.ISOTP_N_INVALID_FS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Invalid flow status received </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_N_UNEXP_PDU">
+<span class="target" id="group__can__isotp_1ga45e3bfdd3948be6ccb3daec5db412b78"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_N_UNEXP_PDU</span></span></span><a class="headerlink" href="#c.ISOTP_N_UNEXP_PDU" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unexpected PDU received </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_N_WFT_OVRN">
+<span class="target" id="group__can__isotp_1gad6bcb7b6fb8ab30da1a4ddeabe3e3178"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_N_WFT_OVRN</span></span></span><a class="headerlink" href="#c.ISOTP_N_WFT_OVRN" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maximum number of WAIT flowStatus PDUs exceeded </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_N_BUFFER_OVERFLW">
+<span class="target" id="group__can__isotp_1ga1b8e6b35a637b5f98e7a2ab4270efd41"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_N_BUFFER_OVERFLW</span></span></span><a class="headerlink" href="#c.ISOTP_N_BUFFER_OVERFLW" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>FlowStatus OVFLW PDU was received </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_N_ERROR">
+<span class="target" id="group__can__isotp_1ga0805646e65d39a9e2f15e110720887ca"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_N_ERROR</span></span></span><a class="headerlink" href="#c.ISOTP_N_ERROR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>General error </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_NO_FREE_FILTER">
+<span class="target" id="group__can__isotp_1gaf0624cd5e7d12e94f4a739bc47ee0361"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_NO_FREE_FILTER</span></span></span><a class="headerlink" href="#c.ISOTP_NO_FREE_FILTER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Implementation specific errors Can’t bind or send because the CAN device has no filter left </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_NO_NET_BUF_LEFT">
+<span class="target" id="group__can__isotp_1ga901f61175e228a70c2f882bc999caea6"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_NO_NET_BUF_LEFT</span></span></span><a class="headerlink" href="#c.ISOTP_NO_NET_BUF_LEFT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>No net buffer left to allocate </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_NO_BUF_DATA_LEFT">
+<span class="target" id="group__can__isotp_1gaed5270f0ee489128adb8c2ea481c6c77"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_NO_BUF_DATA_LEFT</span></span></span><a class="headerlink" href="#c.ISOTP_NO_BUF_DATA_LEFT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Not sufficient space in the buffer left for the data </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_NO_CTX_LEFT">
+<span class="target" id="group__can__isotp_1gac5cb1fafeb8aa5cf9fe1695612671c7d"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_NO_CTX_LEFT</span></span></span><a class="headerlink" href="#c.ISOTP_NO_CTX_LEFT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>No context buffer left to allocate </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_RECV_TIMEOUT">
+<span class="target" id="group__can__isotp_1gaa3e873d4a80ee128f1858520874f93b6"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_RECV_TIMEOUT</span></span></span><a class="headerlink" href="#c.ISOTP_RECV_TIMEOUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Timeout for recv </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_FIXED_ADDR_SA_POS">
+<span class="target" id="group__can__isotp_1gaedb0e7330d19b1cdc380c0b36cabf2f5"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_FIXED_ADDR_SA_POS</span></span></span><a class="headerlink" href="#c.ISOTP_FIXED_ADDR_SA_POS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Position of fixed source address (SA) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_FIXED_ADDR_SA_MASK">
+<span class="target" id="group__can__isotp_1ga2a9cbfd95bae05a9f7433f3b1c58689e"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_FIXED_ADDR_SA_MASK</span></span></span><a class="headerlink" href="#c.ISOTP_FIXED_ADDR_SA_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Mask to obtain fixed source address (SA) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_FIXED_ADDR_TA_POS">
+<span class="target" id="group__can__isotp_1ga2b64d4dffde99159ae5120586364e1c6"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_FIXED_ADDR_TA_POS</span></span></span><a class="headerlink" href="#c.ISOTP_FIXED_ADDR_TA_POS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Position of fixed target address (TA) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_FIXED_ADDR_TA_MASK">
+<span class="target" id="group__can__isotp_1ga5d5415982e04e506c9b045bfbe2be337"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_FIXED_ADDR_TA_MASK</span></span></span><a class="headerlink" href="#c.ISOTP_FIXED_ADDR_TA_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Mask to obtain fixed target address (TA) </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_FIXED_ADDR_PRIO_POS">
+<span class="target" id="group__can__isotp_1ga29f8806889f4e41c1529c35a56ee98a9"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_FIXED_ADDR_PRIO_POS</span></span></span><a class="headerlink" href="#c.ISOTP_FIXED_ADDR_PRIO_POS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Position of priority in fixed addressing mode </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_FIXED_ADDR_PRIO_MASK">
+<span class="target" id="group__can__isotp_1gab5dc33148923e7cd58b438a8906d1ace"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_FIXED_ADDR_PRIO_MASK</span></span></span><a class="headerlink" href="#c.ISOTP_FIXED_ADDR_PRIO_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Mask for priority in fixed addressing mode </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ISOTP_FIXED_ADDR_RX_MASK">
+<span class="target" id="group__can__isotp_1gac27b3210cb754b4621c54923696bfe2d"></span><span class="sig-name descname"><span class="n"><span class="pre">ISOTP_FIXED_ADDR_RX_MASK</span></span></span><a class="headerlink" href="#c.ISOTP_FIXED_ADDR_RX_MASK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.isotp_tx_callback_t">
+<span class="target" id="group__can__isotp_1gad4f9c0d3f847d453ea662128db2603bb"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">isotp_tx_callback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">error_nr</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.isotp_tx_callback_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.isotp_bind">
+<span class="target" id="group__can__isotp_1ga6896dc5d603b9776228e2b28d8688bd2"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isotp_bind</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">isotp_recv_ctx</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">can_dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.isotp_msg_id" title="isotp_msg_id"><span class="n"><span class="pre">isotp_msg_id</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rx_addr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.isotp_msg_id" title="isotp_msg_id"><span class="n"><span class="pre">isotp_msg_id</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tx_addr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.isotp_fc_opts" title="isotp_fc_opts"><span class="n"><span class="pre">isotp_fc_opts</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">opts</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.isotp_bind" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Bind an address to a receiving context. </p>
+<p>This function binds an RX and TX address combination to an RX context. When data arrives from the specified address, it is buffered and can be read by calling isotp_recv. When calling this routine, a filter is applied in the CAN device, and the context is initialized. The context must be valid until calling unbind.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ctx</span></code>: Context to store the internal states. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">can_dev</span></code>: The CAN device to be used for sending and receiving. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rx_addr</span></code>: Identifier for incoming data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tx_addr</span></code>: Identifier for FC frames. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opts</span></code>: Flow control options. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Timeout for FF SF buffer allocation.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ISOTP_N_OK</span></code>: on success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ISOTP_NO_FREE_FILTER</span></code>: if CAN device has no filters left. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.isotp_unbind">
+<span class="target" id="group__can__isotp_1ga88746b8a5754edf7ec7a4a72fb88682f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isotp_unbind</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">isotp_recv_ctx</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.isotp_unbind" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unbind a context from the interface. </p>
+<p>This function removes the binding from isotp_bind. The filter is detached from the CAN device, and if a transmission is ongoing, buffers are freed. The context can be discarded safely after calling this function.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ctx</span></code>: Context that should be unbound. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.isotp_recv">
+<span class="target" id="group__can__isotp_1ga5181d483961f496a02503240fea3f7ea"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isotp_recv</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">isotp_recv_ctx</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.isotp_recv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read out received data from fifo. </p>
+<p>This function reads the data from the receive FIFO of the context. It blocks if the FIFO is empty. If an error occurs, the function returns a negative number and leaves the data buffer unchanged.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ctx</span></code>: Context that is already bound. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Pointer to a buffer where the data is copied to. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Size of the buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Timeout for incoming data.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Number</span></code>: of bytes copied on success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ISOTP_WAIT_TIMEOUT</span></code>: when “timeout” timed out </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ISOTP_N_*</span></code>: on error </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.isotp_recv_net">
+<span class="target" id="group__can__isotp_1gaaeec9de1c05c373667b917294ffe67db"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isotp_recv_net</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">isotp_recv_ctx</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../networking/net_buf.html#c.net_buf" title="net_buf"><span class="n"><span class="pre">net_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buffer</span></span>, <a class="reference internal" href="../kernel/timing/clocks.html#c.k_timeout_t" title="k_timeout_t"><span class="n"><span class="pre">k_timeout_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.isotp_recv_net" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the net buffer on data reception. </p>
+<p>This function reads incoming data into net-buffers. It blocks until the entire packet is received, BS is reached, or an error occurred. If BS was zero, the data is in a single <a class="reference internal" href="../networking/net_buf.html#structnet__buf"><span class="std std-ref">net_buf</span></a>. Otherwise, the data is fragmented in chunks of BS size. The net-buffers are referenced and must be freed with net_buf_unref after the data is processed.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ctx</span></code>: Context that is already bound. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buffer</span></code>: Pointer where the <a class="reference internal" href="../networking/net_buf.html#structnet__buf"><span class="std std-ref">net_buf</span></a> pointer is written to. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: Timeout for incoming data.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Remaining</span></code>: data length for this transfer if BS &gt; 0, 0 for BS = 0 </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ISOTP_WAIT_TIMEOUT</span></code>: when “timeout” timed out </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ISOTP_N_*</span></code>: on error </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.isotp_send">
+<span class="target" id="group__can__isotp_1ga9fe9f694e4e04faba406d14cddd72dbe"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isotp_send</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">isotp_send_ctx</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../drivers/index.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">can_dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.isotp_msg_id" title="isotp_msg_id"><span class="n"><span class="pre">isotp_msg_id</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tx_addr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.isotp_msg_id" title="isotp_msg_id"><span class="n"><span class="pre">isotp_msg_id</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rx_addr</span></span>, <a class="reference internal" href="#c.isotp_tx_callback_t" title="isotp_tx_callback_t"><span class="n"><span class="pre">isotp_tx_callback_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">complete_cb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cb_arg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.isotp_send" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send data. </p>
+<p>This function is used to send data to a peer that listens to the tx_addr. An internal work-queue is used to transfer the segmented data. Data and context must be valid until the transmission has finished. If a complete_cb is given, this function is non-blocking, and the callback is called on completion with the return value as a parameter.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ctx</span></code>: Context to store the internal states. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">can_dev</span></code>: The CAN device to be used for sending and receiving. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Data to be sent. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Length of the data to be sent. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rx_addr</span></code>: Identifier for FC frames. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tx_addr</span></code>: Identifier for outgoing frames the receiver listens on. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">complete_cb</span></code>: Function called on completion or NULL. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cb_arg</span></code>: Argument passed to the complete callback.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ISOTP_N_OK</span></code>: on success </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ISOTP_N_*</span></code>: on error </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.isotp_msg_id">
+<span class="target" id="structisotp__msg__id"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isotp_msg_id</span></span></span><a class="headerlink" href="#c.isotp_msg_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;isotp.h&gt;</em><p>ISO-TP message id struct. </p>
+<p>Used to pass addresses to the bind and send functions. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.isotp_msg_id.&#64;96">
+<span class="target" id="structisotp__msg__id_1ac715d003ff41c0d600112c65bd6cd21a"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><a class="reference internal" href="#c.isotp_msg_id" title="isotp_msg_id"><span class="n"><span class="pre">isotp_msg_id</span></span></a><span class="p"><span class="pre">.</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#c.isotp_msg_id.@96" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>CAN identifier</p>
+<p>If ISO-TP fixed addressing is used, isotp_bind ignores SA and priority sections and modifies TA section in flow control frames. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.isotp_msg_id.ext_addr">
+<span class="target" id="structisotp__msg__id_1a7b818e7c6dab02347b32bcc74dfc44a3"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ext_addr</span></span></span><a class="headerlink" href="#c.isotp_msg_id.ext_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>ISO-TP extended address (if used) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.isotp_msg_id.id_type">
+<span class="target" id="structisotp__msg__id_1a45618a60c9cc86339b25782f9575095e"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id_type</span></span></span><a class="headerlink" href="#c.isotp_msg_id.id_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Indicates the CAN identifier type (standard or extended) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.isotp_msg_id.use_ext_addr">
+<span class="target" id="structisotp__msg__id_1a9fdcfee39298733e7e60f46db690b05b"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">use_ext_addr</span></span></span><a class="headerlink" href="#c.isotp_msg_id.use_ext_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Indicates if ISO-TP extended addressing is used </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.isotp_msg_id.use_fixed_addr">
+<span class="target" id="structisotp__msg__id_1a977dc8981ab53cad4e978590f9ed2b72"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">use_fixed_addr</span></span></span><a class="headerlink" href="#c.isotp_msg_id.use_fixed_addr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Indicates if ISO-TP fixed addressing (acc. to SAE J1939) is used </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.isotp_fc_opts">
+<span class="target" id="structisotp__fc__opts"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isotp_fc_opts</span></span></span><a class="headerlink" href="#c.isotp_fc_opts" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;isotp.h&gt;</em><p>ISO-TP frame control options struct. </p>
+<p>Used to pass the options to the bind and send functions. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.isotp_fc_opts.bs">
+<span class="target" id="structisotp__fc__opts_1a8f31bf5c95069352043da33541911b3c"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bs</span></span></span><a class="headerlink" href="#c.isotp_fc_opts.bs" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Block size. Number of CF PDUs before next CF is sent </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.isotp_fc_opts.stmin">
+<span class="target" id="structisotp__fc__opts_1a5db0ceeed259c26d1d8fe0a901edcbca"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stmin</span></span></span><a class="headerlink" href="#c.isotp_fc_opts.stmin" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Minimum separation time. Min time between frames </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../crypto/index.html" class="btn btn-neutral float-right" title="Crypto" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="controller.html" class="btn btn-neutral" title="CAN Controller" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

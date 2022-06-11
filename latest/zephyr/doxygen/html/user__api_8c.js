@@ -1,0 +1,26 @@
+var user__api_8c =
+[
+    [ "THREAD_TEST_PRIORITY", "user__api_8c.html#a122fcce70e98e17966bab36f75ced5da", null ],
+    [ "K_SEM_DEFINE", "user__api_8c.html#a8c3fe3d8e97adabcd1edcba014505290", null ],
+    [ "K_THREAD_STACK_DEFINE", "user__api_8c.html#aa4844a71855245264fb45a6c4c33ddb4", null ],
+    [ "preempt_test_thread", "user__api_8c.html#ad9684fb1711114ceb595e3867cca662e", null ],
+    [ "sleepy_thread", "user__api_8c.html#a83eb9e06e92cee756464b2aeb352f496", null ],
+    [ "test_k_thread_priority_get_init_null", "group__kernel__sched__tests.html#ga280a0acbd9dea9af67ee56b05fc4639d", null ],
+    [ "test_k_thread_priority_set_init_null", "group__kernel__sched__tests.html#ga8c5f191cc509c98818f332daea80c7fe", null ],
+    [ "test_k_thread_priority_set_overmax", "group__kernel__sched__tests.html#gac6dc9abbe00729f2054f72348b5a7e4d", null ],
+    [ "test_k_thread_priority_set_upgrade", "group__kernel__sched__tests.html#ga3beb62b6bd5c58af01c51bfd844da87b", null ],
+    [ "test_k_thread_resume_init_null", "group__kernel__sched__tests.html#ga0031bfdb3c5051c053fd98ac4cd2424e", null ],
+    [ "test_k_thread_suspend_init_null", "group__kernel__sched__tests.html#ga6a2dd1ce9277d13299bbcf4edfece202", null ],
+    [ "test_k_wakeup_init_null", "group__kernel__sched__tests.html#ga2530535cc5b87a91008bb5fb6f519629", null ],
+    [ "test_user_k_is_preempt", "user__api_8c.html#a3ed6486b5187dd6660acf5067e75fab0", null ],
+    [ "test_user_k_wakeup", "user__api_8c.html#a529fbc28fa9343fa89fbd102c7a137f4", null ],
+    [ "thread_priority_get_init_null", "user__api_8c.html#a8c2e7dc6b830eefce02a53366f1dc650", null ],
+    [ "thread_priority_set_init_null", "user__api_8c.html#ac587b1b2dbd5d107f75530eb47c4b21f", null ],
+    [ "thread_priority_set_overmax", "user__api_8c.html#a9f72b8a36f467e6c2398da7eb8fe1652", null ],
+    [ "thread_priority_set_upgrade", "user__api_8c.html#aa3e1546f49d4bbba2db2d51de16180c2", null ],
+    [ "thread_resume_init_null", "user__api_8c.html#ae1976f0c8168a6b6ebba52387817e0a5", null ],
+    [ "thread_suspend_init_null", "user__api_8c.html#a43193568268a7969a078c21d720e65b9", null ],
+    [ "thread_wakeup_init_null", "user__api_8c.html#a4ced06e7ac8ea8d93218fe8bf3c8a410", null ],
+    [ "thread_was_preempt", "user__api_8c.html#aacb8ec6023ddb631ea7b1ccd5344aa9d", null ],
+    [ "user_thread", "user__api_8c.html#ad930fce335daadb13978925297e53bbf", null ]
+];

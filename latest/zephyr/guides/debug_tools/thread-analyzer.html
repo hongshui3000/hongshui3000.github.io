@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Thread analyzer &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Core Dump" href="coredump.html" />
+    <link rel="prev" title="Debugging and Tracing" href="index.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Debugging and Tracing</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Thread analyzer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-documentation">API documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="coredump.html">Core Dump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdbstub.html">GDB stub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tracing/index.html">Tracing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Debugging and Tracing</a> &raquo;</li>
+        
+      <li>Thread analyzer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/debug_tools/thread-analyzer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="thread-analyzer">
+<span id="id1"></span><h1>Thread analyzer<a class="headerlink" href="#thread-analyzer" title="Permalink to this headline">¶</a></h1>
+<p>The thread analyzer module enables all the Zephyr options required to track
+the thread information, e.g. thread stack size usage and other runtime thread
+runtime statistics.</p>
+<p>The analysis is performed on demand when the application calls
+<a class="reference internal" href="#c.thread_analyzer_run" title="thread_analyzer_run"><code class="xref c c-func docutils literal notranslate"><span class="pre">thread_analyzer_run()</span></code></a> or <a class="reference internal" href="#c.thread_analyzer_print" title="thread_analyzer_print"><code class="xref c c-func docutils literal notranslate"><span class="pre">thread_analyzer_print()</span></code></a>.</p>
+<p>For example, to build the synchronization sample with Thread Analyser enabled,
+do the following:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b qemu_x86 samples/synchronization/ -- -DCONFIG_QEMU_ICOUNT=n -DCONFIG_THREAD_ANALYZER=y \</span>
+<span class="go">-DCONFIG_THREAD_ANALYZER_USE_PRINTK=y -DCONFIG_THREAD_ANALYZER_AUTO=y \</span>
+<span class="go">-DCONFIG_THREAD_ANALYZER_AUTO_INTERVAL=5</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>When you run the generated application in Qemu, you will get the additional
+information from Thread Analyzer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>thread_a: Hello World from cpu 0 on qemu_x86!
+Thread analyze:
+ thread_b            : STACK: unused 740 usage 284 / 1024 (27 %); CPU: 0 %
+ thread_analyzer     : STACK: unused 8 usage 504 / 512 (98 %); CPU: 0 %
+ thread_a            : STACK: unused 648 usage 376 / 1024 (36 %); CPU: 98 %
+ idle 00             : STACK: unused 204 usage 116 / 320 (36 %); CPU: 0 %
+thread_b: Hello World from cpu 0 on qemu_x86!
+thread_a: Hello World from cpu 0 on qemu_x86!
+thread_b: Hello World from cpu 0 on qemu_x86!
+thread_a: Hello World from cpu 0 on qemu_x86!
+thread_b: Hello World from cpu 0 on qemu_x86!
+thread_a: Hello World from cpu 0 on qemu_x86!
+thread_b: Hello World from cpu 0 on qemu_x86!
+thread_a: Hello World from cpu 0 on qemu_x86!
+Thread analyze:
+ thread_b            : STACK: unused 648 usage 376 / 1024 (36 %); CPU: 7 %
+ thread_analyzer     : STACK: unused 8 usage 504 / 512 (98 %); CPU: 0 %
+ thread_a            : STACK: unused 648 usage 376 / 1024 (36 %); CPU: 9 %
+ idle 00             : STACK: unused 204 usage 116 / 320 (36 %); CPU: 82 %
+thread_b: Hello World from cpu 0 on qemu_x86!
+thread_a: Hello World from cpu 0 on qemu_x86!
+thread_b: Hello World from cpu 0 on qemu_x86!
+thread_a: Hello World from cpu 0 on qemu_x86!
+thread_b: Hello World from cpu 0 on qemu_x86!
+thread_a: Hello World from cpu 0 on qemu_x86!
+thread_b: Hello World from cpu 0 on qemu_x86!
+thread_a: Hello World from cpu 0 on qemu_x86!
+Thread analyze:
+ thread_b            : STACK: unused 648 usage 376 / 1024 (36 %); CPU: 7 %
+ thread_analyzer     : STACK: unused 8 usage 504 / 512 (98 %); CPU: 0 %
+ thread_a            : STACK: unused 648 usage 376 / 1024 (36 %); CPU: 8 %
+ idle 00             : STACK: unused 204 usage 116 / 320 (36 %); CPU: 83 %
+thread_b: Hello World from cpu 0 on qemu_x86!
+thread_a: Hello World from cpu 0 on qemu_x86!
+thread_b: Hello World from cpu 0 on qemu_x86!
+</pre></div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Configure this module using the following options.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">THREAD_ANALYZER</span></code>: enable the module.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">THREAD_ANALYZER_USE_PRINTK</span></code>: use printk for thread statistics.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">THREAD_ANALYZER_USE_LOG</span></code>: use the logger for thread statistics.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">THREAD_ANALYZER_AUTO</span></code>: run the thread analyzer automatically.
+You do not need to add any code to the application when using this option.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">THREAD_ANALYZER_AUTO_INTERVAL</span></code>: the time for which the module sleeps
+between consecutive printing of thread analysis in automatic mode.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">THREAD_ANALYZER_AUTO_STACK_SIZE</span></code>: the stack for thread analyzer
+automatic thread.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">THREAD_NAME</span></code>: enable this option in the kernel to print the name of the
+thread instead of its ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">THREAD_RUNTIME_STATS</span></code>: enable this option to print thread runtime data such
+as utilization (This options is automatically selected by THREAD_ANALYZER).</p></li>
+</ul>
+</div>
+<div class="section" id="api-documentation">
+<h2>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__thread__analyzer"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">thread_analyzer</span></span></dt>
+<dd><p>Module for analyzing threads. </p>
+<p>This module implements functions and the configuration that simplifies thread analysis. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.thread_analyzer_cb">
+<span class="target" id="group__thread__analyzer_1ga7ac3e88ca6d905ba0efe4afe5822485c"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">thread_analyzer_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.thread_analyzer_info" title="thread_analyzer_info"><span class="n"><span class="pre">thread_analyzer_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.thread_analyzer_cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Thread analyzer stack size callback function. </p>
+<p>Callback function with thread analysis information.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: Thread analysis information. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.thread_analyzer_run">
+<span class="target" id="group__thread__analyzer_1ga21ae4723422fb96bf4f20ddb3cc1bb8d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">thread_analyzer_run</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.thread_analyzer_cb" title="thread_analyzer_cb"><span class="n"><span class="pre">thread_analyzer_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.thread_analyzer_run" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Run the thread analyzer and provide information to the callback. </p>
+<p>This function analyzes the current state for all threads and calls a given callback on every thread found.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cb</span></code>: The callback function handler </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.thread_analyzer_print">
+<span class="target" id="group__thread__analyzer_1ga9ff07e2eff100f4b8c79440483c89836"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">thread_analyzer_print</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.thread_analyzer_print" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Run the thread analyzer and print stack size statistics. </p>
+<p>This function runs the thread analyzer and prints the output in standard form. </p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.thread_analyzer_info">
+<span class="target" id="structthread__analyzer__info"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">thread_analyzer_info</span></span></span><a class="headerlink" href="#c.thread_analyzer_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;thread_analyzer.h&gt;</em><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.thread_analyzer_info.name">
+<span class="target" id="structthread__analyzer__info_1a972c2f720864788fa657be15c04c9424"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.thread_analyzer_info.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The name of the thread or stringified address of the thread handle if name is not set. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.thread_analyzer_info.stack_size">
+<span class="target" id="structthread__analyzer__info_1ad4b6eb4a085f1c250314a452f4005e2e"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stack_size</span></span></span><a class="headerlink" href="#c.thread_analyzer_info.stack_size" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The total size of the stack </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.thread_analyzer_info.stack_used">
+<span class="target" id="structthread__analyzer__info_1ac24b93b5fe53d0d1928eb904af6f2a36"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stack_used</span></span></span><a class="headerlink" href="#c.thread_analyzer_info.stack_used" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Stack size in used </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="coredump.html" class="btn btn-neutral float-right" title="Core Dump" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Debugging and Tracing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

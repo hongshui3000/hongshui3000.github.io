@@ -1,0 +1,802 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>generic Precision Time Protocol (gPTP) &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Precision Time Protocol (PTP) time format" href="ptp_time.html" />
+    <link rel="prev" title="Time Sensitive Networking" href="tsn.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="apis.html">Network APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buf_mgmt.html">Network Buffer Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="net_tech.html">Networking Technologies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="protocols.html">Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system_mgmt.html">Network System Management</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="tsn.html">Time Sensitive Networking</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">generic Precision Time Protocol (gPTP)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ptp_time.html">Precision Time Protocol (PTP) time format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gsm_modem.html">Generic GSM Modem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="tsn.html">Time Sensitive Networking</a> &raquo;</li>
+        
+      <li>generic Precision Time Protocol (gPTP)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/networking/gptp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="generic-precision-time-protocol-gptp">
+<span id="gptp-interface"></span><h1>generic Precision Time Protocol (gPTP)<a class="headerlink" href="#generic-precision-time-protocol-gptp" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#supported-features" id="id2">Supported features</a></p></li>
+<li><p><a class="reference internal" href="#supported-hardware" id="id3">Supported hardware</a></p></li>
+<li><p><a class="reference internal" href="#enabling-the-stack" id="id4">Enabling the stack</a></p></li>
+<li><p><a class="reference internal" href="#application-interfaces" id="id5">Application interfaces</a></p></li>
+<li><p><a class="reference internal" href="#testing" id="id6">Testing</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id7">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id1">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This gPTP stack supports the protocol and procedures as defined in
+the <a class="reference external" href="https://standards.ieee.org/findstds/standard/802.1AS-2011.html">IEEE 802.1AS-2011 standard</a> (Timing and Synchronization for
+Time-Sensitive Applications in Bridged Local Area Networks).</p>
+</div>
+<div class="section" id="supported-features">
+<h2><a class="toc-backref" href="#id2">Supported features</a><a class="headerlink" href="#supported-features" title="Permalink to this headline">¶</a></h2>
+<p>The stack handles communications and state machines defined in the
+<a class="reference external" href="https://standards.ieee.org/findstds/standard/802.1AS-2011.html">IEEE 802.1AS-2011 standard</a>. Mandatory requirements for a full-duplex
+point-to-point link endpoint, as defined in Annex A of the standard,
+are supported.</p>
+<p>The stack is in principle capable of handling communications on multiple network
+interfaces (also defined as “ports” in the standard) and thus act as
+a 802.1AS bridge. However, this mode of operation has not been validated on
+the Zephyr OS.</p>
+</div>
+<div class="section" id="supported-hardware">
+<h2><a class="toc-backref" href="#id3">Supported hardware</a><a class="headerlink" href="#supported-hardware" title="Permalink to this headline">¶</a></h2>
+<p>Although the stack itself is hardware independent, Ethernet frame timestamping
+support must be enabled in ethernet drivers.</p>
+<p>Boards supported:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../boards/arm/frdm_k64f/doc/index.html#frdm-k64f"><span class="std std-ref">NXP FRDM-K64F</span></a></p></li>
+<li><p><a class="reference internal" href="../../boards/arm/nucleo_h743zi/doc/index.html#nucleo-h743zi-board"><span class="std std-ref">ST Nucleo H743ZI</span></a></p></li>
+<li><p><a class="reference internal" href="../../boards/arm/nucleo_h745zi_q/doc/index.html#nucleo-h745zi-q-board"><span class="std std-ref">ST Nucleo H745ZI-Q</span></a></p></li>
+<li><p><a class="reference internal" href="../../boards/arm/nucleo_f767zi/doc/index.html#nucleo-f767zi-board"><span class="std std-ref">ST Nucleo F767ZI</span></a></p></li>
+<li><p><a class="reference internal" href="../../boards/arm/sam_e70_xplained/doc/index.html#sam-e70-xplained"><span class="std std-ref">SAM E70(B) Xplained</span></a></p></li>
+<li><p><a class="reference internal" href="../../boards/posix/native_posix/doc/index.html#native-posix"><span class="std std-ref">Native POSIX execution (native_posix)</span></a> (only usable for simple testing, limited capabilities
+due to lack of hardware clock)</p></li>
+<li><p><a class="reference internal" href="../../boards/x86/qemu_x86/doc/index.html#qemu-x86"><span class="std std-ref">X86 Emulation (QEMU)</span></a> (emulated, limited capabilities due to lack of hardware clock)</p></li>
+</ul>
+</div>
+<div class="section" id="enabling-the-stack">
+<h2><a class="toc-backref" href="#id4">Enabling the stack</a><a class="headerlink" href="#enabling-the-stack" title="Permalink to this headline">¶</a></h2>
+<p>The following configuration option must me enabled in <code class="file docutils literal notranslate"><span class="pre">prj.conf</span></code> file.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_NET_GPTP" title="CONFIG_NET_GPTP"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_NET_GPTP</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="application-interfaces">
+<h2><a class="toc-backref" href="#id5">Application interfaces</a><a class="headerlink" href="#application-interfaces" title="Permalink to this headline">¶</a></h2>
+<p>Only two Application Interfaces as defined in section 9 of the standard
+are available:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ClockTargetPhaseDiscontinuity</span></code> interface (<a class="reference internal" href="#c.gptp_register_phase_dis_cb" title="gptp_register_phase_dis_cb"><code class="xref c c-func docutils literal notranslate"><span class="pre">gptp_register_phase_dis_cb()</span></code></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ClockTargetEventCapture</span></code> interface  (<a class="reference internal" href="#c.gptp_event_capture" title="gptp_event_capture"><code class="xref c c-func docutils literal notranslate"><span class="pre">gptp_event_capture()</span></code></a>)</p></li>
+</ul>
+</div>
+<div class="section" id="testing">
+<h2><a class="toc-backref" href="#id6">Testing</a><a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>The stack has been informally tested using the
+<a class="reference external" href="https://github.com/AVnu/gptp">OpenAVnu gPTP</a> and
+<a class="reference external" href="http://linuxptp.sourceforge.net/">Linux ptp4l</a> daemons.
+The <a class="reference internal" href="../../samples/net/gptp/README.html#gptp-sample"><span class="std std-ref">gPTP sample application</span></a> from the Zephyr
+source distribution can be used for testing.</p>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id7">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__gptp"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">gptp</span></span></dt>
+<dd><p>generic Precision Time Protocol (gPTP) support </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gptp_phase_dis_callback_t">
+<span class="target" id="group__gptp_1ga215907a526f619b70e542d132e910c49"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gptp_phase_dis_callback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gm_identity</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">time_base</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.gptp_scaled_ns" title="gptp_scaled_ns"><span class="n"><span class="pre">gptp_scaled_ns</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">last_gm_ph_change</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">last_gm_freq_change</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.gptp_phase_dis_callback_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define callback that is called after a phase discontinuity has been sent by the grandmaster. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gm_identity</span></code>: A pointer to first element of a ClockIdentity array. The size of the array is GPTP_CLOCK_ID_LEN. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time_base</span></code>: A pointer to the value of timeBaseIndicator of the current grandmaster. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">last_gm_ph_change</span></code>: A pointer to the value of lastGmPhaseChange received from grandmaster. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">last_gm_freq_change</span></code>: A pointer to the value of lastGmFreqChange received from the grandmaster. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.gptp_port_cb_t">
+<span class="target" id="group__gptp_1ga0f05b57ac57308b453215b37cca2424f"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gptp_port_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.gptp_port_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback used while iterating over gPTP ports. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">port</span></code>: Port number </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iface</span></code>: Pointer to network interface </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: A valid pointer to user data or NULL </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gptp_register_phase_dis_cb">
+<span class="target" id="group__gptp_1gaad2282df9cbf7f05f557285323af8f07"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_register_phase_dis_cb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.gptp_phase_dis_cb" title="gptp_phase_dis_cb"><span class="n"><span class="pre">gptp_phase_dis_cb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">phase_dis</span></span>, <a class="reference internal" href="#c.gptp_phase_dis_callback_t" title="gptp_phase_dis_callback_t"><span class="n"><span class="pre">gptp_phase_dis_callback_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gptp_register_phase_dis_cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Register a phase discontinuity callback. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">phase_dis</span></code>: Caller specified handler for the callback. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cb</span></code>: Callback to register. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gptp_unregister_phase_dis_cb">
+<span class="target" id="group__gptp_1ga55d95859e5ec586cb2341929901220dd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_unregister_phase_dis_cb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.gptp_phase_dis_cb" title="gptp_phase_dis_cb"><span class="n"><span class="pre">gptp_phase_dis_cb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">phase_dis</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gptp_unregister_phase_dis_cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unregister a phase discontinuity callback. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">phase_dis</span></code>: Caller specified handler for the callback. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gptp_call_phase_dis_cb">
+<span class="target" id="group__gptp_1ga29bf157d06a5ec5bb5a2a8a0e986709d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_call_phase_dis_cb</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gptp_call_phase_dis_cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Call a phase discontinuity callback function. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gptp_event_capture">
+<span class="target" id="group__gptp_1ga9a8e2ccf20d0430b4e62f3302462c6eb"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_event_capture</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="ptp_time.html#c.net_ptp_time" title="net_ptp_time"><span class="n"><span class="pre">net_ptp_time</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">slave_time</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gm_present</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gptp_event_capture" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get gPTP time. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Error code. 0 if no error. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">slave_time</span></code>: A pointer to structure where timestamp will be saved. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gm_present</span></code>: A pointer to a boolean where status of the presence of a grand master will be saved.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gptp_sprint_clock_id">
+<span class="target" id="group__gptp_1gaeb7b1bbb1274ab813ba4e4f3e16dd2da"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gptp_sprint_clock_id</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">clk_id</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">output</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">output_len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gptp_sprint_clock_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Utility function to print clock id to a user supplied buffer. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to output buffer </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">clk_id</span></code>: Clock id </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output</span></code>: Output buffer </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output_len</span></code>: Output buffer len</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gptp_foreach_port">
+<span class="target" id="group__gptp_1ga06ddd41c7adf9e387d1b23bcdfccbddc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_foreach_port</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.gptp_port_cb_t" title="gptp_port_cb_t"><span class="n"><span class="pre">gptp_port_cb_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user_data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gptp_foreach_port" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Go through all the gPTP ports and call callback for each of them. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cb</span></code>: User-supplied callback function to call </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User specified data </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gptp_get_domain">
+<span class="target" id="group__gptp_1gab4f4a90b9f5fddf309874f42f98fb6f6"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">gptp_domain</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gptp_get_domain</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gptp_get_domain" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get gPTP domain. </p>
+<p>This contains all the configuration / status of the gPTP domain.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to domain or NULL if not found. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gptp_clk_src_time_invoke">
+<span class="target" id="group__gptp_1ga9b27c9a741fb0ca72eff78e334e629fe"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_clk_src_time_invoke</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.gptp_clk_src_time_invoke_params" title="gptp_clk_src_time_invoke_params"><span class="n"><span class="pre">gptp_clk_src_time_invoke_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gptp_clk_src_time_invoke" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This interface is used by the ClockSource entity to provide time to the ClockMaster entity of a time-aware system. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">arg</span></code>: Current state and parameters of the ClockSource entity. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.gptp_get_hdr">
+<span class="target" id="group__gptp_1ga63bb45e45f6f579369322ec12e2b714a"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.gptp_hdr" title="gptp_hdr"><span class="n"><span class="pre">gptp_hdr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">gptp_get_hdr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_pkt.html#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.gptp_get_hdr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return pointer to gPTP packet header in network packet. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Pointer to gPTP header. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet (received or sent)</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.gptp_scaled_ns">
+<span class="target" id="structgptp__scaled__ns"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_scaled_ns</span></span></span><a class="headerlink" href="#c.gptp_scaled_ns" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gptp.h&gt;</em><p>Scaled Nanoseconds. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_scaled_ns.high">
+<span class="target" id="structgptp__scaled__ns_1af35add15383b49b677e604d61b3d9739"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">high</span></span></span><a class="headerlink" href="#c.gptp_scaled_ns.high" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>High half. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_scaled_ns.low">
+<span class="target" id="structgptp__scaled__ns_1ac1e95f32bdb1a98f945d9d05a28e8f7f"></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">low</span></span></span><a class="headerlink" href="#c.gptp_scaled_ns.low" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Low half. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.gptp_uscaled_ns">
+<span class="target" id="structgptp__uscaled__ns"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_uscaled_ns</span></span></span><a class="headerlink" href="#c.gptp_uscaled_ns" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gptp.h&gt;</em><p>UScaled Nanoseconds. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_uscaled_ns.high">
+<span class="target" id="structgptp__uscaled__ns_1a11cd4f2cc15731ba91dab742fcea248f"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">high</span></span></span><a class="headerlink" href="#c.gptp_uscaled_ns.high" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>High half. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_uscaled_ns.low">
+<span class="target" id="structgptp__uscaled__ns_1ae374e99c81753ecd26ff9a7cac35dfa4"></span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">low</span></span></span><a class="headerlink" href="#c.gptp_uscaled_ns.low" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Low half. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.gptp_port_identity">
+<span class="target" id="structgptp__port__identity"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_port_identity</span></span></span><a class="headerlink" href="#c.gptp_port_identity" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gptp.h&gt;</em><p>Port Identity. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_port_identity.clk_id">
+<span class="target" id="structgptp__port__identity_1a6e8473ae6ecb4ec35e3a6b5d79851fc3"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clk_id</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">GPTP_CLOCK_ID_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.gptp_port_identity.clk_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Clock identity of the port. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_port_identity.port_number">
+<span class="target" id="structgptp__port__identity_1a5a0d4038aa88792290bc4619379ee48f"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">port_number</span></span></span><a class="headerlink" href="#c.gptp_port_identity.port_number" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Number of the port. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.gptp_flags">
+<span class="target" id="structgptp__flags"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_flags</span></span></span><a class="headerlink" href="#c.gptp_flags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gptp.h&gt;</em><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_flags.octets">
+<span class="target" id="structgptp__flags_1a90b2862e78ece1b9b7f5109f5cd5f0fd"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">octets</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.gptp_flags.octets" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Byte access. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_flags.all">
+<span class="target" id="structgptp__flags_1a36871fbae0484379b00c415affdb3f9d"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">all</span></span></span><a class="headerlink" href="#c.gptp_flags.all" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Whole field access. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.gptp_hdr">
+<span class="target" id="structgptp__hdr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_hdr</span></span></span><a class="headerlink" href="#c.gptp_hdr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gptp.h&gt;</em><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.message_type">
+<span class="target" id="structgptp__hdr_1adbc9eed0fdaf07410542780c3794d642"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message_type</span></span></span><a class="headerlink" href="#c.gptp_hdr.message_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Type of the message. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.transport_specific">
+<span class="target" id="structgptp__hdr_1acc57b0662f64bda3bc21c9c8b6286052"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transport_specific</span></span></span><a class="headerlink" href="#c.gptp_hdr.transport_specific" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Transport specific, always 1. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.ptp_version">
+<span class="target" id="structgptp__hdr_1aab942e44507bcff9af8e0a168b9fb810"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ptp_version</span></span></span><a class="headerlink" href="#c.gptp_hdr.ptp_version" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Version of the PTP, always 2. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.reserved0">
+<span class="target" id="structgptp__hdr_1af9f79833695719ef42ecf0536bdfc317"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved0</span></span></span><a class="headerlink" href="#c.gptp_hdr.reserved0" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reserved field. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.message_length">
+<span class="target" id="structgptp__hdr_1ab58626c44b57827266606a4b85bf25cc"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message_length</span></span></span><a class="headerlink" href="#c.gptp_hdr.message_length" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Total length of the message from the header to the last TLV. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.domain_number">
+<span class="target" id="structgptp__hdr_1a435a37858ba67222f22d4cfde3322511"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">domain_number</span></span></span><a class="headerlink" href="#c.gptp_hdr.domain_number" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Domain number, always 0. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.reserved1">
+<span class="target" id="structgptp__hdr_1aec4214f5392123bb3cd328b94aea8d2a"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved1</span></span></span><a class="headerlink" href="#c.gptp_hdr.reserved1" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reserved field. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.flags">
+<span class="target" id="structgptp__hdr_1a4c6eadb27839a3b45461df5e2078b5a7"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.gptp_flags" title="gptp_flags"><span class="n"><span class="pre">gptp_flags</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flags</span></span></span><a class="headerlink" href="#c.gptp_hdr.flags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Message flags. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.correction_field">
+<span class="target" id="structgptp__hdr_1a38d80a7ef0ed94c50baf6285b735cf4d"></span><span class="n"><span class="pre">int64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">correction_field</span></span></span><a class="headerlink" href="#c.gptp_hdr.correction_field" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Correction Field. The content depends of the message type. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.reserved2">
+<span class="target" id="structgptp__hdr_1ac6340bd434fad75f7faa8386bb591412"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved2</span></span></span><a class="headerlink" href="#c.gptp_hdr.reserved2" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reserved field. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.port_id">
+<span class="target" id="structgptp__hdr_1a7e89c039b956b5fa7229b58dde855a20"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.gptp_port_identity" title="gptp_port_identity"><span class="n"><span class="pre">gptp_port_identity</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">port_id</span></span></span><a class="headerlink" href="#c.gptp_hdr.port_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Port Identity of the sender. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.sequence_id">
+<span class="target" id="structgptp__hdr_1a50f192fb70ae8633c80fa5eeb178f852"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sequence_id</span></span></span><a class="headerlink" href="#c.gptp_hdr.sequence_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sequence Id. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.control">
+<span class="target" id="structgptp__hdr_1a68f6642239b801f2fe602a4331743d83"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">control</span></span></span><a class="headerlink" href="#c.gptp_hdr.control" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Control value. Sync: 0, Follow-up: 2, Others: 5. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_hdr.log_msg_interval">
+<span class="target" id="structgptp__hdr_1a5fab00d293c3fb38fedf483b11f72890"></span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">log_msg_interval</span></span></span><a class="headerlink" href="#c.gptp_hdr.log_msg_interval" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Message Interval in Log2 for Sync and Announce messages. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.gptp_phase_dis_cb">
+<span class="target" id="structgptp__phase__dis__cb"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_phase_dis_cb</span></span></span><a class="headerlink" href="#c.gptp_phase_dis_cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gptp.h&gt;</em><p>Phase discontinuity callback structure. </p>
+<p>Stores the phase discontinuity callback information. Caller must make sure that the variable pointed by this is valid during the lifetime of registration. Typically this means that the variable cannot be allocated from stack. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_phase_dis_cb.node">
+<span class="target" id="structgptp__phase__dis__cb_1a9801de29992ae2f23bbe89c417d58fe3"></span><span class="n"><span class="pre">sys_snode_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">node</span></span></span><a class="headerlink" href="#c.gptp_phase_dis_cb.node" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Node information for the slist. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_phase_dis_cb.cb">
+<span class="target" id="structgptp__phase__dis__cb_1a8294a9abac55d1f4406923ea4e8ed144"></span><a class="reference internal" href="#c.gptp_phase_dis_callback_t" title="gptp_phase_dis_callback_t"><span class="n"><span class="pre">gptp_phase_dis_callback_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cb</span></span></span><a class="headerlink" href="#c.gptp_phase_dis_cb.cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Phase discontinuity callback. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.gptp_clk_src_time_invoke_params">
+<span class="target" id="structgptp__clk__src__time__invoke__params"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gptp_clk_src_time_invoke_params</span></span></span><a class="headerlink" href="#c.gptp_clk_src_time_invoke_params" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gptp.h&gt;</em><p>ClockSourceTime.invoke function parameters. </p>
+<p>Parameters passed by ClockSourceTime.invoke function. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_clk_src_time_invoke_params.last_gm_freq_change">
+<span class="target" id="structgptp__clk__src__time__invoke__params_1aaf1ca90ce4e1b216c2edbb9fa72b044a"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">last_gm_freq_change</span></span></span><a class="headerlink" href="#c.gptp_clk_src_time_invoke_params.last_gm_freq_change" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Frequency change on the last Time Base Indicator Change. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_clk_src_time_invoke_params.src_time">
+<span class="target" id="structgptp__clk__src__time__invoke__params_1a990360a4fdc5bdc8f6626e9dfdc05563"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="ptp_time.html#c.net_ptp_extended_time" title="net_ptp_extended_time"><span class="n"><span class="pre">net_ptp_extended_time</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">src_time</span></span></span><a class="headerlink" href="#c.gptp_clk_src_time_invoke_params.src_time" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The time this function is invoked. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_clk_src_time_invoke_params.last_gm_phase_change">
+<span class="target" id="structgptp__clk__src__time__invoke__params_1ab2328d1a7458ccc8e7fe771e50b463eb"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.gptp_scaled_ns" title="gptp_scaled_ns"><span class="n"><span class="pre">gptp_scaled_ns</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">last_gm_phase_change</span></span></span><a class="headerlink" href="#c.gptp_clk_src_time_invoke_params.last_gm_phase_change" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Phase change on the last Time Base Indicator Change. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.gptp_clk_src_time_invoke_params.time_base_indicator">
+<span class="target" id="structgptp__clk__src__time__invoke__params_1ada4c313104488059a520d4a2ffff33b4"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">time_base_indicator</span></span></span><a class="headerlink" href="#c.gptp_clk_src_time_invoke_params.time_base_indicator" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Time Base - changed only if Phase or Frequency changes. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ptp_time.html" class="btn btn-neutral float-right" title="Precision Time Protocol (PTP) time format" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tsn.html" class="btn btn-neutral" title="Time Sensitive Networking" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

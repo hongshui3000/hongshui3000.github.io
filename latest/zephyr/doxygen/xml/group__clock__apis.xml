@@ -1,0 +1,577 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__clock__apis" kind="group">
+    <compoundname>clock_apis</compoundname>
+    <title>Clock APIs</title>
+    <innerclass refid="structk__timeout__t" prot="public">k_timeout_t</innerclass>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="group__clock__apis_1ga9832cb0adc2d1866420e5c370a0863e2" prot="public" static="no">
+        <type><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref></type>
+        <definition>typedef uint32_t k_ticks_t</definition>
+        <argsstring></argsstring>
+        <name>k_ticks_t</name>
+        <briefdescription>
+<para>Tick precision used in timeout APIs. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This type defines the word size of the timeout values used in <ref refid="structk__timeout__t" kindref="compound">k_timeout_t</ref> objects, and thus defines an upper bound on maximum timeout length (or equivalently minimum tick duration). Note that this does not affect the size of the system uptime counter, which is always a 64 bit count of ticks. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys_clock.h" line="48" column="18" bodyfile="include/sys_clock.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="group__clock__apis_1ga747c1f4a99a3bc48e7ec65d7bc5e4767" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void sys_clock_set_timeout</definition>
+        <argsstring>(int32_t ticks, bool idle)</argsstring>
+        <name>sys_clock_set_timeout</name>
+        <param>
+          <type><ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref></type>
+          <declname>ticks</declname>
+        </param>
+        <param>
+          <type><ref refid="stdbool_8h_1abb452686968e48b67397da5f97445f5b" kindref="member">bool</ref></type>
+          <declname>idle</declname>
+        </param>
+        <briefdescription>
+<para>Set system clock timeout. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Informs the system clock driver that the next needed call to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> will not be until the specified number of ticks from the the current time have elapsed. Note that spurious calls to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> are allowed (i.e. it&apos;s legal to announce every tick and implement this function as a noop), the requirement is that one tick announcement should occur within one tick BEFORE the specified expiration (that is, passing ticks==1 means &quot;announce
+the next tick&quot;, this convention was chosen to match legacy usage). Similarly a ticks value of zero (or even negative) is legal and treated identically: it simply indicates the kernel would like the next tick announcement as soon as possible.</para>
+<para>Note that ticks can also be passed the special value K_TICKS_FOREVER, indicating that no future timer interrupts are expected or required and that the system is permitted to enter an indefinite sleep even if this could cause rollover of the internal counter (i.e. the system uptime counter is allowed to be wrong</para>
+<para>Note also that it is conventional for the kernel to pass INT_MAX for ticks if it wants to preserve the uptime tick count but doesn&apos;t have a specific event to await. The intent here is that the driver will schedule any needed timeout as far into the future as possible. For the specific case of INT_MAX, the next call to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> may occur at any point in the future, not just at INT_MAX ticks. But the correspondence between the announced ticks and real-world time must be correct.</para>
+<para>A final note about SMP: note that the call to <ref refid="group__clock__apis_1ga747c1f4a99a3bc48e7ec65d7bc5e4767" kindref="member">sys_clock_set_timeout()</ref> is made on any CPU, and reflects the next timeout desired globally. The resulting calls(s) to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> must be properly serialized by the driver such that a given tick is announced exactly once across the system. The kernel does not (cannot, really) attempt to serialize things by &quot;assigning&quot; timeouts to specific CPUs.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ticks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Timeout in tick units </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>idle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Hint to the driver that the system is about to enter the idle state immediately after setting the timeout </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/timer/system_timer.h" line="73" column="13" declfile="include/drivers/timer/system_timer.h" declline="73" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1ga6ca2139000b8c75b1ed2c6c1f672ff79" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void sys_clock_idle_exit</definition>
+        <argsstring>(void)</argsstring>
+        <name>sys_clock_idle_exit</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Timer idle exit notification. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This notifies the timer driver that the system is exiting the idle and allows it to do whatever bookkeeping is needed to restore timer operation and compute elapsed ticks.</para>
+<para><simplesect kind="note"><para>Legacy timer drivers also use this opportunity to call back into <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> to notify the kernel of expired ticks. This is allowed for compatibility, but not recommended. The kernel will figure that out on its own. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/timer/system_timer.h" line="87" column="13" declfile="include/drivers/timer/system_timer.h" declline="87" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void sys_clock_announce</definition>
+        <argsstring>(int32_t ticks)</argsstring>
+        <name>sys_clock_announce</name>
+        <param>
+          <type><ref refid="stdint_8h_1a0c18914b3041c2f583aba76f418399c2" kindref="member">int32_t</ref></type>
+          <declname>ticks</declname>
+        </param>
+        <briefdescription>
+<para>Announce time progress to the kernel. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Informs the kernel that the specified number of ticks have elapsed since the last call to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> (or system startup for the first call). The timer driver is expected to delivery these announcements as close as practical (subject to hardware and latency limitations) to tick boundaries.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ticks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Elapsed time, in ticks </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/timer/system_timer.h" line="100" column="13" declfile="include/drivers/timer/system_timer.h" declline="100" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1gaa9b6d8eebc69d2808beb0580d974bb84" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref></type>
+        <definition>uint32_t sys_clock_elapsed</definition>
+        <argsstring>(void)</argsstring>
+        <name>sys_clock_elapsed</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Ticks elapsed since last <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> call. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Queries the clock driver for the current time elapsed since the last call to <ref refid="group__clock__apis_1gaa7d3b1bdb8d15c907aaafea3b96ac2b5" kindref="member">sys_clock_announce()</ref> was made. The kernel will call this with appropriate locking, the driver needs only provide an instantaneous answer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/timer/system_timer.h" line="110" column="17" declfile="include/drivers/timer/system_timer.h" declline="110" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1ga49c900ab49a72c347d0aefb14aecb550" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void sys_clock_disable</definition>
+        <argsstring>(void)</argsstring>
+        <name>sys_clock_disable</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Disable system timer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function is a no-op if the system timer does not have the capability of being disabled. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/drivers/timer/system_timer.h" line="121" column="13" declfile="include/drivers/timer/system_timer.h" declline="121" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1ga8f143af2ee4ad42d9f7817ef161cbd13" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="stdint_8h_1ac714c0d2c1a4adb10e73cab29623314b" kindref="member">int64_t</ref></type>
+        <definition>int64_t k_uptime_ticks</definition>
+        <argsstring>(void)</argsstring>
+        <name>k_uptime_ticks</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Get system uptime, in system ticks. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine returns the elapsed time since the system booted, in ticks (c.f.<verbatim>embed:rst:inline :kconfig:option:`CONFIG_SYS_CLOCK_TICKS_PER_SEC` </verbatim>), which is the fundamental unit of resolution of kernel timekeeping.</para>
+<para><simplesect kind="return"><para>Current uptime in ticks. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1565" column="10" declfile="include/kernel.h" declline="1565" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1gae3e992cd3257c23d5b26d765fcbb2b69" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="stdint_8h_1ac714c0d2c1a4adb10e73cab29623314b" kindref="member">int64_t</ref></type>
+        <definition>static int64_t k_uptime_get</definition>
+        <argsstring>(void)</argsstring>
+        <name>k_uptime_get</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Get system uptime. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine returns the elapsed time since the system booted, in milliseconds.</para>
+<para><simplesect kind="note"><para>While this function returns time in milliseconds, it does not mean it has millisecond resolution. The actual resolution depends on <verbatim>embed:rst:inline :kconfig:option:`CONFIG_SYS_CLOCK_TICKS_PER_SEC` </verbatim> config option.</para>
+</simplesect>
+<simplesect kind="return"><para>Current uptime in milliseconds. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1580" column="23" bodyfile="include/kernel.h" bodystart="1580" bodyend="1583"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1ga9253cfb7b46af4d8994349323ce9872b" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref></type>
+        <definition>static uint32_t k_uptime_get_32</definition>
+        <argsstring>(void)</argsstring>
+        <name>k_uptime_get_32</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Get system uptime (32-bit version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine returns the lower 32 bits of the system uptime in milliseconds.</para>
+<para>Because correct conversion requires full precision of the system clock there is no benefit to using this over <ref refid="group__clock__apis_1gae3e992cd3257c23d5b26d765fcbb2b69" kindref="member">k_uptime_get()</ref> unless you know the application will never run long enough for the system clock to approach 2^32 ticks. Calls to this function may involve interrupt blocking and 64-bit math.</para>
+<para><simplesect kind="note"><para>While this function returns time in milliseconds, it does not mean it has millisecond resolution. The actual resolution depends on <verbatim>embed:rst:inline :kconfig:option:`CONFIG_SYS_CLOCK_TICKS_PER_SEC` </verbatim> config option</para>
+</simplesect>
+<simplesect kind="return"><para>The low 32 bits of the current uptime, in milliseconds. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1604" column="24" bodyfile="include/kernel.h" bodystart="1604" bodyend="1607"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1gad748b2fe83b36884dc087b4af367de80" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="stdint_8h_1ac714c0d2c1a4adb10e73cab29623314b" kindref="member">int64_t</ref></type>
+        <definition>static int64_t k_uptime_delta</definition>
+        <argsstring>(int64_t *reftime)</argsstring>
+        <name>k_uptime_delta</name>
+        <param>
+          <type><ref refid="stdint_8h_1ac714c0d2c1a4adb10e73cab29623314b" kindref="member">int64_t</ref> *</type>
+          <declname>reftime</declname>
+        </param>
+        <briefdescription>
+<para>Get elapsed time. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine computes the elapsed time between the current system uptime and an earlier reference time, in milliseconds.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>reftime</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a reference time, which is updated to the current uptime upon return.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Elapsed time. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1620" column="23" bodyfile="include/kernel.h" bodystart="1620" bodyend="1629"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1ga208687de625e0036558343b4e66143d3" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="stdint_8h_1a0a8582351ac627ee8bde2973c825e47f" kindref="member">uint32_t</ref></type>
+        <definition>static uint32_t k_cycle_get_32</definition>
+        <argsstring>(void)</argsstring>
+        <name>k_cycle_get_32</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Read the hardware clock. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine returns the current time, as measured by the system&apos;s hardware clock.</para>
+<para><simplesect kind="return"><para>Current hardware clock up-counter (in cycles). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1639" column="24" bodyfile="include/kernel.h" bodystart="1639" bodyend="1642"/>
+      </memberdef>
+      <memberdef kind="function" id="group__clock__apis_1gae09f509d02bf75a7b45d2800d823bb3a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="stdint_8h_1a2095b9bffea4b2656950c6c0419edbf1" kindref="member">uint64_t</ref></type>
+        <definition>static uint64_t k_cycle_get_64</definition>
+        <argsstring>(void)</argsstring>
+        <name>k_cycle_get_64</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>Read the 64-bit hardware clock. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine returns the current time in 64-bits, as measured by the system&apos;s hardware clock, if available.</para>
+<para><simplesect kind="see"><para>CONFIG_TIMER_HAS_64BIT_CYCLE_COUNTER</para>
+</simplesect>
+<simplesect kind="return"><para>Current hardware clock up-counter (in cycles). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1654" column="24" bodyfile="include/kernel.h" bodystart="1654" bodyend="1663"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="group__clock__apis_1ga3d9541cfe2e8395af66d186efa77362f" prot="public" static="no">
+        <name>K_NO_WAIT</name>
+        <initializer>Z_TIMEOUT_NO_WAIT</initializer>
+        <briefdescription>
+<para>Generate null timeout delay. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This macro generates a timeout delay that instructs a kernel API not to wait if the requested operation cannot be performed immediately.</para>
+<para><simplesect kind="return"><para>Timeout delay value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1089" column="9" bodyfile="include/kernel.h" bodystart="1089" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__clock__apis_1gae2f3a80170afc5fbce0337cdf5a4ce4c" prot="public" static="no">
+        <name>K_NSEC</name>
+        <param><defname>t</defname></param>
+        <initializer>Z_TIMEOUT_NS(<ref refid="test__sched__timeslice__and__lock_8c_1a858810a6da56663cf4e01aecb4f6e8aa" kindref="member">t</ref>)</initializer>
+        <briefdescription>
+<para>Generate timeout delay from nanoseconds. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This macro generates a timeout delay that instructs a kernel API to wait up to <emphasis>t</emphasis> nanoseconds to perform the requested operation. Note that timer precision is limited to the tick rate, not the requested value.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Duration in nanoseconds.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Timeout delay value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1103" column="9" bodyfile="include/kernel.h" bodystart="1103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__clock__apis_1ga91198e325210ec052a8308e642058c0b" prot="public" static="no">
+        <name>K_USEC</name>
+        <param><defname>t</defname></param>
+        <initializer>Z_TIMEOUT_US(<ref refid="test__sched__timeslice__and__lock_8c_1a858810a6da56663cf4e01aecb4f6e8aa" kindref="member">t</ref>)</initializer>
+        <briefdescription>
+<para>Generate timeout delay from microseconds. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This macro generates a timeout delay that instructs a kernel API to wait up to <emphasis>t</emphasis> microseconds to perform the requested operation. Note that timer precision is limited to the tick rate, not the requested value.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Duration in microseconds.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Timeout delay value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1117" column="9" bodyfile="include/kernel.h" bodystart="1117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__clock__apis_1gab41f59fd2b724cb1279e4f6821154b33" prot="public" static="no">
+        <name>K_CYC</name>
+        <param><defname>t</defname></param>
+        <initializer>Z_TIMEOUT_CYC(<ref refid="test__sched__timeslice__and__lock_8c_1a858810a6da56663cf4e01aecb4f6e8aa" kindref="member">t</ref>)</initializer>
+        <briefdescription>
+<para>Generate timeout delay from cycles. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This macro generates a timeout delay that instructs a kernel API to wait up to <emphasis>t</emphasis> cycles to perform the requested operation.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Duration in cycles.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Timeout delay value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1129" column="9" bodyfile="include/kernel.h" bodystart="1129" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__clock__apis_1gaeda983960bd25f1dba7a386ad720e395" prot="public" static="no">
+        <name>K_TICKS</name>
+        <param><defname>t</defname></param>
+        <initializer>Z_TIMEOUT_TICKS(<ref refid="test__sched__timeslice__and__lock_8c_1a858810a6da56663cf4e01aecb4f6e8aa" kindref="member">t</ref>)</initializer>
+        <briefdescription>
+<para>Generate timeout delay from system ticks. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This macro generates a timeout delay that instructs a kernel API to wait up to <emphasis>t</emphasis> ticks to perform the requested operation.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Duration in system ticks.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Timeout delay value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1141" column="9" bodyfile="include/kernel.h" bodystart="1141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__clock__apis_1ga302af954e87b10a9b731f1ad07775e9f" prot="public" static="no">
+        <name>K_MSEC</name>
+        <param><defname>ms</defname></param>
+        <initializer>Z_TIMEOUT_MS(<ref refid="kobject_8c_1a14afa64cf434f39c0f93fedf0e2616d9" kindref="member">ms</ref>)</initializer>
+        <briefdescription>
+<para>Generate timeout delay from milliseconds. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This macro generates a timeout delay that instructs a kernel API to wait up to <emphasis>ms</emphasis> milliseconds to perform the requested operation.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ms</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Duration in milliseconds.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Timeout delay value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1153" column="9" bodyfile="include/kernel.h" bodystart="1153" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__clock__apis_1gadc361472aea59267f6ea38f5e7c7ca2a" prot="public" static="no">
+        <name>K_SECONDS</name>
+        <param><defname>s</defname></param>
+        <initializer><ref refid="group__clock__apis_1ga302af954e87b10a9b731f1ad07775e9f" kindref="member">K_MSEC</ref>((<ref refid="kobject_8c_1ac3f4657537e42ff1fa877307841464af" kindref="member">s</ref>) * <ref refid="include_2sys__clock_8h_1a222f9dff749accf8de62bc4b52c7bdcd" kindref="member">MSEC_PER_SEC</ref>)</initializer>
+        <briefdescription>
+<para>Generate timeout delay from seconds. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This macro generates a timeout delay that instructs a kernel API to wait up to <emphasis>s</emphasis> seconds to perform the requested operation.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Duration in seconds.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Timeout delay value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1165" column="9" bodyfile="include/kernel.h" bodystart="1165" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__clock__apis_1gaef02f20d4d2ebfc9aa29acae01bd3698" prot="public" static="no">
+        <name>K_MINUTES</name>
+        <param><defname>m</defname></param>
+        <initializer><ref refid="group__clock__apis_1gadc361472aea59267f6ea38f5e7c7ca2a" kindref="member">K_SECONDS</ref>((m) * 60)</initializer>
+        <briefdescription>
+<para>Generate timeout delay from minutes. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This macro generates a timeout delay that instructs a kernel API to wait up to <emphasis>m</emphasis> minutes to perform the requested operation.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Duration in minutes.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Timeout delay value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1177" column="9" bodyfile="include/kernel.h" bodystart="1177" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__clock__apis_1gaa9e0cd890db28965b66d4bc5d719a91f" prot="public" static="no">
+        <name>K_HOURS</name>
+        <param><defname>h</defname></param>
+        <initializer><ref refid="group__clock__apis_1gaef02f20d4d2ebfc9aa29acae01bd3698" kindref="member">K_MINUTES</ref>((h) * 60)</initializer>
+        <briefdescription>
+<para>Generate timeout delay from hours. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This macro generates a timeout delay that instructs a kernel API to wait up to <emphasis>h</emphasis> hours to perform the requested operation.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>h</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Duration in hours.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Timeout delay value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1189" column="9" bodyfile="include/kernel.h" bodystart="1189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__clock__apis_1ga0bb4b83f0222193b21a8910311bab0ca" prot="public" static="no">
+        <name>K_FOREVER</name>
+        <initializer>Z_FOREVER</initializer>
+        <briefdescription>
+<para>Generate infinite timeout delay. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This macro generates a timeout delay that instructs a kernel API to wait as long as necessary to perform the requested operation.</para>
+<para><simplesect kind="return"><para>Timeout delay value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/kernel.h" line="1199" column="9" bodyfile="include/kernel.h" bodystart="1199" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__clock__apis_1ga66e180b3d8940c30786a1d972cbd6d8d" prot="public" static="no">
+        <name>K_TICKS_FOREVER</name>
+        <initializer>((<ref refid="group__clock__apis_1ga9832cb0adc2d1866420e5c370a0863e2" kindref="member">k_ticks_t</ref>) -1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys_clock.h" line="51" column="9" bodyfile="include/sys_clock.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__clock__apis_1ga9abf00b34e16ab7ad0883603b6778b1b" prot="public" static="no">
+        <name>K_TIMEOUT_EQ</name>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((a).ticks == (b).ticks)</initializer>
+        <briefdescription>
+<para>Compare timeouts for equality. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The <ref refid="structk__timeout__t" kindref="compound">k_timeout_t</ref> object is an opaque struct that should not be inspected by application code. This macro exists so that users can test timeout objects for equality with known constants (e.g. K_NO_WAIT and K_FOREVER) when implementing their own APIs in terms of Zephyr timeout constants.</para>
+<para><simplesect kind="return"><para>True if the timeout objects are identical </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/sys_clock.h" line="80" column="9" bodyfile="include/sys_clock.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Clock APIs. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

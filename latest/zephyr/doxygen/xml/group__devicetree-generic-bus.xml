@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="group__devicetree-generic-bus" kind="group">
+    <compoundname>devicetree-generic-bus</compoundname>
+    <title>Bus helpers</title>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="group__devicetree-generic-bus_1ga1082d31ac2dafdf9e085d4c23f2169dc" prot="public" static="no">
+        <name>DT_BUS</name>
+        <param><defname>node_id</defname></param>
+        <initializer><ref refid="devicetree_8h_1a8c1e6c5301ff391563977e563117d0f6" kindref="member">DT_CAT</ref>(node_id, _BUS)</initializer>
+        <briefdescription>
+<para>Node&apos;s bus controller. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the node identifier of the node&apos;s bus controller. This can be used with <ref refid="group__devicetree-generic-prop_1ga8e1fd9ebacd85d2013df027d041d506b" kindref="member">DT_PROP()</ref> to get properties of the bus controller.</para>
+<para>It is an error to use this with nodes which do not have bus controllers.</para>
+<para>Example devicetree fragment: <verbatim>i2c@deadbeef {
+        label = &quot;I2C_CTLR&quot;;
+        status = &quot;okay&quot;;
+        clock-frequency = &lt; 100000 &gt;;
+
+        i2c_device: accelerometer@12 {
+                ...
+        };
+};
+</verbatim> Example usage: <verbatim>DT_PROP(DT_BUS(DT_NODELABEL(i2c_device)), clock_frequency) // 100000
+</verbatim> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>node_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>node identifier </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a node identifier for the node&apos;s bus controller </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="2306" column="9" bodyfile="include/devicetree.h" bodystart="2306" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-bus_1gafad22db654acc60d743571832533aa9c" prot="public" static="no">
+        <name>DT_BUS_LABEL</name>
+        <param><defname>node_id</defname></param>
+        <initializer><ref refid="group__devicetree-generic-prop_1ga8e1fd9ebacd85d2013df027d041d506b" kindref="member">DT_PROP</ref>(<ref refid="group__devicetree-generic-bus_1ga1082d31ac2dafdf9e085d4c23f2169dc" kindref="member">DT_BUS</ref>(node_id), label)</initializer>
+        <briefdescription>
+<para>Node&apos;s bus controller&apos;s label property. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>node_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>node identifier </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the label property of the node&apos;s bus controller <ref refid="group__devicetree-generic-bus_1ga1082d31ac2dafdf9e085d4c23f2169dc" kindref="member">DT_BUS(node)</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="2313" column="9" bodyfile="include/devicetree.h" bodystart="2313" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="group__devicetree-generic-bus_1gabe5eea44ff838c11dc5b75f9ec2a9317" prot="public" static="no">
+        <name>DT_ON_BUS</name>
+        <param><defname>node_id</defname></param>
+        <param><defname>bus</defname></param>
+        <initializer><ref refid="group__sys-util_1ga111fe4e9d63758262fc6810a782cb32a" kindref="member">IS_ENABLED</ref>(<ref refid="devicetree_8h_1a8c1e6c5301ff391563977e563117d0f6" kindref="member">DT_CAT</ref>(node_id, _BUS_##bus))</initializer>
+        <briefdescription>
+<para>Is a node on a bus of a given type? </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Example devicetree overlay: <verbatim>&amp;i2c0 {
+       temp: temperature-sensor@76 {
+                compatible = &quot;vnd,some-sensor&quot;;
+                reg = &lt;0x76&gt;;
+       };
+};
+</verbatim> Example usage, assuming &quot;i2c0&quot; is an I2C bus controller node, and therefore &quot;temp&quot; is on an I2C bus: <verbatim>DT_ON_BUS(DT_NODELABEL(temp), i2c) // 1
+DT_ON_BUS(DT_NODELABEL(temp), spi) // 0
+</verbatim> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>node_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>node identifier </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bus</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lowercase-and-underscores bus type as a C token (i.e. without quotes) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>1 if the node is on a bus of the given type, 0 otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="include/devicetree.h" line="2339" column="9" bodyfile="include/devicetree.h" bodystart="2339" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,868 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Introduction to devicetree &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Design goals" href="design.html" />
+    <link rel="prev" title="Devicetree Guide" href="index.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Devicetree Guide</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Introduction to devicetree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax-and-structure">Syntax and structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unit-address-examples">Unit address examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#important-properties">Important properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#writing-property-values">Writing property values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aliases-and-chosen-nodes">Aliases and chosen nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#input-and-output-files">Input and output files</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="design.html">Design goals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bindings.html">Devicetree bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-usage.html">Devicetree access from C/C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howtos.html">Devicetree HOWTOs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="troubleshooting.html">Troubleshooting devicetree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dt-vs-kconfig.html">Devicetree versus Kconfig</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tfm/index.html">Trusted Firmware-M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Devicetree Guide</a> &raquo;</li>
+        
+      <li>Introduction to devicetree</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/dts/intro.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction-to-devicetree">
+<span id="devicetree-intro"></span><h1>Introduction to devicetree<a class="headerlink" href="#introduction-to-devicetree" title="Permalink to this headline">¶</a></h1>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This is a conceptual overview of devicetree and how Zephyr uses it. For
+step-by-step guides and examples, see <a class="reference internal" href="howtos.html#dt-howtos"><span class="std std-ref">Devicetree HOWTOs</span></a>.</p>
+</div>
+<p>A <em>devicetree</em> is a hierarchical data structure that describes hardware. The
+<a class="reference external" href="https://www.devicetree.org/">Devicetree specification</a> defines its source and binary representations.
+Zephyr uses devicetree to describe the hardware available on its <a class="reference internal" href="../../boards/index.html#boards"><span class="std std-ref">Supported Boards</span></a>,
+as well as that hardware’s initial configuration.</p>
+<p>There are two types of devicetree input files: <em>devicetree sources</em> and
+<em>devicetree bindings</em>. The sources contain the devicetree itself. The bindings
+describe its contents, including data types. The <a class="reference internal" href="../build/index.html#build-overview"><span class="std std-ref">build system</span></a> uses devicetree sources and bindings to produce a generated C
+header. The generated header’s contents are abstracted by the <code class="docutils literal notranslate"><span class="pre">devicetree.h</span></code>
+API, which you can use to get information from your devicetree.</p>
+<p>Here is a simplified view of the process:</p>
+<div class="align-center figure align-default" id="id1">
+<img alt="../../_images/zephyr_dt_build_flow.png" src="../../_images/zephyr_dt_build_flow.png" />
+<p class="caption"><span class="caption-number">Fig. 23 </span><span class="caption-text">Devicetree build flow</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>All Zephyr and application source code files can include and use
+<code class="docutils literal notranslate"><span class="pre">devicetree.h</span></code>. This includes <a class="reference internal" href="../../reference/drivers/index.html#device-model-api"><span class="std std-ref">device drivers</span></a>,
+<a class="reference internal" href="../../application/index.html#application"><span class="std std-ref">applications</span></a>, <a class="reference internal" href="../test/index.html#testing"><span class="std std-ref">tests</span></a>, the kernel, etc.</p>
+<p>The API itself is based on C macros. The macro names all start with <code class="docutils literal notranslate"><span class="pre">DT_</span></code>. In
+general, if you see a macro that starts with <code class="docutils literal notranslate"><span class="pre">DT_</span></code> in a Zephyr source file,
+it’s probably a <code class="docutils literal notranslate"><span class="pre">devicetree.h</span></code> macro. The generated C header contains macros
+that start with <code class="docutils literal notranslate"><span class="pre">DT_</span></code> as well; you might see those in compiler error
+messages. You always can tell a generated- from a non-generated macro:
+generated macros have some lowercased letters, while the <code class="docutils literal notranslate"><span class="pre">devicetree.h</span></code> macro
+names have all capital letters.</p>
+<p>Some information defined in devicetree is available via <code class="docutils literal notranslate"><span class="pre">CONFIG_</span></code> macros
+generated from <a class="reference internal" href="../build/index.html#kconfig"><span class="std std-ref">Kconfig</span></a>. This is often done for backwards
+compatibility, since Zephyr has used Kconfig for longer than devicetree, and is
+still in the process of converting some information from Kconfig to devicetree.
+It is also done to allow Kconfig overrides of default values taken from
+devicetree. Devicetree information is referenced from Kconfig via <a class="reference internal" href="../build/kconfig/preprocessor-functions.html#kconfig-functions"><span class="std std-ref">Kconfig
+functions</span></a>. See <a class="reference internal" href="dt-vs-kconfig.html#dt-vs-kconfig"><span class="std std-ref">Devicetree versus Kconfig</span></a> for some additional
+comparisons with Kconfig.</p>
+<div class="section" id="syntax-and-structure">
+<span id="dt-syntax"></span><h2>Syntax and structure<a class="headerlink" href="#syntax-and-structure" title="Permalink to this headline">¶</a></h2>
+<p>As the name indicates, a devicetree is a tree. The human-readable text format
+for this tree is called DTS (for devicetree source), and is defined in the
+<a class="reference external" href="https://www.devicetree.org/">Devicetree specification</a>.</p>
+<p>Here is an example DTS file:</p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="cp">/dts-v1/</span><span class="p">;</span>
+
+<span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
+        <span class="nf">a-node</span><span class="cm"> </span><span class="p">{</span>
+                <span class="nl">subnode_label</span><span class="p">:</span> <span class="nf">a-sub-node</span><span class="cm"> </span><span class="p">{</span>
+                        <span class="n">foo</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">;</span>
+                <span class="p">};</span>
+        <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">/dts-v1/;</span></code> line means the file’s contents are in version 1 of the DTS
+syntax, which has replaced a now-obsolete “version 0”.</p>
+<p>The tree has three <em>nodes</em>:</p>
+<ol class="arabic simple">
+<li><p>A root node: <code class="docutils literal notranslate"><span class="pre">/</span></code></p></li>
+<li><p>A node named <code class="docutils literal notranslate"><span class="pre">a-node</span></code>, which is a child of the root node</p></li>
+<li><p>A node named <code class="docutils literal notranslate"><span class="pre">a-sub-node</span></code>, which is a child of <code class="docutils literal notranslate"><span class="pre">a-node</span></code></p></li>
+</ol>
+<p id="dt-node-labels">Nodes can be given <em>labels</em>, which are unique shorthands that can be used to
+refer to the labeled node elsewhere in the devicetree. Above, <code class="docutils literal notranslate"><span class="pre">a-sub-node</span></code>
+has label <code class="docutils literal notranslate"><span class="pre">subnode_label</span></code>. A node can have zero, one, or multiple node
+labels.</p>
+<p>Devicetree nodes have <em>paths</em> identifying their locations in the tree. Like
+Unix file system paths, devicetree paths are strings separated by slashes
+(<code class="docutils literal notranslate"><span class="pre">/</span></code>), and the root node’s path is a single slash: <code class="docutils literal notranslate"><span class="pre">/</span></code>. Otherwise, each
+node’s path is formed by concatenating the node’s ancestors’ names with the
+node’s own name, separated by slashes. For example, the full path to
+<code class="docutils literal notranslate"><span class="pre">a-sub-node</span></code> is <code class="docutils literal notranslate"><span class="pre">/a-node/a-sub-node</span></code>.</p>
+<p>Devicetree nodes can also have <em>properties</em>. Properties are name/value pairs.
+Property values can be any sequence of bytes. In some cases, the values are an
+array of what are called <em>cells</em>. A cell is just a 32-bit unsigned integer.</p>
+<p>Node <code class="docutils literal notranslate"><span class="pre">a-sub-node</span></code> has a property named <code class="docutils literal notranslate"><span class="pre">foo</span></code>, whose value is a cell with
+value 3. The size and type of <code class="docutils literal notranslate"><span class="pre">foo</span></code>‘s value are implied by the enclosing
+angle brackets (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>) in the DTS. See
+<a class="reference internal" href="#dt-writing-property-values"><span class="std std-ref">Writing property values</span></a> below for more example property values.</p>
+<p>In practice, devicetree nodes usually correspond to some hardware, and the node
+hierarchy reflects the hardware’s physical layout. For example, let’s consider
+a board with three I2C peripherals connected to an I2C bus controller on an SoC,
+like this:</p>
+<div class="align-center figure align-default">
+<img alt="representation of a board with three I2C peripherals" src="../../_images/zephyr_dt_i2c_high_level.png" />
+</div>
+<p>Nodes corresponding to the I2C bus controller and each I2C peripheral would be
+present in the devicetree. Reflecting the hardware layout, the
+I2C peripheral nodes would be children of the bus controller node.
+Similar conventions exist for representing other types of hardware.</p>
+<p>The DTS would look something like this:</p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="cp">/dts-v1/</span><span class="p">;</span>
+
+<span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
+        <span class="nf">soc</span><span class="cm"> </span><span class="p">{</span>
+                <span class="nf">i2c-bus-controller</span><span class="cm"> </span><span class="p">{</span>
+                        <span class="nf">i2c-peripheral-1</span><span class="cm"> </span><span class="p">{</span>
+                        <span class="p">};</span>
+                        <span class="nf">i2c-peripheral-2</span><span class="cm"> </span><span class="p">{</span>
+                        <span class="p">};</span>
+                        <span class="nf">i2c-peripheral-3</span><span class="cm"> </span><span class="p">{</span>
+                        <span class="p">};</span>
+                <span class="p">};</span>
+        <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Properties are used in practice to describe or configure the hardware the node
+represents. For example, an I2C peripheral’s node has a property whose value is
+the peripheral’s address on the bus.</p>
+<p>Here’s a tree representing the same example, but with real-world node
+names and properties you might see when working with I2C devices.</p>
+<div class="align-center figure align-default" id="id2">
+<img alt="../../_images/zephyr_dt_i2c_example.png" src="../../_images/zephyr_dt_i2c_example.png" />
+<p class="caption"><span class="caption-number">Fig. 24 </span><span class="caption-text">I2C devicetree example with real-world names and properties.
+Node names are at the top of each node with a gray background.
+Properties are shown as “name=value” lines.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>This is the corresponding DTS:</p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="cp">/dts-v1/</span><span class="p">;</span>
+
+<span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
+        <span class="nf">soc</span><span class="cm"> </span><span class="p">{</span>
+                <span class="nf">i2c</span><span class="o">@</span><span class="mi">40003000</span><span class="cm"> </span><span class="p">{</span>
+                        <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;nordic,nrf-twim&quot;</span><span class="p">;</span>
+                        <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;I2C_0&quot;</span><span class="p">;</span>
+                        <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x40003000</span> <span class="mh">0x1000</span><span class="o">&gt;</span><span class="p">;</span>
+
+                        <span class="nf">apds9960</span><span class="o">@</span><span class="mi">39</span><span class="cm"> </span><span class="p">{</span>
+                                <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;avago,apds9960&quot;</span><span class="p">;</span>
+                                <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;APDS9960&quot;</span><span class="p">;</span>
+                                <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x39</span><span class="o">&gt;</span><span class="p">;</span>
+                        <span class="p">};</span>
+                        <span class="nf">ti_hdc</span><span class="o">@</span><span class="mi">43</span><span class="cm"> </span><span class="p">{</span>
+                                <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;ti,hdc&quot;</span><span class="p">,</span> <span class="s">&quot;ti,hdc1010&quot;</span><span class="p">;</span>
+                                <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;HDC1010&quot;</span><span class="p">;</span>
+                                <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x43</span><span class="o">&gt;</span><span class="p">;</span>
+                        <span class="p">};</span>
+                        <span class="nf">mma8652fc</span><span class="o">@</span><span class="mi">1d</span><span class="cm"> </span><span class="p">{</span>
+                                <span class="kr">compatible</span> <span class="o">=</span> <span class="s">&quot;nxp,fxos8700&quot;</span><span class="p">,</span> <span class="s">&quot;nxp,mma8652fc&quot;</span><span class="p">;</span>
+                                <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;MMA8652FC&quot;</span><span class="p">;</span>
+                                <span class="kr">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x1d</span><span class="o">&gt;</span><span class="p">;</span>
+                        <span class="p">};</span>
+                <span class="p">};</span>
+        <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p id="dt-unit-address">In addition to showing more realistic names and properties, the above example
+introduces a new devicetree concept: unit addresses. Unit addresses are the
+parts of node names after an “at” sign (<code class="docutils literal notranslate"><span class="pre">&#64;</span></code>), like <code class="docutils literal notranslate"><span class="pre">40003000</span></code> in
+<code class="docutils literal notranslate"><span class="pre">i2c&#64;40003000</span></code>, or <code class="docutils literal notranslate"><span class="pre">39</span></code> in <code class="docutils literal notranslate"><span class="pre">apds9960&#64;39</span></code>. Unit addresses are optional:
+the <code class="docutils literal notranslate"><span class="pre">soc</span></code> node does not have one.</p>
+<p>Some more details about unit addresses and important properties follow.</p>
+</div>
+<div class="section" id="unit-address-examples">
+<h2>Unit address examples<a class="headerlink" href="#unit-address-examples" title="Permalink to this headline">¶</a></h2>
+<p>In devicetree, unit addresses give a node’s address in the
+address space of its parent node. Here are some example unit addresses for
+different types of hardware.</p>
+<dl>
+<dt>Memory-mapped peripherals</dt><dd><p>The peripheral’s register map base address.
+For example, the node named <code class="docutils literal notranslate"><span class="pre">i2c&#64;40003000</span></code> represents an I2C controller
+whose register map base address is 0x40003000.</p>
+</dd>
+<dt>I2C peripherals</dt><dd><p>The peripheral’s address on the I2C bus.
+For example, the child node <code class="docutils literal notranslate"><span class="pre">apds9960&#64;39</span></code> of the I2C controller
+in the previous section has I2C address 0x39.</p>
+</dd>
+<dt>SPI peripherals</dt><dd><p>An index representing the peripheral’s chip select line number.
+(If there is no chip select line, 0 is used.)</p>
+</dd>
+<dt>Memory</dt><dd><p>The physical start address.
+For example, a node named <code class="docutils literal notranslate"><span class="pre">memory&#64;2000000</span></code> represents RAM starting at
+physical address 0x2000000.</p>
+</dd>
+<dt>Memory-mapped flash</dt><dd><p>Like RAM, the physical start address.
+For example, a node named <code class="docutils literal notranslate"><span class="pre">flash&#64;8000000</span></code> represents a flash device
+whose physical start address is 0x8000000.</p>
+</dd>
+<dt>Fixed flash partitions</dt><dd><p>This applies when the devicetree is used to store a flash partition table.
+The unit address is the partition’s start offset within the flash memory.
+For example, take this flash device and its partitions:</p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="nf">flash</span><span class="o">@</span><span class="mi">8000000</span><span class="cm"> </span><span class="p">{</span>
+    <span class="cm">/* ... */</span>
+    <span class="nf">partitions</span><span class="cm"> </span><span class="p">{</span>
+            <span class="nf">partition</span><span class="o">@</span><span class="mi">0</span><span class="cm"> </span><span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">};</span>
+            <span class="nf">partition</span><span class="o">@</span><span class="mi">20000</span><span class="cm"> </span><span class="p">{</span>  <span class="cm">/* ... */</span> <span class="p">};</span>
+            <span class="cm">/* ... */</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The node named <code class="docutils literal notranslate"><span class="pre">partition&#64;0</span></code> has offset 0 from the start of its flash
+device, so its base address is 0x8000000. Similarly, the base address of
+the node named <code class="docutils literal notranslate"><span class="pre">partition&#64;20000</span></code> is 0x8020000.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="important-properties">
+<span id="dt-important-props"></span><h2>Important properties<a class="headerlink" href="#important-properties" title="Permalink to this headline">¶</a></h2>
+<p>Some important properties are:</p>
+<dl>
+<dt>compatible</dt><dd><p>The name of the hardware device the node represents.</p>
+<p>The recommended format is <code class="docutils literal notranslate"><span class="pre">&quot;vendor,device&quot;</span></code>, like <code class="docutils literal notranslate"><span class="pre">&quot;avago,apds9960&quot;</span></code>,
+or a sequence of these, like <code class="docutils literal notranslate"><span class="pre">&quot;ti,hdc&quot;,</span> <span class="pre">&quot;ti,hdc1010&quot;</span></code>. The <code class="docutils literal notranslate"><span class="pre">vendor</span></code>
+part is an abbreviated name of the vendor. The file
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/dts/bindings/vendor-prefixes.txt">dts/bindings/vendor-prefixes.txt</a> contains a list of commonly
+accepted <code class="docutils literal notranslate"><span class="pre">vendor</span></code> names. The <code class="docutils literal notranslate"><span class="pre">device</span></code> part is usually taken from the
+datasheet.</p>
+<p>It is also sometimes a value like <code class="docutils literal notranslate"><span class="pre">gpio-keys</span></code>, <code class="docutils literal notranslate"><span class="pre">mmio-sram</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">fixed-clock</span></code> when the hardware’s behavior is generic.</p>
+<p>The build system uses the compatible property to find the right
+<a class="reference internal" href="bindings.html#dt-bindings"><span class="std std-ref">bindings</span></a> for the node. Device drivers use
+<code class="docutils literal notranslate"><span class="pre">devicetree.h</span></code> to find nodes with relevant compatibles, in order to
+determine the available hardware to manage.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">compatible</span></code> property can have multiple values. Additional values are
+useful when the device is a specific instance of a more general family, to
+allow the system to match from most- to least-specific device drivers.</p>
+<p>Within Zephyr’s bindings syntax, this property has type <code class="docutils literal notranslate"><span class="pre">string-array</span></code>.</p>
+</dd>
+<dt>label</dt><dd><p>The device’s name according to Zephyr’s <a class="reference internal" href="../../reference/drivers/index.html#device-model-api"><span class="std std-ref">Device Driver Model</span></a>. The value
+can be passed to <a class="reference internal" href="../../reference/drivers/index.html#c.device_get_binding" title="device_get_binding"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_get_binding()</span></code></a> to retrieve the
+corresponding driver-level <a class="reference internal" href="../../reference/drivers/index.html#device-struct"><span class="std std-ref">struct device*</span></a>. This
+pointer can then be passed to the correct driver API by application code to
+interact with the device. For example, calling
+<code class="docutils literal notranslate"><span class="pre">device_get_binding(&quot;I2C_0&quot;)</span></code> would return a pointer to a device
+structure which could be passed to <a class="reference internal" href="../../reference/peripherals/i2c.html#i2c-api"><span class="std std-ref">I2C API</span></a> functions like
+<a class="reference internal" href="../../reference/peripherals/i2c.html#c.i2c_transfer" title="i2c_transfer"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_transfer()</span></code></a>. The generated C header will also contain a macro
+which expands to this string.</p>
+</dd>
+<dt>reg</dt><dd><p>Information used to address the device. The value is specific to the device
+(i.e. is different depending on the compatible property).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">reg</span></code> property is a sequence of <code class="docutils literal notranslate"><span class="pre">(address,</span> <span class="pre">length)</span></code> pairs. Each
+pair is called a “register block”. Here are some common patterns:</p>
+<ul class="simple">
+<li><p>Devices accessed via memory-mapped I/O registers (like <code class="docutils literal notranslate"><span class="pre">i2c&#64;40003000</span></code>):
+<code class="docutils literal notranslate"><span class="pre">address</span></code> is usually the base address of the I/O register space, and
+<code class="docutils literal notranslate"><span class="pre">length</span></code> is the number of bytes occupied by the registers.</p></li>
+<li><p>I2C devices (like <code class="docutils literal notranslate"><span class="pre">apds9960&#64;39</span></code> and its siblings):
+<code class="docutils literal notranslate"><span class="pre">address</span></code> is a slave address on the I2C bus. There is no <code class="docutils literal notranslate"><span class="pre">length</span></code>
+value.</p></li>
+<li><p>SPI devices: <code class="docutils literal notranslate"><span class="pre">address</span></code> is a chip select line number; there is no
+<code class="docutils literal notranslate"><span class="pre">length</span></code>.</p></li>
+</ul>
+<p>You may notice some similarities between the <code class="docutils literal notranslate"><span class="pre">reg</span></code> property and common
+unit addresses described above. This is not a coincidence. The <code class="docutils literal notranslate"><span class="pre">reg</span></code>
+property can be seen as a more detailed view of the addressable resources
+within a device than its unit address.</p>
+</dd>
+<dt>status</dt><dd><p>A string which describes whether the node is enabled.</p>
+<p>The devicetree specification allows this property to have values
+<code class="docutils literal notranslate"><span class="pre">&quot;okay&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;disabled&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;reserved&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;fail&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;fail-sss&quot;</span></code>.
+Only the values <code class="docutils literal notranslate"><span class="pre">&quot;okay&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;disabled&quot;</span></code> are currently relevant to
+Zephyr; use of other values currently results in undefined behavior.</p>
+<p>A node is considered enabled if its status property is either <code class="docutils literal notranslate"><span class="pre">&quot;okay&quot;</span></code> or
+not defined (i.e. does not exist in the devicetree source). Nodes with
+status <code class="docutils literal notranslate"><span class="pre">&quot;disabled&quot;</span></code> are explicitly disabled. (For backwards
+compatibility, the value <code class="docutils literal notranslate"><span class="pre">&quot;ok&quot;</span></code> is treated the same as <code class="docutils literal notranslate"><span class="pre">&quot;okay&quot;</span></code>, but
+this usage is deprecated.) Devicetree nodes which correspond to physical
+devices must be enabled for the corresponding <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code> in the
+Zephyr driver model to be allocated and initialized.</p>
+</dd>
+<dt>interrupts</dt><dd><p>Information about interrupts generated by the device, encoded as an array
+of one or more <em>interrupt specifiers</em>. Each interrupt specifier has some
+number of cells. See section 2.4, <em>Interrupts and Interrupt Mapping</em>, in the
+<a class="reference external" href="https://www.devicetree.org/specifications/">Devicetree Specification release v0.3</a> for more details.</p>
+<p>Zephyr’s devicetree bindings language lets you give a name to each cell in
+an interrupt specifier.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="writing-property-values">
+<span id="dt-writing-property-values"></span><h2>Writing property values<a class="headerlink" href="#writing-property-values" title="Permalink to this headline">¶</a></h2>
+<p>This section describes how to write property values in DTS format. The property
+types in the table below are described in detail in <a class="reference internal" href="bindings.html#dt-bindings"><span class="std std-ref">Devicetree bindings</span></a>.</p>
+<p>Some specifics are skipped in the interest of keeping things simple; if you’re
+curious about details, see the devicetree specification.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 44%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property type</p></th>
+<th class="head"><p>How to write</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>string</p></td>
+<td><p>Double quoted</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a-string</span> <span class="pre">=</span> <span class="pre">&quot;hello,</span> <span class="pre">world!&quot;;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>int</p></td>
+<td><p>between angle brackets (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">an-int</span> <span class="pre">=</span> <span class="pre">&lt;1&gt;;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>boolean</p></td>
+<td><p>for <code class="docutils literal notranslate"><span class="pre">true</span></code>, with no value (for <code class="docutils literal notranslate"><span class="pre">false</span></code>, use <code class="docutils literal notranslate"><span class="pre">/delete-property/</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">my-true-boolean;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>array</p></td>
+<td><p>between angle brackets (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>), separated by spaces</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">=</span> <span class="pre">&lt;0xdeadbeef</span> <span class="pre">1234</span> <span class="pre">0&gt;;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>uint8-array</p></td>
+<td><p>in hexadecimal <em>without</em> leading <code class="docutils literal notranslate"><span class="pre">0x</span></code>, between square brackets (<code class="docutils literal notranslate"><span class="pre">[</span></code> and <code class="docutils literal notranslate"><span class="pre">]</span></code>).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a-byte-array</span> <span class="pre">=</span> <span class="pre">[00</span> <span class="pre">01</span> <span class="pre">ab];</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>string-array</p></td>
+<td><p>separated by commas</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a-string-array</span> <span class="pre">=</span> <span class="pre">&quot;string</span> <span class="pre">one&quot;,</span> <span class="pre">&quot;string</span> <span class="pre">two&quot;,</span> <span class="pre">&quot;string</span> <span class="pre">three&quot;;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>phandle</p></td>
+<td><p>between angle brackets (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a-phandle</span> <span class="pre">=</span> <span class="pre">&lt;&amp;mynode&gt;;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>phandles</p></td>
+<td><p>between angle brackets (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>), separated by spaces</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">some-phandles</span> <span class="pre">=</span> <span class="pre">&lt;&amp;mynode0</span> <span class="pre">&amp;mynode1</span> <span class="pre">&amp;mynode2&gt;;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>phandle-array</p></td>
+<td><p>between angle brackets (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>), separated by spaces</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a-phandle-array</span> <span class="pre">=</span> <span class="pre">&lt;&amp;mynode0</span> <span class="pre">1</span> <span class="pre">2</span> <span class="pre">&amp;mynode1</span> <span class="pre">3</span> <span class="pre">4&gt;;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Additional notes on the above:</p>
+<ul>
+<li><p>Boolean properties are true if present. They should not have a value.
+A boolean property is only false if it is completely missing in the DTS.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">foo</span></code> property value above has three <em>cells</em> with values 0xdeadbeef, 1234,
+and 0, in that order. Note that hexadecimal and decimal numbers are allowed and
+can be intermixed. Since Zephyr transforms DTS to C sources, it is not
+necessary to specify the endianness of an individual cell here.</p></li>
+<li><p>64-bit integers are written as two 32-bit cells in big-endian order. The value
+0xaaaa0000bbbb1111 would be written <code class="docutils literal notranslate"><span class="pre">&lt;0xaaaa0000</span> <span class="pre">0xbbbb1111&gt;</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">a-byte-array</span></code> property value is the three bytes 0x00, 0x01, and 0xab, in
+that order.</p></li>
+<li><p>Parentheses, arithmetic operators, and bitwise operators are allowed. The
+<code class="docutils literal notranslate"><span class="pre">bar</span></code> property contains a single cell with value 64:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>bar = &lt;(2 * (1 &lt;&lt; 5))&gt;;
+</pre></div>
+</div>
+<p>Note that the entire expression must be parenthesized.</p>
+</li>
+<li><p>Property values refer to other nodes in the devicetree by their <em>phandles</em>.
+You can write a phandle using <code class="docutils literal notranslate"><span class="pre">&amp;foo</span></code>, where <code class="docutils literal notranslate"><span class="pre">foo</span></code> is a <a class="reference internal" href="#dt-node-labels"><span class="std std-ref">node label</span></a>. Here is an example devicetree fragment:</p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="nl">foo</span><span class="p">:</span> <span class="nf">device</span><span class="o">@</span><span class="mi">0</span><span class="cm"> </span><span class="p">{</span> <span class="p">};</span>
+<span class="nf">device</span><span class="o">@</span><span class="mi">1</span><span class="cm"> </span><span class="p">{</span>
+        <span class="n">sibling</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="na">foo</span> <span class="mi">1</span> <span class="mi">2</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">sibling</span></code> property of node <code class="docutils literal notranslate"><span class="pre">device&#64;1</span></code> contains three cells, in this order:</p>
+<ol class="arabic simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">device&#64;0</span></code> node’s phandle, which is written here as <code class="docutils literal notranslate"><span class="pre">&amp;foo</span></code> since
+the <code class="docutils literal notranslate"><span class="pre">device&#64;0</span></code> node has a node label <code class="docutils literal notranslate"><span class="pre">foo</span></code></p></li>
+<li><p>The value 1</p></li>
+<li><p>The value 2</p></li>
+</ol>
+<p>In the devicetree, a phandle value is a cell – which again is just a 32-bit
+unsigned int. However, the Zephyr devicetree API generally exposes these
+values as <em>node identifiers</em>. Node identifiers are covered in more detail in
+<a class="reference internal" href="api-usage.html#dt-from-c"><span class="std std-ref">Devicetree access from C/C++</span></a>.</p>
+</li>
+<li><p>Array and similar type property values can be split into several <code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code>
+blocks, like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>foo = &lt;1 2&gt;, &lt;3 4&gt;;                         // Okay for &#39;type: array&#39;
+foo = &lt;&amp;label1 &amp;label2&gt;, &lt;&amp;label3 &amp;label4&gt;; // Okay for &#39;type: phandles&#39;
+foo = &lt;&amp;label1 1 2&gt;, &lt;&amp;label2 3 4&gt;;         // Okay for &#39;type: phandle-array&#39;
+</pre></div>
+</div>
+<p>This is recommended for readability when possible if the value can be
+logically grouped into blocks of sub-values.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="aliases-and-chosen-nodes">
+<span id="dt-alias-chosen"></span><h2>Aliases and chosen nodes<a class="headerlink" href="#aliases-and-chosen-nodes" title="Permalink to this headline">¶</a></h2>
+<p>There are two additional ways beyond <a class="reference internal" href="#dt-node-labels"><span class="std std-ref">node labels</span></a> to
+refer to a particular node without specifying its entire path: by alias, or by
+chosen node.</p>
+<p>Here is an example devicetree which uses both:</p>
+<div class="highlight-devicetree notranslate"><div class="highlight"><pre><span></span><span class="cp">/dts-v1/</span><span class="p">;</span>
+
+<span class="nf">/</span><span class="cm"> </span><span class="p">{</span>
+     <span class="nf">chosen</span><span class="cm"> </span><span class="p">{</span>
+             <span class="n">zephyr</span><span class="p">,</span><span class="n">console</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">uart0</span><span class="p">;</span>
+     <span class="p">};</span>
+
+     <span class="nf">aliases</span><span class="cm"> </span><span class="p">{</span>
+             <span class="n">my-uart</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">uart0</span><span class="p">;</span>
+     <span class="p">};</span>
+
+     <span class="nf">soc</span><span class="cm"> </span><span class="p">{</span>
+             <span class="nl">uart0</span><span class="p">:</span> <span class="nf">serial</span><span class="o">@</span><span class="mi">12340000</span><span class="cm"> </span><span class="p">{</span>
+                     <span class="p">...</span>
+             <span class="p">};</span>
+     <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">/aliases</span></code> and <code class="docutils literal notranslate"><span class="pre">/chosen</span></code> nodes do not refer to an actual hardware
+device. Their purpose is to specify other nodes in the devicetree.</p>
+<p>Above, <code class="docutils literal notranslate"><span class="pre">my-uart</span></code> is an alias for the node with path <code class="docutils literal notranslate"><span class="pre">/soc/serial&#64;12340000</span></code>.
+Using its node label <code class="docutils literal notranslate"><span class="pre">uart0</span></code>, the same node is set as the value of the chosen
+<code class="docutils literal notranslate"><span class="pre">zephyr,console</span></code> node.</p>
+<p>Zephyr sample applications sometimes use aliases to allow overriding the
+particular hardware device used by the application in a generic way. For
+example, <a class="reference internal" href="../../samples/basic/blinky/README.html#blinky-sample"><span class="std std-ref">Blinky</span></a> uses this to abstract the LED to blink via the
+<code class="docutils literal notranslate"><span class="pre">led0</span></code> alias.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">/chosen</span></code> node’s properties are used to configure system- or
+subsystem-wide values. See <a class="reference internal" href="../../reference/devicetree/api.html#devicetree-chosen-nodes"><span class="std std-ref">Chosen nodes</span></a> for more information.</p>
+</div>
+<div class="section" id="input-and-output-files">
+<span id="devicetree-in-out-files"></span><h2>Input and output files<a class="headerlink" href="#input-and-output-files" title="Permalink to this headline">¶</a></h2>
+<p>This section describes the input and output files shown in the figure at the
+<a class="reference internal" href="#devicetree-intro"><span class="std std-ref">top of this introduction</span></a> in more detail.</p>
+<div class="align-center figure align-default" id="id3">
+<img alt="../../_images/zephyr_dt_inputs_outputs.svg" src="../../_images/zephyr_dt_inputs_outputs.svg" /><p class="caption"><span class="caption-number">Fig. 25 </span><span class="caption-text">Devicetree input (green) and output (yellow) files</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="input-files">
+<span id="dt-input-files"></span><h3>Input files<a class="headerlink" href="#input-files" title="Permalink to this headline">¶</a></h3>
+<p>There are four types of devicetree input files:</p>
+<ul class="simple">
+<li><p>sources (<code class="docutils literal notranslate"><span class="pre">.dts</span></code>)</p></li>
+<li><p>includes (<code class="docutils literal notranslate"><span class="pre">.dtsi</span></code>)</p></li>
+<li><p>overlays (<code class="docutils literal notranslate"><span class="pre">.overlay</span></code>)</p></li>
+<li><p>bindings (<code class="docutils literal notranslate"><span class="pre">.yaml</span></code>)</p></li>
+</ul>
+<p>The devicetree files inside the <code class="file docutils literal notranslate"><span class="pre">zephyr</span></code> directory look like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>boards/&lt;ARCH&gt;/&lt;BOARD&gt;/&lt;BOARD&gt;.dts
+dts/common/skeleton.dtsi
+dts/&lt;ARCH&gt;/.../&lt;SOC&gt;.dtsi
+dts/bindings/.../binding.yaml
+</pre></div>
+</div>
+<p>Generally speaking, every supported board has a <code class="file docutils literal notranslate"><span class="pre">BOARD.dts</span></code> file
+describing its hardware. For example, the <code class="docutils literal notranslate"><span class="pre">reel_board</span></code> has
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/boards/arm/reel_board/reel_board.dts">boards/arm/reel_board/reel_board.dts</a>.</p>
+<p><code class="file docutils literal notranslate"><span class="pre">BOARD.dts</span></code> includes one or more <code class="docutils literal notranslate"><span class="pre">.dtsi</span></code> files. These <code class="docutils literal notranslate"><span class="pre">.dtsi</span></code> files
+describe the CPU or system-on-chip Zephyr runs on, perhaps by including other
+<code class="docutils literal notranslate"><span class="pre">.dtsi</span></code> files. They can also describe other common hardware features shared by
+multiple boards. In addition to these includes, <code class="file docutils literal notranslate"><span class="pre">BOARD.dts</span></code> also describes
+the board’s specific hardware.</p>
+<p>The <code class="file docutils literal notranslate"><span class="pre">dts/common</span></code> directory contains <code class="file docutils literal notranslate"><span class="pre">skeleton.dtsi</span></code>, a minimal
+include file for defining a complete devicetree. Architecture-specific
+subdirectories (<code class="file docutils literal notranslate"><span class="pre">dts/&lt;ARCH&gt;</span></code>) contain <code class="docutils literal notranslate"><span class="pre">.dtsi</span></code> files for CPUs or SoCs
+which extend <code class="file docutils literal notranslate"><span class="pre">skeleton.dtsi</span></code>.</p>
+<p>The C preprocessor is run on all devicetree files to expand macro references,
+and includes are generally done with <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;filename&gt;</span></code> directives, even
+though DTS has a <code class="docutils literal notranslate"><span class="pre">/include/</span> <span class="pre">&quot;&lt;filename&gt;&quot;</span></code> syntax.</p>
+<p><code class="file docutils literal notranslate"><span class="pre">BOARD.dts</span></code> can be extended or modified using <em>overlays</em>. Overlays are
+also DTS files; the <code class="file docutils literal notranslate"><span class="pre">.overlay</span></code> extension is just a convention which makes
+their purpose clear. Overlays adapt the base devicetree for different purposes:</p>
+<ul class="simple">
+<li><p>Zephyr applications can use overlays to enable a peripheral that is disabled
+by default, select a sensor on the board for an application specific purpose,
+etc. Along with <a class="reference internal" href="../build/index.html#kconfig"><span class="std std-ref">Configuration System (Kconfig)</span></a>, this makes it possible to reconfigure the
+kernel and device drivers without modifying source code.</p></li>
+<li><p>Overlays are also used when defining <a class="reference internal" href="../porting/shields.html#shields"><span class="std std-ref">Shields</span></a>.</p></li>
+</ul>
+<p>The build system automatically picks up <code class="file docutils literal notranslate"><span class="pre">.overlay</span></code> files stored in
+certain locations. It is also possible to explicitly list the overlays to
+include, via the <strong class="makevar">DTC_OVERLAY_FILE</strong> CMake variable. See
+<a class="reference internal" href="howtos.html#set-devicetree-overlays"><span class="std std-ref">Set devicetree overlays</span></a> for details.</p>
+<p>The build system combines <code class="file docutils literal notranslate"><span class="pre">BOARD.dts</span></code> and any <code class="file docutils literal notranslate"><span class="pre">.overlay</span></code> files by
+concatenating them, with the overlays put last. This relies on DTS syntax which
+allows merging overlapping definitions of nodes in the devicetree. See
+<a class="reference internal" href="../porting/board_porting.html#dt-k6x-example"><span class="std std-ref">Example: FRDM-K64F and Hexiwear K64</span></a> for an example of how this works (in the context of
+<code class="docutils literal notranslate"><span class="pre">.dtsi</span></code> files, but the principle is the same for overlays). Putting the
+contents of the <code class="file docutils literal notranslate"><span class="pre">.overlay</span></code> files last allows them to override
+<code class="file docutils literal notranslate"><span class="pre">BOARD.dts</span></code>.</p>
+<p><a class="reference internal" href="bindings.html#dt-bindings"><span class="std std-ref">Devicetree bindings</span></a> (which are YAML files) are essentially glue. They describe
+the contents of devicetree sources, includes, and overlays in a way that allows
+the build system to generate C macros usable by device drivers and
+applications. The <code class="file docutils literal notranslate"><span class="pre">dts/bindings</span></code> directory contains bindings.</p>
+<p>Zephyr currently uses <code class="file docutils literal notranslate"><span class="pre">dts_fixup.h</span></code> files to rename macros in
+<code class="file docutils literal notranslate"><span class="pre">devicetree_unfixed.h</span></code> to names that are currently in use by C code. The
+build system looks for fixup files in the <code class="file docutils literal notranslate"><span class="pre">zephyr/boards/</span></code> and
+<code class="file docutils literal notranslate"><span class="pre">zephyr/soc/</span></code> directories by default. Fixup files exist for historical
+reasons. New code should generally avoid them.</p>
+</div>
+<div class="section" id="scripts-and-tools">
+<span id="dt-scripts"></span><h3>Scripts and tools<a class="headerlink" href="#scripts-and-tools" title="Permalink to this headline">¶</a></h3>
+<p>The following libraries and scripts, located in <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/scripts/dts/">scripts/dts/</a>,
+create output files from input files. Their sources have extensive
+documentation.</p>
+<dl class="simple">
+<dt><a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/scripts/dts/dtlib.py">dtlib.py </a></dt><dd><p>A low-level DTS parsing library.</p>
+</dd>
+<dt><a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/scripts/dts/edtlib.py">edtlib.py </a></dt><dd><p>A library layered on top of dtlib that uses bindings to interpret
+properties and give a higher-level view of the devicetree. Uses dtlib to do
+the DTS parsing.</p>
+</dd>
+<dt><a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/scripts/dts/gen_defines.py">gen_defines.py </a></dt><dd><p>A script that uses edtlib to generate C preprocessor macros from the
+devicetree and bindings.</p>
+</dd>
+</dl>
+<p>In addition to these, the standard <code class="docutils literal notranslate"><span class="pre">dtc</span></code> (devicetree compiler) tool is run on
+the final devicetree if it is installed on your system. This is just to catch
+errors or warnings. The output is unused. Boards may need to pass <code class="docutils literal notranslate"><span class="pre">dtc</span></code>
+additional flags, e.g. for warning suppression. Board directories can contain a
+file named <code class="file docutils literal notranslate"><span class="pre">pre_dt_board.cmake</span></code> which configures these extra flags, like
+this:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="s">APPEND</span> <span class="s">EXTRA_DTC_FLAGS</span> <span class="s2">&quot;-Wno-simple_bus_reg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="output-files">
+<span id="dt-outputs"></span><h3>Output files<a class="headerlink" href="#output-files" title="Permalink to this headline">¶</a></h3>
+<p>These are created in your application’s build directory.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Don’t include the header files directly. <a class="reference internal" href="api-usage.html#dt-from-c"><span class="std std-ref">Devicetree access from C/C++</span></a> explains
+what to do instead.</p>
+</div>
+<dl class="simple">
+<dt><code class="file docutils literal notranslate"><span class="pre">&lt;build&gt;/zephyr/zephyr.dts.pre</span></code></dt><dd><p>The preprocessed DTS source. This is an intermediate output file, which is
+input to <code class="file docutils literal notranslate"><span class="pre">gen_defines.py</span></code> and used to create <code class="file docutils literal notranslate"><span class="pre">zephyr.dts</span></code> and
+<code class="file docutils literal notranslate"><span class="pre">devicetree_unfixed.h</span></code>.</p>
+</dd>
+<dt><code class="file docutils literal notranslate"><span class="pre">&lt;build&gt;/zephyr/include/generated/devicetree_unfixed.h</span></code></dt><dd><p>The generated macros and additional comments describing the devicetree.
+Included by <code class="docutils literal notranslate"><span class="pre">devicetree.h</span></code>.</p>
+</dd>
+<dt><code class="file docutils literal notranslate"><span class="pre">&lt;build&gt;/zephyr/include/generated/devicetree_fixups.h</span></code></dt><dd><p>The concatenated contents of any <code class="file docutils literal notranslate"><span class="pre">dts_fixup.h</span></code> files.
+Included by <code class="docutils literal notranslate"><span class="pre">devicetree.h</span></code>.</p>
+</dd>
+<dt><code class="file docutils literal notranslate"><span class="pre">&lt;build&gt;/zephyr/zephyr.dts</span></code></dt><dd><p>The final merged devicetree. This file is output by <code class="file docutils literal notranslate"><span class="pre">gen_defines.py</span></code>.
+It is useful for debugging any issues. If the devicetree compiler <code class="docutils literal notranslate"><span class="pre">dtc</span></code> is
+installed, it is also run on this file, to catch any additional warnings or
+errors.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="design.html" class="btn btn-neutral float-right" title="Design goals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Devicetree Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

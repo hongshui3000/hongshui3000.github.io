@@ -1,0 +1,573 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Trusted Firmware-M Overview &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="TF-M Requirements" href="requirements.html" />
+    <link rel="prev" title="Trusted Firmware-M" href="index.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User and Developer Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../beyond-GSG.html">Beyond the Getting Started Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../arch/index.html">Architecture-related Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/index.html">Documentation Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coccinelle.html">Coccinelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code-relocation.html">Code And Data Relocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Cryptography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flash_debug/index.html">Flashing and Hardware Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug_tools/index.html">Debugging and Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_mgmt/index.html">Device Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">Devicetree Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../env_vars.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../emulator/index.html">Peripheral and Hardware Emulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules (External projects)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../platformio/index.html">Using with PlatformIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../portability/index.html">OS Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../porting/index.html">Porting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../smf/index.html">State Machine Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test/index.html">Testing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Trusted Firmware-M</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Trusted Firmware-M Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#what-does-tf-m-offer">What Does TF-M Offer?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-system-integration">Build System Integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#architecture-overview">Architecture Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="requirements.html">TF-M Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build.html">TF-M Build System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integration.html">Trusted Firmware-M Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testsuites.html">Test Suites</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../west/index.html">West (Zephyr’s meta-tool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../optimizations/index.html">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zephyr_cmake_package.html">Zephyr CMake Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">User and Developer Guides</a> &raquo;</li>
+        
+          <li><a href="index.html">Trusted Firmware-M</a> &raquo;</li>
+        
+      <li>Trusted Firmware-M Overview</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/guides/tfm/overview.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="trusted-firmware-m-overview">
+<h1>Trusted Firmware-M Overview<a class="headerlink" href="#trusted-firmware-m-overview" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://tf-m-user-guide.trustedfirmware.org/">Trusted Firmware-M (TF-M)</a>
+is a reference implementation of the Platform Security Architecture (PSA)
+<a class="reference external" href="https://www.psacertified.org/what-is-psa-certified/">IoT Security Framework</a>.
+It defines and implements an architecture and a set of software components
+that aim to address some of the main security concerns in IoT products.</p>
+<p>Zephyr RTOS has been PSA Certified since Zephyr 2.0.0 with TF-M 1.0, and
+is currently integrated with TF-M 1.4.1.</p>
+<div class="section" id="what-does-tf-m-offer">
+<h2>What Does TF-M Offer?<a class="headerlink" href="#what-does-tf-m-offer" title="Permalink to this headline">¶</a></h2>
+<p>Through a set of secure services and by design, TF-M provides:</p>
+<ul class="simple">
+<li><p>Isolation of secure and non-secure resources</p></li>
+<li><p>Embedded-appropriate crypto</p></li>
+<li><p>Management of device secrets (keys, etc.)</p></li>
+<li><p>Firmware verification (and encryption)</p></li>
+<li><p>Protected off-chip data storage and retrieval</p></li>
+<li><p>Proof of device identity (device attestation)</p></li>
+<li><p>Audit logging</p></li>
+</ul>
+</div>
+<div class="section" id="build-system-integration">
+<h2>Build System Integration<a class="headerlink" href="#build-system-integration" title="Permalink to this headline">¶</a></h2>
+<p>When using TF-M with a supported platform, TF-M will be automatically built and
+link in the background as part of the standard Zephyr build process. This
+build process makes a number of assumptions about how TF-M is being used, and
+has certain implications about what the Zephyr application image can and can
+not do:</p>
+<ul class="simple">
+<li><p>The secure processing environment (secure boot and TF-M) starts first</p></li>
+<li><p>Resource allocation for Zephyr relies on choices made in the secure image.</p></li>
+</ul>
+</div>
+<div class="section" id="architecture-overview">
+<h2>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permalink to this headline">¶</a></h2>
+<p>A TF-M application will, generally, have the following three parts, from most
+to least trusted, left-to-right, with code execution happening in the same
+order (secure boot &gt; secure image &gt; ns image).</p>
+<p>While the secure bootloader is optional, it is enabled by default, and secure
+boot is an important part of providing a secure solution:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+-------------------------------------+</span>           <span class="o">+--------------+</span>
+<span class="o">|</span> <span class="n">Secure</span> <span class="n">Processing</span> <span class="n">Environment</span> <span class="p">(</span><span class="n">SPE</span><span class="p">)</span> <span class="o">|</span>           <span class="o">|</span>     <span class="n">NSPE</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="o">+----------++---------------------+</span> <span class="o">|</span>           <span class="o">|</span> <span class="o">+----------+</span> <span class="o">|</span>
+<span class="o">|</span> <span class="o">|</span>          <span class="o">||</span>                     <span class="o">|</span> <span class="o">|</span>           <span class="o">|</span> <span class="o">|</span>          <span class="o">|</span> <span class="o">|</span>
+<span class="o">|</span> <span class="o">|</span> <span class="n">bl2</span><span class="o">.</span><span class="n">bin</span>  <span class="o">||</span>  <span class="n">tfm_s_signed</span><span class="o">.</span><span class="n">bin</span>   <span class="o">|</span> <span class="o">|</span>           <span class="o">|</span> <span class="o">|</span><span class="n">zephyr</span><span class="o">.</span><span class="n">bin</span><span class="o">|</span> <span class="o">|</span>
+<span class="o">|</span> <span class="o">|</span>          <span class="o">||</span>                     <span class="o">|</span> <span class="o">|</span> <span class="o">&lt;-</span> <span class="n">PSA</span> <span class="o">-&gt;</span> <span class="o">|</span> <span class="o">|</span>          <span class="o">|</span> <span class="o">|</span>
+<span class="o">|</span> <span class="o">|</span>  <span class="n">Secure</span>  <span class="o">||</span> <span class="n">Trusted</span> <span class="n">Firmware</span><span class="o">-</span><span class="n">M</span>  <span class="o">|</span> <span class="o">|</span>    <span class="n">APIs</span>   <span class="o">|</span> <span class="o">|</span>  <span class="n">Zephyr</span>  <span class="o">|</span> <span class="o">|</span>
+<span class="o">|</span> <span class="o">|</span>   <span class="n">Boot</span>   <span class="o">||</span>   <span class="p">(</span><span class="n">Secure</span> <span class="n">Image</span><span class="p">)</span>    <span class="o">|</span> <span class="o">|</span>           <span class="o">|</span> <span class="o">|</span><span class="p">(</span><span class="n">NS</span> <span class="n">Image</span><span class="p">)</span><span class="o">|</span> <span class="o">|</span>
+<span class="o">|</span> <span class="o">|</span>          <span class="o">||</span>                     <span class="o">|</span> <span class="o">|</span>           <span class="o">|</span> <span class="o">|</span>          <span class="o">|</span> <span class="o">|</span>
+<span class="o">|</span> <span class="o">+----------++---------------------+</span> <span class="o">|</span>           <span class="o">|</span> <span class="o">+----------+</span> <span class="o">|</span>
+<span class="o">+-------------------------------------+</span>           <span class="o">+--------------+</span>
+</pre></div>
+</div>
+<p>Communication between the (Zephyr) Non-Secure Processing Environment (NSPE) and
+the (TF-M) Secure Processing Environment image happens based on a set of PSA
+APIs, and normally makes use of an IPC mechanism that is included as part of
+the TF-M build, and implemented in Zephyr
+(see <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/modules/trusted-firmware-m/interface">modules/trusted-firmware-m/interface</a>).</p>
+<div class="section" id="root-of-trust-rot-architecture">
+<h3>Root of Trust (RoT) Architecture<a class="headerlink" href="#root-of-trust-rot-architecture" title="Permalink to this headline">¶</a></h3>
+<p>TF-M is based upon a <strong>Root of Trust (RoT)</strong> architecture. This allows for
+hierarchies of trust from most, to less, to least trusted, providing a sound
+foundation upon which to build or access trusted services and resources.</p>
+<p>The benefit of this approach is that less trusted components are prevented from
+accessing or compromising more critical parts of the system, and error
+conditions in less trusted environments won’t corrupt more trusted, isolated
+resources.</p>
+<p>The following RoT hierarchy is defined for TF-M, from most to least trusted:</p>
+<ul class="simple">
+<li><p>PSA Root of Trust (<strong>PRoT</strong>), which consists of:</p>
+<ul>
+<li><p>PSA Immutable Root of Trust: secure boot</p></li>
+<li><p>PSA Updateable Root of Trust: most trusted secure services</p></li>
+</ul>
+</li>
+<li><p>Application Root of Trust (<strong>ARoT</strong>): isolated secure services</p></li>
+</ul>
+<p>The <strong>PSA Immutable Root of Trust</strong> is the most trusted piece of code in the
+system, to which subsequent Roots of Trust are anchored. In TF-M, this is the
+secure boot image, which verifies that the secure and non-secure images are
+valid, have not been tampered with, and come from a reliable source. The
+secure bootloader also verifies new images during the firmware update process,
+thanks to the public signing key(s) built into it. As the name implies,
+this image is <strong>immutable</strong>.</p>
+<p>The <strong>PSA Updateable Root of Trust</strong> implements the most trusted secure
+services and components in TF-M, such as the Secure Partition Manager (SPM),
+and shared secure services like PSA Crypto, Internal Trusted Storage (ITS),
+etc. Services in the PSA Updateable Root of Trust have access to other
+resources in the same Root of Trust.</p>
+<p>The <strong>Application Root of Trust</strong> is a reduced-privilege area in the secure
+processing environment which, depending on the isolation level chosen when
+building TF-M, has limited access to the PRoT, or even other ARoT services at
+the highest isolation levels. Some standard services exist in the ARoT, such as
+Protected Storage (PS), and generally custom secure services that you implement
+should be placed in the ARoT, unless a compelling reason is present to place
+them in the PRoT.</p>
+<p>These divisions are distinct from the <strong>untrusted code</strong>, which runs in the
+non-secure environment, and has the least privilege in the system. This is the
+Zephyr application image in this case.</p>
+<div class="section" id="isolation-levels">
+<h4>Isolation Levels<a class="headerlink" href="#isolation-levels" title="Permalink to this headline">¶</a></h4>
+<p>At present, there are three distinct <strong>isolation levels</strong> defined in TF-M,
+with increasingly rigid boundaries between regions. The isolation level used
+will depend on your security requirements, and the system resources available
+to you.</p>
+<ul class="simple">
+<li><p><strong>Isolation Level 1</strong> is the lowest isolation level, and the only major
+boundary is between the secure and non-secure processing environment,
+usually by means of Arm TrustZone on Armv8-M processors. There is no
+distinction here between the PSA Updateable Root of Trust (PRoT) and the
+Application Root of Trust (ARoT). They execute at the same privilege level.
+This isolation level will lead to the smallest combined application images.</p></li>
+<li><p><strong>Isolation Level 2</strong> builds upon level one by introducing a distinction
+between the PSA Updateable Root of Trust and the Application Root of Trust,
+where ARoT services have limited access to PRoT services, and can only
+communicate with them through public APIs exposed by the PRoT services.
+ARoT services, however, are not strictly isolated from one another.</p></li>
+<li><p><strong>Isolation Level 3</strong> is the highest isolation level, and builds upon level
+2 by isolating ARoT services from each other, so that each ARoT is
+essentially silo’ed from other services. This provides the highest level of
+isolation, but also comes at the cost of additional overhead and code
+duplication between services.</p></li>
+</ul>
+<p>The current isolation level can be checked via
+<a class="reference internal" href="../../kconfig.html#CONFIG_TFM_ISOLATION_LEVEL" title="CONFIG_TFM_ISOLATION_LEVEL"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TFM_ISOLATION_LEVEL</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="secure-boot">
+<h3>Secure Boot<a class="headerlink" href="#secure-boot" title="Permalink to this headline">¶</a></h3>
+<p>The default secure bootloader in TF-M is based on
+<a class="reference external" href="https://www.mcuboot.com/">MCUBoot</a>, and is referred to as <code class="docutils literal notranslate"><span class="pre">BL2</span></code> in TF-M
+(for the second-stage bootloader, potentially after a HW-based bootloader on
+the secure MCU, etc.).</p>
+<p>All images in TF-M are hashed and signed, with the hash and signature verified
+by MCUBoot during the firmware update process.</p>
+<p>Some key features of MCUBooot as used in TF-M are:</p>
+<ul class="simple">
+<li><p>Public signing key(s) are baked into the bootloader</p></li>
+<li><p>S and NS images can be signed using different keys</p></li>
+<li><p>Firmware images can optionally be encyrpted</p></li>
+<li><p>Client software is responsible for writing a new image to the secondary slot</p></li>
+<li><p>By default, uses static flash layout of two identically-sized memory regions</p></li>
+<li><p>Optional security counter for rollback protection</p></li>
+</ul>
+<p>When dealing with (optionally) encrypted images:</p>
+<ul class="simple">
+<li><p>Only the payload is encrypted (header, TLVs are plain text)</p></li>
+<li><p>Hashing and signing are applied over the un-encrypted data</p></li>
+<li><p>Uses <code class="docutils literal notranslate"><span class="pre">AES-CTR-128</span></code> or <code class="docutils literal notranslate"><span class="pre">AES-CTR-256</span></code> for encryption</p></li>
+<li><p>Encryption key randomized every encryption cycle (via <code class="docutils literal notranslate"><span class="pre">imgtool</span></code>)</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">AES-CTR</span></code> key is included in the image and can be encrypted using:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">RSA-OAEP</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AES-KW</span></code> (128 or 256 bits depending on the <code class="docutils literal notranslate"><span class="pre">AES-CTR</span></code> key length)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ECIES-P256</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ECIES-X25519</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p>Key config properties to control secure boot in Zephyr are:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_TFM_BL2" title="CONFIG_TFM_BL2"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TFM_BL2</span></code></a> toggles the bootloader (default = <code class="docutils literal notranslate"><span class="pre">y</span></code>).</p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_TFM_KEY_FILE_S" title="CONFIG_TFM_KEY_FILE_S"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TFM_KEY_FILE_S</span></code></a> overrides the secure signing key.</p></li>
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_TFM_KEY_FILE_NS" title="CONFIG_TFM_KEY_FILE_NS"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_TFM_KEY_FILE_NS</span></code></a> overrides the non-secure signing key.</p></li>
+</ul>
+</div>
+<div class="section" id="secure-processing-environment">
+<h3>Secure Processing Environment<a class="headerlink" href="#secure-processing-environment" title="Permalink to this headline">¶</a></h3>
+<p>Once the secure bootloader has finished executing, a TF-M based secure image
+will begin execution in the <strong>secure processing environment</strong>. This is where
+our device will be initially configured, and any secure services will be
+initialised.</p>
+<p>Note that the starting state of our device is controlled by the secure firmware,
+meaning that when the non-secure Zephyr application starts, peripherals may
+not be in the HW-default reset state. In case of doubts, be sure to consult
+the board support packages in TF-M, available in the <code class="docutils literal notranslate"><span class="pre">platform/ext/target/</span></code>
+folder of the TF-M module (which is in <code class="docutils literal notranslate"><span class="pre">modules/tee/tf-m/trusted-firmware-m/</span></code>
+within a default Zephyr west workspace.)</p>
+<div class="section" id="secure-services">
+<h4>Secure Services<a class="headerlink" href="#secure-services" title="Permalink to this headline">¶</a></h4>
+<p>As of TF-M 1.4.1, the following secure services are generally available (although vendor support may vary):</p>
+<ul class="simple">
+<li><p>Audit Logging (Audit)</p></li>
+<li><p>Crypto (Crypto)</p></li>
+<li><p>Firmware Update (FWU)</p></li>
+<li><p>Initial Attestation (IAS)</p></li>
+<li><p>Platform (Platform)</p></li>
+<li><p>Secure Storage, which has two parts:</p>
+<ul>
+<li><p>Internal Trusted Storage (ITS)</p></li>
+<li><p>Protected Storage (PS)</p></li>
+</ul>
+</li>
+</ul>
+<p>A template also exists for creating your own custom services.</p>
+<p>For full details on these services, and their exposed APIs, please consult the
+<a class="reference external" href="https://tf-m-user-guide.trustedfirmware.org/">TF-M Documentation</a>.</p>
+</div>
+<div class="section" id="key-management-and-derivation">
+<h4>Key Management and Derivation<a class="headerlink" href="#key-management-and-derivation" title="Permalink to this headline">¶</a></h4>
+<p>Key and secret management is a critical part of any secure device. You need to
+ensure that key material is available to regions that require it, but not to
+anything else, and that it is stored securely in a way that makes it difficult
+to tamper with or maliciously access.</p>
+<p>The <strong>Internal Trusted Storage</strong> service in TF-M is used by the <strong>PSA Crypto</strong>
+service (which itself makes use of mbedtls) to store keys, and ensure that
+private keys are only ever accessible to the secure processing environment.
+Crypto operations that make use of key material, such as when signing payloads
+or when decrypting sensitive data, all take place via key handles. At no point
+should the key material ever be exposed to the NS environment.</p>
+<p>One exception is that private keys can be provisioned into the secure
+processing environment as a one-way operation, such as during a factory
+provisioning process, but even this should be avoided where possible, and a
+request should be made to the SPE (via the PSA Crypto service) to generate a
+new private key itself, and the public key for that can be requested during
+provisioning and logged in the factory. This ensures the private key
+material is never exposed, or even known during the provisioning phase.</p>
+<p>TF-M also makes extensive use of the <strong>Hardware Unique Key (HUK)</strong>, which
+every TF-M device must provide. This device-unique key is used by the
+<strong>Protected Storage</strong> service, for example, to encrypt information stored in
+external memory. For example, this ensures that the contents of flash memory
+can’t be decrypted if they are removed and placed on a new device, since each
+device has its own unique HUK used while encrypting the memory contents
+the first time.</p>
+<p>HUKs provide an additional advantage for developers, in that they can be used
+to derive new keys, and the <strong>derived keys</strong> don’t need to be stored since
+they can be regenerated from the HUK at startup, using an additional salt/seed
+value (depending on the key derivation algorithm used). This removes the
+storage issue and a frequent attack vector. The HUK itself it usually highly
+protected in secure devices, and inaccessible directly by users.</p>
+<p><code class="docutils literal notranslate"><span class="pre">TFM_CRYPTO_ALG_HUK_DERIVATION</span></code> identifies the default key derivation
+algorithm used if a software implementation is used. The current default
+algorithm is <code class="docutils literal notranslate"><span class="pre">HKDF</span></code> (RFC 5869) with a SHA-256 hash. Other hardware
+implementations may be available on some platforms.</p>
+</div>
+</div>
+<div class="section" id="non-secure-processing-environment">
+<h3>Non-Secure Processing Environment<a class="headerlink" href="#non-secure-processing-environment" title="Permalink to this headline">¶</a></h3>
+<p>Zephyr is used for the NSPE, using a board that is supported by TF-M where the
+<a class="reference internal" href="../../kconfig.html#CONFIG_BUILD_WITH_TFM" title="CONFIG_BUILD_WITH_TFM"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_BUILD_WITH_TFM</span></code></a> flag has been enabled.</p>
+<p>Generally, you simply need to select the <code class="docutils literal notranslate"><span class="pre">*_ns</span></code> variant of a valid target
+(for example <code class="docutils literal notranslate"><span class="pre">mps2_an521_ns</span></code>), which will configure your Zephyr application
+to run in the NSPE, correctly build and link it with the TF-M secure images,
+sign the secure and non-secure images, and merge the three binaries into a
+single <code class="docutils literal notranslate"><span class="pre">tfm_merged.hex</span></code> file. The <a class="reference internal" href="../west/build-flash-debug.html#west-flashing"><span class="std std-ref">west flash</span></a> command
+will flash <code class="docutils literal notranslate"><span class="pre">tfm_merged.hex</span></code> by default in this configuration.</p>
+<p>At present, Zephyr can not be configured to be used as the secure processing
+environment.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="requirements.html" class="btn btn-neutral float-right" title="TF-M Requirements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Trusted Firmware-M" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

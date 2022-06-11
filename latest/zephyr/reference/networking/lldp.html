@@ -1,0 +1,656 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Link Layer Discovery Protocol &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="IEEE 802.1Qav" href="8021Qav.html" />
+    <link rel="prev" title="Virtual LAN (VLAN) Support" href="vlan.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Networking</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="apis.html">Network APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buf_mgmt.html">Network Buffer Management</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="net_tech.html">Networking Technologies</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="ethernet.html">Ethernet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ieee802154.html">IEEE 802.15.4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="thread.html">Thread protocol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ppp.html">Point-to-Point Protocol (PPP) Support</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="protocols.html">Protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="system_mgmt.html">Network System Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsn.html">Time Sensitive Networking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsm_modem.html">Generic GSM Modem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Networking</a> &raquo;</li>
+        
+          <li><a href="net_tech.html">Networking Technologies</a> &raquo;</li>
+        
+          <li><a href="ethernet.html">Ethernet</a> &raquo;</li>
+        
+      <li>Link Layer Discovery Protocol</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/networking/lldp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="link-layer-discovery-protocol">
+<span id="lldp-interface"></span><h1>Link Layer Discovery Protocol<a class="headerlink" href="#link-layer-discovery-protocol" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id2">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id1">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The Link Layer Discovery Protocol (LLDP) is a vendor-neutral link layer
+protocol used by network devices for advertising their identity, capabilities,
+and neighbors on a wired Ethernet network.</p>
+<p>For more information, see this
+<a class="reference external" href="https://en.wikipedia.org/wiki/Link_Layer_Discovery_Protocol">LLDP Wikipedia article</a>.</p>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id2">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__lldp"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">lldp</span></span></dt>
+<dd><p>LLDP definitions and helpers. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.net_lldp_set_lldpdu">
+<span class="target" id="group__lldp_1ga961bc59567ffa2d5a4d21290d1d78407"></span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_set_lldpdu</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">iface</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_lldp_set_lldpdu" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set LLDP protocol data unit (LLDPDU) for the network interface. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>&lt;0 if error, index in lldp array if iface is found there </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface</span></code>: Network interface</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.net_lldp_unset_lldpdu">
+<span class="target" id="group__lldp_1gafdd1b4cea9f560597c31a0e42d5341e0"></span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_unset_lldpdu</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">iface</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_lldp_unset_lldpdu" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unset LLDP protocol data unit (LLDPDU) for the network interface. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface</span></code>: Network interface </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.net_lldp_recv_cb_t">
+<span class="target" id="group__lldp_1ga1e9fb662d7cdfc3c4c68cfd0312987cf"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="net_core.html#c.net_verdict" title="net_verdict"><span class="n"><span class="pre">net_verdict</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_recv_cb_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_pkt.html#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.net_lldp_recv_cb_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>LLDP Receive packet callback. </p>
+<p>Callback gets called upon receiving packet. It is responsible for freeing packet or indicating to the stack that it needs to free packet by returning correct net_verdict.</p>
+<p>Returns:<ul class="simple">
+<li><p>NET_DROP, if packet was invalid, rejected or we want the stack to free it. In this case the core stack will free the packet.</p></li>
+<li><p>NET_OK, if the packet was accepted, in this case the ownership of the <a class="reference internal" href="net_pkt.html#structnet__pkt"><span class="std std-ref">net_pkt</span></a> goes to callback and core network stack will forget it. </p></li>
+</ul>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.net_lldp_tlv_type">
+<span class="target" id="group__lldp_1gadd4273e4fe55757729008ce081771899"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_tlv_type</span></span></span><a class="headerlink" href="#c.net_lldp_tlv_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>TLV Types. Please refer to table 8-1 from IEEE 802.1AB standard. </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_lldp_tlv_type.LLDP_TLV_END_LLDPDU">
+<span class="target" id="group__lldp_1ggadd4273e4fe55757729008ce081771899a2b7c2a5f9f23b3bd6361e09d190c859a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LLDP_TLV_END_LLDPDU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.net_lldp_tlv_type.LLDP_TLV_END_LLDPDU" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>End Of LLDPDU (optional) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_lldp_tlv_type.LLDP_TLV_CHASSIS_ID">
+<span class="target" id="group__lldp_1ggadd4273e4fe55757729008ce081771899acd8e886391d4356096db264cba5383e6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LLDP_TLV_CHASSIS_ID</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.net_lldp_tlv_type.LLDP_TLV_CHASSIS_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Chassis ID (mandatory) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_lldp_tlv_type.LLDP_TLV_PORT_ID">
+<span class="target" id="group__lldp_1ggadd4273e4fe55757729008ce081771899a247164e4394c67b5ebe8da8fd71dae45"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LLDP_TLV_PORT_ID</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.net_lldp_tlv_type.LLDP_TLV_PORT_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Port ID (mandatory) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_lldp_tlv_type.LLDP_TLV_TTL">
+<span class="target" id="group__lldp_1ggadd4273e4fe55757729008ce081771899af6c7e7e44b7c0a9b1466c4c124f2c12c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LLDP_TLV_TTL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.net_lldp_tlv_type.LLDP_TLV_TTL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Time To Live (mandatory) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_lldp_tlv_type.LLDP_TLV_PORT_DESC">
+<span class="target" id="group__lldp_1ggadd4273e4fe55757729008ce081771899a848167601f7bb7a21ce25bd1a79836c0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LLDP_TLV_PORT_DESC</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.net_lldp_tlv_type.LLDP_TLV_PORT_DESC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Port Description (optional) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_lldp_tlv_type.LLDP_TLV_SYSTEM_NAME">
+<span class="target" id="group__lldp_1ggadd4273e4fe55757729008ce081771899abb2ebbce9ab2e6234d443dbaa246b6d9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LLDP_TLV_SYSTEM_NAME</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#c.net_lldp_tlv_type.LLDP_TLV_SYSTEM_NAME" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>System Name (optional) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_lldp_tlv_type.LLDP_TLV_SYSTEM_DESC">
+<span class="target" id="group__lldp_1ggadd4273e4fe55757729008ce081771899ab99a55a2b6620c3d77cb0aeedf135782"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LLDP_TLV_SYSTEM_DESC</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#c.net_lldp_tlv_type.LLDP_TLV_SYSTEM_DESC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>System Description (optional) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_lldp_tlv_type.LLDP_TLV_SYSTEM_CAPABILITIES">
+<span class="target" id="group__lldp_1ggadd4273e4fe55757729008ce081771899a9c81c35102ccc8baa15797f69ef95521"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LLDP_TLV_SYSTEM_CAPABILITIES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">7</span></span><a class="headerlink" href="#c.net_lldp_tlv_type.LLDP_TLV_SYSTEM_CAPABILITIES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>System Capability (optional) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_lldp_tlv_type.LLDP_TLV_MANAGEMENT_ADDR">
+<span class="target" id="group__lldp_1ggadd4273e4fe55757729008ce081771899ab0219acd11fad13967aec8a30054cae5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LLDP_TLV_MANAGEMENT_ADDR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span><a class="headerlink" href="#c.net_lldp_tlv_type.LLDP_TLV_MANAGEMENT_ADDR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Management Address (optional) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.net_lldp_tlv_type.LLDP_TLV_ORG_SPECIFIC">
+<span class="target" id="group__lldp_1ggadd4273e4fe55757729008ce081771899a07dee140b7ee13ec88a271fc292887ad"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LLDP_TLV_ORG_SPECIFIC</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">127</span></span><a class="headerlink" href="#c.net_lldp_tlv_type.LLDP_TLV_ORG_SPECIFIC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Org specific TLVs (optional) </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_lldp_config">
+<span class="target" id="group__lldp_1ga0efa1813c537dcf02e021db60049c284"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_config</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_lldpdu" title="net_lldpdu"><span class="n"><span class="pre">net_lldpdu</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lldpdu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_lldp_config" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the LLDP data unit for a network interface. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 if ok, &lt;0 if error </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface</span></code>: Network interface </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lldpdu</span></code>: LLDP data unit struct</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_lldp_config_optional">
+<span class="target" id="group__lldp_1ga9702175375a71eaab20f450291cb51ad"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_config_optional</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tlv</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_lldp_config_optional" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the Optional LLDP TLVs for a network interface. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 if ok, &lt;0 if error </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface</span></code>: Network interface </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tlv</span></code>: LLDP optional TLVs following mandatory part </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>: Length of the optional TLVs</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_lldp_init">
+<span class="target" id="group__lldp_1ga38f3eff9da2f06e10defddb1776cdb37"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_init</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_lldp_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize LLDP engine. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_lldp_register_callback">
+<span class="target" id="group__lldp_1ga61845c96c65d6df83f422a68e31162cf"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_register_callback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <a class="reference internal" href="#c.net_lldp_recv_cb_t" title="net_lldp_recv_cb_t"><span class="n"><span class="pre">net_lldp_recv_cb_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_lldp_register_callback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Register LLDP Rx callback function. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>0 if ok, &lt; 0 if error </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface</span></code>: Network interface </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cb</span></code>: Callback function</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.net_lldp_recv">
+<span class="target" id="group__lldp_1gafde82841435942b1ce7cc91083c9a06f"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="net_core.html#c.net_verdict" title="net_verdict"><span class="n"><span class="pre">net_verdict</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_recv</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_if.html#c.net_if" title="net_if"><span class="n"><span class="pre">net_if</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="net_pkt.html#c.net_pkt" title="net_pkt"><span class="n"><span class="pre">net_pkt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pkt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.net_lldp_recv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Parse LLDP packet. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Return the policy for network buffer </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iface</span></code>: Network interface </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pkt</span></code>: Network packet</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.net_lldp_chassis_tlv">
+<span class="target" id="structnet__lldp__chassis__tlv"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_chassis_tlv</span></span></span><a class="headerlink" href="#c.net_lldp_chassis_tlv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;lldp.h&gt;</em><p>Chassis ID TLV, see chapter 8.5.2 in IEEE 802.1AB </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_lldp_chassis_tlv.type_length">
+<span class="target" id="structnet__lldp__chassis__tlv_1af81d3102ad0ec1f7ef76bb1533dcc7cd"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type_length</span></span></span><a class="headerlink" href="#c.net_lldp_chassis_tlv.type_length" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>7 bits for type, 9 bits for length </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_lldp_chassis_tlv.subtype">
+<span class="target" id="structnet__lldp__chassis__tlv_1ad9d415f6a1e9018953728de1b529fd98"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">subtype</span></span></span><a class="headerlink" href="#c.net_lldp_chassis_tlv.subtype" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>ID subtype </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_lldp_chassis_tlv.value">
+<span class="target" id="structnet__lldp__chassis__tlv_1a37b7e81a670595d1c6c77a45bf9cfc73"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">NET_LLDP_CHASSIS_ID_VALUE_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.net_lldp_chassis_tlv.value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Chassis ID value </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.net_lldp_port_tlv">
+<span class="target" id="structnet__lldp__port__tlv"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_port_tlv</span></span></span><a class="headerlink" href="#c.net_lldp_port_tlv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;lldp.h&gt;</em><p>Port ID TLV, see chapter 8.5.3 in IEEE 802.1AB </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_lldp_port_tlv.type_length">
+<span class="target" id="structnet__lldp__port__tlv_1a710beaeda2ddd7933464e07cb87a2bfe"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type_length</span></span></span><a class="headerlink" href="#c.net_lldp_port_tlv.type_length" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>7 bits for type, 9 bits for length </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_lldp_port_tlv.subtype">
+<span class="target" id="structnet__lldp__port__tlv_1a572a6fd721c68796a572410ac62f2f93"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">subtype</span></span></span><a class="headerlink" href="#c.net_lldp_port_tlv.subtype" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>ID subtype </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_lldp_port_tlv.value">
+<span class="target" id="structnet__lldp__port__tlv_1aecc83eaec39284b33c2e7cf07f0ffa05"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">NET_LLDP_PORT_ID_VALUE_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.net_lldp_port_tlv.value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Port ID value </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.net_lldp_time_to_live_tlv">
+<span class="target" id="structnet__lldp__time__to__live__tlv"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_lldp_time_to_live_tlv</span></span></span><a class="headerlink" href="#c.net_lldp_time_to_live_tlv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;lldp.h&gt;</em><p>Time To Live TLV, see chapter 8.5.4 in IEEE 802.1AB </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_lldp_time_to_live_tlv.type_length">
+<span class="target" id="structnet__lldp__time__to__live__tlv_1a78b88d66184a0d25c413baf2fec495ab"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type_length</span></span></span><a class="headerlink" href="#c.net_lldp_time_to_live_tlv.type_length" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>7 bits for type, 9 bits for length </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_lldp_time_to_live_tlv.ttl">
+<span class="target" id="structnet__lldp__time__to__live__tlv_1ab967792a938a5d67f744e53be8d5f0fd"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ttl</span></span></span><a class="headerlink" href="#c.net_lldp_time_to_live_tlv.ttl" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Time To Live (TTL) value </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.net_lldpdu">
+<span class="target" id="structnet__lldpdu"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">net_lldpdu</span></span></span><a class="headerlink" href="#c.net_lldpdu" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;lldp.h&gt;</em><p>LLDP Data Unit (LLDPDU) shall contain the following ordered TLVs as stated in “8.2 LLDPDU format” from the IEEE 802.1AB </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_lldpdu.chassis_id">
+<span class="target" id="structnet__lldpdu_1a1a1c80fe7462ddbfd84289735013834c"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_lldp_chassis_tlv" title="net_lldp_chassis_tlv"><span class="n"><span class="pre">net_lldp_chassis_tlv</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">chassis_id</span></span></span><a class="headerlink" href="#c.net_lldpdu.chassis_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Mandatory Chassis TLV </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_lldpdu.port_id">
+<span class="target" id="structnet__lldpdu_1aa55adafc5528576017c37a28413bdaf9"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_lldp_port_tlv" title="net_lldp_port_tlv"><span class="n"><span class="pre">net_lldp_port_tlv</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">port_id</span></span></span><a class="headerlink" href="#c.net_lldpdu.port_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Mandatory Port TLV </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.net_lldpdu.ttl">
+<span class="target" id="structnet__lldpdu_1afbe0618b6d849b8ee7b225844ac399df"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.net_lldp_time_to_live_tlv" title="net_lldp_time_to_live_tlv"><span class="n"><span class="pre">net_lldp_time_to_live_tlv</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ttl</span></span></span><a class="headerlink" href="#c.net_lldpdu.ttl" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Mandatory TTL TLV </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="8021Qav.html" class="btn btn-neutral float-right" title="IEEE 802.1Qav" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="vlan.html" class="btn btn-neutral" title="Virtual LAN (VLAN) Support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

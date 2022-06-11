@@ -1,0 +1,1443 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Device Driver Model &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Display Interface" href="../display/index.html" />
+    <link rel="prev" title="Bindings index" href="../devicetree/bindings.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Device Driver Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#standard-drivers">Standard Drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#synchronous-calls">Synchronous Calls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#driver-apis">Driver APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#driver-data-structures">Driver Data Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subsystems-and-api-structures">Subsystems and API Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#device-specific-api-extensions">Device-Specific API Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#single-driver-multiple-instances">Single Driver, Multiple Instances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization-levels">Initialization Levels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#system-drivers">System Drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#error-handling">Error handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-mapping">Memory Mapping</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#device-model-drivers-with-one-mmio-region">Device Model Drivers with one MMIO region</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-model-drivers-with-multiple-mmio-regions">Device Model Drivers with multiple MMIO regions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#drivers-that-do-not-use-zephyr-device-model">Drivers that do not use Zephyr Device Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#drivers-that-do-not-use-dts">Drivers that do not use DTS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_structures/index.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+      <li>Device Driver Model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/drivers/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="device-driver-model">
+<span id="device-model-api"></span><h1>Device Driver Model<a class="headerlink" href="#device-driver-model" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The Zephyr kernel supports a variety of device drivers. Whether a
+driver is available depends on the board and the driver.</p>
+<p>The Zephyr device model provides a consistent device model for configuring the
+drivers that are part of a system. The device model is responsible
+for initializing all the drivers configured into the system.</p>
+<p>Each type of driver (e.g. UART, SPI, I2C) is supported by a generic type API.</p>
+<p>In this model the driver fills in the pointer to the structure containing the
+function pointers to its API functions during driver initialization. These
+structures are placed into the RAM section in initialization level order.</p>
+<a class="reference internal image-reference" href="../../_images/device_driver_model.svg"><img alt="Device Driver Model" class="align-center" src="../../_images/device_driver_model.svg" width="40%" /></a>
+</div>
+<div class="section" id="standard-drivers">
+<h2>Standard Drivers<a class="headerlink" href="#standard-drivers" title="Permalink to this headline">¶</a></h2>
+<p>Device drivers which are present on all supported board configurations
+are listed below.</p>
+<ul>
+<li><p><strong>Interrupt controller</strong>: This device driver is used by the kernel’s
+interrupt management subsystem.</p></li>
+<li><p><strong>Timer</strong>: This device driver is used by the kernel’s system clock and
+hardware clock subsystem.</p></li>
+<li><p><strong>Serial communication</strong>: This device driver is used by the kernel’s
+system console subsystem.</p></li>
+<li><p><strong>Entropy</strong>: This device driver provides a source of entropy numbers
+for the random number generator subsystem.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Use the <a class="reference internal" href="../random/index.html#random-api"><span class="std std-ref">random API functions</span></a> for random
+values. <a class="reference internal" href="../peripherals/entropy.html#entropy-api"><span class="std std-ref">Entropy functions</span></a> should not be
+directly used as a random number generator source as some hardware
+implementations are designed to be an entropy seed source for random
+number generators and will not provide cryptographically secure
+random number streams.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="synchronous-calls">
+<h2>Synchronous Calls<a class="headerlink" href="#synchronous-calls" title="Permalink to this headline">¶</a></h2>
+<p>Zephyr provides a set of device drivers for multiple boards. Each driver
+should support an interrupt-based implementation, rather than polling, unless
+the specific hardware does not provide any interrupt.</p>
+<p>High-level calls accessed through device-specific APIs, such as
+<code class="file docutils literal notranslate"><span class="pre">i2c.h</span></code> or <code class="file docutils literal notranslate"><span class="pre">spi.h</span></code>, are usually intended as synchronous. Thus,
+these calls should be blocking.</p>
+</div>
+<div class="section" id="driver-apis">
+<h2>Driver APIs<a class="headerlink" href="#driver-apis" title="Permalink to this headline">¶</a></h2>
+<p>The following APIs for device drivers are provided by <code class="file docutils literal notranslate"><span class="pre">device.h</span></code>. The APIs
+are intended for use in device drivers only and should not be used in
+applications.</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#c.DEVICE_DEFINE" title="DEVICE_DEFINE"><code class="xref c c-func docutils literal notranslate"><span class="pre">DEVICE_DEFINE()</span></code></a></dt><dd><p>Create device object and related data structures including setting it
+up for boot-time initialization.</p>
+</dd>
+<dt><a class="reference internal" href="#c.DEVICE_NAME_GET" title="DEVICE_NAME_GET"><code class="xref c c-func docutils literal notranslate"><span class="pre">DEVICE_NAME_GET()</span></code></a></dt><dd><p>Converts a device identifier to the global identifier for a device
+object.</p>
+</dd>
+<dt><a class="reference internal" href="#c.DEVICE_GET" title="DEVICE_GET"><code class="xref c c-func docutils literal notranslate"><span class="pre">DEVICE_GET()</span></code></a></dt><dd><p>Obtain a pointer to a device object by name.</p>
+</dd>
+<dt><a class="reference internal" href="#c.DEVICE_DECLARE" title="DEVICE_DECLARE"><code class="xref c c-func docutils literal notranslate"><span class="pre">DEVICE_DECLARE()</span></code></a></dt><dd><p>Declare a device object.  Use this when you need a forward reference
+to a device that has not yet been defined.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="driver-data-structures">
+<span id="device-struct"></span><h2>Driver Data Structures<a class="headerlink" href="#driver-data-structures" title="Permalink to this headline">¶</a></h2>
+<p>The device initialization macros populate some data structures at build time
+which are
+split into read-only and runtime-mutable parts. At a high level we have:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">device</span> <span class="p">{</span>
+      <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+      <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">config</span><span class="p">;</span>
+      <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">api</span><span class="p">;</span>
+      <span class="kt">void</span> <span class="o">*</span> <span class="k">const</span> <span class="n">data</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">config</span></code> member is for read-only configuration data set at build time. For
+example, base memory mapped IO addresses, IRQ line numbers, or other fixed
+physical characteristics of the device. This is the <code class="docutils literal notranslate"><span class="pre">config</span></code> pointer
+passed to <code class="docutils literal notranslate"><span class="pre">DEVICE_DEFINE()</span></code> and related macros.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">data</span></code> struct is kept in RAM, and is used by the driver for
+per-instance runtime housekeeping. For example, it may contain reference counts,
+semaphores, scratch buffers, etc.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">api</span></code> struct maps generic subsystem APIs to the device-specific
+implementations in the driver. It is typically read-only and populated at
+build time. The next section describes this in more detail.</p>
+</div>
+<div class="section" id="subsystems-and-api-structures">
+<h2>Subsystems and API Structures<a class="headerlink" href="#subsystems-and-api-structures" title="Permalink to this headline">¶</a></h2>
+<p>Most drivers will be implementing a device-independent subsystem API.
+Applications can simply program to that generic API, and application
+code is not specific to any particular driver implementation.</p>
+<p>A subsystem API definition typically looks like this:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">subsystem_do_this_t</span><span class="p">)(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">int</span> <span class="n">foo</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bar</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">subsystem_do_that_t</span><span class="p">)(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">baz</span><span class="p">);</span>
+
+<span class="k">struct</span> <span class="nc">subsystem_api</span> <span class="p">{</span>
+      <span class="n">subsystem_do_this_t</span> <span class="n">do_this</span><span class="p">;</span>
+      <span class="n">subsystem_do_that_t</span> <span class="n">do_that</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">int</span> <span class="nf">subsystem_do_this</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">int</span> <span class="n">foo</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bar</span><span class="p">)</span>
+<span class="p">{</span>
+      <span class="k">struct</span> <span class="nc">subsystem_api</span> <span class="o">*</span><span class="n">api</span><span class="p">;</span>
+
+      <span class="n">api</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="nc">subsystem_api</span> <span class="o">*</span><span class="p">)</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">api</span><span class="p">;</span>
+      <span class="k">return</span> <span class="n">api</span><span class="o">-&gt;</span><span class="n">do_this</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">subsystem_do_that</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">baz</span><span class="p">)</span>
+<span class="p">{</span>
+      <span class="k">struct</span> <span class="nc">subsystem_api</span> <span class="o">*</span><span class="n">api</span><span class="p">;</span>
+
+      <span class="n">api</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="nc">subsystem_api</span> <span class="o">*</span><span class="p">)</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">api</span><span class="p">;</span>
+      <span class="n">api</span><span class="o">-&gt;</span><span class="n">do_that</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">baz</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A driver implementing a particular subsystem will define the real implementation
+of these APIs, and populate an instance of subsystem_api structure:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">my_driver_do_this</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">int</span> <span class="n">foo</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bar</span><span class="p">)</span>
+<span class="p">{</span>
+      <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">my_driver_do_that</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">baz</span><span class="p">)</span>
+<span class="p">{</span>
+      <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="k">struct</span> <span class="nc">subsystem_api</span> <span class="n">my_driver_api_funcs</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="p">.</span><span class="n">do_this</span> <span class="o">=</span> <span class="n">my_driver_do_this</span><span class="p">,</span>
+      <span class="p">.</span><span class="n">do_that</span> <span class="o">=</span> <span class="n">my_driver_do_that</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The driver would then pass <code class="docutils literal notranslate"><span class="pre">my_driver_api_funcs</span></code> as the <code class="docutils literal notranslate"><span class="pre">api</span></code> argument to
+<code class="docutils literal notranslate"><span class="pre">DEVICE_DEFINE()</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since pointers to the API functions are referenced in the <code class="docutils literal notranslate"><span class="pre">api</span></code>
+struct, they will always be included in the binary even if unused;
+<code class="docutils literal notranslate"><span class="pre">gc-sections</span></code> linker option will always see at least one reference to
+them. Providing for link-time size optimizations with driver APIs in
+most cases requires that the optional feature be controlled by a
+Kconfig option.</p>
+</div>
+</div>
+<div class="section" id="device-specific-api-extensions">
+<h2>Device-Specific API Extensions<a class="headerlink" href="#device-specific-api-extensions" title="Permalink to this headline">¶</a></h2>
+<p>Some devices can be cast as an instance of a driver subsystem such as GPIO,
+but provide additional functionality that cannot be exposed through the
+standard API.  These devices combine subsystem operations with
+device-specific APIs, described in a device-specific header.</p>
+<p>A device-specific API definition typically looks like this:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;drivers/subsystem.h&gt;</span><span class="cp"></span>
+
+<span class="cm">/* When extensions need not be invoked from user mode threads */</span>
+<span class="kt">int</span> <span class="nf">specific_do_that</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">int</span> <span class="n">foo</span><span class="p">);</span>
+
+<span class="cm">/* When extensions must be invokable from user mode threads */</span>
+<span class="n">__syscall</span> <span class="kt">int</span> <span class="n">specific_from_user</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bar</span><span class="p">);</span>
+
+<span class="cm">/* Only needed when extensions include syscalls */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;syscalls/specific.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p>A driver implementing extensions to the subsystem will define the real
+implementation of both the subsystem API and the specific APIs:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">generic_do_this</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="k">struct</span> <span class="nc">generic_api</span> <span class="n">api</span> <span class="p">{</span>
+   <span class="p">...</span>
+   <span class="p">.</span><span class="n">do_this</span> <span class="o">=</span> <span class="n">generic_do_this</span><span class="p">,</span>
+   <span class="p">...</span>
+<span class="p">};</span>
+
+<span class="cm">/* supervisor-only API is globally visible */</span>
+<span class="kt">int</span> <span class="nf">specific_do_that</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">int</span> <span class="n">foo</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="cm">/* syscall API passes through a translation */</span>
+<span class="kt">int</span> <span class="nf">z_impl_specific_from_user</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bar</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="cp">#ifdef CONFIG_USERSPACE</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;syscall_handler.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">z_vrfy_specific_from_user</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bar</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Z_OOPS</span><span class="p">(</span><span class="n">Z_SYSCALL_SPECIFIC_DRIVER</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">K_OBJ_DRIVER_GENERIC</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">api</span><span class="p">));</span>
+    <span class="k">return</span> <span class="n">z_impl_specific_do_that</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">bar</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;syscalls/specific_from_user_mrsh.c&gt;</span><span class="cp"></span>
+
+<span class="cp">#endif </span><span class="cm">/* CONFIG_USERSPACE */</span><span class="cp"></span>
+</pre></div>
+</div>
+<p>Applications use the device through both the subsystem and specific
+APIs.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Public API for device-specific extensions should be prefixed with the
+compatible for the device to which it applies.  For example, if
+adding special functions to support the Maxim DS3231 the identifier
+fragment <code class="docutils literal notranslate"><span class="pre">specific</span></code> in the examples above would be <code class="docutils literal notranslate"><span class="pre">maxim_ds3231</span></code>.</p>
+</div>
+</div>
+<div class="section" id="single-driver-multiple-instances">
+<h2>Single Driver, Multiple Instances<a class="headerlink" href="#single-driver-multiple-instances" title="Permalink to this headline">¶</a></h2>
+<p>Some drivers may be instantiated multiple times in a given system. For example
+there can be multiple GPIO banks, or multiple UARTS. Each instance of the driver
+will have a different <code class="docutils literal notranslate"><span class="pre">config</span></code> struct and <code class="docutils literal notranslate"><span class="pre">data</span></code> struct.</p>
+<p>Configuring interrupts for multiple drivers instances is a special case. If each
+instance needs to configure a different interrupt line, this can be accomplished
+through the use of per-instance configuration functions, since the parameters
+to <code class="docutils literal notranslate"><span class="pre">IRQ_CONNECT()</span></code> need to be resolvable at build time.</p>
+<p>For example, let’s say we need to configure two instances of <code class="docutils literal notranslate"><span class="pre">my_driver</span></code>, each
+with a different interrupt line. In <code class="docutils literal notranslate"><span class="pre">drivers/subsystem/subsystem_my_driver.h</span></code>:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">my_driver_config_irq_t</span><span class="p">)(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+
+<span class="k">struct</span> <span class="nc">my_driver_config</span> <span class="p">{</span>
+      <span class="n">DEVICE_MMIO_ROM</span><span class="p">;</span>
+      <span class="n">my_driver_config_irq_t</span> <span class="n">config_func</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>In the implementation of the common init function:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">my_driver_isr</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
+<span class="p">{</span>
+      <span class="cm">/* Handle interrupt */</span>
+      <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">my_driver_init</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
+<span class="p">{</span>
+      <span class="k">const</span> <span class="k">struct</span> <span class="nc">my_driver_config</span> <span class="o">*</span><span class="n">config</span> <span class="o">=</span> <span class="n">dev</span><span class="o">-&gt;</span><span class="n">config</span><span class="p">;</span>
+
+      <span class="n">DEVICE_MMIO_MAP</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">K_MEM_CACHE_NONE</span><span class="p">);</span>
+
+      <span class="cm">/* Do other initialization stuff */</span>
+      <span class="p">...</span>
+
+      <span class="n">config</span><span class="o">-&gt;</span><span class="n">config_func</span><span class="p">(</span><span class="n">dev</span><span class="p">);</span>
+
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then when the particular instance is declared:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#if CONFIG_MY_DRIVER_0</span>
+
+<span class="n">DEVICE_DECLARE</span><span class="p">(</span><span class="n">my_driver_0</span><span class="p">);</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">my_driver_config_irq_0</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+      <span class="n">IRQ_CONNECT</span><span class="p">(</span><span class="n">MY_DRIVER_0_IRQ</span><span class="p">,</span> <span class="n">MY_DRIVER_0_PRI</span><span class="p">,</span> <span class="n">my_driver_isr</span><span class="p">,</span>
+                  <span class="n">DEVICE_GET</span><span class="p">(</span><span class="n">my_driver_0</span><span class="p">),</span> <span class="n">MY_DRIVER_0_FLAGS</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="k">static</span> <span class="k">struct</span> <span class="nc">my_driver_config</span> <span class="n">my_driver_config_0</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="n">DEVICE_MMIO_ROM_INIT</span><span class="p">(</span><span class="n">DT_DRV_INST</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
+      <span class="p">.</span><span class="n">config_func</span> <span class="o">=</span> <span class="n">my_driver_config_irq_0</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="k">struct</span> <span class="nc">my_data_0</span><span class="p">;</span>
+
+<span class="n">DEVICE_DEFINE</span><span class="p">(</span><span class="n">my_driver_0</span><span class="p">,</span> <span class="n">MY_DRIVER_0_NAME</span><span class="p">,</span> <span class="n">my_driver_init</span><span class="p">,</span>
+              <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_data_0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_driver_config_0</span><span class="p">,</span>
+              <span class="n">POST_KERNEL</span><span class="p">,</span> <span class="n">MY_DRIVER_0_PRIORITY</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_api_funcs</span><span class="p">);</span>
+
+<span class="cp">#endif </span><span class="cm">/* CONFIG_MY_DRIVER_0 */</span><span class="cp"></span>
+</pre></div>
+</div>
+<p>Note the use of <code class="docutils literal notranslate"><span class="pre">DEVICE_DECLARE()</span></code> to avoid a circular dependency on providing
+the IRQ handler argument and the definition of the device itself.</p>
+</div>
+<div class="section" id="initialization-levels">
+<h2>Initialization Levels<a class="headerlink" href="#initialization-levels" title="Permalink to this headline">¶</a></h2>
+<p>Drivers may depend on other drivers being initialized first, or require
+the use of kernel services. <a class="reference internal" href="#c.DEVICE_DEFINE" title="DEVICE_DEFINE"><code class="xref c c-func docutils literal notranslate"><span class="pre">DEVICE_DEFINE()</span></code></a> and related APIs
+allow the user to specify at what time during the boot sequence the init
+function will be executed. Any driver will specify one of four
+initialization levels:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PRE_KERNEL_1</span></code></dt><dd><p>Used for devices that have no dependencies, such as those that rely
+solely on hardware present in the processor/SOC. These devices cannot
+use any kernel services during configuration, since the kernel services are
+not yet available. The interrupt subsystem will be configured however
+so it’s OK to set up interrupts. Init functions at this level run on the
+interrupt stack.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PRE_KERNEL_2</span></code></dt><dd><p>Used for devices that rely on the initialization of devices initialized
+as part of the <code class="docutils literal notranslate"><span class="pre">PRE_KERNEL_1</span></code> level. These devices cannot use any kernel
+services during configuration, since the kernel services are not yet
+available. Init functions at this level run on the interrupt stack.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">POST_KERNEL</span></code></dt><dd><p>Used for devices that require kernel services during configuration.
+Init functions at this level run in context of the kernel main task.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">APPLICATION</span></code></dt><dd><p>Used for application components (i.e. non-kernel components) that need
+automatic configuration. These devices can use all services provided by
+the kernel during configuration. Init functions at this level run on
+the kernel main task.</p>
+</dd>
+</dl>
+<p>Within each initialization level you may specify a priority level, relative to
+other devices in the same initialization level. The priority level is specified
+as an integer value in the range 0 to 99; lower values indicate earlier
+initialization.  The priority level must be a decimal integer literal without
+leading zeroes or sign (e.g. 32), or an equivalent symbolic name (e.g.
+<code class="docutils literal notranslate"><span class="pre">\#define</span> <span class="pre">MY_INIT_PRIO</span> <span class="pre">32</span></code>); symbolic expressions are <em>not</em> permitted (e.g.
+<code class="docutils literal notranslate"><span class="pre">CONFIG_KERNEL_INIT_PRIORITY_DEFAULT</span> <span class="pre">+</span> <span class="pre">5</span></code>).</p>
+<p>Drivers and other system utilities can determine whether startup is
+still in pre-kernel states by using the <a class="reference internal" href="../kernel/other/interrupts.html#c.k_is_pre_kernel" title="k_is_pre_kernel"><code class="xref c c-func docutils literal notranslate"><span class="pre">k_is_pre_kernel()</span></code></a>
+function.</p>
+</div>
+<div class="section" id="system-drivers">
+<h2>System Drivers<a class="headerlink" href="#system-drivers" title="Permalink to this headline">¶</a></h2>
+<p>In some cases you may just need to run a function at boot. For such cases, the
+<a class="reference internal" href="#c.SYS_INIT" title="SYS_INIT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">SYS_INIT</span></code></a> can be used. This macro does not take any config or runtime
+data structures and there isn’t a way to later get a device pointer by name. The
+same device policies for initialization level and priority apply.</p>
+</div>
+<div class="section" id="error-handling">
+<h2>Error handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
+<p>In general, it’s best to use <code class="docutils literal notranslate"><span class="pre">__ASSERT()</span></code> macros instead of
+propagating return values unless the failure is expected to occur
+during the normal course of operation (such as a storage device
+full). Bad parameters, programming errors, consistency checks,
+pathological/unrecoverable failures, etc., should be handled by
+assertions.</p>
+<p>When it is appropriate to return error conditions for the caller to
+check, 0 should be returned on success and a POSIX <code class="file docutils literal notranslate"><span class="pre">errno.h</span></code> code
+returned on failure.  See
+<a class="reference external" href="https://github.com/zephyrproject-rtos/zephyr/wiki/Naming-Conventions#return-codes">https://github.com/zephyrproject-rtos/zephyr/wiki/Naming-Conventions#return-codes</a>
+for details about this.</p>
+</div>
+<div class="section" id="memory-mapping">
+<h2>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Permalink to this headline">¶</a></h2>
+<p>On some systems, the linear address of peripheral memory-mapped I/O (MMIO)
+regions cannot be known at build time:</p>
+<ul class="simple">
+<li><p>The I/O ranges must be probed at runtime from the bus, such as with
+PCI express</p></li>
+<li><p>A memory management unit (MMU) is active, and the physical address of
+the MMIO range must be mapped into the page tables at some virtual
+memory location determined by the kernel.</p></li>
+</ul>
+<p>These systems must maintain storage for the MMIO range within RAM and
+establish the mapping within the driver’s init function. Other systems
+do not care about this and can use MMIO physical addresses directly from
+DTS and do not need any RAM-based storage for it.</p>
+<p>For drivers that may need to deal with this situation, a set of
+APIs under the DEVICE_MMIO scope are defined, along with a mapping function
+<code class="xref c c-func docutils literal notranslate"><span class="pre">device_map()</span></code>.</p>
+<div class="section" id="device-model-drivers-with-one-mmio-region">
+<h3>Device Model Drivers with one MMIO region<a class="headerlink" href="#device-model-drivers-with-one-mmio-region" title="Permalink to this headline">¶</a></h3>
+<p>The simplest case is for drivers which need to maintain one MMIO region.
+These drivers will need to use the <code class="docutils literal notranslate"><span class="pre">DEVICE_MMIO_ROM</span></code> and
+<code class="docutils literal notranslate"><span class="pre">DEVICE_MMIO_RAM</span></code> macros in the definitions for their <code class="docutils literal notranslate"><span class="pre">config_info</span></code>
+and <code class="docutils literal notranslate"><span class="pre">driver_data</span></code> structures, with initialization of the <code class="docutils literal notranslate"><span class="pre">config_info</span></code>
+from DTS using <code class="docutils literal notranslate"><span class="pre">DEVICE_MMIO_ROM_INIT</span></code>. A call to <code class="docutils literal notranslate"><span class="pre">DEVICE_MMIO_MAP()</span></code>
+is made within the init function:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">my_driver_config</span> <span class="p">{</span>
+   <span class="n">DEVICE_MMIO_ROM</span><span class="p">;</span> <span class="cm">/* Must be first */</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="k">struct</span> <span class="nc">my_driver_dev_data</span> <span class="p">{</span>
+   <span class="n">DEVICE_MMIO_RAM</span><span class="p">;</span> <span class="cm">/* Must be first */</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="k">static</span> <span class="k">struct</span> <span class="nc">my_driver_config</span> <span class="n">my_driver_config_0</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="n">DEVICE_MMIO_ROM_INIT</span><span class="p">(</span><span class="n">DT_DRV_INST</span><span class="p">(...)),</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">my_driver_init</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="p">...</span>
+   <span class="n">DEVICE_MMIO_MAP</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">K_MEM_CACHE_NONE</span><span class="p">);</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">my_driver_some_function</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="p">...</span>
+   <span class="cm">/* Write some data to the MMIO region */</span>
+   <span class="n">sys_write32</span><span class="p">(</span><span class="mh">0xDEADBEEF</span><span class="p">,</span> <span class="n">DEVICE_MMIO_GET</span><span class="p">(</span><span class="n">dev</span><span class="p">));</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The particular expansion of these macros depends on configuration. On
+a device with no MMU or PCI-e, <code class="docutils literal notranslate"><span class="pre">DEVICE_MMIO_MAP</span></code> and
+<code class="docutils literal notranslate"><span class="pre">DEVICE_MMIO_RAM</span></code> expand to nothing.</p>
+</div>
+<div class="section" id="device-model-drivers-with-multiple-mmio-regions">
+<h3>Device Model Drivers with multiple MMIO regions<a class="headerlink" href="#device-model-drivers-with-multiple-mmio-regions" title="Permalink to this headline">¶</a></h3>
+<p>Some drivers may have multiple MMIO regions. In addition, some drivers
+may already be implementing a form of inheritance which requires some other
+data to be placed first in the  <code class="docutils literal notranslate"><span class="pre">config_info</span></code> and <code class="docutils literal notranslate"><span class="pre">driver_data</span></code>
+structures.</p>
+<p>This can be managed with the <code class="docutils literal notranslate"><span class="pre">DEVICE_MMIO_NAMED</span></code> variant macros. These
+require that <code class="docutils literal notranslate"><span class="pre">DEV_CFG()</span></code> and <code class="docutils literal notranslate"><span class="pre">DEV_DATA()</span></code> macros be defined to obtain
+a properly typed pointer to the driver’s config_info or dev_data structs.
+For example:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">my_driver_config</span> <span class="p">{</span>
+   <span class="p">...</span>
+     <span class="n">DEVICE_MMIO_NAMED_ROM</span><span class="p">(</span><span class="n">corge</span><span class="p">);</span>
+     <span class="n">DEVICE_MMIO_NAMED_ROM</span><span class="p">(</span><span class="n">grault</span><span class="p">);</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="k">struct</span> <span class="nc">my_driver_dev_data</span> <span class="p">{</span>
+        <span class="p">...</span>
+     <span class="n">DEVICE_MMIO_NAMED_RAM</span><span class="p">(</span><span class="n">corge</span><span class="p">);</span>
+     <span class="n">DEVICE_MMIO_NAMED_RAM</span><span class="p">(</span><span class="n">grault</span><span class="p">);</span>
+     <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="cp">#define DEV_CFG(_dev) \</span>
+<span class="cp">   ((const struct my_driver_config *)((_dev)-&gt;config))</span>
+
+<span class="cp">#define DEV_DATA(_dev) \</span>
+<span class="cp">   ((struct my_driver_dev_data *)((_dev)-&gt;data))</span>
+
+<span class="k">const</span> <span class="k">static</span> <span class="k">struct</span> <span class="nc">my_driver_config</span> <span class="n">my_driver_config_0</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="p">...</span>
+   <span class="n">DEVICE_MMIO_NAMED_ROM_INIT</span><span class="p">(</span><span class="n">corge</span><span class="p">,</span> <span class="n">DT_DRV_INST</span><span class="p">(...)),</span>
+   <span class="n">DEVICE_MMIO_NAMED_ROM_INIT</span><span class="p">(</span><span class="n">grault</span><span class="p">,</span> <span class="n">DT_DRV_INST</span><span class="p">(...)),</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">my_driver_init</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="p">...</span>
+   <span class="n">DEVICE_MMIO_NAMED_MAP</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">corge</span><span class="p">,</span> <span class="n">K_MEM_CACHE_NONE</span><span class="p">);</span>
+   <span class="n">DEVICE_MMIO_NAMED_MAP</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">grault</span><span class="p">,</span> <span class="n">K_MEM_CACHE_NONE</span><span class="p">);</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">my_driver_some_function</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="p">...</span>
+   <span class="cm">/* Write some data to the MMIO regions */</span>
+   <span class="n">sys_write32</span><span class="p">(</span><span class="mh">0xDEADBEEF</span><span class="p">,</span> <span class="n">DEVICE_MMIO_GET</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">grault</span><span class="p">));</span>
+   <span class="n">sys_write32</span><span class="p">(</span><span class="mh">0xF0CCAC1A</span><span class="p">,</span> <span class="n">DEVICE_MMIO_GET</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">corge</span><span class="p">));</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="drivers-that-do-not-use-zephyr-device-model">
+<h3>Drivers that do not use Zephyr Device Model<a class="headerlink" href="#drivers-that-do-not-use-zephyr-device-model" title="Permalink to this headline">¶</a></h3>
+<p>Some drivers or driver-like code may not user Zephyr’s device model,
+and alternative storage must be arranged for the MMIO data. An
+example of this are timer drivers, or interrupt controller code.</p>
+<p>This can be managed with the <code class="docutils literal notranslate"><span class="pre">DEVICE_MMIO_TOPLEVEL</span></code> set of macros,
+for example:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">DEVICE_MMIO_TOPLEVEL_STATIC</span><span class="p">(</span><span class="n">my_regs</span><span class="p">,</span> <span class="n">DT_DRV_INST</span><span class="p">(..));</span>
+
+<span class="kt">void</span> <span class="nf">some_init_code</span><span class="p">(...)</span>
+<span class="p">{</span>
+   <span class="p">...</span>
+   <span class="n">DEVICE_MMIO_TOPLEVEL_MAP</span><span class="p">(</span><span class="n">my_regs</span><span class="p">,</span> <span class="n">K_MEM_CACHE_NONE</span><span class="p">);</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">some_function</span><span class="p">(...)</span>
+   <span class="p">...</span>
+   <span class="n">sys_write32</span><span class="p">(</span><span class="n">DEVICE_MMIO_TOPLEVEL_GET</span><span class="p">(</span><span class="n">my_regs</span><span class="p">),</span> <span class="mh">0xDEADBEEF</span><span class="p">);</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="drivers-that-do-not-use-dts">
+<h3>Drivers that do not use DTS<a class="headerlink" href="#drivers-that-do-not-use-dts" title="Permalink to this headline">¶</a></h3>
+<p>Some drivers may not obtain the MMIO physical address from DTS, such as
+is the case with PCI-E. In this case the <code class="xref c c-func docutils literal notranslate"><span class="pre">device_map()</span></code> function
+may be used directly:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">some_init_code</span><span class="p">(...)</span>
+<span class="p">{</span>
+   <span class="p">...</span>
+   <span class="k">struct</span> <span class="nc">pcie_mbar</span> <span class="n">mbar</span><span class="p">;</span>
+   <span class="kt">bool</span> <span class="n">bar_found</span> <span class="o">=</span> <span class="n">pcie_get_mbar</span><span class="p">(</span><span class="n">bdf</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mbar</span><span class="p">);</span>
+
+   <span class="n">device_map</span><span class="p">(</span><span class="n">DEVICE_MMIO_RAM_PTR</span><span class="p">(</span><span class="n">dev</span><span class="p">),</span> <span class="n">mbar</span><span class="p">.</span><span class="n">phys_addr</span><span class="p">,</span> <span class="n">mbar</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">K_MEM_CACHE_NONE</span><span class="p">);</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For these cases, DEVICE_MMIO_ROM directives may be omitted.</p>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__device__model"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">device_model</span></span></dt>
+<dd><p>Device Model APIs. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_HANDLE_SEP">
+<span class="target" id="group__device__model_1ga5f1feab331ee737141f418030902aab0"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_HANDLE_SEP</span></span></span><a class="headerlink" href="#c.DEVICE_HANDLE_SEP" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flag value used in lists of device handles to separate distinct groups. </p>
+<p>This is the minimum value for the device_handle_t type. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_HANDLE_ENDS">
+<span class="target" id="group__device__model_1gab83f6fdc3d5d6e68facad0ddc9f3e763"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_HANDLE_ENDS</span></span></span><a class="headerlink" href="#c.DEVICE_HANDLE_ENDS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flag value used in lists of device handles to indicate the end of the list. </p>
+<p>This is the maximum value for the device_handle_t type. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_HANDLE_NULL">
+<span class="target" id="group__device__model_1ga4dd918c3a59b8afa185a4851165d2ca0"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_HANDLE_NULL</span></span></span><a class="headerlink" href="#c.DEVICE_HANDLE_NULL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Flag value used to identify an unknown device. </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_NAME_GET">
+<span class="target" id="group__device__model_1ga51d735464c6c80e86ebae96b0b67947b"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_NAME_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_NAME_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Expands to the name of a global device object. </p>
+<p>Return the full name of a device object symbol created by <a class="reference internal" href="#group__device__model_1gad08683c204de0996ca62b23813947009"><span class="std std-ref">DEVICE_DEFINE()</span></a>, using the dev_name provided to <a class="reference internal" href="#group__device__model_1gad08683c204de0996ca62b23813947009"><span class="std std-ref">DEVICE_DEFINE()</span></a>. This is the name of the global variable storing the device structure, not a pointer to the string in the device’s <code class="docutils literal notranslate"><span class="pre">name</span></code> field.</p>
+<p>It is meant to be used for declaring extern symbols pointing to device objects before using the DEVICE_GET macro to get the device object.</p>
+<p>This macro is normally only useful within device driver source code. In other situations, you are probably looking for <a class="reference internal" href="#group__device__model_1ga34899198834c2e592a2e312fa94682ab"><span class="std std-ref">device_get_binding()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>The full name of the device object defined by <a class="reference internal" href="#group__device__model_1gad08683c204de0996ca62b23813947009"><span class="std std-ref">DEVICE_DEFINE()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The same <code class="docutils literal notranslate"><span class="pre">dev_name</span></code> token given to <a class="reference internal" href="#group__device__model_1gad08683c204de0996ca62b23813947009"><span class="std std-ref">DEVICE_DEFINE()</span></a></p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SYS_DEVICE_DEFINE">
+<span class="target" id="group__device__model_1ga42092d245664c3d59c30ceb4776bd642"></span><span class="sig-name descname"><span class="n"><span class="pre">SYS_DEVICE_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">drv_name</span></span>, <span class="n"><span class="pre">init_fn</span></span>, <span class="n"><span class="pre">level</span></span>, <span class="n"><span class="pre">prio</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SYS_DEVICE_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Run an initialization function at boot at specified priority. </p>
+<p><dl>
+<dt class="sig sig-object">
+<em><span class="pre">Deprecated:</span></em></dt>
+<dd><p>Use <a class="reference internal" href="#group__device__model_1ga1e50fdff086356a75b0e91179952cc8d"><span class="std std-ref">SYS_INIT()</span></a> instead.</p>
+</dd></dl>
+
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">drv_name</span></code>: A string name for the pseudo-device (unused). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">init_fn</span></code>: Pointer to the function which should run at boot time. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">level</span></code>: Initialization level to run the function in. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prio</span></code>: Function’s priority within its initialization level. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_DEFINE">
+<span class="target" id="group__device__model_1gad08683c204de0996ca62b23813947009"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dev_name</span></span>, <span class="n"><span class="pre">drv_name</span></span>, <span class="n"><span class="pre">init_fn</span></span>, <span class="n"><span class="pre">pm_device</span></span>, <span class="n"><span class="pre">data_ptr</span></span>, <span class="n"><span class="pre">cfg_ptr</span></span>, <span class="n"><span class="pre">level</span></span>, <span class="n"><span class="pre">prio</span></span>, <span class="n"><span class="pre">api_ptr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a device object and set it up for boot time initialization. </p>
+<p>This macro defines a <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code> that is automatically configured by the kernel during system initialization. This macro should only be used when the device is not being allocated from a devicetree node. If you are allocating a device from a devicetree node, use <a class="reference internal" href="#group__device__model_1gaac590af7705a3223968164406a483548"><span class="std std-ref">DEVICE_DT_DEFINE()</span></a> or <a class="reference internal" href="#group__device__model_1gada5ba4aca9e0662ccebb2232c7256419"><span class="std std-ref">DEVICE_DT_INST_DEFINE()</span></a> instead.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_name</span></code>: A unique token which is used in the name of the global device structure as a C identifier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">drv_name</span></code>: A string name for the device, which will be stored in the device structure’s <code class="docutils literal notranslate"><span class="pre">name</span></code> field. This name can be used to look up the device with <a class="reference internal" href="#group__device__model_1ga34899198834c2e592a2e312fa94682ab"><span class="std std-ref">device_get_binding()</span></a>. This must be less than Z_DEVICE_MAX_NAME_LEN characters (including terminating NUL) in order to be looked up from user mode.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">init_fn</span></code>: Pointer to the device’s initialization function, which will be run by the kernel during system initialization.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pm_device</span></code>: Pointer to the device’s power management resources, a <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pm_device</span></code>, which will be stored in the device structure’s <code class="docutils literal notranslate"><span class="pre">pm</span></code> field. Use NULL if the device does not use PM.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_ptr</span></code>: Pointer to the device’s private mutable data, which will be stored in the device structure’s <code class="docutils literal notranslate"><span class="pre">data</span></code> field.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cfg_ptr</span></code>: Pointer to the device’s private constant data, which will be stored in the device structure’s <code class="docutils literal notranslate"><span class="pre">config</span></code> field.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">level</span></code>: The device’s initialization level. See <a class="reference internal" href="#group__device__model_1ga1e50fdff086356a75b0e91179952cc8d"><span class="std std-ref">SYS_INIT()</span></a> for details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prio</span></code>: The device’s priority within its initialization level. See <a class="reference internal" href="#group__device__model_1ga1e50fdff086356a75b0e91179952cc8d"><span class="std std-ref">SYS_INIT()</span></a> for details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">api_ptr</span></code>: Pointer to the device’s API structure. Can be NULL. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_DT_NAME">
+<span class="target" id="group__device__model_1gad864d7a50ee45285dacd68be1e5a49ce"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_DT_NAME</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_DT_NAME" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return a string name for a devicetree node. </p>
+<p>This macro returns a string literal usable as a device’s <code class="docutils literal notranslate"><span class="pre">name</span></code> field from a devicetree node identifier.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>The value of the node’s “label” property, if it has one. Otherwise, the node’s full name in “node-name&#64;&#64;unit-address” form. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: The devicetree node identifier.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_DT_DEFINE">
+<span class="target" id="group__device__model_1gaac590af7705a3223968164406a483548"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_DT_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span>, <span class="n"><span class="pre">init_fn</span></span>, <span class="n"><span class="pre">pm_device</span></span>, <span class="n"><span class="pre">data_ptr</span></span>, <span class="n"><span class="pre">cfg_ptr</span></span>, <span class="n"><span class="pre">level</span></span>, <span class="n"><span class="pre">prio</span></span>, <span class="n"><span class="pre">api_ptr</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_DT_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a device object from a devicetree node identifier and set it up for boot time initialization. </p>
+<p>This macro defines a <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code> that is automatically configured by the kernel during system initialization. The global device object’s name as a C identifier is derived from the node’s dependency ordinal. The device structure’s <code class="docutils literal notranslate"><span class="pre">name</span></code> field is set to <code class="docutils literal notranslate"><a class="reference internal" href="#group__device__model_1gad864d7a50ee45285dacd68be1e5a49ce"><span class="std std-ref"><span class="pre">DEVICE_DT_NAME(node_id)</span></span></a></code>.</p>
+<p>The device is declared with extern visibility, so a pointer to a global device object can be obtained with <code class="docutils literal notranslate"><a class="reference internal" href="#group__device__model_1ga9a65996ce21f43acb7db061e23b48ec7"><span class="std std-ref"><span class="pre">DEVICE_DT_GET(node_id)</span></span></a></code> from any source file that includes device.h. Before using the pointer, the referenced object should be checked using <a class="reference internal" href="#group__device__model_1gaa4944bd850e90cbd52b0489f9b12edfb"><span class="std std-ref">device_is_ready()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: The devicetree node identifier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">init_fn</span></code>: Pointer to the device’s initialization function, which will be run by the kernel during system initialization.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pm_device</span></code>: Pointer to the device’s power management resources, a <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pm_device</span></code>, which will be stored in the device structure’s <code class="docutils literal notranslate"><span class="pre">pm</span></code> field. Use NULL if the device does not use PM.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_ptr</span></code>: Pointer to the device’s private mutable data, which will be stored in the device structure’s <code class="docutils literal notranslate"><span class="pre">data</span></code> field.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cfg_ptr</span></code>: Pointer to the device’s private constant data, which will be stored in the device structure’s <code class="docutils literal notranslate"><span class="pre">config</span></code> field.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">level</span></code>: The device’s initialization level. See <a class="reference internal" href="#group__device__model_1ga1e50fdff086356a75b0e91179952cc8d"><span class="std std-ref">SYS_INIT()</span></a> for details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prio</span></code>: The device’s priority within its initialization level. See <a class="reference internal" href="#group__device__model_1ga1e50fdff086356a75b0e91179952cc8d"><span class="std std-ref">SYS_INIT()</span></a> for details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">api_ptr</span></code>: Pointer to the device’s API structure. Can be NULL. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_DT_INST_DEFINE">
+<span class="target" id="group__device__model_1gada5ba4aca9e0662ccebb2232c7256419"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_DT_INST_DEFINE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">inst</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_DT_INST_DEFINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Like <a class="reference internal" href="#group__device__model_1gaac590af7705a3223968164406a483548"><span class="std std-ref">DEVICE_DT_DEFINE()</span></a>, but uses an instance of a DT_DRV_COMPAT compatible instead of a node identifier. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">inst</span></code>: instance number. The <code class="docutils literal notranslate"><span class="pre">node_id</span></code> argument to DEVICE_DT_DEFINE is set to <code class="docutils literal notranslate"><a class="reference internal" href="../devicetree/api.html#group__devicetree-inst_1ga219f413efba2f4c0151468b9a25a8dc1"><span class="std std-ref"><span class="pre">DT_DRV_INST(inst)</span></span></a></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code>: other parameters as expected by DEVICE_DT_DEFINE. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_DT_NAME_GET">
+<span class="target" id="group__device__model_1ga8ebbf17ef805817aa638f36f177a1a0e"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_DT_NAME_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_DT_NAME_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The name of the global device object for <code class="docutils literal notranslate"><span class="pre">node_id</span></code>. </p>
+<p>Returns the name of the global device structure as a C identifier. The device must be allocated using <a class="reference internal" href="#group__device__model_1gaac590af7705a3223968164406a483548"><span class="std std-ref">DEVICE_DT_DEFINE()</span></a> or <a class="reference internal" href="#group__device__model_1gada5ba4aca9e0662ccebb2232c7256419"><span class="std std-ref">DEVICE_DT_INST_DEFINE()</span></a> for this to work.</p>
+<p>This macro is normally only useful within device driver source code. In other situations, you are probably looking for <a class="reference internal" href="#group__device__model_1ga9a65996ce21f43acb7db061e23b48ec7"><span class="std std-ref">DEVICE_DT_GET()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>The name of the device object as a C identifier </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: Devicetree node identifier</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_DT_GET">
+<span class="target" id="group__device__model_1ga9a65996ce21f43acb7db061e23b48ec7"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_DT_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_DT_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">device*</span></code> from a devicetree node identifier. </p>
+<p>Returns a pointer to a device object created from a devicetree node, if any device was allocated by a driver.</p>
+<p>If no such device was allocated, this will fail at linker time. If you get an error that looks like <code class="docutils literal notranslate"><span class="pre">undefined</span> <span class="pre">reference</span> <span class="pre">to</span> <span class="pre">__device_dts_ord_&lt;N&gt;</span></code>, that is what happened. Check to make sure your device driver is being compiled, usually by enabling the Kconfig options it requires.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>A pointer to the device object created for that node </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: A devicetree node identifier </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_DT_INST_GET">
+<span class="target" id="group__device__model_1ga9165e550ae175ce305eafe33390af78b"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_DT_INST_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">inst</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_DT_INST_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">device*</span></code> for an instance of a DT_DRV_COMPAT compatible. </p>
+<p>This is equivalent to <code class="docutils literal notranslate"><a class="reference internal" href="#group__device__model_1ga9a65996ce21f43acb7db061e23b48ec7"><span class="std std-ref"><span class="pre">DEVICE_DT_GET(DT_DRV_INST(inst))</span></span></a></code>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>A pointer to the device object created for that instance </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">inst</span></code>: DT_DRV_COMPAT instance number </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_DT_GET_ANY">
+<span class="target" id="group__device__model_1gaadf3ffb63df544eb3de356ab2c5e9e3c"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_DT_GET_ANY</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">compat</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_DT_GET_ANY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">device*</span></code> from a devicetree compatible. </p>
+<p>If an enabled devicetree node has the given compatible and a device object was created from it, this returns a pointer to that device.</p>
+<p>If there no such devices, this returns NULL.</p>
+<p>If there are multiple, this returns an arbitrary one.</p>
+<p>If this returns non-NULL, the device must be checked for readiness before use, e.g. with <a class="reference internal" href="#group__device__model_1gaa4944bd850e90cbd52b0489f9b12edfb"><span class="std std-ref">device_is_ready()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a pointer to a device, or NULL </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">compat</span></code>: lowercase-and-underscores devicetree compatible </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_DT_GET_ONE">
+<span class="target" id="group__device__model_1ga39c760429534ef9ae77f3d996987cd2b"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_DT_GET_ONE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">compat</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_DT_GET_ONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">device*</span></code> from a devicetree compatible. </p>
+<p>If an enabled devicetree node has the given compatible and a device object was created from it, this returns a pointer to that device.</p>
+<p>If there no such devices, this will fail at compile time.</p>
+<p>If there are multiple, this returns an arbitrary one.</p>
+<p>If this returns non-NULL, the device must be checked for readiness before use, e.g. with <a class="reference internal" href="#group__device__model_1gaa4944bd850e90cbd52b0489f9b12edfb"><span class="std std-ref">device_is_ready()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a pointer to a device </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">compat</span></code>: lowercase-and-underscores devicetree compatible </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_DT_GET_OR_NULL">
+<span class="target" id="group__device__model_1ga6ce1dbfda6847ca6c3858712e9b41989"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_DT_GET_OR_NULL</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">node_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_DT_GET_OR_NULL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Utility macro to obtain an optional reference to a device. </p>
+<p>If the node identifier refers to a node with status “okay”, this returns <code class="docutils literal notranslate"><a class="reference internal" href="#group__device__model_1ga9a65996ce21f43acb7db061e23b48ec7"><span class="std std-ref"><span class="pre">DEVICE_DT_GET(node_id)</span></span></a></code>. Otherwise, it returns NULL.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">device*</span></code> for the node identifier, which may be NULL. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">node_id</span></code>: devicetree node identifier</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_GET">
+<span class="target" id="group__device__model_1ga78e63e230be7dfe525a2de03e503be53"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_GET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_GET" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Obtain a pointer to a device object by name. </p>
+<p>Return the address of a device object created by <a class="reference internal" href="#group__device__model_1gad08683c204de0996ca62b23813947009"><span class="std std-ref">DEVICE_DEFINE()</span></a>, using the dev_name provided to <a class="reference internal" href="#group__device__model_1gad08683c204de0996ca62b23813947009"><span class="std std-ref">DEVICE_DEFINE()</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>A pointer to the device object created by <a class="reference internal" href="#group__device__model_1gad08683c204de0996ca62b23813947009"><span class="std std-ref">DEVICE_DEFINE()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The same as dev_name provided to <a class="reference internal" href="#group__device__model_1gad08683c204de0996ca62b23813947009"><span class="std std-ref">DEVICE_DEFINE()</span></a></p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DEVICE_DECLARE">
+<span class="target" id="group__device__model_1ga5d8d574ffe22938ca58dcb74bf289428"></span><span class="sig-name descname"><span class="n"><span class="pre">DEVICE_DECLARE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.DEVICE_DECLARE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare a static device object. </p>
+<p>This macro can be used at the top-level to declare a device, such that <a class="reference internal" href="#group__device__model_1ga78e63e230be7dfe525a2de03e503be53"><span class="std std-ref">DEVICE_GET()</span></a> may be used before the full declaration in <a class="reference internal" href="#group__device__model_1gad08683c204de0996ca62b23813947009"><span class="std std-ref">DEVICE_DEFINE()</span></a>.</p>
+<p>This is often useful when configuring interrupts statically in a device’s init or per-instance config function, as the init function itself is required by <a class="reference internal" href="#group__device__model_1gad08683c204de0996ca62b23813947009"><span class="std std-ref">DEVICE_DEFINE()</span></a> and use of <a class="reference internal" href="#group__device__model_1ga78e63e230be7dfe525a2de03e503be53"><span class="std std-ref">DEVICE_GET()</span></a> inside it creates a circular dependency.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Device name </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.SYS_INIT">
+<span class="target" id="group__device__model_1ga1e50fdff086356a75b0e91179952cc8d"></span><span class="sig-name descname"><span class="n"><span class="pre">SYS_INIT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">_init_fn</span></span>, <span class="n"><span class="pre">_level</span></span>, <span class="n"><span class="pre">_prio</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SYS_INIT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Run an initialization function at boot at specified priority. </p>
+<p>This macro lets you run a function at system boot.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_init_fn</span></code>: Pointer to the boot function to run</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_level</span></code>: The initialization level at which configuration occurs. Must be one of the following symbols, which are listed in the order they are performed by the kernel: <ul>
+<li><p>PRE_KERNEL_1: Used for initialization objects that have no dependencies, such as those that rely solely on hardware present in the processor/SOC. These objects cannot use any kernel services during configuration, since they are not yet available. </p></li>
+<li><p>PRE_KERNEL_2: Used for initialization objects that rely on objects initialized as part of the PRE_KERNEL_1 level. These objects cannot use any kernel services during configuration, since they are not yet available. </p></li>
+<li><p>POST_KERNEL: Used for initialization objects that require kernel services during configuration. </p></li>
+<li><p>POST_KERNEL_SMP: Used for initialization objects that require kernel services during configuration after SMP initialization. </p></li>
+<li><p>APPLICATION: Used for application components (i.e. non-kernel components) that need automatic configuration. These objects can use all services provided by the kernel during configuration.</p></li>
+</ul>
+</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_prio</span></code>: The initialization priority of the object, relative to other objects of the same initialization level. Specified as an integer value in the range 0 to 99; lower values indicate earlier initialization. Must be a decimal integer literal without leading zeroes or sign (e.g. 32), or an equivalent symbolic name (e.g. #define MY_INIT_PRIO 32); symbolic expressions are <em>not</em> permitted (e.g. CONFIG_KERNEL_INIT_PRIORITY_DEFAULT + 5). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.device_handle_t">
+<span class="target" id="group__device__model_1ga21415b8e9967ecd2c3d3d3b1724f93c3"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">int16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_handle_t</span></span></span><a class="headerlink" href="#c.device_handle_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Type used to represent a “handle” for a device. </p>
+<p>Every struct device has an associated handle. You can get a pointer to a device structure from its handle and vice versa, but the handle uses less space than a pointer. The device.h API mainly uses handles to store lists of multiple devices in a compact way.</p>
+<p>The extreme values and zero have special significance. Negative values identify functionality that does not correspond to a Zephyr device, such as the system clock or a <a class="reference internal" href="#group__device__model_1ga1e50fdff086356a75b0e91179952cc8d"><span class="std std-ref">SYS_INIT()</span></a> function.</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__device__model_1ga456366a9ca0a8e97484c97c279745203"><span class="std std-ref">device_handle_get()</span></a> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__device__model_1gab53c82876a46b77ea06271b536f86529"><span class="std std-ref">device_from_handle()</span></a> </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.device_visitor_callback_t">
+<span class="target" id="group__device__model_1ga9a1118e5c76c44c998f7258a7de0bfbb"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">device_visitor_callback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.device_visitor_callback_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Prototype for functions used when iterating over a set of devices. </p>
+<p>Such a function may be used in API that identifies a set of devices and provides a visitor API supporting caller-specific interaction with each device in the set.</p>
+<p>The visit is said to succeed if the visitor returns a non-negative value.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>A non-negative number to allow walking to continue, and a negative error code to case the iteration to stop.</p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__device__model_1ga6e3b6dbb15ca28d6c94ee07702663245"><span class="std std-ref">device_required_foreach()</span></a> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__device__model_1gaf5fce5e93fd6d5e13aa8b20251b82b2a"><span class="std std-ref">device_supported_foreach()</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: a device in the set being iterated</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">context</span></code>: state used to support the visitor function</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.device_handle_get">
+<span class="target" id="group__device__model_1ga456366a9ca0a8e97484c97c279745203"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#c.device_handle_t" title="device_handle_t"><span class="n"><span class="pre">device_handle_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_handle_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.device_handle_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the handle for a given device. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>the handle for the device, or DEVICE_HANDLE_NULL if the device does not have an associated handle. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: the device for which a handle is desired.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.device_from_handle">
+<span class="target" id="group__device__model_1gab53c82876a46b77ea06271b536f86529"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">device_from_handle</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#c.device_handle_t" title="device_handle_t"><span class="n"><span class="pre">device_handle_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">dev_handle</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.device_from_handle" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the device corresponding to a handle. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>the device that has that handle, or a null pointer if <code class="docutils literal notranslate"><span class="pre">dev_handle</span></code> does not identify a device. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev_handle</span></code>: the device handle</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.device_required_handles_get">
+<span class="target" id="group__device__model_1ga09d82b469bffe8d63abee40a446988ed"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.device_handle_t" title="device_handle_t"><span class="n"><span class="pre">device_handle_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">device_required_handles_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">count</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.device_required_handles_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the device handles for devicetree dependencies of this device. </p>
+<p>This function returns a pointer to an array of device handles. The length of the array is stored in the <code class="docutils literal notranslate"><span class="pre">count</span></code> parameter.</p>
+<p>The array contains a handle for each device that <code class="docutils literal notranslate"><span class="pre">dev</span></code> requires directly, as determined from the devicetree. This does not include transitive dependencies; you must recursively determine those.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a pointer to a sequence of <code class="docutils literal notranslate"><span class="pre">*count</span></code> device handles, or a null pointer if <code class="docutils literal notranslate"><span class="pre">dev</span></code> does not have any dependency data. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: the device for which dependencies are desired.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count</span></code>: pointer to where this function should store the length of the returned array. No value is stored if the call returns a null pointer. The value may be set to zero if the device has no devicetree dependencies.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.device_supported_handles_get">
+<span class="target" id="group__device__model_1gad341d888024db2f0d724a057ad96783d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.device_handle_t" title="device_handle_t"><span class="n"><span class="pre">device_handle_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">device_supported_handles_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">count</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.device_supported_handles_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the set of handles that this device supports. </p>
+<p>This function returns a pointer to an array of device handles. The length of the array is stored in the <code class="docutils literal notranslate"><span class="pre">count</span></code> parameter.</p>
+<p>The array contains a handle for each device that <code class="docutils literal notranslate"><span class="pre">dev</span></code> “supports”  that is, devices that require <code class="docutils literal notranslate"><span class="pre">dev</span></code> directly  as determined from the devicetree. This does not include transitive dependencies; you must recursively determine those.</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>a pointer to a sequence of <code class="docutils literal notranslate"><span class="pre">*count</span></code> device handles, or a null pointer if <code class="docutils literal notranslate"><span class="pre">dev</span></code> does not have any dependency data. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: the device for which supports are desired.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count</span></code>: pointer to where this function should store the length of the returned array. No value is stored if the call returns a null pointer. The value may be set to zero if nothing in the devicetree depends on <code class="docutils literal notranslate"><span class="pre">dev</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.device_required_foreach">
+<span class="target" id="group__device__model_1ga6e3b6dbb15ca28d6c94ee07702663245"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_required_foreach</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.device_visitor_callback_t" title="device_visitor_callback_t"><span class="n"><span class="pre">device_visitor_callback_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">visitor_cb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">context</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.device_required_foreach" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Visit every device that <code class="docutils literal notranslate"><span class="pre">dev</span></code> directly requires. </p>
+<p>Zephyr maintains information about which devices are directly required by another device; for example an I2C-based sensor driver will require an I2C controller for communication. Required devices can derive from statically-defined devicetree relationships or dependencies registered at runtime.</p>
+<p>This API supports operating on the set of required devices. Example uses include making sure required devices are ready before the requiring device is used, and releasing them when the requiring device is no longer needed.</p>
+<p>There is no guarantee on the order in which required devices are visited.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">visitor</span></code> function returns a negative value iteration is halted, and the returned value from the visitor is returned from this function.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This API is not available to unprivileged threads.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>The number of devices that were visited if all visits succeed, or the negative value returned from the first visit that did not succeed. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: a device of interest. The devices that this device depends on will be used as the set of devices to visit. This parameter must not be null.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">visitor_cb</span></code>: the function that should be invoked on each device in the dependency set. This parameter must not be null.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">context</span></code>: state that is passed through to the visitor function. This parameter may be null if <code class="docutils literal notranslate"><span class="pre">visitor</span></code> tolerates a null <code class="docutils literal notranslate"><span class="pre">context</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.device_supported_foreach">
+<span class="target" id="group__device__model_1gaf5fce5e93fd6d5e13aa8b20251b82b2a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_supported_foreach</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <a class="reference internal" href="#c.device_visitor_callback_t" title="device_visitor_callback_t"><span class="n"><span class="pre">device_visitor_callback_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">visitor_cb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">context</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.device_supported_foreach" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Visit every device that <code class="docutils literal notranslate"><span class="pre">dev</span></code> directly supports. </p>
+<p>Zephyr maintains information about which devices are directly supported by another device; for example an I2C controller will support an I2C-based sensor driver. Supported devices can derive from statically-defined devicetree relationships.</p>
+<p>This API supports operating on the set of supported devices. Example uses include iterating over the devices connected to a regulator when it is powered on.</p>
+<p>There is no guarantee on the order in which required devices are visited.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">visitor</span></code> function returns a negative value iteration is halted, and the returned value from the visitor is returned from this function.</p>
+<p><dl class="simple">
+<dt><strong>Note</strong></dt><dd><p>This API is not available to unprivileged threads.</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>The number of devices that were visited if all visits succeed, or the negative value returned from the first visit that did not succeed. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: a device of interest. The devices that this device supports will be used as the set of devices to visit. This parameter must not be null.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">visitor_cb</span></code>: the function that should be invoked on each device in the support set. This parameter must not be null.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">context</span></code>: state that is passed through to the visitor function. This parameter may be null if <code class="docutils literal notranslate"><span class="pre">visitor</span></code> tolerates a null <code class="docutils literal notranslate"><span class="pre">context</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.device_get_binding">
+<span class="target" id="group__device__model_1ga34899198834c2e592a2e312fa94682ab"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">device_get_binding</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.device_get_binding" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get a <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">device*</span></code> from its <code class="docutils literal notranslate"><span class="pre">name</span></code> field. </p>
+<p>This function iterates through the devices on the system. If a device with the given <code class="docutils literal notranslate"><span class="pre">name</span></code> field is found, and that device initialized successfully at boot time, this function returns a pointer to the device.</p>
+<p>If no device has the given name, this function returns NULL.</p>
+<p>This function also returns NULL when a device is found, but it failed to initialize successfully at boot time. (To troubleshoot this case, set a breakpoint on your device driver’s initialization function.)</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>pointer to device structure with the given name; NULL if the device is not found or if the device with that name’s initialization function failed. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: device name to search for. A null pointer, or a pointer to an empty string, will cause NULL to be returned.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.device_is_ready">
+<span class="target" id="group__device__model_1gaa4944bd850e90cbd52b0489f9b12edfb"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_is_ready</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.device_is_ready" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Verify that a device is ready for use. </p>
+<p>Indicates whether the provided device pointer is for a device known to be in a state where it can be used with its standard API.</p>
+<p>This can be used with device pointers captured from <a class="reference internal" href="#group__device__model_1ga9a65996ce21f43acb7db061e23b48ec7"><span class="std std-ref">DEVICE_DT_GET()</span></a>, which does not include the readiness checks of <a class="reference internal" href="#group__device__model_1ga34899198834c2e592a2e312fa94682ab"><span class="std std-ref">device_get_binding()</span></a>. At minimum this means that the device has been successfully initialized.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: pointer to the device in question.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: If the device is ready for use. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code>: If the device is not ready for use or if a NULL device pointer is passed as argument. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.device_usable_check">
+<span class="target" id="group__device__model_1ga233b32dc38630069c1aee973fa52416e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_usable_check</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.device_usable_check" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Determine whether a device is ready for use. </p>
+<p><dl>
+<dt class="sig sig-object">
+<em><span class="pre">Deprecated:</span></em></dt>
+<dd><p>Use <a class="reference internal" href="#group__device__model_1gaa4944bd850e90cbd52b0489f9b12edfb"><span class="std std-ref">device_is_ready()</span></a> instead.</p>
+</dd></dl>
+
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code>: Device instance.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: If device is usable. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ENODEV</span></code>: If device is not usable. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.device_state">
+<span class="target" id="structdevice__state"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device_state</span></span></span><a class="headerlink" href="#c.device_state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;device.h&gt;</em><p>Runtime device dynamic structure (in RAM) per driver instance. </p>
+<p>Fields in this are expected to be default-initialized to zero. The kernel driver infrastructure and driver access functions are responsible for ensuring that any non-zero initialization is done before they are accessed. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.device_state.init_res">
+<span class="target" id="structdevice__state_1ac0fb1abe0a9390ed5a32124f00a40d99"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">init_res</span></span></span><a class="headerlink" href="#c.device_state.init_res" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Non-negative result of initializing the device.</p>
+<p>The absolute value returned when the device initialization function was invoked, or <code class="docutils literal notranslate"><span class="pre">UINT8_MAX</span></code> if the value exceeds an 8-bit integer. If initialized is also set, a zero value indicates initialization succeeded. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.device_state.initialized">
+<span class="target" id="structdevice__state_1a26bb28bbe4c17c4f0e496d2b04d4a3ad"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initialized</span></span></span><a class="headerlink" href="#c.device_state.initialized" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Indicates the device initialization function has been invoked. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.device">
+<span class="target" id="structdevice"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">device</span></span></span><a class="headerlink" href="#c.device" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;device.h&gt;</em><p>Runtime device structure (in ROM) per driver instance. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.device.name">
+<span class="target" id="structdevice_1a1e74e8d3b0b1a981c67e1d0284ccac3d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.device.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Name of the device instance </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.device.config">
+<span class="target" id="structdevice_1aca2d801eb15996cf1c74dc65cfa651fc"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">config</span></span></span><a class="headerlink" href="#c.device.config" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Address of device instance config information </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.device.api">
+<span class="target" id="structdevice_1a4a2e6a2cfeb6efed7d5383c33458f46d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">api</span></span></span><a class="headerlink" href="#c.device.api" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Address of the API structure exposed by the device instance </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.device.state">
+<span class="target" id="structdevice_1a4ea71ed3ab6cdf3a2e70e35a44c1ed3e"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device_state" title="device_state"><span class="n"><span class="pre">device_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">state</span></span></span><a class="headerlink" href="#c.device.state" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Address of the common device state </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.device.data">
+<span class="target" id="structdevice_1ac6739bba5a9e7834903ef2748f404d43"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><a class="headerlink" href="#c.device.data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Address of the device instance private data </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.device.handles">
+<span class="target" id="structdevice_1a60bd7ffdd010432cfde4aeea5a3941e1"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.device_handle_t" title="device_handle_t"><span class="n"><span class="pre">device_handle_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">handles</span></span></span><a class="headerlink" href="#c.device.handles" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>optional pointer to handles associated with the device.</p>
+<p>This encodes a sequence of sets of device handles that have some relationship to this node. The individual sets are extracted with dedicated API, such as <a class="reference internal" href="#group__device__model_1ga09d82b469bffe8d63abee40a446988ed"><span class="std std-ref">device_required_handles_get()</span></a>. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../display/index.html" class="btn btn-neutral float-right" title="Display Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../devicetree/bindings.html" class="btn btn-neutral" title="Bindings index" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

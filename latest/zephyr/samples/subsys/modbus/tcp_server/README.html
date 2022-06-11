@@ -1,0 +1,416 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Modbus TCP Server Sample &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../../../copyright.html" />
+    <link rel="next" title="NVS: Non-Volatile Storage" href="../../nvs/README.html" />
+    <link rel="prev" title="Modbus TCP to serial line gateway sample" href="../tcp_gateway/README.html" />
+  <link rel="shortcut icon" href="../../../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application/index.html">Application Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../security/index.html">Security</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Samples and Demos</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../classic.html">Classic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../basic/basic.html">Basic Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../userspace/index.html">Userspace Samples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../subsys.html">Various Subsystems Samples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../canbus/canbus.html">Controller Area Network (CAN) Bus Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../console/console.html">Console Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cpp/cpp.html">C++ Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../debug/index.html">Debug Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../display/display.html">Display Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fs/fs.html">FS Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ipc/ipc.html">IPC Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../logging/logging.html">Logging Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mgmt/mgmt.html">Management Samples</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../modbus.html">Modbus Samples</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../rtu_client/README.html">Modbus RTU Client Sample</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rtu_server/README.html">Modbus RTU Server Sample</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tcp_gateway/README.html">Modbus TCP to serial line gateway sample</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Modbus TCP Server Sample</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../nvs/README.html">NVS: Non-Volatile Storage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../portability/portability.html">Portability Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../settings/README.html">Settings sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../shell/shell.html">Shell System Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../task_wdt/README.html">Task Watchdog Sample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usb/usb.html">USB device support samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../video/video.html">Video Samples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../net/net.html">Networking Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bluetooth/bluetooth.html">Bluetooth samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sensor/sensor.html">Sensor Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../arch/index.html">Architecture Dependent Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../boards/boards.html">Board-specific samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../drivers/drivers.html">Driver Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../application_development/application_development.html">Application development samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../shields/shields.html">Shields Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../posix/posix.html">POSIX Subsystem Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../kernel/index.html">Various Kernel and Scheduler Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tfm_integration/tfm_integration.html">TF-M Integration Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tfm_integration/tfm_integration.html#trusted-firmware-m-tf-m">Trusted Firmware-M (TF-M)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules/index.html">External Module Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../compression/compression.html">Compression Samples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Samples and Demos</a> &raquo;</li>
+        
+          <li><a href="../../subsys.html">Various Subsystems Samples</a> &raquo;</li>
+        
+          <li><a href="../modbus.html">Modbus Samples</a> &raquo;</li>
+        
+      <li>Modbus TCP Server Sample</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/samples/subsys/modbus/tcp_server/README.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="modbus-tcp-server-sample">
+<span id="id1"></span><h1>Modbus TCP Server Sample<a class="headerlink" href="#modbus-tcp-server-sample" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This is a simple application demonstrating a Modbus TCP server implementation
+in Zephyr RTOS.</p>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>This sample has been tested with FRDM-K64F board,
+but it should work with any board or shield that has a network interface.
+Additionally the board should have three LEDs.</p>
+<p>TCP server example is running on an evaluation board. Client is running
+on a PC or laptop.</p>
+<p>The description of this sample uses <a class="reference external" href="https://github.com/riptideio/pymodbus">PyModbus</a> (Pymodbus REPL).
+The user can of course try out other client implementations with this sample.</p>
+</div>
+<div class="section" id="building-and-running">
+<h2>Building and Running<a class="headerlink" href="#building-and-running" title="Permalink to this headline">¶</a></h2>
+<p>This sample can be found under
+<a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/samples/subsys/modbus/tcp_server">samples/subsys/modbus/tcp_server</a> in the Zephyr tree.</p>
+<p>The following commands build and flash TCP server sample.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">west build -b frdm_k64f samples/subsys/modbus/tcp_server</span>
+<span class="go">west flash</span>
+</pre></div>
+</div>
+<p>On the client side, PC or laptop, the following command connects PyModbus
+to the TCP server.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>pymodbus.console tcp --host <span class="m">192</span>.0.2.1 --port <span class="m">502</span>
+</pre></div>
+</div>
+<p>The LEDs on the board are controlled by Modbus commands FC01, FC05, FC15.
+For example, to set LED0 on use FC01 command (write_coil).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; client.connect</span>
+<span class="go">&gt; client.write_coil address=0 value=1 unit=1</span>
+</pre></div>
+</div>
+<p>Client should confirm successful communication and LED0 should light.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">    &quot;address&quot;: 0,</span>
+<span class="go">    &quot;value&quot;: true</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>To set LED0 off but LED1 and LED2 on use FC15 command (write_coils).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; client.write_coils address=0 values=0,1,1 unit=1</span>
+</pre></div>
+</div>
+<p>To read LED0, LED1, LED2 state FC05 command (read_coils) can be used.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; client.read_coils address=0 count=3 unit=1</span>
+<span class="go">{</span>
+<span class="go">    &quot;bits&quot;: [</span>
+<span class="go">        false,</span>
+<span class="go">        true,</span>
+<span class="go">        true,</span>
+<span class="go">        false,</span>
+<span class="go">        false,</span>
+<span class="go">        false,</span>
+<span class="go">        false,</span>
+<span class="go">        false</span>
+<span class="go">    ]</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>It is also possible to write and read the holding registers.
+This however does not involve any special interaction
+with the peripherals on the board yet.</p>
+<p>To write single holding registers use FC06 command (write_register),</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; client.write_register address=0 value=42 unit=1</span>
+</pre></div>
+</div>
+<p>or FC16 command (write_registers).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; client.write_registers address=0 values=42,42,42 unit=1</span>
+</pre></div>
+</div>
+<p>To read holding registers use FC03 command (read_holding_registers).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; client.read_holding_registers address=0 count=3 unit=1</span>
+<span class="go">{</span>
+<span class="go">    &quot;registers&quot;: [</span>
+<span class="go">        42,</span>
+<span class="go">        42,</span>
+<span class="go">        42</span>
+<span class="go">    ]</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../nvs/README.html" class="btn btn-neutral float-right" title="NVS: Non-Volatile Storage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../tcp_gateway/README.html" class="btn btn-neutral" title="Modbus TCP to serial line gateway sample" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

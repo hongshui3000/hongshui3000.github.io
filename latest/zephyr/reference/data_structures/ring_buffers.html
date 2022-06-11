@@ -1,0 +1,1106 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Ring Buffers &mdash; Zephyr Project Documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zc.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/zephyr.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="https://www.googletagmanager.com/gtag/js?id=UA-210766333-2"></script>
+        <script src="../../_static/js/ga-tracker.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+  <script type="text/javascript" src="../../_static/js/zcaniot.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Modbus" href="../modbus/index.html" />
+    <link rel="prev" title="Balanced Red/Black Tree" href="rbtree.html" />
+  <link rel="shortcut icon" href="../../_static/images/favicon.ico"/>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Zephyr Project
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.99
+              </div>
+            
+          
+
+          
+<div id="searchbox" role="search">
+  <div class="searchformwrapper">
+    <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_process/index.html">Development and Contribution Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/build/index.html">Build and Configuration Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application/index.html">Application Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Status and Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/index.html">Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/notify.html">Asynchronous Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bluetooth/index.html">Bluetooth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../canbus/index.html">Controller Area Network (CAN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../devicetree/index.html">Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drivers/index.html">Device Driver Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../display/index.html">Display Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../edac/index.html">Error Detection And Correction (EDAC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file_system/index.html">File Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../iterable_sections/index.html">Iterable Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/formatted_output.html">Formatted Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel/index.html">Kernel Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libc/index.html">C standard library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memory_management/index.html">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">Miscellaneous</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Structures</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="slist.html">Single-linked List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dlist.html">Double-linked List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mpsc_pbuf.html">Multi Producer Single Consumer Packet Buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbtree.html">Balanced Red/Black Tree</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Ring Buffers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#concepts">Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-options">Configuration Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../modbus/index.html">Modbus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../networking/index.html">Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../peripherals/index.html">Peripherals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pinctrl/index.html">Pin Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pm/index.html">Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../random/index.html">Random Number Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../resource_management/index.html">Resource Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.html">Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../task_wdt/index.html">Task Watchdog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/timeutil.html">Time Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usb/index.html">USB device support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usermode/index.html">User Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings/index.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timing_functions/index.html">Executing Time Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../virtualization/index.html">Virtualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">User and Developer Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples/index.html">Samples and Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../boards/index.html">Supported Boards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zephyr Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Data Structures</a> &raquo;</li>
+        
+      <li>Ring Buffers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/reference/data_structures/ring_buffers.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ring-buffers">
+<span id="ring-buffers-v2"></span><h1>Ring Buffers<a class="headerlink" href="#ring-buffers" title="Permalink to this headline">¶</a></h1>
+<p>A <em class="dfn">ring buffer</em> is a circular buffer, whose contents are stored in
+first-in-first-out order.</p>
+<p>For circumstances where an application needs to implement asynchronous
+“streaming” copying of data, Zephyr provides a <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ring_buf</span></code>
+abstraction to manage copies of such data in and out of a shared
+buffer of memory.</p>
+<p>Two content data modes are supported:</p>
+<ul class="simple">
+<li><p><strong>Byte mode</strong>: raw bytes can be enqueued and dequeued.</p></li>
+<li><p><strong>Data item mode</strong>: Multiple 32-bit word data items with metadata
+can be enqueued and dequeued from the ring buffer in
+chunks of up to 1020 bytes.  Each data item also has two
+associated metadata values:  a type identifier and a 16-bit
+integer value, both of which are application-specific.</p></li>
+</ul>
+<p>While the underlying data structure is the same, it is not
+legal to mix these two modes on a single ring buffer instance.  A ring
+buffer initialized with a byte count must be used only with the
+“bytes” API, one initialized with a word count must use the “items”
+calls.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#concepts" id="id1">Concepts</a></p>
+<ul>
+<li><p><a class="reference internal" href="#byte-mode" id="id2">Byte mode</a></p></li>
+<li><p><a class="reference internal" href="#data-item-mode" id="id3">Data item mode</a></p></li>
+<li><p><a class="reference internal" href="#concurrency" id="id4">Concurrency</a></p></li>
+<li><p><a class="reference internal" href="#internal-operation" id="id5">Internal Operation</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#implementation" id="id6">Implementation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#defining-a-ring-buffer" id="id7">Defining a Ring Buffer</a></p></li>
+<li><p><a class="reference internal" href="#enqueuing-data" id="id8">Enqueuing Data</a></p></li>
+<li><p><a class="reference internal" href="#retrieving-data" id="id9">Retrieving Data</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#configuration-options" id="id10">Configuration Options</a></p></li>
+<li><p><a class="reference internal" href="#api-reference" id="id11">API Reference</a></p></li>
+</ul>
+</div>
+<div class="section" id="concepts">
+<h2><a class="toc-backref" href="#id1">Concepts</a><a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h2>
+<p>Any number of ring buffers can be defined (limited only by available RAM). Each
+ring buffer is referenced by its memory address.</p>
+<p>A ring buffer has the following key properties:</p>
+<ul class="simple">
+<li><p>A <strong>data buffer</strong> of bytes or 32-bit words. The data buffer contains the raw
+bytes or 32-bit words that have been added to the ring buffer but not yet
+removed.</p></li>
+<li><p>A <strong>data buffer size</strong>, measured in bytes or 32-byte words. This governs
+the maximum amount of data (including possible metadata values) the ring
+buffer can hold.</p></li>
+</ul>
+<p>A ring buffer must be initialized before it can be used. This sets its
+data buffer to empty.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ring_buf</span></code> may be placed anywhere in user-accessible
+memory, and must be initialized with <a class="reference internal" href="#c.ring_buf_init" title="ring_buf_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_init()</span></code></a> or
+<code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_element_init()</span></code> before use. This must be provided a region
+of user-controlled memory for use as the buffer itself.  Note carefully that the units of the size of the
+buffer passed change (either bytes or words) depending on how the ring
+buffer will be used later.  Macros for combining these steps in a
+single static declaration exist for convenience.
+<a class="reference internal" href="#c.RING_BUF_DECLARE" title="RING_BUF_DECLARE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">RING_BUF_DECLARE</span></code></a> will declare and statically initialize a ring
+buffer with a specified byte count, where
+<a class="reference internal" href="#c.RING_BUF_ITEM_DECLARE" title="RING_BUF_ITEM_DECLARE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">RING_BUF_ITEM_DECLARE</span></code></a> will declare and statically
+initialize a buffer with a given count of 32 bit words.</p>
+<p>“Bytes” data may be copied into the ring buffer using
+<a class="reference internal" href="#c.ring_buf_put" title="ring_buf_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_put()</span></code></a>, passing a data pointer and byte count.  These
+bytes will be copied into the buffer in order, as many as will fit in
+the allocated buffer.  The total number of bytes copied (which may be
+fewer than provided) will be returned.  Likewise <a class="reference internal" href="#c.ring_buf_get" title="ring_buf_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_get()</span></code></a>
+will copy bytes out of the ring buffer in the order that they were
+written, into a user-provided buffer, returning the number of bytes
+that were transferred.</p>
+<p>To avoid multiply-copied-data situations, a “claim” API exists for
+byte mode.  <a class="reference internal" href="#c.ring_buf_put_claim" title="ring_buf_put_claim"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_put_claim()</span></code></a> takes a byte size value from the
+user and returns a pointer to memory internal to the ring buffer that
+can be used to receive those bytes, along with a size of the
+contiguous internal region (which may be smaller than requested).  The
+user can then copy data into that region at a later time without
+assembling all the bytes in a single region first.  When complete,
+<a class="reference internal" href="#c.ring_buf_put_finish" title="ring_buf_put_finish"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_put_finish()</span></code></a> can be used to signal the buffer that the
+transfer is complete, passing the number of bytes actually
+transferred.  At this point a new transfer can be initiated.
+Similarly, <a class="reference internal" href="#c.ring_buf_get_claim" title="ring_buf_get_claim"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_get_claim()</span></code></a> returns a pointer to internal ring
+buffer data from which the user can read without making a verbatim
+copy, and <a class="reference internal" href="#c.ring_buf_get_finish" title="ring_buf_get_finish"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_get_finish()</span></code></a> signals the buffer with how many
+bytes have been consumed and allows for a new transfer to begin.</p>
+<p>“Items” mode works similarly to bytes mode, except that all transfers
+are in units of 32 bit words and all memory is assumed to be aligned
+on 32 bit boundaries.  The write and read operations are
+<a class="reference internal" href="#c.ring_buf_item_put" title="ring_buf_item_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_item_put()</span></code></a> and <a class="reference internal" href="#c.ring_buf_item_get" title="ring_buf_item_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_item_get()</span></code></a>, and work
+otherwise identically to the bytes mode APIs.  There no “claim” API
+provided for items mode.  One important difference is that unlike
+<a class="reference internal" href="#c.ring_buf_put" title="ring_buf_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_put()</span></code></a>, <a class="reference internal" href="#c.ring_buf_item_put" title="ring_buf_item_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_item_put()</span></code></a> will not do a partial
+transfer; it will return an error in the case where the provided data
+does not fit in its entirety.</p>
+<p>The user can manage the capacity of a ring buffer without modifying it
+using either <a class="reference internal" href="#c.ring_buf_space_get" title="ring_buf_space_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_space_get()</span></code></a> or <a class="reference internal" href="#c.ring_buf_item_space_get" title="ring_buf_item_space_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_item_space_get()</span></code></a>
+which returns the number of free bytes or free 32-bit item words respectively,
+or by testing the <a class="reference internal" href="#c.ring_buf_is_empty" title="ring_buf_is_empty"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_is_empty()</span></code></a> predicate.</p>
+<p>Finally, a <a class="reference internal" href="#c.ring_buf_reset" title="ring_buf_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_reset()</span></code></a> call exists to immediately empty a
+ring buffer, discarding the tracking of any bytes or items already
+written to the buffer.  It does not modify the memory contents of the
+buffer itself, however.</p>
+<div class="section" id="byte-mode">
+<h3><a class="toc-backref" href="#id2">Byte mode</a><a class="headerlink" href="#byte-mode" title="Permalink to this headline">¶</a></h3>
+<p>A <strong>byte mode</strong> ring buffer instance is declared using
+<a class="reference internal" href="#c.RING_BUF_DECLARE" title="RING_BUF_DECLARE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">RING_BUF_DECLARE()</span></code></a> and accessed using:
+<a class="reference internal" href="#c.ring_buf_put_claim" title="ring_buf_put_claim"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_put_claim()</span></code></a>, <a class="reference internal" href="#c.ring_buf_put_finish" title="ring_buf_put_finish"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_put_finish()</span></code></a>,
+<a class="reference internal" href="#c.ring_buf_get_claim" title="ring_buf_get_claim"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_get_claim()</span></code></a>, <a class="reference internal" href="#c.ring_buf_get_finish" title="ring_buf_get_finish"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_get_finish()</span></code></a>,
+<a class="reference internal" href="#c.ring_buf_put" title="ring_buf_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_put()</span></code></a> and <a class="reference internal" href="#c.ring_buf_get" title="ring_buf_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_get()</span></code></a>.</p>
+<p>Data can be copied into the ring buffer (see
+<a class="reference internal" href="#c.ring_buf_put" title="ring_buf_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_put()</span></code></a>) or ring buffer memory can be used
+directly by the user. In the latter case, the operation is split into three stages:</p>
+<ol class="arabic simple">
+<li><p>allocating the buffer (<a class="reference internal" href="#c.ring_buf_put_claim" title="ring_buf_put_claim"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_put_claim()</span></code></a>) when
+user requests the destination location where data can be written.</p></li>
+<li><p>writing the data by the user (e.g. buffer written by DMA).</p></li>
+<li><p>indicating the amount of data written to the provided buffer
+(<a class="reference internal" href="#c.ring_buf_put_finish" title="ring_buf_put_finish"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_put_finish()</span></code></a>). The amount
+can be less than or equal to the allocated amount.</p></li>
+</ol>
+<p>Data can be retrieved from a ring buffer through copying
+(see <a class="reference internal" href="#c.ring_buf_get" title="ring_buf_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_get()</span></code></a>) or accessed directly by address. In the latter
+case, the operation is split into three stages:</p>
+<ol class="arabic simple">
+<li><p>retrieving source location with valid data written to a ring buffer
+(see <a class="reference internal" href="#c.ring_buf_get_claim" title="ring_buf_get_claim"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_get_claim()</span></code></a>).</p></li>
+<li><p>processing data</p></li>
+<li><p>freeing processed data (see <a class="reference internal" href="#c.ring_buf_get_finish" title="ring_buf_get_finish"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_get_finish()</span></code></a>).
+The amount freed can be less than or equal or to the retrieved amount.</p></li>
+</ol>
+</div>
+<div class="section" id="data-item-mode">
+<h3><a class="toc-backref" href="#id3">Data item mode</a><a class="headerlink" href="#data-item-mode" title="Permalink to this headline">¶</a></h3>
+<p>A <strong>data item mode</strong> ring buffer instance is declared using
+<a class="reference internal" href="#c.RING_BUF_ITEM_DECLARE" title="RING_BUF_ITEM_DECLARE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">RING_BUF_ITEM_DECLARE()</span></code></a> and accessed using
+<a class="reference internal" href="#c.ring_buf_item_put" title="ring_buf_item_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_item_put()</span></code></a> and <a class="reference internal" href="#c.ring_buf_item_get" title="ring_buf_item_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_item_get()</span></code></a>.</p>
+<p>A ring buffer <strong>data item</strong> is an array of 32-bit words from 0 to 1020 bytes
+in length. When a data item is <strong>enqueued</strong> (<a class="reference internal" href="#c.ring_buf_item_put" title="ring_buf_item_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_item_put()</span></code></a>)
+its contents are copied to the data buffer, along with its associated metadata
+values (which occupy one additional 32-bit word). If the ring buffer has
+insufficient space to hold the new data item the enqueue operation fails.</p>
+<p>A data items is <strong>dequeued</strong> (<a class="reference internal" href="#c.ring_buf_item_get" title="ring_buf_item_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_item_get()</span></code></a>) from a ring
+buffer by removing the oldest enqueued item. The contents of the dequeued data
+item, as well as its two metadata values, are copied to areas supplied by the
+retriever. If the ring buffer is empty, or if the data array supplied by the
+retriever is not large enough to hold the data item’s data, the dequeue
+operation fails.</p>
+</div>
+<div class="section" id="concurrency">
+<h3><a class="toc-backref" href="#id4">Concurrency</a><a class="headerlink" href="#concurrency" title="Permalink to this headline">¶</a></h3>
+<p>The ring buffer APIs do not provide any concurrency control.
+Depending on usage (particularly with respect to number of concurrent
+readers/writers) applications may need to protect the ring buffer with
+mutexes and/or use semaphores to notify consumers that there is data to
+read.</p>
+<p>For the trivial case of one producer and one consumer, concurrency
+control shouldn’t be needed.</p>
+</div>
+<div class="section" id="internal-operation">
+<h3><a class="toc-backref" href="#id5">Internal Operation</a><a class="headerlink" href="#internal-operation" title="Permalink to this headline">¶</a></h3>
+<p>Data streamed through a ring buffer is always written to the next byte
+within the buffer, wrapping around to the first element after reaching
+the end, thus the “ring” structure.  Internally, the <code class="docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">ring_buf</span></code> contains its own buffer pointer and its size, and also a
+set of “head” and “tail” indices representing where the next read and write
+operations may occur.</p>
+<p>This boundary is invisible to the user using the normal put/get APIs,
+but becomes a barrier to the “claim” API, because obviously no
+contiguous region can be returned that crosses the end of the buffer.
+This can be surprising to application code, and produce performance
+artifacts when transfers need to happen close to the end of the
+buffer, as the number of calls to claim/finish needs to double for such
+transfers.</p>
+</div>
+</div>
+<div class="section" id="implementation">
+<h2><a class="toc-backref" href="#id6">Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="defining-a-ring-buffer">
+<h3><a class="toc-backref" href="#id7">Defining a Ring Buffer</a><a class="headerlink" href="#defining-a-ring-buffer" title="Permalink to this headline">¶</a></h3>
+<p>A ring buffer is defined using a variable of type <code class="xref c c-type docutils literal notranslate"><span class="pre">ring_buf</span></code>.
+It must then be initialized by calling <a class="reference internal" href="#c.ring_buf_init" title="ring_buf_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_init()</span></code></a> or
+c:func:<cite>ring_buf_item_init</cite>.</p>
+<p>The following code defines and initializes an empty <strong>data item mode</strong> ring
+buffer (which is part of a larger data structure). The ring buffer’s data buffer
+is capable of holding 64 words of data and metadata information.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define MY_RING_BUF_WORDS 64</span>
+
+<span class="k">struct</span> <span class="nc">my_struct</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="nc">ring_buf</span> <span class="n">rb</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">buffer</span><span class="p">[</span><span class="n">MY_RING_BUF_WORDS</span><span class="p">];</span>
+    <span class="p">...</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="nc">my_struct</span> <span class="n">ms</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="n">init_my_struct</span> <span class="p">{</span>
+    <span class="n">ring_buf_item_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ms</span><span class="p">.</span><span class="n">rb</span><span class="p">,</span> <span class="n">MY_RING_BUF_WORDS</span><span class="p">,</span> <span class="n">ms</span><span class="p">.</span><span class="n">buffer</span><span class="p">);</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Alternatively, a ring buffer can be defined and initialized at compile time
+using one of two macros at file scope. Each macro defines both the ring
+buffer itself and its data buffer.</p>
+<p>The following code defines a <strong>data item mode</strong> ring buffer:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define MY_RING_BUF_WORDS 93</span>
+<span class="n">RING_BUF_ITEM_DECLARE</span><span class="p">(</span><span class="n">my_ring_buf</span><span class="p">,</span> <span class="n">MY_RING_BUF_WORDS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The following code defines a ring buffer intended to be used for raw bytes:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define MY_RING_BUF_BYTES 93</span>
+<span class="n">RING_BUF_DECLARE</span><span class="p">(</span><span class="n">my_ring_buf</span><span class="p">,</span> <span class="n">MY_RING_BUF_BYTES</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enqueuing-data">
+<h3><a class="toc-backref" href="#id8">Enqueuing Data</a><a class="headerlink" href="#enqueuing-data" title="Permalink to this headline">¶</a></h3>
+<p>Bytes are copied to a <strong>byte mode</strong> ring buffer by calling
+<a class="reference internal" href="#c.ring_buf_put" title="ring_buf_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_put()</span></code></a>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="n">my_data</span><span class="p">[</span><span class="n">MY_RING_BUF_BYTES</span><span class="p">];</span>
+<span class="kt">uint32_t</span> <span class="n">ret</span><span class="p">;</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">ring_buf_put</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ring_buf</span><span class="p">,</span> <span class="n">my_data</span><span class="p">,</span> <span class="n">MY_RING_BUF_BYTES</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="n">MY_RING_BUF_BYTES</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* not enough room, partial copy. */</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Data can be added to a <strong>byte mode</strong> ring buffer by directly accessing the
+ring buffer’s memory.  For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="n">size</span><span class="p">;</span>
+<span class="kt">uint32_t</span> <span class="n">rx_size</span><span class="p">;</span>
+<span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+
+<span class="cm">/* Allocate buffer within a ring buffer memory. */</span>
+<span class="n">size</span> <span class="o">=</span> <span class="n">ring_buf_put_claim</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ring_buf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">data</span><span class="p">,</span> <span class="n">MY_RING_BUF_BYTES</span><span class="p">);</span>
+
+<span class="cm">/* Work directly on a ring buffer memory. */</span>
+<span class="n">rx_size</span> <span class="o">=</span> <span class="n">uart_rx</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+
+<span class="cm">/* Indicate amount of valid data. rx_size can be equal or less than size. */</span>
+<span class="n">err</span> <span class="o">=</span> <span class="n">ring_buf_put_finish</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ring_buf</span><span class="p">,</span> <span class="n">rx_size</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* This shouldn&#39;t happen unless rx_size &gt; size */</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A data item is added to a ring buffer by calling
+<a class="reference internal" href="#c.ring_buf_item_put" title="ring_buf_item_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_item_put()</span></code></a>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="n">data</span><span class="p">[</span><span class="n">MY_DATA_WORDS</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">ring_buf_item_put</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ring_buf</span><span class="p">,</span> <span class="n">TYPE_FOO</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">MY_DATA_WORDS</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="n">EMSGSIZE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* not enough room for the data item */</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the data item requires only the type or application-specific integer value
+(i.e. it has no data array), a size of 0 and data pointer of <code class="xref c c-macro docutils literal notranslate"><span class="pre">NULL</span></code>
+can be specified.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">ring_buf_item_put</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ring_buf</span><span class="p">,</span> <span class="n">TYPE_BAR</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="n">EMSGSIZE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* not enough room for the data item */</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieving-data">
+<h3><a class="toc-backref" href="#id9">Retrieving Data</a><a class="headerlink" href="#retrieving-data" title="Permalink to this headline">¶</a></h3>
+<p>Data bytes are copied out from a <strong>byte mode</strong> ring buffer by calling
+<a class="reference internal" href="#c.ring_buf_get" title="ring_buf_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_get()</span></code></a>. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="n">my_data</span><span class="p">[</span><span class="n">MY_DATA_BYTES</span><span class="p">];</span>
+<span class="kt">size_t</span>  <span class="n">ret</span><span class="p">;</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">ring_buf_get</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ring_buf</span><span class="p">,</span> <span class="n">my_data</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">my_data</span><span class="p">));</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">my_data</span><span class="p">))</span> <span class="p">{</span>
+    <span class="cm">/* Fewer bytes copied. */</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="cm">/* Requested amount of bytes retrieved. */</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Data can be retrieved from a <strong>byte mode</strong> ring buffer by direct
+operations on the ring buffer’s memory.  For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="n">size</span><span class="p">;</span>
+<span class="kt">uint32_t</span> <span class="n">proc_size</span><span class="p">;</span>
+<span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+
+<span class="cm">/* Get buffer within a ring buffer memory. */</span>
+<span class="n">size</span> <span class="o">=</span> <span class="n">ring_buf_get_claim</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ring_buf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">data</span><span class="p">,</span> <span class="n">MY_RING_BUF_BYTES</span><span class="p">);</span>
+
+<span class="cm">/* Work directly on a ring buffer memory. */</span>
+<span class="n">proc_size</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+
+<span class="cm">/* Indicate amount of data that can be freed. proc_size can be equal or less</span>
+<span class="cm"> * than size.</span>
+<span class="cm"> */</span>
+<span class="n">err</span> <span class="o">=</span> <span class="n">ring_buf_get_finish</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ring_buf</span><span class="p">,</span> <span class="n">proc_size</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* proc_size exceeds amount of valid data in a ring buffer. */</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A data item is removed from a ring buffer by calling
+<a class="reference internal" href="#c.ring_buf_item_get" title="ring_buf_item_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ring_buf_item_get()</span></code></a>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="n">my_data</span><span class="p">[</span><span class="n">MY_DATA_WORDS</span><span class="p">];</span>
+<span class="kt">uint16_t</span> <span class="n">my_type</span><span class="p">;</span>
+<span class="kt">uint8_t</span>  <span class="n">my_value</span><span class="p">;</span>
+<span class="kt">uint8_t</span>  <span class="n">my_size</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+
+<span class="n">my_size</span> <span class="o">=</span> <span class="n">MY_DATA_WORDS</span><span class="p">;</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">ring_buf_item_get</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ring_buf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_value</span><span class="p">,</span> <span class="n">my_data</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_size</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="n">EMSGSIZE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printk</span><span class="p">(</span><span class="s">&quot;Buffer is too small, need %d uint32_t</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">my_size</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="n">EAGAIN</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printk</span><span class="p">(</span><span class="s">&quot;Ring buffer is empty</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">printk</span><span class="p">(</span><span class="s">&quot;Got item of type %u value &amp;u of size %u dwords</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+           <span class="n">my_type</span><span class="p">,</span> <span class="n">my_value</span><span class="p">,</span> <span class="n">my_size</span><span class="p">);</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configuration-options">
+<h2><a class="toc-backref" href="#id10">Configuration Options</a><a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>Related configuration options:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../kconfig.html#CONFIG_RING_BUFFER" title="CONFIG_RING_BUFFER"><code class="xref kconfig kconfig-option docutils literal notranslate"><span class="pre">CONFIG_RING_BUFFER</span></code></a>: Enable ring buffer.</p></li>
+</ul>
+</div>
+<div class="section" id="api-reference">
+<h2><a class="toc-backref" href="#id11">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<p>The following ring buffer APIs are provided by <a class="reference external" href="https://gitee.com/ZCAN-IOT/zephyr/blob/main/include/sys/ring_buffer.h">include/sys/ring_buffer.h</a>:</p>
+<dl>
+<dt class="sig sig-object">
+<span class="target" id="group__ring__buffer__apis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">ring_buffer_apis</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.RING_BUF_DECLARE">
+<span class="target" id="group__ring__buffer__apis_1ga803e45abf48ee207fc0ab4028726a82b"></span><span class="sig-name descname"><span class="n"><span class="pre">RING_BUF_DECLARE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">size8</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.RING_BUF_DECLARE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define and initialize a ring buffer for byte data. </p>
+<p>This macro establishes a ring buffer of an arbitrary size. The basic storage unit is a byte.</p>
+<p>The ring buffer can be accessed outside the module where it is defined using:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extern</span> <span class="n">struct</span> <span class="n">ring_buf</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">;</span> 
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size8</span></code>: Size of ring buffer (in bytes). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.RING_BUF_ITEM_DECLARE">
+<span class="target" id="group__ring__buffer__apis_1ga2fc2f4515121ac6bbf6aebf3e029bb5d"></span><span class="sig-name descname"><span class="n"><span class="pre">RING_BUF_ITEM_DECLARE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">size32</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.RING_BUF_ITEM_DECLARE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define and initialize an “item based” ring buffer. </p>
+<p>This macro establishes an “item based” ring buffer. Each data item is an array of 32-bit words (from zero to 1020 bytes in length), coupled with a 16-bit type identifier and an 8-bit integer value.</p>
+<p>The ring buffer can be accessed outside the module where it is defined using:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extern</span> <span class="n">struct</span> <span class="n">ring_buf</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">;</span> 
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size32</span></code>: Size of ring buffer (in 32-bit words). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.RING_BUF_ITEM_DECLARE_SIZE">
+<span class="target" id="group__ring__buffer__apis_1ga205e93b5431112da0d191526906c7e01"></span><span class="sig-name descname"><span class="n"><span class="pre">RING_BUF_ITEM_DECLARE_SIZE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">size32</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.RING_BUF_ITEM_DECLARE_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define and initialize an “item based” ring buffer. </p>
+<p>This exists for backward compatibility reasons. <a class="reference internal" href="#group__ring__buffer__apis_1ga2fc2f4515121ac6bbf6aebf3e029bb5d"><span class="std std-ref">RING_BUF_ITEM_DECLARE</span></a> should be used instead.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size32</span></code>: Size of ring buffer (in 32-bit words). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.RING_BUF_ITEM_DECLARE_POW2">
+<span class="target" id="group__ring__buffer__apis_1gaca98f407b222dff12e2bbfcf3746a9e3"></span><span class="sig-name descname"><span class="n"><span class="pre">RING_BUF_ITEM_DECLARE_POW2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">pow</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.RING_BUF_ITEM_DECLARE_POW2" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Define and initialize a power-of-2 sized “item based” ring buffer. </p>
+<p>This macro establishes an “item based” ring buffer by specifying its size using a power of 2. This exists mainly for backward compatibility reasons. <a class="reference internal" href="#group__ring__buffer__apis_1ga2fc2f4515121ac6bbf6aebf3e029bb5d"><span class="std std-ref">RING_BUF_ITEM_DECLARE</span></a> should be used instead.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pow</span></code>: Ring buffer size exponent. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_init">
+<span class="target" id="group__ring__buffer__apis_1gac06bc272bf99843c65bf28d851bffd55"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a ring buffer for byte data. </p>
+<p>This routine initializes a ring buffer, prior to its first use. It is only used for ring buffers not defined using RING_BUF_DECLARE.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Ring buffer size (in bytes). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Ring buffer data area (uint8_t data[size]). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_item_init">
+<span class="target" id="group__ring__buffer__apis_1ga9d10210160544af25c9a67680aff578d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_item_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_item_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize an “item based” ring buffer. </p>
+<p>This routine initializes a ring buffer, prior to its first use. It is only used for ring buffers not defined using RING_BUF_ITEM_DECLARE.</p>
+<p>Each data item is an array of 32-bit words (from zero to 1020 bytes in length), coupled with a 16-bit type identifier and an 8-bit integer value.</p>
+<p>Each data item is an array of 32-bit words (from zero to 1020 bytes in length), coupled with a 16-bit type identifier and an 8-bit integer value.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Ring buffer size (in 32-bit words) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Ring buffer data area (uint32_t data[size]). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_is_empty">
+<span class="target" id="group__ring__buffer__apis_1gabb7006d786b1ddc640b5fd2338d1d01c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_is_empty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_is_empty" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Determine if a ring buffer is empty. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>true if the ring buffer is empty, or false if not. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_reset">
+<span class="target" id="group__ring__buffer__apis_1ga9cc0cd445eeeeba7183c3ac0778c7e18"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_reset</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_reset" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reset ring buffer state. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_space_get">
+<span class="target" id="group__ring__buffer__apis_1ga0db0b939d2be3d3fb0688f55780379bb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_space_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_space_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Determine free space in a ring buffer. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Ring buffer free space (in bytes). </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_item_space_get">
+<span class="target" id="group__ring__buffer__apis_1gab58be76e8d3fc5542fb7b03717b89544"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_item_space_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_item_space_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Determine free space in an “item based” ring buffer. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Ring buffer free space (in 32-bit words). </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_capacity_get">
+<span class="target" id="group__ring__buffer__apis_1ga9c06a3c6f77584ce8317a236cc2de35c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_capacity_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_capacity_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return ring buffer capacity. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Ring buffer capacity (in bytes). </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_size_get">
+<span class="target" id="group__ring__buffer__apis_1gade647873dd72c04a54f51b8d9d335107"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_size_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_size_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Determine used space in a ring buffer. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>Ring buffer space used (in bytes). </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_put_claim">
+<span class="target" id="group__ring__buffer__apis_1gae15934b40fd208a63eba98b2382e8ad1"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_put_claim</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_put_claim" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate buffer for writing data to a ring buffer. </p>
+<p>With this routine, memory copying can be reduced since internal ring buffer can be used directly by the user. Once data is written to allocated area number of bytes written must be confirmed (see <a class="reference internal" href="#group__ring__buffer__apis_1ga465feaf6cf5312e75060ecf65db963ad"><span class="std std-ref">ring_buf_put_finish</span></a>).</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>Use cases involving multiple writers to the ring buffer must prevent concurrent write operations, either by preventing all writers from being preempted or by using a mutex to govern writes to the ring buffer.</p>
+</dd>
+<dt><strong>Warning</strong></dt><dd><p>Ring buffer instance should not mix byte access and item access (calls prefixed with ring_buf_item_).</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Size of allocated buffer which can be smaller than requested if there is not enough free space or buffer wraps. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">data</span></code>: Pointer to the address. It is set to a location within ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">size</span></code>: Requested allocation size (in bytes).</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_put_finish">
+<span class="target" id="group__ring__buffer__apis_1ga465feaf6cf5312e75060ecf65db963ad"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_put_finish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_put_finish" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Indicate number of bytes written to allocated buffers. </p>
+<p>The number of bytes must be equal to or lower than the sum corresponding to all preceding <a class="reference internal" href="#group__ring__buffer__apis_1gae15934b40fd208a63eba98b2382e8ad1"><span class="std std-ref">ring_buf_put_claim</span></a> invocations (or even 0). Surplus bytes will be returned to the available free buffer space.</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>Use cases involving multiple writers to the ring buffer must prevent concurrent write operations, either by preventing all writers from being preempted or by using a mutex to govern writes to the ring buffer.</p>
+</dd>
+<dt><strong>Warning</strong></dt><dd><p>Ring buffer instance should not mix byte access and item access (calls prefixed with ring_buf_item_).</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of valid bytes in the allocated buffers.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Successful operation. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: Provided <em>size</em> exceeds free space in the ring buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_put">
+<span class="target" id="group__ring__buffer__apis_1ga6c7e76e3ca798e994f738d114cb9a7e3"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_put</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_put" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write (copy) data to a ring buffer. </p>
+<p>This routine writes data to a ring buffer <em>buf</em>.</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>Use cases involving multiple writers to the ring buffer must prevent concurrent write operations, either by preventing all writers from being preempted or by using a mutex to govern writes to the ring buffer.</p>
+</dd>
+<dt><strong>Warning</strong></dt><dd><p>Ring buffer instance should not mix byte access and item access (calls prefixed with ring_buf_item_).</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Data size (in bytes).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Number</span></code>: of bytes written. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_get_claim">
+<span class="target" id="group__ring__buffer__apis_1ga7ab4fea7b19b1ffa58a7d3a581396b1c"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_get_claim</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_get_claim" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get address of a valid data in a ring buffer. </p>
+<p>With this routine, memory copying can be reduced since internal ring buffer can be used directly by the user. Once data is processed it must be freed using <a class="reference internal" href="#group__ring__buffer__apis_1ga36177459f4e352b52a6f2046a33c3aa1"><span class="std std-ref">ring_buf_get_finish</span></a>.</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>Use cases involving multiple reads of the ring buffer must prevent concurrent read operations, either by preventing all readers from being preempted or by using a mutex to govern reads to the ring buffer.</p>
+</dd>
+<dt><strong>Warning</strong></dt><dd><p>Ring buffer instance should not mix byte access and item access (calls prefixed with ring_buf_item_).</p>
+</dd>
+<dt><strong>Return</strong></dt><dd><p>Number of valid bytes in the provided buffer which can be smaller than requested if there is not enough free space or buffer wraps. </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">data</span></code>: Pointer to the address. It is set to a location within ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">size</span></code>: Requested size (in bytes).</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_get_finish">
+<span class="target" id="group__ring__buffer__apis_1ga36177459f4e352b52a6f2046a33c3aa1"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_get_finish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_get_finish" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Indicate number of bytes read from claimed buffer. </p>
+<p>The number of bytes must be equal or lower than the sum corresponding to all preceding <a class="reference internal" href="#group__ring__buffer__apis_1ga7ab4fea7b19b1ffa58a7d3a581396b1c"><span class="std std-ref">ring_buf_get_claim</span></a> invocations (or even 0). Surplus bytes will remain available in the buffer.</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>Use cases involving multiple reads of the ring buffer must prevent concurrent read operations, either by preventing all readers from being preempted or by using a mutex to govern reads to the ring buffer.</p>
+</dd>
+<dt><strong>Warning</strong></dt><dd><p>Ring buffer instance should not mix byte access and item mode (calls prefixed with ring_buf_item_).</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Number of bytes that can be freed.</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Successful operation. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>: Provided <em>size</em> exceeds valid bytes in the ring buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_get">
+<span class="target" id="group__ring__buffer__apis_1ga209bef22c47f3938a36d7eb6c3b3dbc7"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read data from a ring buffer. </p>
+<p>This routine reads data from a ring buffer <em>buf</em>.</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>Use cases involving multiple reads of the ring buffer must prevent concurrent read operations, either by preventing all readers from being preempted or by using a mutex to govern reads to the ring buffer.</p>
+</dd>
+<dt><strong>Warning</strong></dt><dd><p>Ring buffer instance should not mix byte access and item mode (calls prefixed with ring_buf_item_).</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of the output buffer. Can be NULL to discard data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Data size (in bytes).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Number</span></code>: of bytes written to the output buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_peek">
+<span class="target" id="group__ring__buffer__apis_1ga8ba75a313b2ad7d55e390fa3f1fcadc1"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_peek</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_peek" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Peek at data from a ring buffer. </p>
+<p>This routine reads data from a ring buffer <em>buf</em> without removal.</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>Use cases involving multiple reads of the ring buffer must prevent concurrent read operations, either by preventing all readers from being preempted or by using a mutex to govern reads to the ring buffer.</p>
+</dd>
+<dt><strong>Warning</strong></dt><dd><p>Ring buffer instance should not mix byte access and item mode (calls prefixed with ring_buf_item_).</p>
+</dd>
+<dt><strong>Warning</strong></dt><dd><p>Multiple calls to peek will result in the same data being ‘peeked’ multiple times. To remove data, use either <a class="reference internal" href="#group__ring__buffer__apis_1ga209bef22c47f3938a36d7eb6c3b3dbc7"><span class="std std-ref">ring_buf_get</span></a> or <a class="reference internal" href="#group__ring__buffer__apis_1ga7ab4fea7b19b1ffa58a7d3a581396b1c"><span class="std std-ref">ring_buf_get_claim</span></a> followed by <a class="reference internal" href="#group__ring__buffer__apis_1ga36177459f4e352b52a6f2046a33c3aa1"><span class="std std-ref">ring_buf_get_finish</span></a> with a non-zero <code class="docutils literal notranslate"><span class="pre">size</span></code>.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of the output buffer. Cannot be NULL. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: Data size (in bytes).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Number</span></code>: of bytes written to the output buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_item_put">
+<span class="target" id="group__ring__buffer__apis_1ga6cb71d7c1a36b6e142b251f08ed40599"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_item_put</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">value</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">size32</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_item_put" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write a data item to a ring buffer. </p>
+<p>This routine writes a data item to ring buffer <em>buf</em>. The data item is an array of 32-bit words (from zero to 1020 bytes in length), coupled with a 16-bit type identifier and an 8-bit integer value.</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>Use cases involving multiple writers to the ring buffer must prevent concurrent write operations, either by preventing all writers from being preempted or by using a mutex to govern writes to the ring buffer.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: Data item’s type identifier (application specific). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: Data item’s integer value (application specific). </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Address of data item. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size32</span></code>: Data item size (number of 32-bit words).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Data item was written. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EMSGSIZE</span></code>: Ring buffer has insufficient free space. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ring_buf_item_get">
+<span class="target" id="group__ring__buffer__apis_1gae0c62af11cab8a661638e50b312b58f8"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ring_buf_item_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ring_buf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">type</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">value</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">size32</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ring_buf_item_get" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read a data item from a ring buffer. </p>
+<p>This routine reads a data item from ring buffer <em>buf</em>. The data item is an array of 32-bit words (up to 1020 bytes in length), coupled with a 16-bit type identifier and an 8-bit integer value.</p>
+<p><dl class="simple">
+<dt><strong>Warning</strong></dt><dd><p>Use cases involving multiple reads of the ring buffer must prevent concurrent read operations, either by preventing all readers from being preempted or by using a mutex to govern reads to the ring buffer.</p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">buf</span></code>: Address of ring buffer. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: Area to store the data item’s type identifier. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: Area to store the data item’s integer value. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Area to store the data item. Can be NULL to discard data. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size32</span></code>: Size of the data item storage area (number of 32-bit chunks).</p></li>
+</ul>
+</dd>
+<dt><strong>Return Value</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Data item was fetched; <em>size32</em> now contains the number of 32-bit words read into data area <em>data</em>. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EAGAIN</span></code>: Ring buffer is empty. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-EMSGSIZE</span></code>: Data area <em>data</em> is too small; <em>size32</em> now contains the number of 32-bit words needed. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../modbus/index.html" class="btn btn-neutral float-right" title="Modbus" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rbtree.html" class="btn btn-neutral" title="Balanced Red/Black Tree" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+
+<table>
+<tr>
+<td>
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2015-2022 Zephyr Project members and individual contributors.
+      Last updated on May 10, 2022.
+
+    </p>
+</td>
+<td id="zcanlogo">
+  <a href="https://www.unisim-micro.com/"><img src="../../_static/images/zcan.svg" border="0" style="position:static"/></a>
+</td>
+</tr>
+</table>
+  </div> 
+
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Zephyr Project</span>
+       <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <div class="rst-other-version zcansdk">
+        <a href="../../../zcansdk/index.html">ZCAN IOT SDK</a>
+      </div>
+      
+      <div class="rst-other-version zcanxlib">
+        <a href="../../../zcanxlib/README.html">ZCAN Xlib</a>
+      </div>
+      
+      <div class="rst-other-version mcuboot">
+        <a href="../../../mcuboot/wrapper.html">MCUboot</a>
+      </div>
+      
+      <div class="rst-other-version sof">
+        <a href="../../../sof/index.html">SOF</a>
+      </div>
+      
+      <div class="rst-other-version kconfig">
+        <a href="../../../kconfig/index.html">Kconfig Reference</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

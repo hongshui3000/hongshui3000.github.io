@@ -1,0 +1,47 @@
+var ethernet_8h =
+[
+    [ "ETH_NET_DEVICE_DT_DEFINE", "group__ethernet.html#ga2967f868abe1216096ff260cb6b3b8b4", null ],
+    [ "ETH_NET_DEVICE_DT_INST_DEFINE", "group__ethernet.html#gaecf9f102108836ed9cf7e2cdb3c90579", null ],
+    [ "ETH_NET_DEVICE_INIT", "group__ethernet.html#ga43ad751181ec053771801fd444d25526", null ],
+    [ "ethernet_flags", "group__ethernet.html#ga97d926fe9e96a1205b00b808120dda88", [
+      [ "ETH_CARRIER_UP", "group__ethernet.html#gga97d926fe9e96a1205b00b808120dda88ae630377e05a087a99649647593c38135", null ]
+    ] ],
+    [ "ethernet_hw_caps", "group__ethernet.html#ga9162ff11d626813fc840df0b67820ac5", [
+      [ "ETHERNET_HW_TX_CHKSUM_OFFLOAD", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5aefaa7e72a676d6b1ad570a96be1a3861", null ],
+      [ "ETHERNET_HW_RX_CHKSUM_OFFLOAD", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a8341893ee775dca3609ce1316d948e33", null ],
+      [ "ETHERNET_HW_VLAN", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a0bdf56b7f06fa68125bce800f9adfb95", null ],
+      [ "ETHERNET_AUTO_NEGOTIATION_SET", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a93c074b73420abed7d1f59f231da990a", null ],
+      [ "ETHERNET_LINK_10BASE_T", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a26084acbb9f8c65fdb427c7d8b9b4fb6", null ],
+      [ "ETHERNET_LINK_100BASE_T", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a6fc62894c7ebe8697f1c45f4fc54ed3e", null ],
+      [ "ETHERNET_LINK_1000BASE_T", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a885ef0a35e462efa43e59c2f625964b8", null ],
+      [ "ETHERNET_DUPLEX_SET", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a1e37eeba16e05b12580e5eacd36a25cc", null ],
+      [ "ETHERNET_PTP", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a604198d571bf2c4e7227bdeaefc2868a", null ],
+      [ "ETHERNET_QAV", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a7ec920ceb8cfba6424040079d6eeef42", null ],
+      [ "ETHERNET_PROMISC_MODE", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5ad040f4a5749f66a377b840a4da8fb64d", null ],
+      [ "ETHERNET_PRIORITY_QUEUES", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a1e32518640964a73d4154ed8bc527475", null ],
+      [ "ETHERNET_HW_FILTERING", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a50d1e4418926b586f6b50acd828f57fe", null ],
+      [ "ETHERNET_LLDP", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a8da4ebc3e888ac358f88aa9671e732c2", null ],
+      [ "ETHERNET_HW_VLAN_TAG_STRIP", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a1f33c56862228a647b583ae7e0605ac5", null ],
+      [ "ETHERNET_DSA_SLAVE_PORT", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a77fe3d1049f9295102f3f2863df84dd7", null ],
+      [ "ETHERNET_DSA_MASTER_PORT", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a762faf9045477a959e9ec11ce099a883", null ],
+      [ "ETHERNET_QBV", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5acf17cbf803c3a0fe858ef939ccfe3b85", null ],
+      [ "ETHERNET_QBU", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5a68e30ff24a3eb75def8e154ac00dea08", null ],
+      [ "ETHERNET_TXTIME", "group__ethernet.html#gga9162ff11d626813fc840df0b67820ac5ac72ff66c3172da29ec9fefad7593ffd2", null ]
+    ] ],
+    [ "ethernet_init", "group__ethernet.html#gacd67360df806183cbc15159b0480bfa0", null ],
+    [ "net_eth_carrier_off", "group__ethernet.html#ga4dcf5047108b509e349b02fe35c10d75", null ],
+    [ "net_eth_carrier_on", "group__ethernet.html#gabeb21cb06b18674b73fbd0f42ee726f0", null ],
+    [ "net_eth_get_hw_capabilities", "group__ethernet.html#gab0a3b4584bb6ce1d27b98b063fd3fcbd", null ],
+    [ "net_eth_get_ptp_clock", "group__ethernet.html#gae428bf37808683b741f37a2cd53bb189", null ],
+    [ "net_eth_get_ptp_clock_by_index", "group__ethernet.html#gac1b2951030c24c8a4dfbdd09c106fe61", null ],
+    [ "net_eth_get_ptp_port", "group__ethernet.html#ga37c5d1d5d534c6d024b060ae54bbd82a", null ],
+    [ "net_eth_get_vlan_iface", "group__ethernet.html#ga819fe1ea2de3da8cce4ffaf46dd51f14", null ],
+    [ "net_eth_get_vlan_status", "group__ethernet.html#ga78aad58ec66710034cab8891ad638a2c", null ],
+    [ "net_eth_get_vlan_tag", "group__ethernet.html#ga6184c43a62e4af9958412f99991358c9", null ],
+    [ "net_eth_ipv4_mcast_to_mac_addr", "group__ethernet.html#gae3ce2bd669391071635f5709d1c3cd8e", null ],
+    [ "net_eth_ipv6_mcast_to_mac_addr", "group__ethernet.html#gaa08d5237c26e8c05748d58eb65b15c2f", null ],
+    [ "net_eth_is_vlan_enabled", "group__ethernet.html#gac536aa7154c4a8d194ec67efb68e275c", null ],
+    [ "net_eth_promisc_mode", "group__ethernet.html#ga42a3c6b04ef8827e3443c5aebe5541b9", null ],
+    [ "net_eth_vlan_disable", "group__ethernet.html#gab71a741cea5f645f4354a1abc9c95a50", null ],
+    [ "net_eth_vlan_enable", "group__ethernet.html#ga16cbc14e3a0a470bbbd5aeb5e73dc1de", null ]
+];
